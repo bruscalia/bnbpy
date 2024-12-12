@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools", "wheel", "numpy>=1.19.0", "Cython>=0.29.21"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = [
+  "E",   # pycodestyle - code style errors
+  "F",   # pyflakes - code quality
+  "I",   # isort - import order
+  "W",   # pycodestyle - code style warnings
+  "PL",  # pylint - code quality
+  "PT",  # flake8-pytest-style - code style for pytest
+  "C",   # Verifica a complexidade de código (inclui C901)
+  "B",   # flake8-bugbear - verifica code smells
+]
+
+[tool.ruff.format]
+preview = true
+quote-style = "single"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "machdeadline: Mark test related to machine deadline scenarios",
+    "pfssp: Mark test related to PFSSP scenarios",
+    "milp: Mark test related to MILP problems",
+    "milpnaive: Mark test related to naive MILP implementations",
+    "knapsack: Mark test related to knapsack problem implementations",
+    "solution: Mark test related to Solution class",
+    "problem: Mark test related to Problem class",
+    "node: Mark test related to Node class",
+    "colgen: Mark test related to Column Generation",
+    "gcol: Mark test related to the Graph Coloring module",
+    "searchlogger: Mark test related to the SearchLogger class"
+]
