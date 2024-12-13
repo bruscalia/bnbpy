@@ -1,7 +1,7 @@
 import copy
 from typing import List, Optional
 
-from bnbprob.pfssp.job import Job
+from bnbprob.pfssp.pypure.job import Job
 
 
 class BaseSequence:

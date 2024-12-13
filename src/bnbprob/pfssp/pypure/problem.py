@@ -1,8 +1,8 @@
 import logging
 from typing import List, Literal, Optional
 
-from bnbprob.pfssp.job import Job
-from bnbprob.pfssp.solution import Permutation
+from bnbprob.pfssp.pypure.job import Job
+from bnbprob.pfssp.pypure.solution import Permutation
 from bnbpy import Problem
 
 log = logging.getLogger(__name__)

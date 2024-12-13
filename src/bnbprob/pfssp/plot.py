@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import Colormap, ListedColormap
 
-from bnbprob.pfssp.job import Job
+from bnbprob.pfssp.pypure.job import Job
 
 MAX_LABEL = 10
 

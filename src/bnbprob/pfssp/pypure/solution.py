@@ -1,8 +1,8 @@
 import copy
 from typing import List, Optional, Tuple
 
-from bnbprob.pfssp.job import Job
-from bnbprob.pfssp.sequence import Sigma1, Sigma2
+from bnbprob.pfssp.pypure.job import Job
+from bnbprob.pfssp.pypure.sequence import Sigma1, Sigma2
 from bnbpy import Solution
 
 
