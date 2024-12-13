@@ -3,24 +3,42 @@
 
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport Job
+from bnbprob.pfssp.cython.job cimport CyJob
+
+
+cdef struct Sigma:
+    vector[CyJob] jobs
+    vector[int] C
+
+
+cdef void job_to_bottom(Sigma& sigma, CyJob& job)
+
+
+cdef void job_to_top(Sigma& sigma, CyJob& job)
+
+
+cpdef Sigma copy_sigma(Sigma& sigma)
 
 
 cdef class Sigma1:
     cdef public:
-        list[Job] jobs
+        vector[CyJob] jobs
         vector[int] C
 
-    cdef void add_job(Sigma1 self, Job job)
-    cdef Sigma1 copy(Sigma1 self)
-    cdef void _update_values(Sigma1 self, Job job)
+    cdef void add_job(Sigma1 self, CyJob job)
+
+    cpdef Sigma1 copy(Sigma1 self)
+
+    cdef void _update_values(Sigma1 self, CyJob job)
 
 
 cdef class Sigma2:
     cdef public:
-        list[Job] jobs
+        vector[CyJob] jobs
         vector[int] C
 
-    cdef void add_job(Sigma2 self, Job job)
-    cdef Sigma2 copy(Sigma2 self)
-    cdef void _update_values(Sigma2 self, Job job)
+    cdef void add_job(Sigma2 self, CyJob job)
+
+    cpdef Sigma2 copy(Sigma2 self)
+
+    cdef void _update_values(Sigma2 self, CyJob job)

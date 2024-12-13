@@ -14,7 +14,7 @@ class CallbackBnB(LazyBnB):
         new_sol = node.problem.local_search()
         if new_sol is not None:
             # General procedure in case is valid
-            if new_sol.is_feasible():
+            if new_sol.is_feasible() and new_sol.lb < node.solution.lb:
                 node.set_solution(new_sol)
                 node.check_feasible()
                 self.set_solution(node)
