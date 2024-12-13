@@ -169,6 +169,11 @@ class ColumnGenProblem(Problem):
         self.master = master
         self.pricing = pricing
 
+    def cleanup(self):
+        super().cleanup()
+        self.master = None
+        self.pricing = None
+
     def calc_bound(self):
         sol_master = self._calc_bound()
         return sol_master.cost

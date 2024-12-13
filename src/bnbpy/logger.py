@@ -3,7 +3,7 @@ import logging
 
 class SearchLogger:
     headers = ["Node", "Best Sol", "LB", "Gap", "Message"]
-    widths = [5, 10, 10, 7, 14]
+    widths = [7, 10, 10, 7, 14]
     delimiter = " | "
 
     def __init__(

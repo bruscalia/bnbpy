@@ -44,6 +44,19 @@ class Node:
             self.level = parent.level + 1
         self._sort_index = next(self._counter)
 
+    def __del__(self):
+        self.cleanup()
+
+    def cleanup(self):
+        if self.problem:
+            self.problem.cleanup()
+            self.problem = None
+        if self.children:
+            for child in self.children:
+                child.parent = None
+        if self.parent:
+            self.parent = None
+
     def __lt__(self, other: 'Node'):
         return self._sort_index > other._sort_index
 
@@ -61,7 +74,7 @@ class Node:
         problem attribute `lb`, which is referenced as a `Node` property.
         """
         self.problem.compute_bound(**options)
-        self.lb = self.problem.lb
+        self.lb = max(self.lb, self.problem.lb)
 
     def check_feasible(self):
         """Calls `problem` `check_feasible()` method"""

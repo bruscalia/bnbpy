@@ -1,8 +1,15 @@
 from bnbpy.node import Node
 from bnbpy.search import BranchAndBound
 
+RESTART = 10_000
+
 
 class LazyBnB(BranchAndBound):
+    def __init__(
+        self, rtol=0.0001, atol=0.0001, eval_node='in', save_tree=False
+    ):
+        super().__init__(rtol, atol, eval_node, save_tree)
+
     def post_eval_callback(self, node: Node):
         if node.lb < self.ub:
             node.problem.bound_upgrade()
@@ -10,6 +17,21 @@ class LazyBnB(BranchAndBound):
 
 
 class CallbackBnB(LazyBnB):
+
+    restart_freq: int
+    """Frequency in which restarts from best bound are called"""
+
+    def __init__(
+        self,
+        rtol=0.0001,
+        atol=0.0001,
+        eval_node='in',
+        save_tree=False,
+        restart_freq=RESTART,
+    ):
+        super().__init__(rtol, atol, eval_node, save_tree)
+        self.restart_freq = restart_freq
+
     def solution_callback(self, node: Node):
         new_sol = node.problem.local_search()
         if new_sol is not None:
@@ -19,22 +41,9 @@ class CallbackBnB(LazyBnB):
                 node.check_feasible()
                 self.set_solution(node)
 
-
-class ExpBnB(CallbackBnB):
-    def branch(self, node: Node):
-        super().branch(node)
-        if node.children:
-            for child in node.children:
-                child.parent = None
-        del node
-
-    def fathom(self, node: Node):
-        super().fathom(node)
-        if node.parent is not None:
-            node.parent.children.remove(node)
-            node.problem = None
-            del node
-
-    def solution_callback(self, node: Node):
-        if node.level > 0 or node.problem.constructive != 'neh':
-            return super().solution_callback(node)
+    def dequeue(self) -> Node:
+        if self.explored % self.restart_freq == 0:
+            pri, node = min(self.queue, key=lambda x: x[-1].lb)
+            self.queue.remove((pri, node))
+            return node
+        return super().dequeue()

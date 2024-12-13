@@ -8,12 +8,19 @@ from bnbpy.status import OptStatus
 
 class Problem(ABC):
     """Abstraction for an optimization problem"""
+
     solution: Solution
     """Solution of the (sub)problem (if any)"""
 
     def __init__(self) -> None:
         super().__init__()
         self.solution = Solution()
+
+    def __del__(self):
+        self.cleanup()
+
+    def cleanup(self):
+        self.solution = None
 
     @abstractmethod
     def calc_bound(self) -> Optional[Union[int, float]]:

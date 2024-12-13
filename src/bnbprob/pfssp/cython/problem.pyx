@@ -8,39 +8,10 @@ from bnbprob.pfssp.cython.heuristics cimport (
     quick_constructive as qc,
 )
 from bnbprob.pfssp.cython.permutation cimport Permutation
-from bnbpy import Problem, Solution
+from bnbprob.pfssp.cython.solution import FlowSolution
+from bnbpy import Problem
 
 log = logging.getLogger(__name__)
-
-
-class FlowSolution(Solution):
-
-    perm: Permutation
-
-    def __init__(self, perm: Permutation):
-        super().__init__(0)
-        self.perm = perm
-
-    @property
-    def free_jobs(self):
-        return self.perm.free_jobs
-
-    def calc_lb_1m(self):
-        return self.perm.calc_lb_1m()
-
-    def calc_lb_2m(self):
-        return self.perm.calc_lb_2m()
-
-    def lower_bound_1m(self):
-        return self.perm.lower_bound_1m()
-
-    def lower_bound_2m(self):
-        return self.perm.lower_bound_1m()
-
-    def copy(self):
-        other = copy.copy(self)
-        other.perm = self.perm.copy()
-        return other
 
 
 class PermFlowShop(Problem):

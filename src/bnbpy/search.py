@@ -53,6 +53,7 @@ class BranchAndBound:
         rtol: float = 1e-4,
         atol: float = 1e-4,
         eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False
     ) -> None:
         """Instantiate algoritm to solve problems via Branch & Bound
 
@@ -63,6 +64,13 @@ class BranchAndBound:
 
         atol : float, optional
             Absolute tolerance for termination, by default 1e-4
+
+        eval_node : Literal['in', 'out', 'both'], optional
+            Node evaluation strategy, by default 'out' (as deque)
+
+        save_tree : bool, optional
+            Either or not to save node relationships, by default False.
+            It can consume a lot of memory in large trees.
         """
         self.problem = None
         self.root = None
@@ -73,6 +81,7 @@ class BranchAndBound:
         self.explored = 0
         self.eval_in = self.eval_node in {'in', 'both'}
         self.eval_out = self.eval_node in {'out', 'both'}
+        self.save_tree = save_tree
         self.incumbent = None
         self.bound_node = None
 
@@ -226,6 +235,9 @@ class BranchAndBound:
                 self._enqueue_core(child)
         else:
             self.log_row('Cutoff')
+        if not self.save_tree:
+            node.cleanup()
+            del node
 
     def fathom(self, node: Node):  # noqa: PLR6301
         """Fathom node (by default is not deleted)
@@ -240,6 +252,9 @@ class BranchAndBound:
         """
         node.fathom()
         log.debug(f'Fathom: {node.lb}')
+        if not self.save_tree:
+            node.cleanup()
+            del node
 
     def pre_eval_callback(self, node: Node):
         """Abstraction for callbacks before node bound evaluation"""
