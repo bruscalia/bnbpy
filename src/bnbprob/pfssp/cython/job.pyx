@@ -1,56 +1,52 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
 
-from libcpp.vector cimport vector
 
-from typing import List
-
-
-cdef class PyJob:
+cdef class Job:
 
     def __init__(
         self,
-        CyJob job,
+        int j,
+        list[int] p not None,
+        list[int] r not None,
+        list[int] q not None,
+        list[list[int]] lat not None,
+        int slope,
+        int T
     ):
-        self.job = job
+        self.j = j
+        self.p = p
+        self.r = r
+        self.q = q
+        self.lat = lat
+        self.slope = slope
+        self.T = T
 
-    @property
-    def j(self) -> int:
-        return self.job.j
-
-    @property
-    def p(self) -> List[int]:
-        return list(self.job.p)
-
-    @property
-    def r(self) -> List[int]:
-        return list(self.job.r)
-
-    @property
-    def q(self) -> List[int]:
-        return list(self.job.q)
-
-    @property
-    def lat(self) -> List[List[int]]:
-        return [[i for i in l] for l in self.job.lat]
+    cpdef Job copy(Job self) except *:
+        return Job(
+            self.j,
+            self.p,
+            self.r.copy(),
+            self.q.copy(),
+            self.lat,
+            self.slope,
+            self.T
+        )
 
 
-cdef CyJob start_job(int& j, vector[int]& p):
+cpdef Job start_job(int j, list[int] p) except *:
     cdef:
-        int m, m1, m2, T, sum_p, k, slope
-        vector[int] r, q
-        vector[vector[int]] lat
+        int i, m, m1, m2, T, sum_p, k, slope
+        list[int] r, q
+        list[list[int]] lat
 
-    m = <int>p.size()
+    m = <int>len(p)
 
-    r = vector[int](m, 0)
-    q = vector[int](m, 0)
+    r = [0] * m
+    q = [0] * m
 
     # Resize `lat` to m x m
-    lat = vector[vector[int]]()
-    lat.resize(m)
-    for m1 in range(m):
-        lat[m1].resize(m)
+    lat = [[0 for _ in range(m)] for _ in range(m)]
 
     # Compute sums
     T = 0
@@ -62,24 +58,10 @@ cdef CyJob start_job(int& j, vector[int]& p):
                 for i in range(m2 + 1, m1):
                     sum_p += p[i]
                 lat[m1][m2] = sum_p
-            else:
-                lat[m1][m2] = 0  # Default to 0 if range is invalid
 
     m += 1
     slope = 0
     for k in range(1, m):
         slope += (k - (m + 1) / 2) * p[k - 1]
 
-    return CyJob(j, p, r, q, lat, slope, T)
-
-
-cdef CyJob copy_job(CyJob& job):
-    return CyJob(
-        job.j,
-        job.p,
-        vector[int](job.r),
-        vector[int](job.q),
-        job.lat,
-        job.slope,
-        job.T
-    )
+    return Job(j, p, r, q, lat, slope, T)

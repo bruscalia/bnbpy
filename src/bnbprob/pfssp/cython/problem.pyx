@@ -1,14 +1,46 @@
-# distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
-
-from bnbprob.pfssp.cython.solution cimport CyPermutation
-
+import copy
 import logging
 from typing import List, Literal, Optional
 
-from bnbpy import Problem
+from bnbprob.pfssp.cython.heuristics cimport (
+    local_search as ls,
+    neh_constructive as neh,
+    quick_constructive as qc,
+)
+from bnbprob.pfssp.cython.permutation cimport Permutation
+from bnbpy import Problem, Solution
 
 log = logging.getLogger(__name__)
+
+
+class FlowSolution(Solution):
+
+    perm: Permutation
+
+    def __init__(self, perm: Permutation):
+        super().__init__(0)
+        self.perm = perm
+
+    @property
+    def free_jobs(self):
+        return self.perm.free_jobs
+
+    def calc_lb_1m(self):
+        return self.perm.calc_lb_1m()
+
+    def calc_lb_2m(self):
+        return self.perm.calc_lb_2m()
+
+    def lower_bound_1m(self):
+        return self.perm.lower_bound_1m()
+
+    def lower_bound_2m(self):
+        return self.perm.lower_bound_1m()
+
+    def copy(self):
+        other = copy.copy(self)
+        other.perm = self.perm.copy()
+        return other
 
 
 class PermFlowShop(Problem):
@@ -36,19 +68,20 @@ class PermFlowShop(Problem):
     Journal of the Operational Research Society, 16(1), 101-107
     """
 
-    solution: CyPermutation
+    solution: FlowSolution
+    constructive: Literal['neh', 'quick']
 
     def __init__(
         self,
-        solution: CyPermutation,
+        solution: FlowSolution,
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
         """Permutation Flow-Shop Problem
 
         Parameters
         ----------
-        solution : CyPermutation
-            Permutation solution
+        solution : FlowSolution
+            Solution to instance
 
         constructive: Literal['neh', 'quick']
             Constructive heuristic, by default 'neh'
@@ -59,7 +92,9 @@ class PermFlowShop(Problem):
 
     @classmethod
     def from_p(
-        cls, p: List[List[int]], constructive: Literal['neh', 'quick'] = 'neh'
+        cls,
+        p: List[List[int]],
+        constructive: Literal['neh', 'quick'] = 'neh'
     ) -> 'PermFlowShop':
         """Instantiate problem based on processing times only
 
@@ -76,13 +111,14 @@ class PermFlowShop(Problem):
         PermFlowShop
             Instance of the problem
         """
-        permutation = CyPermutation.from_p(p)
+        perm = Permutation.from_p(p)
+        solution = FlowSolution(perm)
         return cls(
-            permutation,
+            solution,
             constructive=constructive,
         )
 
-    def warmstart(self) -> CyPermutation:
+    def warmstart(self) -> FlowSolution:
         """
         Computes an initial feasible solution based on the method of choice.
 
@@ -92,7 +128,7 @@ class PermFlowShop(Problem):
 
         Returns
         -------
-        CyPermutation
+        FlowSolution
             Solution to the problem
 
         References
@@ -107,16 +143,16 @@ class PermFlowShop(Problem):
         Journal of the Operational Research Society, 16(1), 101-107
         """
         if self.constructive == 'neh':
-            return self.solution.neh_constructive()
-        return self.solution.quick_constructive()
+            return self.neh_constructive()
+        return self.quick_constructive()
 
-    def quick_constructive(self) -> CyPermutation:
+    def quick_constructive(self) -> FlowSolution:
         """Computes a feasible solution based on the sorting
         strategy by Palmer (1965).
 
         Returns
         -------
-        CyPermutation
+        FlowSolution
             Solution to the problem
 
         References
@@ -125,16 +161,17 @@ class PermFlowShop(Problem):
         in the minimum total time—a quick method of obtaining a near optimum.
         Journal of the Operational Research Society, 16(1), 101-107
         """
-        return self.solution.quick_constructive()
+        perm = qc(self.solution.perm)
+        return FlowSolution(perm)
 
-    def neh_constructive(self) -> CyPermutation:
+    def neh_constructive(self) -> FlowSolution:
         """Constructive heuristic of Nawaz et al. (1983) based
         on best-insertion of jobs sorted according to total processing
         time in descending order.
 
         Returns
         -------
-        CyPermutation
+        FlowSolution
             Solution to the problem
 
         Reference
@@ -144,49 +181,50 @@ class PermFlowShop(Problem):
         n-job flow-shop sequencing problem.
         Omega, 11(1), 91-95.
         """
-        return self.solution.neh_constructive()
+        perm = neh(self.solution.perm)
+        return FlowSolution(perm)
 
-    def local_search(self) -> Optional[CyPermutation]:
+    def local_search(self) -> Optional[FlowSolution]:
         """Local search heuristic from a current solution based on insertion
 
         Returns
         -------
-        Optional[CyPermutation]
+        Optional[FlowSolution]
             New solution (best improvement) if exists
         """
         log.debug('Starting Heuristic')
-
-        # A new base solution following the same sequence of the current
-        return self.solution.local_search()
+        lb = self.solution.lb
+        perm = ls(self.solution.perm)
+        sol_alt = FlowSolution(perm)
+        new_cost = sol_alt.perm.calc_bound()
+        if new_cost < lb:
+            return sol_alt
+        return None
 
     def calc_bound(self) -> Optional[int]:
-        return self.solution.calc_bound()
+        return self.solution.perm.calc_bound()
 
     def is_feasible(self):
-        return self.solution.is_feasible()
+        return self.solution.perm.is_feasible()
 
     def branch(self) -> Optional[List['PermFlowShop']]:
         # Get fixed and unfixed job lists to create new solution
-        cdef:
-            int J
-        J = self.solution.n_free
         children = [
-            self._child_push(j) for j in range(J)
+            self._child_push(j)
+            for j in range(len(self.solution.free_jobs))
         ]
         return children
 
     def _child_push(self, j: int):
-        child = self.copy()
-        child.solution.push_job(j)
+        child = self.copy(deep=False)
+        child.solution = self.solution.copy()
+        child.solution.perm.push_job(j)
         return child
 
     def bound_upgrade(self):
-        lb5 = self.solution.calc_lb_2m()
+        lb5 = self.solution.perm.calc_lb_2m()
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
-
-    def copy(self):
-        return PermFlowShop(self.solution.copy(), self.constructive)
 
 
 class PermFlowShopLazy(PermFlowShop):
@@ -198,12 +236,4 @@ class PermFlowShopLazy(PermFlowShop):
     """
 
     def calc_bound(self) -> int | None:
-        return self.solution.calc_lb_1m()
-
-    def _child_push(self, j: int):
-        child = self.copy()
-        child.solution.push_job(j)
-        return child
-
-    def copy(self):
-        return PermFlowShopLazy(self.solution.copy(), self.constructive)
+        return self.solution.perm.calc_lb_1m()

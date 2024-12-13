@@ -32,6 +32,7 @@ class ExpBnB(CallbackBnB):
         super().fathom(node)
         if node.parent is not None:
             node.parent.children.remove(node)
+            node.problem = None
             del node
 
     def solution_callback(self, node: Node):
