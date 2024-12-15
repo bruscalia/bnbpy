@@ -8,7 +8,7 @@ cdef class Sigma:
 
     cdef public:
         list[Job] jobs
-        list[int] C
+        int[:] C
         int m
 
     cpdef void job_to_bottom(Sigma self, Job job) except *

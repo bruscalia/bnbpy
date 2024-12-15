@@ -1,16 +1,21 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
 
+from cpython cimport array
+import array
+
+import numpy as np
+
 
 cdef class Job:
 
     def __init__(
         self,
         int j,
-        list[int] p not None,
-        list[int] r not None,
-        list[int] q not None,
-        list[list[int]] lat not None,
+        int[:] p,
+        int[:] r,
+        int[:] q,
+        int[:, :] lat,
         int slope,
         int T
     ):
@@ -26,15 +31,15 @@ cdef class Job:
         return Job(
             self.j,
             self.p,
-            self.r.copy(),
-            self.q.copy(),
+            array.array('i', self.r)[:],
+            array.array('i', self.q)[:],
             self.lat,
             self.slope,
             self.T
         )
 
 
-cpdef Job start_job(int j, list[int] p) except *:
+cpdef Job start_job(int j, int[:] p) except *:
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
         list[int] r, q
@@ -64,4 +69,12 @@ cpdef Job start_job(int j, list[int] p) except *:
     for k in range(1, m):
         slope += (k - (m + 1) / 2) * p[k - 1]
 
-    return Job(j, p, r, q, lat, slope, T)
+    return Job(
+        j,
+        p,
+        array.array('i', r)[:],
+        array.array('i', q)[:],
+        np.array(lat, dtype=np.intc)[:, :],
+        slope,
+        T
+    )

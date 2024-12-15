@@ -3,6 +3,9 @@
 
 from libcpp cimport bool
 
+from cpython cimport array
+import array
+
 from bnbprob.pfssp.cython.job cimport Job, start_job
 from bnbprob.pfssp.cython.sequence cimport Sigma
 from bnbprob.pfssp.cython.permutation cimport Permutation
@@ -70,8 +73,8 @@ cpdef Permutation neh_constructive(Permutation perm):
             s_alt = Permutation(
                 sol.m,
                 sol.get_sequence_copy(),
-                Sigma([], [0] * sol.m),
-                Sigma([], [0] * sol.m),
+                Sigma([], array.array('i', [0] * sol.m)[:]),
+                Sigma([], array.array('i', [0] * sol.m)[:]),
                 0
             )
             job = perm.free_jobs[j].copy()
@@ -104,8 +107,8 @@ cpdef Permutation local_search(Permutation perm):
     sol_base = Permutation(
         perm.m,
         perm.get_sequence_copy(),
-        Sigma([], [0] * perm.m),
-        Sigma([], [0] * perm.m),
+        Sigma([], array.array('i', [0] * perm.m)[:]),
+        Sigma([], array.array('i', [0] * perm.m)[:]),
         0
     )
 
@@ -115,8 +118,8 @@ cpdef Permutation local_search(Permutation perm):
     best_move = Permutation(
         perm.m,
         perm.get_sequence_copy(),
-        Sigma([], [0] * perm.m),
-        Sigma([], [0] * perm.m),
+        Sigma([], array.array('i', [0] * perm.m)[:]),
+        Sigma([], array.array('i', [0] * perm.m)[:]),
         0
     )
     for i in range(len(best_move.free_jobs)):

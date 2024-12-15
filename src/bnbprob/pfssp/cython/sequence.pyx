@@ -3,10 +3,14 @@
 
 from bnbprob.pfssp.cython.job cimport Job
 
+from cpython cimport array
+import array
+import copy
+
 
 cdef class Sigma:
 
-    def __init__(self, list[Job] jobs, list[int] C):
+    def __init__(self, list[Job] jobs, int[:] C):
         self.jobs = jobs
         self.C = C
         self.m = len(self.C)
@@ -41,4 +45,4 @@ cdef class Sigma:
             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
 
     cpdef Sigma copy(Sigma self) except *:
-        return Sigma(self.jobs.copy(), self.C.copy())
+        return Sigma(self.jobs.copy(), array.array('i', self.C)[:])

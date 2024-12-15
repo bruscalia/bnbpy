@@ -4,6 +4,9 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
+from cpython cimport array
+import array
+
 from bnbprob.pfssp.cython.job cimport Job, start_job
 from bnbprob.pfssp.cython.sequence cimport Sigma
 
@@ -39,10 +42,10 @@ cdef class Permutation:
             Sigma sigma2
 
         m = <int>len(p[0])
-        jobs = [start_job(j, p[j]) for j in range(len(p))]
+        jobs = [start_job(j, array.array('i', p[j])[:]) for j in range(len(p))]
 
-        sigma1 = Sigma([], [0] * m)
-        sigma2 = Sigma([], [0] * m)
+        sigma1 = Sigma([], array.array('i', [0] * m)[:])
+        sigma2 = Sigma([], array.array('i', [0] * m)[:])
 
         return cls(m, jobs, sigma1, sigma2, 0)
 
@@ -158,7 +161,7 @@ cdef class Permutation:
 
         seq = self.get_sequence()
         for j in range(len(seq)):
-            seq[j].r = [0] * self.m
+            seq[j].r = array.array('i', [0] * self.m)[:]
 
         seq[0].r[0] = 0
         for m in range(1, self.m):
