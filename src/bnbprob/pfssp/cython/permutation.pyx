@@ -1,11 +1,10 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from cpython cimport array
-import array
+import numpy as np
 
 from bnbprob.pfssp.cython.job cimport Job, start_job
 from bnbprob.pfssp.cython.sequence cimport Sigma
@@ -42,10 +41,13 @@ cdef class Permutation:
             Sigma sigma2
 
         m = <int>len(p[0])
-        jobs = [start_job(j, array.array('i', p[j])[:]) for j in range(len(p))]
+        jobs = [
+            start_job(j, np.array(p[j], dtype='i')[:])
+            for j in range(len(p))
+        ]
 
-        sigma1 = Sigma([], array.array('i', [0] * m)[:])
-        sigma2 = Sigma([], array.array('i', [0] * m)[:])
+        sigma1 = Sigma([], np.zeros(m, dtype='i')[:])
+        sigma2 = Sigma([], np.zeros(m, dtype='i')[:])
 
         return cls(m, jobs, sigma1, sigma2, 0)
 
@@ -161,7 +163,7 @@ cdef class Permutation:
 
         seq = self.get_sequence()
         for j in range(len(seq)):
-            seq[j].r = array.array('i', [0] * self.m)[:]
+            seq[j].r = np.zeros(self.m, dtype='i')[:]
 
         seq[0].r[0] = 0
         for m in range(1, self.m):

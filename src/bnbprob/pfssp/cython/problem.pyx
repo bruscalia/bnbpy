@@ -1,4 +1,8 @@
-import copy
+# distutils: language = c++
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+
+from libcpp cimport bool
+
 import logging
 from typing import List, Literal, Optional
 
@@ -9,57 +13,47 @@ from bnbprob.pfssp.cython.heuristics cimport (
 )
 from bnbprob.pfssp.cython.permutation cimport Permutation
 from bnbprob.pfssp.cython.solution import FlowSolution
-from bnbpy import Problem
+from bnbpy.status import OptStatus
 
 log = logging.getLogger(__name__)
 
 
-class PermFlowShop(Problem):
-    """Class to represent a permutation flow-shop scheduling problem
-    with lower bounds computed by the max of a single machine and
-    a two machine relaxations.
-
-    The bounds for single and two-machine problems are described
-    by Potts (1980), also implemented by Ladhari & Haouari (2005),
-    therein described as 'LB1' and 'LB5'.
-
-    The warmstart strategy is proposed by Palmer (1965).
-
-    References
-    ----------
-    Ladhari, T., & Haouari, M. (2005). A computational study of
-    the permutation flow shop problem based on a tight lower bound.
-    Computers & Operations Research, 32(7), 1831-1847.
-
-    Potts, C. N. (1980). An adaptive branching rule for the permutation
-    flow-shop problem. European Journal of Operational Research, 5(1), 19-25.
-
-    Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
-    in the minimum total time—a quick method of obtaining a near optimum.
-    Journal of the Operational Research Society, 16(1), 101-107
-    """
-
-    solution: FlowSolution
-    constructive: Literal['neh', 'quick']
+cdef class PermFlowShop:
 
     def __init__(
         self,
         solution: FlowSolution,
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
-        """Permutation Flow-Shop Problem
-
-        Parameters
-        ----------
-        solution : FlowSolution
-            Solution to instance
-
-        constructive: Literal['neh', 'quick']
-            Constructive heuristic, by default 'neh'
-        """
-        super().__init__()
         self.solution = solution
         self.constructive = constructive
+
+    def __del__(self):
+        self.cleanup()
+
+    cpdef void cleanup(PermFlowShop self):
+        self.solution = None
+
+    @property
+    def lb(self):
+        return self.solution.lb
+
+    cpdef void compute_bound(PermFlowShop self):
+        lb = self.calc_bound()
+        self.solution.set_lb(lb)
+
+    cpdef bool check_feasible(PermFlowShop self):
+        feas = self.is_feasible()
+        if feas:
+            self.solution.set_feasible()
+        else:
+            self.solution.set_infeasible()
+        return feas
+
+    cpdef void set_solution(PermFlowShop self, object solution):
+        self.solution = solution
+        if self.solution.status == OptStatus.NO_SOLUTION:
+            self.compute_bound()
 
     @classmethod
     def from_p(
@@ -172,21 +166,20 @@ class PermFlowShop(Problem):
             return sol_alt
         return None
 
-    def calc_bound(self) -> Optional[int]:
+    cpdef int calc_bound(PermFlowShop self):
         return self.solution.perm.calc_bound()
 
-    def is_feasible(self):
+    cpdef bool is_feasible(PermFlowShop self):
         return self.solution.perm.is_feasible()
 
-    def branch(self) -> Optional[List['PermFlowShop']]:
+    cpdef list[PermFlowShop] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
-        children = [
+        return [
             self._child_push(j)
             for j in range(len(self.solution.free_jobs))
         ]
-        return children
 
-    def _child_push(self, j: int):
+    cdef PermFlowShop _child_push(PermFlowShop self, int j):
         child = self.copy()
         child.solution.push_job(j)
         return child
@@ -196,19 +189,13 @@ class PermFlowShop(Problem):
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 
-    def copy(self):
+    cpdef PermFlowShop copy(PermFlowShop self):
         child_solution = self.solution.copy()
         child = type(self)(child_solution, self.constructive)
         return child
 
 
-class PermFlowShopLazy(PermFlowShop):
-    """
-    Class to represent a permutation flow-shop scheduling problem
-    with lower bounds computed by a single machine relaxation
-    in the first evaluation and a combination of single machine
-    and two-machine in the second.
-    """
+cdef class PermFlowShopLazy(PermFlowShop):
 
-    def calc_bound(self) -> int | None:
+    cpdef int calc_bound(PermFlowShopLazy self):
         return self.solution.perm.calc_lb_1m()

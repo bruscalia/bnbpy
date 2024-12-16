@@ -3,10 +3,6 @@
 
 from bnbprob.pfssp.cython.job cimport Job
 
-from cpython cimport array
-import array
-import copy
-
 
 cdef class Sigma:
 

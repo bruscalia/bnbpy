@@ -1662,7 +1662,7 @@ struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 
-/* "bnbprob/pfssp/cython/job.pxd":7
+/* "bnbprob/pfssp/cython/job.pxd":5
  * 
  * 
  * cdef class Job:             # <<<<<<<<<<<<<<
@@ -1793,7 +1793,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "bnbprob/pfssp/cython/job.pxd":7
+/* "bnbprob/pfssp/cython/job.pxd":5
  * 
  * 
  * cdef class Job:             # <<<<<<<<<<<<<<
@@ -21398,10 +21398,10 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 7, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "Job", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job) __PYX_ERR(2, 7, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job)) __PYX_ERR(2, 7, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "Job", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job) __PYX_ERR(2, 5, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job)) __PYX_ERR(2, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -22238,7 +22238,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "bnbprob/pfssp/cython/solution.pyx":4
- * # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
+ * # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  * 
  * import copy             # <<<<<<<<<<<<<<
  * 
@@ -22472,7 +22472,7 @@ if (!__Pyx_RefNanny) {
 
   /* "bnbprob/pfssp/cython/solution.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
- * # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
+ * # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  * 
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)

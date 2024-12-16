@@ -1,8 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
-
-from cpython cimport array
-import array
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 import numpy as np
 
@@ -27,7 +24,7 @@ cdef class Job:
         self.slope = slope
         self.T = T
 
-    cpdef Job copy(Job self) except *:
+    cpdef Job copy(Job self):
         return Job(
             self.j,
             self.p,
@@ -39,7 +36,7 @@ cdef class Job:
         )
 
 
-cpdef Job start_job(int j, int[:] p) except *:
+cdef Job start_job(int j, int[:] p):
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
         int[:] r, q
@@ -47,11 +44,11 @@ cpdef Job start_job(int j, int[:] p) except *:
 
     m = <int>len(p)
 
-    r = np.zeros(m, dtype=np.intc)[:]
-    q = np.zeros(m, dtype=np.intc)[:]
+    r = np.zeros(m, dtype='i')[:]
+    q = np.zeros(m, dtype='i')[:]
 
     # Resize `lat` to m x m
-    lat = np.zeros((m, m), dtype=np.intc)[:, :]
+    lat = np.zeros((m, m), dtype='i')[:, :]
 
     # Compute sums
     T = 0

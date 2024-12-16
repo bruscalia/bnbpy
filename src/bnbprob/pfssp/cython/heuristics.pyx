@@ -3,8 +3,7 @@
 
 from libcpp cimport bool
 
-from cpython cimport array
-import array
+import numpy as np
 
 from bnbprob.pfssp.cython.job cimport Job, start_job
 from bnbprob.pfssp.cython.sequence cimport Sigma
@@ -31,6 +30,7 @@ cpdef Permutation quick_constructive(Permutation perm):
 cpdef Permutation neh_constructive(Permutation perm):
     cdef:
         int c1, c2, j, i, k, best_cost, seq_size, cost_alt
+        int[:] C_empty
         Permutation s1, s2, sol, s_alt
         Job job, job_i
         list[Job] vec
@@ -63,6 +63,9 @@ cpdef Permutation neh_constructive(Permutation perm):
     else:
         sol = s2
 
+    # Creates first C-empty instance
+    C_empty = np.zeros(sol.m, dtype='i')[:]
+
     # Find best insert for every other job
     seq_size = 2
     for j in range(2, len(perm.free_jobs)):
@@ -73,8 +76,8 @@ cpdef Permutation neh_constructive(Permutation perm):
             s_alt = Permutation(
                 sol.m,
                 sol.get_sequence_copy(),
-                Sigma([], array.array('i', [0] * sol.m)[:]),
-                Sigma([], array.array('i', [0] * sol.m)[:]),
+                Sigma([], C_empty.copy()),
+                Sigma([], C_empty.copy()),
                 0
             )
             job = perm.free_jobs[j].copy()
@@ -97,18 +100,22 @@ cpdef Permutation local_search(Permutation perm):
     cdef:
         bool solved
         int i, j, k, best_cost, new_cost
+        int[:] C_empty
         Permutation sol_base, best_move
         Job job
 
     # Solved will only be updated in case a good solution is found
     solved = False
 
+    # Creates first C-empty instance
+    C_empty = np.zeros(perm.m, dtype='i')[:]
+
     # A new base solution following the same sequence of the current
     sol_base = Permutation(
         perm.m,
         perm.get_sequence_copy(),
-        Sigma([], array.array('i', [0] * perm.m)[:]),
-        Sigma([], array.array('i', [0] * perm.m)[:]),
+        Sigma([], C_empty.copy()),
+        Sigma([], C_empty.copy()),
         0
     )
 
@@ -118,8 +125,8 @@ cpdef Permutation local_search(Permutation perm):
     best_move = Permutation(
         perm.m,
         perm.get_sequence_copy(),
-        Sigma([], array.array('i', [0] * perm.m)[:]),
-        Sigma([], array.array('i', [0] * perm.m)[:]),
+        Sigma([], C_empty.copy()),
+        Sigma([], C_empty.copy()),
         0
     )
     for i in range(len(best_move.free_jobs)):

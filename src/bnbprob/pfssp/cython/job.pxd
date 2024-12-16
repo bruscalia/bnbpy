@@ -1,7 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
-
-from array import array
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 
 cdef class Job:
@@ -15,7 +13,7 @@ cdef class Job:
         int slope
         int T
 
-    cpdef Job copy(Job self) except *
+    cpdef Job copy(Job self)
 
 
-cpdef Job start_job(int j, int[:] p) except *
+cdef Job start_job(int j, int[:] p)
