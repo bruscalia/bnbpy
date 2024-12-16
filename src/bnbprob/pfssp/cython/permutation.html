@@ -1896,13 +1896,13 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_12
     goto __pyx_L3;
   }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">092</span>:             self.sigma1.job_to_bottom(job)</pre>
-<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_self-&gt;sigma1, __pyx_v_job, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_self-&gt;sigma1, __pyx_v_job);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)</span>
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">093</span>:             self.front_updates()</pre>
 <pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;front_updates(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)</span>
 </pre><pre class="cython line score-0">&#xA0;<span class="">094</span>:         else:</pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">095</span>:             self.sigma2.job_to_top(job)</pre>
 <pre class='cython code score-0 '>  /*else*/ {
-    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma2-&gt;__pyx_vtab)-&gt;job_to_top(__pyx_v_self-&gt;sigma2, __pyx_v_job, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)</span>
+    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma2-&gt;__pyx_vtab)-&gt;job_to_top(__pyx_v_self-&gt;sigma2, __pyx_v_job);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)</span>
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">096</span>:             self.back_updates()</pre>
 <pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;back_updates(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)</span>
   }
@@ -3134,8 +3134,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_22
       <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
 </pre><pre class="cython line score-0">&#xA0;<span class="">176</span>:                 )</pre>
 <pre class="cython line score-0">&#xA0;<span class="">177</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">178</span>:     cpdef int lower_bound_1m(Permutation self):</pre>
-<pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_25lower_bound_1m(PyObject *__pyx_v_self, 
+<pre class="cython line score-70" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">178</span>:     cpdef int lower_bound_1m(Permutation self):</pre>
+<pre class='cython code score-70 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_25lower_bound_1m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3143,13 +3143,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
 static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bound_1m(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_self, int __pyx_skip_dispatch) {
-  int __pyx_v_j;
   int __pyx_v_k;
   int __pyx_v_min_r;
   int __pyx_v_min_q;
   int __pyx_v_sum_p;
   int __pyx_v_max_value;
   int __pyx_v_temp_value;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_v_job = 0;
   int __pyx_r;
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
@@ -3214,6 +3214,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
   <span class='pyx_c_api'>__Pyx_AddTraceback</span>("bnbprob.pfssp.cython.permutation.Permutation.lower_bound_1m", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_v_job);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
@@ -3288,138 +3289,94 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_24
 /* … */
   __pyx_codeobj__35 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_lower_bound_1m, 178, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 178, __pyx_L1_error)</span>
 </pre><pre class="cython line score-0">&#xA0;<span class="">179</span>:         cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">180</span>:             int j, k, min_r, min_q, sum_p, max_value, temp_value</pre>
-<pre class="cython line score-0">&#xA0;<span class="">181</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">182</span>:         max_value = 0</pre>
+<pre class="cython line score-0">&#xA0;<span class="">180</span>:             int k, min_r, min_q, sum_p, max_value, temp_value</pre>
+<pre class="cython line score-0">&#xA0;<span class="">181</span>:             Job job</pre>
+<pre class="cython line score-0">&#xA0;<span class="">182</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">183</span>:         max_value = 0</pre>
 <pre class='cython code score-0 '>  __pyx_v_max_value = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">183</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">184</span>:         for k in range(self.m):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">184</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">185</span>:         for k in range(self.m):</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = __pyx_v_self-&gt;m;
   __pyx_t_7 = __pyx_t_6;
   for (__pyx_t_8 = 0; __pyx_t_8 &lt; __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_k = __pyx_t_8;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">185</span>:             min_r = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">186</span>:             min_r = LARGE_INT</pre>
 <pre class='cython code score-0 '>    __pyx_v_min_r = __pyx_v_7bnbprob_5pfssp_6cython_11permutation_LARGE_INT;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">186</span>:             min_q = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">187</span>:             min_q = LARGE_INT</pre>
 <pre class='cython code score-0 '>    __pyx_v_min_q = __pyx_v_7bnbprob_5pfssp_6cython_11permutation_LARGE_INT;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">187</span>:             sum_p = 0</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">188</span>:             sum_p = 0</pre>
 <pre class='cython code score-0 '>    __pyx_v_sum_p = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">188</span>: </pre>
-<pre class="cython line score-9" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">189</span>:             for j in range(len(self.free_jobs)):</pre>
-<pre class='cython code score-9 '>    __pyx_t_1 = __pyx_v_self-&gt;free_jobs;
-    <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-    if (unlikely(__pyx_t_1 == Py_None)) {
-      <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      <span class='error_goto'>__PYX_ERR(0, 189, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">189</span>: </pre>
+<pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">190</span>:             for job in self.free_jobs:</pre>
+<pre class='cython code score-16 '>    if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
+      <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not iterable");
+      <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
     }
-    __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 189, __pyx_L1_error)</span>
+    __pyx_t_1 = __pyx_v_self-&gt;free_jobs; <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
+    __pyx_t_9 = 0;
+    for (;;) {
+      {
+        Py_ssize_t __pyx_temp = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_t_1);
+        #if !CYTHON_ASSUME_SAFE_MACROS
+        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
+        #endif
+        if (__pyx_t_9 &gt;= __pyx_temp) break;
+      }
+      #if CYTHON_ASSUME_SAFE_MACROS &amp;&amp; !CYTHON_AVOID_BORROWED_REFS
+      __pyx_t_2 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_1, __pyx_t_9); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_2); __pyx_t_9++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
+      #else
+      __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_1, __pyx_t_9); __pyx_t_9++;<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)</span>
+      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
+      #endif
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
+      <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_2));
+      __pyx_t_2 = 0;
+/* … */
+    }
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 &lt; __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_j = __pyx_t_11;
-</pre><pre class="cython line score-23" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">190</span>:                 if self.free_jobs[j].r[k] &lt; min_r:</pre>
-<pre class='cython code score-23 '>      if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
-        <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
-      }
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_self-&gt;free_jobs, __pyx_v_j), __pyx_n_s_r);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-      __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_t_1, __pyx_v_k, int, 1, __Pyx_PyInt_From_int, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_min_r);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-      __pyx_t_3 = <span class='py_c_api'>PyObject_RichCompare</span>(__pyx_t_2, __pyx_t_1, Py_LT); <span class='refnanny'>__Pyx_XGOTREF</span>(__pyx_t_3);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 190, __pyx_L1_error)</span>
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely((__pyx_t_12 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 190, __pyx_L1_error)</span>
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-      if (__pyx_t_12) {
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">191</span>:                 if job.r[k] &lt; min_r:</pre>
+<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 191, __pyx_L1_error)</span>}
+      __pyx_t_10 = __pyx_v_k;
+      __pyx_t_11 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;r.data + __pyx_t_10 * __pyx_v_job-&gt;r.strides[0]) ))) &lt; __pyx_v_min_r);
+      if (__pyx_t_11) {
 /* … */
       }
-</pre><pre class="cython line score-19" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">191</span>:                     min_r = self.free_jobs[j].r[k]</pre>
-<pre class='cython code score-19 '>        if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
-          <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          <span class='error_goto'>__PYX_ERR(0, 191, __pyx_L1_error)</span>
-        }
-        __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_self-&gt;free_jobs, __pyx_v_j), __pyx_n_s_r);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 191, __pyx_L1_error)</span>
-        <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
-        __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_t_3, __pyx_v_k, int, 1, __Pyx_PyInt_From_int, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)</span>
-        <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-        <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_13 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_1); if (unlikely((__pyx_t_13 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 191, __pyx_L1_error)</span>
-        <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_v_min_r = __pyx_t_13;
-</pre><pre class="cython line score-23" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">192</span>:                 if self.free_jobs[j].q[k] &lt; min_q:</pre>
-<pre class='cython code score-23 '>      if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
-        <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        <span class='error_goto'>__PYX_ERR(0, 192, __pyx_L1_error)</span>
-      }
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_self-&gt;free_jobs, __pyx_v_j), __pyx_n_s_q);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-      __pyx_t_3 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_t_1, __pyx_v_k, int, 1, __Pyx_PyInt_From_int, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_min_q);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-      __pyx_t_2 = <span class='py_c_api'>PyObject_RichCompare</span>(__pyx_t_3, __pyx_t_1, Py_LT); <span class='refnanny'>__Pyx_XGOTREF</span>(__pyx_t_2);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)</span>
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_2); if (unlikely((__pyx_t_12 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 192, __pyx_L1_error)</span>
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-      if (__pyx_t_12) {
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">192</span>:                     min_r = job.r[k]</pre>
+<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 192, __pyx_L1_error)</span>}
+        __pyx_t_10 = __pyx_v_k;
+        __pyx_v_min_r = (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;r.data + __pyx_t_10 * __pyx_v_job-&gt;r.strides[0]) )));
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">193</span>:                 if job.q[k] &lt; min_q:</pre>
+<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 193, __pyx_L1_error)</span>}
+      __pyx_t_10 = __pyx_v_k;
+      __pyx_t_11 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;q.data + __pyx_t_10 * __pyx_v_job-&gt;q.strides[0]) ))) &lt; __pyx_v_min_q);
+      if (__pyx_t_11) {
 /* … */
       }
-</pre><pre class="cython line score-19" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">193</span>:                     min_q = self.free_jobs[j].q[k]</pre>
-<pre class='cython code score-19 '>        if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
-          <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          <span class='error_goto'>__PYX_ERR(0, 193, __pyx_L1_error)</span>
-        }
-        __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_self-&gt;free_jobs, __pyx_v_j), __pyx_n_s_q);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)</span>
-        <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-        __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_t_2, __pyx_v_k, int, 1, __Pyx_PyInt_From_int, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)</span>
-        <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-        <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_13 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_1); if (unlikely((__pyx_t_13 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 193, __pyx_L1_error)</span>
-        <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_v_min_q = __pyx_t_13;
-</pre><pre class="cython line score-28" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">194</span>:                 sum_p += self.free_jobs[j].p[k]</pre>
-<pre class='cython code score-28 '>      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_sum_p);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-      if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
-        <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        <span class='error_goto'>__PYX_ERR(0, 194, __pyx_L1_error)</span>
-      }
-      __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_self-&gt;free_jobs, __pyx_v_j), __pyx_n_s_p);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-      __pyx_t_3 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_t_2, __pyx_v_k, int, 1, __Pyx_PyInt_From_int, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = <span class='py_c_api'>PyNumber_InPlaceAdd</span>(__pyx_t_1, __pyx_t_3);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)</span>
-      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_13 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_2); if (unlikely((__pyx_t_13 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 194, __pyx_L1_error)</span>
-      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_v_sum_p = __pyx_t_13;
-    }
-</pre><pre class="cython line score-0">&#xA0;<span class="">195</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">196</span>:             temp_value = min_r + sum_p + min_q</pre>
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">194</span>:                     min_q = job.q[k]</pre>
+<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 194, __pyx_L1_error)</span>}
+        __pyx_t_10 = __pyx_v_k;
+        __pyx_v_min_q = (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;q.data + __pyx_t_10 * __pyx_v_job-&gt;q.strides[0]) )));
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">195</span>:                 sum_p += job.p[k]</pre>
+<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 195, __pyx_L1_error)</span>}
+      __pyx_t_10 = __pyx_v_k;
+      __pyx_v_sum_p = (__pyx_v_sum_p + (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;p.data + __pyx_t_10 * __pyx_v_job-&gt;p.strides[0]) ))));
+</pre><pre class="cython line score-0">&#xA0;<span class="">196</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">197</span>:             temp_value = min_r + sum_p + min_q</pre>
 <pre class='cython code score-0 '>    __pyx_v_temp_value = ((__pyx_v_min_r + __pyx_v_sum_p) + __pyx_v_min_q);
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">197</span>:             if temp_value &gt; max_value:</pre>
-<pre class='cython code score-0 '>    __pyx_t_12 = (__pyx_v_temp_value &gt; __pyx_v_max_value);
-    if (__pyx_t_12) {
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">198</span>:             if temp_value &gt; max_value:</pre>
+<pre class='cython code score-0 '>    __pyx_t_11 = (__pyx_v_temp_value &gt; __pyx_v_max_value);
+    if (__pyx_t_11) {
 /* … */
     }
   }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">198</span>:                 max_value = temp_value</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">199</span>:                 max_value = temp_value</pre>
 <pre class='cython code score-0 '>      __pyx_v_max_value = __pyx_v_temp_value;
-</pre><pre class="cython line score-0">&#xA0;<span class="">199</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">200</span>:         return max_value</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">200</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">201</span>:         return max_value</pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_max_value;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">201</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">202</span>:     cpdef int lower_bound_2m(Permutation self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">202</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">203</span>:     cpdef int lower_bound_2m(Permutation self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_27lower_bound_2m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -3444,7 +3401,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_lower_bound_2m);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)</span>
+      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_lower_bound_2m);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
       if (!<span class='pyx_c_api'>__Pyx_IsSameCFunction</span>(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_27lower_bound_2m)) {
         <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
@@ -3466,11 +3423,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_FastCall</span>(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 202, __pyx_L1_error)</span>
+          if (unlikely(!__pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 203, __pyx_L1_error)</span>
           <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
           <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
         }
-        __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 202, __pyx_L1_error)</span>
+        __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 203, __pyx_L1_error)</span>
         <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -3546,8 +3503,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26lower_bound_2m(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bound_2m(__pyx_v_self, 1);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 202, __pyx_L1_error)</span>
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)</span>
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bound_2m(__pyx_v_self, 1);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3564,61 +3521,61 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26
   return __pyx_r;
 }
 /* … */
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_11Permutation_27lower_bound_2m, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Permutation_lower_bound_2m, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__36));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 202, __pyx_L1_error)</span>
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_11Permutation_27lower_bound_2m, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Permutation_lower_bound_2m, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__36));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 203, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
-  if (<span class='pyx_c_api'>__Pyx_SetItemOnTypeDict</span>((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, __pyx_n_s_lower_bound_2m, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 202, __pyx_L1_error)</span>
+  if (<span class='pyx_c_api'>__Pyx_SetItemOnTypeDict</span>((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, __pyx_n_s_lower_bound_2m, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 203, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation);
 /* … */
-  __pyx_codeobj__36 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_lower_bound_2m, 202, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 202, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">203</span>:         cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">204</span>:             int m1, m2, lbs, temp_value</pre>
-<pre class="cython line score-0">&#xA0;<span class="">205</span>:             vector[int] r, q</pre>
-<pre class="cython line score-0">&#xA0;<span class="">206</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">207</span>:         lbs = 0</pre>
+  __pyx_codeobj__36 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_lower_bound_2m, 203, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 203, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">204</span>:         cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">205</span>:             int m1, m2, lbs, temp_value</pre>
+<pre class="cython line score-0">&#xA0;<span class="">206</span>:             vector[int] r, q</pre>
+<pre class="cython line score-0">&#xA0;<span class="">207</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">208</span>:         lbs = 0</pre>
 <pre class='cython code score-0 '>  __pyx_v_lbs = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">208</span>:         r = self.get_r()</pre>
-<pre class='cython code score-0 '>  __pyx_t_7 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;get_r(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">209</span>:         r = self.get_r()</pre>
+<pre class='cython code score-0 '>  __pyx_t_7 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;get_r(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)</span>
   __pyx_v_r = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_7);
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">209</span>:         q = self.get_q()</pre>
-<pre class='cython code score-0 '>  __pyx_t_7 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;get_q(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">210</span>:         q = self.get_q()</pre>
+<pre class='cython code score-0 '>  __pyx_t_7 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;__pyx_vtab)-&gt;get_q(__pyx_v_self);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)</span>
   __pyx_v_q = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_7);
-</pre><pre class="cython line score-0">&#xA0;<span class="">210</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">211</span>:         for m1 in range(self.m - 1):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">211</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">212</span>:         for m1 in range(self.m - 1):</pre>
 <pre class='cython code score-0 '>  __pyx_t_8 = (__pyx_v_self-&gt;m - 1);
   __pyx_t_9 = __pyx_t_8;
   for (__pyx_t_6 = 0; __pyx_t_6 &lt; __pyx_t_9; __pyx_t_6+=1) {
     __pyx_v_m1 = __pyx_t_6;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">212</span>:             for m2 in range(m1 + 1, self.m):</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">213</span>:             for m2 in range(m1 + 1, self.m):</pre>
 <pre class='cython code score-0 '>    __pyx_t_10 = __pyx_v_self-&gt;m;
     __pyx_t_11 = __pyx_t_10;
     for (__pyx_t_12 = (__pyx_v_m1 + 1); __pyx_t_12 &lt; __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_m2 = __pyx_t_12;
-</pre><pre class="cython line score-0">&#xA0;<span class="">213</span>:                 temp_value = (</pre>
-<pre class="cython line score-0">&#xA0;<span class="">214</span>:                     r[m1]</pre>
-<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">215</span>:                     + two_mach_problem(self.free_jobs, m1, m2)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">214</span>:                 temp_value = (</pre>
+<pre class="cython line score-0">&#xA0;<span class="">215</span>:                     r[m1]</pre>
+<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">216</span>:                     + two_mach_problem(self.free_jobs, m1, m2)</pre>
 <pre class='cython code score-7 '>      __pyx_t_1 = __pyx_v_self-&gt;free_jobs;
       <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-      __pyx_t_13 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(((PyObject*)__pyx_t_1), __pyx_v_m1, __pyx_v_m2); if (unlikely(__pyx_t_13 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 215, __pyx_L1_error)</span>
+      __pyx_t_13 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(((PyObject*)__pyx_t_1), __pyx_v_m1, __pyx_v_m2); if (unlikely(__pyx_t_13 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 216, __pyx_L1_error)</span>
       <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">216</span>:                     + q[m2]</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">217</span>:                     + q[m2]</pre>
 <pre class='cython code score-0 '>      __pyx_v_temp_value = (((__pyx_v_r[__pyx_v_m1]) + __pyx_t_13) + (__pyx_v_q[__pyx_v_m2]));
-</pre><pre class="cython line score-0">&#xA0;<span class="">217</span>:                 )</pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">218</span>:                 if temp_value &gt; lbs:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">218</span>:                 )</pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">219</span>:                 if temp_value &gt; lbs:</pre>
 <pre class='cython code score-0 '>      __pyx_t_14 = (__pyx_v_temp_value &gt; __pyx_v_lbs);
       if (__pyx_t_14) {
 /* … */
       }
     }
   }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">219</span>:                     lbs = temp_value</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">220</span>:                     lbs = temp_value</pre>
 <pre class='cython code score-0 '>        __pyx_v_lbs = __pyx_v_temp_value;
-</pre><pre class="cython line score-0">&#xA0;<span class="">220</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">221</span>:         return lbs</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">221</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">222</span>:         return lbs</pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_lbs;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">222</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">223</span>:     cdef vector[int] get_r(Permutation self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">223</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">224</span>:     cdef vector[int] get_r(Permutation self):</pre>
 <pre class='cython code score-5 '>static std::vector&lt;int&gt;  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_get_r(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_self) {
   int __pyx_v_m;
   int __pyx_v_min_rm;
@@ -3637,30 +3594,30 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">224</span>:         cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">225</span>:             int j, m, min_rm</pre>
-<pre class="cython line score-0">&#xA0;<span class="">226</span>:             vector[int] r</pre>
-<pre class="cython line score-0">&#xA0;<span class="">227</span>:             Job job</pre>
-<pre class="cython line score-0">&#xA0;<span class="">228</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">229</span>:         r = vector[int](self.m, 0)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">225</span>:         cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">226</span>:             int j, m, min_rm</pre>
+<pre class="cython line score-0">&#xA0;<span class="">227</span>:             vector[int] r</pre>
+<pre class="cython line score-0">&#xA0;<span class="">228</span>:             Job job</pre>
+<pre class="cython line score-0">&#xA0;<span class="">229</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">230</span>:         r = vector[int](self.m, 0)</pre>
 <pre class='cython code score-0 '>  try {
     __pyx_t_1 = std::vector&lt;int&gt; (__pyx_v_self-&gt;m, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    <span class='error_goto'>__PYX_ERR(0, 229, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 230, __pyx_L1_error)</span>
   }
   __pyx_v_r = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">230</span>:         for m in range(self.m):</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">231</span>:         for m in range(self.m):</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = __pyx_v_self-&gt;m;
   __pyx_t_3 = __pyx_t_2;
   for (__pyx_t_4 = 0; __pyx_t_4 &lt; __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">231</span>:             min_rm = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">232</span>:             min_rm = LARGE_INT</pre>
 <pre class='cython code score-0 '>    __pyx_v_min_rm = __pyx_v_7bnbprob_5pfssp_6cython_11permutation_LARGE_INT;
-</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">232</span>:             for job in self.free_jobs:</pre>
+</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">233</span>:             for job in self.free_jobs:</pre>
 <pre class='cython code score-16 '>    if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not iterable");
-      <span class='error_goto'>__PYX_ERR(0, 232, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 233, __pyx_L1_error)</span>
     }
     __pyx_t_5 = __pyx_v_self-&gt;free_jobs; <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_5);
     __pyx_t_6 = 0;
@@ -3668,42 +3625,42 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26
       {
         Py_ssize_t __pyx_temp = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_t_5);
         #if !CYTHON_ASSUME_SAFE_MACROS
-        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 232, __pyx_L1_error)</span>
+        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 233, __pyx_L1_error)</span>
         #endif
         if (__pyx_t_6 &gt;= __pyx_temp) break;
       }
       #if CYTHON_ASSUME_SAFE_MACROS &amp;&amp; !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_7 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_5, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_7); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 232, __pyx_L1_error)</span>
+      __pyx_t_7 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_5, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_7); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 233, __pyx_L1_error)</span>
       #else
-      __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_5, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 232, __pyx_L1_error)</span>
+      __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_5, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 233, __pyx_L1_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
       #endif
-      if (!(likely(((__pyx_t_7) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_7, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 232, __pyx_L1_error)</span>
+      if (!(likely(((__pyx_t_7) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_7, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 233, __pyx_L1_error)</span>
       <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_7));
       __pyx_t_7 = 0;
 /* … */
     }
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">233</span>:                 if job.r[m] &lt; min_rm:</pre>
-<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 233, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">234</span>:                 if job.r[m] &lt; min_rm:</pre>
+<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 234, __pyx_L1_error)</span>}
       __pyx_t_8 = __pyx_v_m;
       __pyx_t_9 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;r.data + __pyx_t_8 * __pyx_v_job-&gt;r.strides[0]) ))) &lt; __pyx_v_min_rm);
       if (__pyx_t_9) {
 /* … */
       }
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">234</span>:                     min_rm = job.r[m]</pre>
-<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 234, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">235</span>:                     min_rm = job.r[m]</pre>
+<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;r.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 235, __pyx_L1_error)</span>}
         __pyx_t_8 = __pyx_v_m;
         __pyx_v_min_rm = (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;r.data + __pyx_t_8 * __pyx_v_job-&gt;r.strides[0]) )));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">235</span>:             r[m] = min_rm</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">236</span>:             r[m] = min_rm</pre>
 <pre class='cython code score-0 '>    (__pyx_v_r[__pyx_v_m]) = __pyx_v_min_rm;
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">236</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">237</span>:         return r</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">237</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">238</span>:         return r</pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_r;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">238</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">239</span>:     cdef vector[int] get_q(Permutation self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">239</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">240</span>:     cdef vector[int] get_q(Permutation self):</pre>
 <pre class='cython code score-5 '>static std::vector&lt;int&gt;  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_get_q(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_self) {
   int __pyx_v_m;
   int __pyx_v_min_qm;
@@ -3722,30 +3679,30 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">240</span>:         cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">241</span>:             int j, m, min_qm</pre>
-<pre class="cython line score-0">&#xA0;<span class="">242</span>:             vector[int] q</pre>
-<pre class="cython line score-0">&#xA0;<span class="">243</span>:             Job job</pre>
-<pre class="cython line score-0">&#xA0;<span class="">244</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">245</span>:         q = vector[int](self.m, 0)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">241</span>:         cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">242</span>:             int j, m, min_qm</pre>
+<pre class="cython line score-0">&#xA0;<span class="">243</span>:             vector[int] q</pre>
+<pre class="cython line score-0">&#xA0;<span class="">244</span>:             Job job</pre>
+<pre class="cython line score-0">&#xA0;<span class="">245</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">246</span>:         q = vector[int](self.m, 0)</pre>
 <pre class='cython code score-0 '>  try {
     __pyx_t_1 = std::vector&lt;int&gt; (__pyx_v_self-&gt;m, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    <span class='error_goto'>__PYX_ERR(0, 245, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 246, __pyx_L1_error)</span>
   }
   __pyx_v_q = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">246</span>:         for m in range(self.m):</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">247</span>:         for m in range(self.m):</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = __pyx_v_self-&gt;m;
   __pyx_t_3 = __pyx_t_2;
   for (__pyx_t_4 = 0; __pyx_t_4 &lt; __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">247</span>:             min_qm = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">248</span>:             min_qm = LARGE_INT</pre>
 <pre class='cython code score-0 '>    __pyx_v_min_qm = __pyx_v_7bnbprob_5pfssp_6cython_11permutation_LARGE_INT;
-</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">248</span>:             for job in self.free_jobs:</pre>
+</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">249</span>:             for job in self.free_jobs:</pre>
 <pre class='cython code score-16 '>    if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not iterable");
-      <span class='error_goto'>__PYX_ERR(0, 248, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 249, __pyx_L1_error)</span>
     }
     __pyx_t_5 = __pyx_v_self-&gt;free_jobs; <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_5);
     __pyx_t_6 = 0;
@@ -3753,42 +3710,42 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_26
       {
         Py_ssize_t __pyx_temp = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_t_5);
         #if !CYTHON_ASSUME_SAFE_MACROS
-        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 248, __pyx_L1_error)</span>
+        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 249, __pyx_L1_error)</span>
         #endif
         if (__pyx_t_6 &gt;= __pyx_temp) break;
       }
       #if CYTHON_ASSUME_SAFE_MACROS &amp;&amp; !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_7 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_5, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_7); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 248, __pyx_L1_error)</span>
+      __pyx_t_7 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_5, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_7); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 249, __pyx_L1_error)</span>
       #else
-      __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_5, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 248, __pyx_L1_error)</span>
+      __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_5, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 249, __pyx_L1_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
       #endif
-      if (!(likely(((__pyx_t_7) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_7, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 248, __pyx_L1_error)</span>
+      if (!(likely(((__pyx_t_7) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_7, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 249, __pyx_L1_error)</span>
       <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_7));
       __pyx_t_7 = 0;
 /* … */
     }
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">249</span>:                 if job.q[m] &lt; min_qm:</pre>
-<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 249, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">250</span>:                 if job.q[m] &lt; min_qm:</pre>
+<pre class='cython code score-5 '>      if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 250, __pyx_L1_error)</span>}
       __pyx_t_8 = __pyx_v_m;
       __pyx_t_9 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;q.data + __pyx_t_8 * __pyx_v_job-&gt;q.strides[0]) ))) &lt; __pyx_v_min_qm);
       if (__pyx_t_9) {
 /* … */
       }
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">250</span>:                     min_qm = job.q[m]</pre>
-<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 250, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">251</span>:                     min_qm = job.q[m]</pre>
+<pre class='cython code score-5 '>        if (unlikely(!__pyx_v_job-&gt;q.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 251, __pyx_L1_error)</span>}
         __pyx_t_8 = __pyx_v_m;
         __pyx_v_min_qm = (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;q.data + __pyx_t_8 * __pyx_v_job-&gt;q.strides[0]) )));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">251</span>:             q[m] = min_qm</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">252</span>:             q[m] = min_qm</pre>
 <pre class='cython code score-0 '>    (__pyx_v_q[__pyx_v_m]) = __pyx_v_min_qm;
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">252</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">253</span>:         return q</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">253</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">254</span>:         return q</pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_q;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">254</span>: </pre>
-<pre class="cython line score-65" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">255</span>:     cpdef Permutation copy(Permutation self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">255</span>: </pre>
+<pre class="cython line score-65" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">256</span>:     cpdef Permutation copy(Permutation self):</pre>
 <pre class='cython code score-65 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_29copy(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -3808,7 +3765,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_copy);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)</span>
+      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_copy);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
       if (!<span class='pyx_c_api'>__Pyx_IsSameCFunction</span>(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_11permutation_11Permutation_29copy)) {
         <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_r);
@@ -3831,11 +3788,11 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_FastCall</span>(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 255, __pyx_L1_error)</span>
+          if (unlikely(!__pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 256, __pyx_L1_error)</span>
           <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
           <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
         }
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation))))) <span class='error_goto'>__PYX_ERR(0, 255, __pyx_L1_error)</span>
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation))))) <span class='error_goto'>__PYX_ERR(0, 256, __pyx_L1_error)</span>
         __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_2);
         __pyx_t_2 = 0;
         <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
@@ -3915,7 +3872,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_28copy(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_copy(__pyx_v_self, 1));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)</span>
+  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_copy(__pyx_v_self, 1));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3932,51 +3889,51 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_28
   return __pyx_r;
 }
 /* … */
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_11Permutation_29copy, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Permutation_copy, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__37));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 255, __pyx_L1_error)</span>
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_11Permutation_29copy, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Permutation_copy, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__37));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 256, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
-  if (<span class='pyx_c_api'>__Pyx_SetItemOnTypeDict</span>((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, __pyx_n_s_copy, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 255, __pyx_L1_error)</span>
+  if (<span class='pyx_c_api'>__Pyx_SetItemOnTypeDict</span>((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, __pyx_n_s_copy, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 256, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation);
 /* … */
-  __pyx_codeobj__37 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_copy, 255, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 255, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">256</span>:         cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">257</span>:             Job job</pre>
-<pre class="cython line score-19" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">258</span>:         return Permutation(</pre>
+  __pyx_codeobj__37 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_copy, 256, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 256, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">257</span>:         cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">258</span>:             Job job</pre>
+<pre class="cython line score-19" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">259</span>:         return Permutation(</pre>
 <pre class='cython code score-19 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_r);
 /* … */
-  __pyx_t_8 = <span class='py_c_api'>PyTuple_New</span>(5);<span class='error_goto'> if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 258, __pyx_L1_error)</span>
+  __pyx_t_8 = <span class='py_c_api'>PyTuple_New</span>(5);<span class='error_goto'> if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 259, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_8);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_1);
-  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 0, __pyx_t_1)) <span class='error_goto'>__PYX_ERR(0, 258, __pyx_L1_error)</span>;
+  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 0, __pyx_t_1)) <span class='error_goto'>__PYX_ERR(0, 259, __pyx_L1_error)</span>;
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_2);
-  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 1, __pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 258, __pyx_L1_error)</span>;
+  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 1, __pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 259, __pyx_L1_error)</span>;
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_3);
-  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 2, __pyx_t_3)) <span class='error_goto'>__PYX_ERR(0, 258, __pyx_L1_error)</span>;
+  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 2, __pyx_t_3)) <span class='error_goto'>__PYX_ERR(0, 259, __pyx_L1_error)</span>;
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
-  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 3, __pyx_t_4)) <span class='error_goto'>__PYX_ERR(0, 258, __pyx_L1_error)</span>;
+  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 3, __pyx_t_4)) <span class='error_goto'>__PYX_ERR(0, 259, __pyx_L1_error)</span>;
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_7);
-  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 4, __pyx_t_7)) <span class='error_goto'>__PYX_ERR(0, 258, __pyx_L1_error)</span>;
+  if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_8, 4, __pyx_t_7)) <span class='error_goto'>__PYX_ERR(0, 259, __pyx_L1_error)</span>;
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
   __pyx_t_7 = 0;
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation), __pyx_t_8, NULL);<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 258, __pyx_L1_error)</span>
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation), __pyx_t_8, NULL);<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 259, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_7);
   __pyx_t_7 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">259</span>:             self.m,</pre>
-<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_self-&gt;m);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">260</span>:             self.m,</pre>
+<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_self-&gt;m);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   { /* enter inner scope */
-</pre><pre class="cython line score-26" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">260</span>:             [job.copy() for job in self.free_jobs],</pre>
-<pre class='cython code score-26 '>    __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L5_error)</span>
+</pre><pre class="cython line score-26" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">261</span>:             [job.copy() for job in self.free_jobs],</pre>
+<pre class='cython code score-26 '>    __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L5_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
     if (unlikely(__pyx_v_self-&gt;free_jobs == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not iterable");
-      <span class='error_goto'>__PYX_ERR(0, 260, __pyx_L5_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 261, __pyx_L5_error)</span>
     }
     __pyx_t_3 = __pyx_v_self-&gt;free_jobs; <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_3);
     __pyx_t_6 = 0;
@@ -3984,22 +3941,22 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_28
       {
         Py_ssize_t __pyx_temp = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_t_3);
         #if !CYTHON_ASSUME_SAFE_MACROS
-        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 260, __pyx_L5_error)</span>
+        if (unlikely((__pyx_temp &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 261, __pyx_L5_error)</span>
         #endif
         if (__pyx_t_6 &gt;= __pyx_temp) break;
       }
       #if CYTHON_ASSUME_SAFE_MACROS &amp;&amp; !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_4 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_3, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_4); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 260, __pyx_L5_error)</span>
+      __pyx_t_4 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_t_3, __pyx_t_6); <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_4); __pyx_t_6++; if (unlikely((0 &lt; 0))) <span class='error_goto'>__PYX_ERR(0, 261, __pyx_L5_error)</span>
       #else
-      __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_3, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 260, __pyx_L5_error)</span>
+      __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PySequence_ITEM</span>(__pyx_t_3, __pyx_t_6); __pyx_t_6++;<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 261, __pyx_L5_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
       #endif
-      if (!(likely(((__pyx_t_4) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_4, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 260, __pyx_L5_error)</span>
+      if (!(likely(((__pyx_t_4) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_4, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 261, __pyx_L5_error)</span>
       <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_8genexpr2__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_4));
       __pyx_t_4 = 0;
-      __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_8genexpr2__pyx_v_job-&gt;__pyx_vtab)-&gt;copy(__pyx_8genexpr2__pyx_v_job, 0));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 260, __pyx_L5_error)</span>
+      __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_8genexpr2__pyx_v_job-&gt;__pyx_vtab)-&gt;copy(__pyx_8genexpr2__pyx_v_job, 0));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 261, __pyx_L5_error)</span>
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-      if (unlikely(<span class='pyx_c_api'>__Pyx_ListComp_Append</span>(__pyx_t_2, (PyObject*)__pyx_t_4))) <span class='error_goto'>__PYX_ERR(0, 260, __pyx_L5_error)</span>
+      if (unlikely(<span class='pyx_c_api'>__Pyx_ListComp_Append</span>(__pyx_t_2, (PyObject*)__pyx_t_4))) <span class='error_goto'>__PYX_ERR(0, 261, __pyx_L5_error)</span>
       <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
     }
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
@@ -4010,19 +3967,19 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_28
     goto __pyx_L1_error;
     __pyx_L9_exit_scope:;
   } /* exit inner scope */
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">261</span>:             self.sigma1.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;sigma1, 0));<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 261, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">262</span>:             self.sigma1.copy(),</pre>
+<pre class='cython code score-0 '>  __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;sigma1));<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">262</span>:             self.sigma2.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;sigma2, 0));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 262, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">263</span>:             self.sigma2.copy(),</pre>
+<pre class='cython code score-0 '>  __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_self-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;sigma2));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">263</span>:             self.level,</pre>
-<pre class='cython code score-2 '>  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_self-&gt;level);<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 263, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">264</span>:             self.level,</pre>
+<pre class='cython code score-2 '>  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_self-&gt;level);<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 264, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
-</pre><pre class="cython line score-0">&#xA0;<span class="">264</span>:         )</pre>
-<pre class="cython line score-0">&#xA0;<span class="">265</span>: </pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">265</span>:         )</pre>
 <pre class="cython line score-0">&#xA0;<span class="">266</span>: </pre>
-<pre class="cython line score-63" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">267</span>: cpdef inline int key_1_sort(tuple[Job, int, int] x):</pre>
+<pre class="cython line score-0">&#xA0;<span class="">267</span>: </pre>
+<pre class="cython line score-63" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">268</span>: cpdef inline int key_1_sort(tuple[Job, int, int] x):</pre>
 <pre class='cython code score-63 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_1key_1_sort(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -4091,12 +4048,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)<span class='pyx_c_api'>__Pyx_Arg_NewRef_FASTCALL</span>(values[0]);
           kw_args--;
         }
-        else if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L3_error)</span>
+        else if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L3_error)</span>
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args &gt; 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "key_1_sort") &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L3_error)</span>
+        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "key_1_sort") &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L3_error)</span>
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -4107,7 +4064,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("key_1_sort", 1, 1, 1, __pyx_nargs); <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L3_error)</span>
+  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("key_1_sort", 1, 1, 1, __pyx_nargs); <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L3_error)</span>
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4121,7 +4078,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_x), (&amp;PyTuple_Type), 1, "x", 1))) <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L1_error)</span>
+  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_x), (&amp;PyTuple_Type), 1, "x", 1))) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L1_error)</span>
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(__pyx_self, __pyx_v_x);
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -4145,8 +4102,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x) {
   PyObject *__pyx_r = NULL;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(__pyx_v_x, 0); if (unlikely(__pyx_t_1 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L1_error)</span>
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 267, __pyx_L1_error)</span>
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(__pyx_v_x, 0); if (unlikely(__pyx_t_1 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 268, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4163,26 +4120,26 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(CYTHO
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__42 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_x);<span class='error_goto'> if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 267, __pyx_L1_error)</span>
+  __pyx_tuple__42 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_x);<span class='error_goto'> if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 268, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__42);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__42);
 /* … */
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_1key_1_sort, 0, __pyx_n_s_key_1_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__43));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 267, __pyx_L1_error)</span>
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_1key_1_sort, 0, __pyx_n_s_key_1_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__43));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 268, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_key_1_sort, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 267, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_key_1_sort, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_codeobj__43 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_key_1_sort, 267, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 267, __pyx_L1_error)</span>
-</pre><pre class="cython line score-13" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">268</span>:     return x[1]</pre>
+  __pyx_codeobj__43 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_key_1_sort, 268, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 268, __pyx_L1_error)</span>
+</pre><pre class="cython line score-13" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">269</span>:     return x[1]</pre>
 <pre class='cython code score-13 '>  if (unlikely(__pyx_v_x == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 269, __pyx_L1_error)</span>
   }
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(<span class='py_macro_api'>PyTuple_GET_ITEM</span>(__pyx_v_x, 1)); if (unlikely((__pyx_t_1 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 268, __pyx_L1_error)</span>
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(<span class='py_macro_api'>PyTuple_GET_ITEM</span>(__pyx_v_x, 1)); if (unlikely((__pyx_t_1 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 269, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">269</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">270</span>: </pre>
-<pre class="cython line score-58" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">271</span>: cpdef inline int key_2_sort(tuple[Job, int, int] x):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">270</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">271</span>: </pre>
+<pre class="cython line score-58" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">272</span>: cpdef inline int key_2_sort(tuple[Job, int, int] x):</pre>
 <pre class='cython code score-58 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_11permutation_3key_2_sort(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -4251,12 +4208,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)<span class='pyx_c_api'>__Pyx_Arg_NewRef_FASTCALL</span>(values[0]);
           kw_args--;
         }
-        else if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L3_error)</span>
+        else if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L3_error)</span>
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args &gt; 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "key_2_sort") &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L3_error)</span>
+        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "key_2_sort") &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L3_error)</span>
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -4267,7 +4224,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("key_2_sort", 1, 1, 1, __pyx_nargs); <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L3_error)</span>
+  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("key_2_sort", 1, 1, 1, __pyx_nargs); <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L3_error)</span>
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4281,7 +4238,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_x), (&amp;PyTuple_Type), 1, "x", 1))) <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L1_error)</span>
+  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_x), (&amp;PyTuple_Type), 1, "x", 1))) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L1_error)</span>
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(__pyx_self, __pyx_v_x);
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -4305,8 +4262,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x) {
   PyObject *__pyx_r = NULL;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_2_sort(__pyx_v_x, 0); if (unlikely(__pyx_t_1 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L1_error)</span>
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L1_error)</span>
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_2_sort(__pyx_v_x, 0); if (unlikely(__pyx_t_1 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4323,23 +4280,23 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(CYTH
   return __pyx_r;
 }
 /* … */
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_3key_2_sort, 0, __pyx_n_s_key_2_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__44));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 271, __pyx_L1_error)</span>
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_CyFunction_New</span>(&amp;__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_3key_2_sort, 0, __pyx_n_s_key_2_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__44));<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 272, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_key_2_sort, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_key_2_sort, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
 /* … */
-  __pyx_codeobj__44 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_key_2_sort, 271, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 271, __pyx_L1_error)</span>
-</pre><pre class="cython line score-13" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">272</span>:     return x[2]</pre>
+  __pyx_codeobj__44 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_key_2_sort, 272, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 272, __pyx_L1_error)</span>
+</pre><pre class="cython line score-13" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">273</span>:     return x[2]</pre>
 <pre class='cython code score-13 '>  if (unlikely(__pyx_v_x == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 273, __pyx_L1_error)</span>
   }
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(<span class='py_macro_api'>PyTuple_GET_ITEM</span>(__pyx_v_x, 2)); if (unlikely((__pyx_t_1 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 272, __pyx_L1_error)</span>
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(<span class='py_macro_api'>PyTuple_GET_ITEM</span>(__pyx_v_x, 2)); if (unlikely((__pyx_t_1 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 273, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">273</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">274</span>: </pre>
-<pre class="cython line score-9" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">275</span>: cdef int two_mach_problem(list[Job] jobs, int m1, int m2):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">274</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">275</span>: </pre>
+<pre class="cython line score-9" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">276</span>: cdef int two_mach_problem(list[Job] jobs, int m1, int m2):</pre>
 <pre class='cython code score-9 '>static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(PyObject *__pyx_v_jobs, int __pyx_v_m1, int __pyx_v_m2) {
   int __pyx_v_J;
   int __pyx_v_j;
@@ -4367,143 +4324,143 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(CYTH
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">276</span>:     cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">277</span>:         int J, j, t1, t2, res</pre>
-<pre class="cython line score-0">&#xA0;<span class="">278</span>:         Job job</pre>
-<pre class="cython line score-0">&#xA0;<span class="">279</span>:         tuple[Job, int, int] jparam</pre>
-<pre class="cython line score-0">&#xA0;<span class="">280</span>:         list[tuple[Job, int, int]] j1, j2</pre>
-<pre class="cython line score-0">&#xA0;<span class="">281</span>: </pre>
-<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">282</span>:     J = &lt;int&gt;len(jobs)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">277</span>:     cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">278</span>:         int J, j, t1, t2, res</pre>
+<pre class="cython line score-0">&#xA0;<span class="">279</span>:         Job job</pre>
+<pre class="cython line score-0">&#xA0;<span class="">280</span>:         tuple[Job, int, int] jparam</pre>
+<pre class="cython line score-0">&#xA0;<span class="">281</span>:         list[tuple[Job, int, int]] j1, j2</pre>
+<pre class="cython line score-0">&#xA0;<span class="">282</span>: </pre>
+<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">283</span>:     J = &lt;int&gt;len(jobs)</pre>
 <pre class='cython code score-7 '>  if (unlikely(__pyx_v_jobs == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    <span class='error_goto'>__PYX_ERR(0, 282, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 283, __pyx_L1_error)</span>
   }
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_v_jobs);<span class='error_goto'> if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 282, __pyx_L1_error)</span>
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_v_jobs);<span class='error_goto'> if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 283, __pyx_L1_error)</span>
   __pyx_v_J = ((int)__pyx_t_1);
-</pre><pre class="cython line score-0">&#xA0;<span class="">283</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">284</span>:     j1 = []</pre>
-<pre class='cython code score-5 '>  __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 284, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">284</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">285</span>:     j1 = []</pre>
+<pre class='cython code score-5 '>  __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_v_j1 = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">285</span>:     j2 = []</pre>
-<pre class='cython code score-5 '>  __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)</span>
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">286</span>:     j2 = []</pre>
+<pre class='cython code score-5 '>  __pyx_t_2 = <span class='py_c_api'>PyList_New</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 286, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_v_j2 = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">286</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">287</span>:     for j in range(J):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">287</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">288</span>:     for j in range(J):</pre>
 <pre class='cython code score-0 '>  __pyx_t_3 = __pyx_v_J;
   __pyx_t_4 = __pyx_t_3;
   for (__pyx_t_5 = 0; __pyx_t_5 &lt; __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_j = __pyx_t_5;
-</pre><pre class="cython line score-12" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">288</span>:         job = jobs[j]</pre>
+</pre><pre class="cython line score-12" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">289</span>:         job = jobs[j]</pre>
 <pre class='cython code score-12 '>    if (unlikely(__pyx_v_jobs == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 288, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 289, __pyx_L1_error)</span>
     }
-    if (!(likely(((<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_jobs, __pyx_v_j)) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_jobs, __pyx_v_j), __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 288, __pyx_L1_error)</span>
+    if (!(likely(((<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_jobs, __pyx_v_j)) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_jobs, __pyx_v_j), __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 289, __pyx_L1_error)</span>
     __pyx_t_2 = <span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_jobs, __pyx_v_j);
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_2);
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_2));
     __pyx_t_2 = 0;
-</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">289</span>:         t1 = job.p[m1] + job.lat[m2][m1]</pre>
-<pre class='cython code score-10 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 289, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">290</span>:         t1 = job.p[m1] + job.lat[m2][m1]</pre>
+<pre class='cython code score-10 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 290, __pyx_L1_error)</span>}
     __pyx_t_6 = __pyx_v_m1;
-    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 289, __pyx_L1_error)</span>}
+    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 290, __pyx_L1_error)</span>}
     __pyx_t_7 = __pyx_v_m2;
     __pyx_t_8 = __pyx_v_m1;
     __pyx_v_t1 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;p.data + __pyx_t_6 * __pyx_v_job-&gt;p.strides[0]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_job-&gt;lat.data + __pyx_t_7 * __pyx_v_job-&gt;lat.strides[0]) ) + __pyx_t_8 * __pyx_v_job-&gt;lat.strides[1]) ))));
-</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">290</span>:         t2 = job.p[m2] + job.lat[m2][m1]</pre>
-<pre class='cython code score-10 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 290, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">291</span>:         t2 = job.p[m2] + job.lat[m2][m1]</pre>
+<pre class='cython code score-10 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 291, __pyx_L1_error)</span>}
     __pyx_t_8 = __pyx_v_m2;
-    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 290, __pyx_L1_error)</span>}
+    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 291, __pyx_L1_error)</span>}
     __pyx_t_7 = __pyx_v_m2;
     __pyx_t_6 = __pyx_v_m1;
     __pyx_v_t2 = ((*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;p.data + __pyx_t_8 * __pyx_v_job-&gt;p.strides[0]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_job-&gt;lat.data + __pyx_t_7 * __pyx_v_job-&gt;lat.strides[0]) ) + __pyx_t_6 * __pyx_v_job-&gt;lat.strides[1]) ))));
-</pre><pre class="cython line score-0">&#xA0;<span class="">291</span>: </pre>
-<pre class="cython line score-17" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">292</span>:         jparam = (job, t1, t2)</pre>
-<pre class='cython code score-17 '>    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_t1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 292, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">292</span>: </pre>
+<pre class="cython line score-17" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">293</span>:         jparam = (job, t1, t2)</pre>
+<pre class='cython code score-17 '>    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_t1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 293, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-    __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_t2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 292, __pyx_L1_error)</span>
+    __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_t2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 293, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_9);
-    __pyx_t_10 = <span class='py_c_api'>PyTuple_New</span>(3);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 292, __pyx_L1_error)</span>
+    __pyx_t_10 = <span class='py_c_api'>PyTuple_New</span>(3);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 293, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_10);
     <span class='pyx_macro_api'>__Pyx_INCREF</span>((PyObject *)__pyx_v_job);
     <span class='refnanny'>__Pyx_GIVEREF</span>((PyObject *)__pyx_v_job);
-    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 0, ((PyObject *)__pyx_v_job))) <span class='error_goto'>__PYX_ERR(0, 292, __pyx_L1_error)</span>;
+    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 0, ((PyObject *)__pyx_v_job))) <span class='error_goto'>__PYX_ERR(0, 293, __pyx_L1_error)</span>;
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_2);
-    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 1, __pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 292, __pyx_L1_error)</span>;
+    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 1, __pyx_t_2)) <span class='error_goto'>__PYX_ERR(0, 293, __pyx_L1_error)</span>;
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_9);
-    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 2, __pyx_t_9)) <span class='error_goto'>__PYX_ERR(0, 292, __pyx_L1_error)</span>;
+    if (<span class='pyx_c_api'>__Pyx_PyTuple_SET_ITEM</span>(__pyx_t_10, 2, __pyx_t_9)) <span class='error_goto'>__PYX_ERR(0, 293, __pyx_L1_error)</span>;
     __pyx_t_2 = 0;
     __pyx_t_9 = 0;
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_jparam, ((PyObject*)__pyx_t_10));
     __pyx_t_10 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">293</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">294</span>:         if t1 &lt;= t2:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">294</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">295</span>:         if t1 &lt;= t2:</pre>
 <pre class='cython code score-0 '>    __pyx_t_11 = (__pyx_v_t1 &lt;= __pyx_v_t2);
     if (__pyx_t_11) {
 /* … */
       goto __pyx_L5;
     }
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">295</span>:             j1.append(jparam)</pre>
-<pre class='cython code score-2 '>      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_j1, __pyx_v_jparam);<span class='error_goto'> if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 295, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">296</span>:         else:</pre>
-<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">297</span>:             j2.append(jparam)</pre>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">296</span>:             j1.append(jparam)</pre>
+<pre class='cython code score-2 '>      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_j1, __pyx_v_jparam);<span class='error_goto'> if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 296, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">297</span>:         else:</pre>
+<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">298</span>:             j2.append(jparam)</pre>
 <pre class='cython code score-2 '>    /*else*/ {
-      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_j2, __pyx_v_jparam);<span class='error_goto'> if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 297, __pyx_L1_error)</span>
+      __pyx_t_12 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_j2, __pyx_v_jparam);<span class='error_goto'> if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 298, __pyx_L1_error)</span>
     }
     __pyx_L5:;
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">298</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">299</span>:     # Sort set1 in ascending order of t1</pre>
-<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">300</span>:     j1.sort(key=key_1_sort, reverse=False)</pre>
-<pre class='cython code score-22 '>  __pyx_t_10 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_j1, __pyx_n_s_sort);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 300, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">299</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">300</span>:     # Sort set1 in ascending order of t1</pre>
+<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">301</span>:     j1.sort(key=key_1_sort, reverse=False)</pre>
+<pre class='cython code score-22 '>  __pyx_t_10 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_j1, __pyx_n_s_sort);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 301, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_10);
-  __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyDict_NewPresized</span>(2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 300, __pyx_L1_error)</span>
+  __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyDict_NewPresized</span>(2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 301, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_9);
-  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_2, __pyx_n_s_key_1_sort);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 300, __pyx_L1_error)</span>
+  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_2, __pyx_n_s_key_1_sort);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_key, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 300, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_key, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 301, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_reverse, Py_False) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 300, __pyx_L1_error)</span>
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_10, __pyx_empty_tuple, __pyx_t_9);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 300, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_reverse, Py_False) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 301, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_10, __pyx_empty_tuple, __pyx_t_9);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_10); __pyx_t_10 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_9); __pyx_t_9 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">301</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">302</span>:     # Sort set2 in descending order of t2</pre>
-<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">303</span>:     j2.sort(key=key_2_sort, reverse=True)</pre>
-<pre class='cython code score-22 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_j2, __pyx_n_s_sort);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">302</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">303</span>:     # Sort set2 in descending order of t2</pre>
+<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">304</span>:     j2.sort(key=key_2_sort, reverse=True)</pre>
+<pre class='cython code score-22 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_j2, __pyx_n_s_sort);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 304, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyDict_NewPresized</span>(2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 303, __pyx_L1_error)</span>
+  __pyx_t_9 = <span class='pyx_c_api'>__Pyx_PyDict_NewPresized</span>(2);<span class='error_goto'> if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 304, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_9);
-  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_10, __pyx_n_s_key_2_sort);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 303, __pyx_L1_error)</span>
+  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_10, __pyx_n_s_key_2_sort);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 304, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_10);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_key, __pyx_t_10) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 303, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_key, __pyx_t_10) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 304, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_10); __pyx_t_10 = 0;
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_reverse, Py_True) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 303, __pyx_L1_error)</span>
-  __pyx_t_10 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_2, __pyx_empty_tuple, __pyx_t_9);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 303, __pyx_L1_error)</span>
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_9, __pyx_n_s_reverse, Py_True) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 304, __pyx_L1_error)</span>
+  __pyx_t_10 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_2, __pyx_empty_tuple, __pyx_t_9);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 304, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_10);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_9); __pyx_t_9 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_10); __pyx_t_10 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">304</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">305</span>:     # Concatenate the sorted lists</pre>
-<pre class="cython line score-11" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">306</span>:     res = two_mach_makespan(j1 + j2, m1, m2)</pre>
-<pre class='cython code score-11 '>  __pyx_t_10 = <span class='py_c_api'>PyNumber_Add</span>(__pyx_v_j1, __pyx_v_j2);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 306, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">305</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">306</span>:     # Concatenate the sorted lists</pre>
+<pre class="cython line score-11" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">307</span>:     res = two_mach_makespan(j1 + j2, m1, m2)</pre>
+<pre class='cython code score-11 '>  __pyx_t_10 = <span class='py_c_api'>PyNumber_Add</span>(__pyx_v_j1, __pyx_v_j2);<span class='error_goto'> if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 307, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_10);
-  __pyx_t_3 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_makespan(((PyObject*)__pyx_t_10), __pyx_v_m1, __pyx_v_m2); if (unlikely(__pyx_t_3 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 306, __pyx_L1_error)</span>
+  __pyx_t_3 = __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_makespan(((PyObject*)__pyx_t_10), __pyx_v_m1, __pyx_v_m2); if (unlikely(__pyx_t_3 == ((int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 307, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_v_res = __pyx_t_3;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">307</span>:     return res</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">308</span>:     return res</pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_res;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">308</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">309</span>: </pre>
-<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">310</span>: cdef int two_mach_makespan(</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">309</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">310</span>: </pre>
+<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">311</span>: cdef int two_mach_makespan(</pre>
 <pre class='cython code score-4 '>static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_makespan(PyObject *__pyx_v_job_times, int __pyx_v_m1, int __pyx_v_m2) {
   int __pyx_v_j;
   int __pyx_v_time_m1;
@@ -4521,53 +4478,53 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(CYTH
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">311</span>:     list[tuple[Job, int, int]] job_times,</pre>
-<pre class="cython line score-0">&#xA0;<span class="">312</span>:     int m1,</pre>
-<pre class="cython line score-0">&#xA0;<span class="">313</span>:     int m2</pre>
-<pre class="cython line score-0">&#xA0;<span class="">314</span>: ):</pre>
-<pre class="cython line score-0">&#xA0;<span class="">315</span>:     cdef:</pre>
-<pre class="cython line score-0">&#xA0;<span class="">316</span>:         int j, time_m1, time_m2</pre>
-<pre class="cython line score-0">&#xA0;<span class="">317</span>:         Job job</pre>
-<pre class="cython line score-0">&#xA0;<span class="">318</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">319</span>:     time_m1 = 0  # Completion time for machine 1</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">312</span>:     list[tuple[Job, int, int]] job_times,</pre>
+<pre class="cython line score-0">&#xA0;<span class="">313</span>:     int m1,</pre>
+<pre class="cython line score-0">&#xA0;<span class="">314</span>:     int m2</pre>
+<pre class="cython line score-0">&#xA0;<span class="">315</span>: ):</pre>
+<pre class="cython line score-0">&#xA0;<span class="">316</span>:     cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">317</span>:         int j, time_m1, time_m2</pre>
+<pre class="cython line score-0">&#xA0;<span class="">318</span>:         Job job</pre>
+<pre class="cython line score-0">&#xA0;<span class="">319</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">320</span>:     time_m1 = 0  # Completion time for machine 1</pre>
 <pre class='cython code score-0 '>  __pyx_v_time_m1 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">320</span>:     time_m2 = 0  # Completion time for machine 2</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">321</span>:     time_m2 = 0  # Completion time for machine 2</pre>
 <pre class='cython code score-0 '>  __pyx_v_time_m2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">321</span>: </pre>
-<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">322</span>:     for j in range(len(job_times)):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">322</span>: </pre>
+<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">323</span>:     for j in range(len(job_times)):</pre>
 <pre class='cython code score-7 '>  if (unlikely(__pyx_v_job_times == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    <span class='error_goto'>__PYX_ERR(0, 322, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 323, __pyx_L1_error)</span>
   }
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_v_job_times);<span class='error_goto'> if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 322, __pyx_L1_error)</span>
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyList_GET_SIZE</span>(__pyx_v_job_times);<span class='error_goto'> if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 323, __pyx_L1_error)</span>
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 &lt; __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_j = __pyx_t_3;
-</pre><pre class="cython line score-11" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">323</span>:         job = job_times[j][0]</pre>
+</pre><pre class="cython line score-11" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">324</span>:         job = job_times[j][0]</pre>
 <pre class='cython code score-11 '>    if (unlikely(__pyx_v_job_times == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 323, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 324, __pyx_L1_error)</span>
     }
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_job_times, __pyx_v_j), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 323, __pyx_L1_error)</span>
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(<span class='py_macro_api'>PyList_GET_ITEM</span>(__pyx_v_job_times, __pyx_v_j), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 324, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_4, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 323, __pyx_L1_error)</span>
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_4, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) <span class='error_goto'>__PYX_ERR(0, 324, __pyx_L1_error)</span>
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_4));
     __pyx_t_4 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">324</span>:         # Machine 1 processes each job sequentially</pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">325</span>:         time_m1 += job.p[m1]</pre>
-<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 325, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-0">&#xA0;<span class="">325</span>:         # Machine 1 processes each job sequentially</pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">326</span>:         time_m1 += job.p[m1]</pre>
+<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 326, __pyx_L1_error)</span>}
     __pyx_t_5 = __pyx_v_m1;
     __pyx_v_time_m1 = (__pyx_v_time_m1 + (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;p.data + __pyx_t_5 * __pyx_v_job-&gt;p.strides[0]) ))));
-</pre><pre class="cython line score-0">&#xA0;<span class="">326</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">327</span>:         # Machine 2 starts after the job is done</pre>
-<pre class="cython line score-0">&#xA0;<span class="">328</span>:         # on Machine 1 and any lag is considered</pre>
-<pre class="cython line score-0">&#xA0;<span class="">329</span>:         time_m2 = max(</pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">330</span>:             time_m1 + job.lat[m2][m1],</pre>
-<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 330, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-0">&#xA0;<span class="">327</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">328</span>:         # Machine 2 starts after the job is done</pre>
+<pre class="cython line score-0">&#xA0;<span class="">329</span>:         # on Machine 1 and any lag is considered</pre>
+<pre class="cython line score-0">&#xA0;<span class="">330</span>:         time_m2 = max(</pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">331</span>:             time_m1 + job.lat[m2][m1],</pre>
+<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;lat.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 331, __pyx_L1_error)</span>}
     __pyx_t_5 = __pyx_v_m2;
     __pyx_t_7 = __pyx_v_m1;
     __pyx_t_8 = (__pyx_v_time_m1 + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_job-&gt;lat.data + __pyx_t_5 * __pyx_v_job-&gt;lat.strides[0]) ) + __pyx_t_7 * __pyx_v_job-&gt;lat.strides[1]) ))));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">331</span>:             time_m2</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">332</span>:             time_m2</pre>
 <pre class='cython code score-0 '>    __pyx_t_6 = __pyx_v_time_m2;
 /* … */
     __pyx_t_10 = (__pyx_t_6 &gt; __pyx_t_8);
@@ -4576,13 +4533,13 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_2key_2_sort(CYTH
     } else {
       __pyx_t_9 = __pyx_t_8;
     }
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">332</span>:         ) + job.p[m2]</pre>
-<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 332, __pyx_L1_error)</span>}
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">333</span>:         ) + job.p[m2]</pre>
+<pre class='cython code score-5 '>    if (unlikely(!__pyx_v_job-&gt;p.memview)) {<span class='py_c_api'>PyErr_SetString</span>(PyExc_AttributeError,"Memoryview is not initialized");<span class='error_goto'>__PYX_ERR(0, 333, __pyx_L1_error)</span>}
     __pyx_t_7 = __pyx_v_m2;
     __pyx_v_time_m2 = (__pyx_t_9 + (*((int *) ( /* dim=0 */ (__pyx_v_job-&gt;p.data + __pyx_t_7 * __pyx_v_job-&gt;p.strides[0]) ))));
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">333</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">334</span>:     return max(time_m1, time_m2)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">334</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">335</span>:     return max(time_m1, time_m2)</pre>
 <pre class='cython code score-0 '>  __pyx_t_3 = __pyx_v_time_m2;
   __pyx_t_9 = __pyx_v_time_m1;
   __pyx_t_10 = (__pyx_t_3 &gt; __pyx_t_9);

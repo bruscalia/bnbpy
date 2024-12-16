@@ -15,7 +15,7 @@ cdef class Sigma:
         self.C = C
         self.m = len(self.C)
 
-    cpdef void job_to_bottom(Sigma self, Job job) except *:
+    cdef void job_to_bottom(Sigma self, Job job):
         cdef:
             int k
 
@@ -25,7 +25,7 @@ cdef class Sigma:
         for k in range(1, self.m):
             self.C[k] = max(self.C[k], self.C[k - 1]) + job.p[k]
 
-    cpdef void job_to_top(Sigma self, Job job) except *:
+    cdef void job_to_top(Sigma self, Job job):
         cdef:
             int k, m
 
@@ -44,5 +44,5 @@ cdef class Sigma:
         for k in range(1, m + 1):
             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
 
-    cpdef Sigma copy(Sigma self) except *:
-        return Sigma(self.jobs.copy(), array.array('i', self.C)[:])
+    cdef Sigma copy(Sigma self):
+        return Sigma(self.jobs.copy(), self.C.copy())

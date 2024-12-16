@@ -42,6 +42,9 @@ class FlowSolution(Solution):
     def lower_bound_2m(self):
         return self.perm.lower_bound_1m()
 
+    def push_job(self, j: int):
+        self.perm.push_job(j)
+
     def copy(self):
         other = copy.copy(self)
         other.perm = self.perm.copy()

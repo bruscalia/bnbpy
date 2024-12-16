@@ -187,15 +187,19 @@ class PermFlowShop(Problem):
         return children
 
     def _child_push(self, j: int):
-        child = self.copy(deep=False)
-        child.solution = self.solution.copy()
-        child.solution.perm.push_job(j)
+        child = self.copy()
+        child.solution.push_job(j)
         return child
 
     def bound_upgrade(self):
         lb5 = self.solution.perm.calc_lb_2m()
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
+
+    def copy(self):
+        child_solution = self.solution.copy()
+        child = type(self)(child_solution, self.constructive)
+        return child
 
 
 class PermFlowShopLazy(PermFlowShop):

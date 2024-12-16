@@ -11,8 +11,8 @@ cdef class Sigma:
         int[:] C
         int m
 
-    cpdef void job_to_bottom(Sigma self, Job job) except *
+    cdef void job_to_bottom(Sigma self, Job job)
 
-    cpdef void job_to_top(Sigma self, Job job) except *
+    cdef void job_to_top(Sigma self, Job job)
 
-    cpdef Sigma copy(Sigma self) except *
+    cdef Sigma copy(Sigma self)

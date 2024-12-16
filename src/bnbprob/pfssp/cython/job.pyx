@@ -31,8 +31,8 @@ cdef class Job:
         return Job(
             self.j,
             self.p,
-            array.array('i', self.r)[:],
-            array.array('i', self.q)[:],
+            self.r.copy(),
+            self.q.copy(),
             self.lat,
             self.slope,
             self.T
@@ -42,16 +42,16 @@ cdef class Job:
 cpdef Job start_job(int j, int[:] p) except *:
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
-        list[int] r, q
-        list[list[int]] lat
+        int[:] r, q
+        int[:, :] lat
 
     m = <int>len(p)
 
-    r = [0] * m
-    q = [0] * m
+    r = np.zeros(m, dtype=np.intc)[:]
+    q = np.zeros(m, dtype=np.intc)[:]
 
     # Resize `lat` to m x m
-    lat = [[0 for _ in range(m)] for _ in range(m)]
+    lat = np.zeros((m, m), dtype=np.intc)[:, :]
 
     # Compute sums
     T = 0
@@ -62,7 +62,7 @@ cpdef Job start_job(int j, int[:] p) except *:
                 sum_p = 0
                 for i in range(m2 + 1, m1):
                     sum_p += p[i]
-                lat[m1][m2] = sum_p
+                lat[m1, m2] = sum_p
 
     m += 1
     slope = 0
@@ -72,9 +72,9 @@ cpdef Job start_job(int j, int[:] p) except *:
     return Job(
         j,
         p,
-        array.array('i', r)[:],
-        array.array('i', q)[:],
-        np.array(lat, dtype=np.intc)[:, :],
+        r,
+        q,
+        lat,
         slope,
         T
     )

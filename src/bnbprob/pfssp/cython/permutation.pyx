@@ -177,7 +177,8 @@ cdef class Permutation:
 
     cpdef int lower_bound_1m(Permutation self):
         cdef:
-            int j, k, min_r, min_q, sum_p, max_value, temp_value
+            int k, min_r, min_q, sum_p, max_value, temp_value
+            Job job
 
         max_value = 0
 
@@ -186,12 +187,12 @@ cdef class Permutation:
             min_q = LARGE_INT
             sum_p = 0
 
-            for j in range(len(self.free_jobs)):
-                if self.free_jobs[j].r[k] < min_r:
-                    min_r = self.free_jobs[j].r[k]
-                if self.free_jobs[j].q[k] < min_q:
-                    min_q = self.free_jobs[j].q[k]
-                sum_p += self.free_jobs[j].p[k]
+            for job in self.free_jobs:
+                if job.r[k] < min_r:
+                    min_r = job.r[k]
+                if job.q[k] < min_q:
+                    min_q = job.q[k]
+                sum_p += job.p[k]
 
             temp_value = min_r + sum_p + min_q
             if temp_value > max_value:

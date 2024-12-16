@@ -527,7 +527,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_quick_constructiv
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_3));
     __pyx_t_3 = 0;
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">027</span>:         sol.sigma1.job_to_bottom(job)</pre>
-<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_sol-&gt;sigma1, __pyx_v_job, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_sol-&gt;sigma1, __pyx_v_job);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)</span>
   }
 </pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">028</span>:     return sol</pre>
 <pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_r);
@@ -784,10 +784,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
 </pre><pre class="cython line score-0">&#xA0;<span class="">044</span>:         vec,</pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">045</span>:         perm.sigma1.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma1, 0));<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma1));<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">046</span>:         perm.sigma2.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma2, 0));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma2));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
 </pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">047</span>:         perm.level</pre>
 <pre class='cython code score-2 '>  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_perm-&gt;level);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)</span>
@@ -841,10 +841,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
 </pre><pre class="cython line score-0">&#xA0;<span class="">053</span>:         vec,</pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">054</span>:         perm.sigma1.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_5 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma1, 0));<span class='error_goto'> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>  __pyx_t_5 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma1-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma1));<span class='error_goto'> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">055</span>:         perm.sigma2.copy(),</pre>
-<pre class='cython code score-0 '>  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma2, 0));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_perm-&gt;sigma2-&gt;__pyx_vtab)-&gt;copy(__pyx_v_perm-&gt;sigma2));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
 </pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">056</span>:         perm.level</pre>
 <pre class='cython code score-2 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_perm-&gt;level);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)</span>
@@ -1069,7 +1069,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive
         <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job_i, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_13));
         __pyx_t_13 = 0;
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">085</span>:                 s_alt.sigma1.job_to_bottom(job_i)</pre>
-<pre class='cython code score-0 '>        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_s_alt-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_s_alt-&gt;sigma1, __pyx_v_job_i, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_s_alt-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_s_alt-&gt;sigma1, __pyx_v_job_i);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)</span>
       }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">086</span>:             cost_alt = s_alt.calc_bound()</pre>
 <pre class='cython code score-0 '>      __pyx_t_18 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s_alt-&gt;__pyx_vtab)-&gt;calc_bound(__pyx_v_s_alt, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)</span>
@@ -1519,7 +1519,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_4local_search(CYT
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_4));
     __pyx_t_4 = 0;
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">127</span>:         best_move.sigma1.job_to_bottom(job)</pre>
-<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_best_move-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_best_move-&gt;sigma1, __pyx_v_job, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_best_move-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_best_move-&gt;sigma1, __pyx_v_job);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)</span>
   }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">128</span>:     best_cost = best_move.calc_bound()</pre>
 <pre class='cython code score-0 '>  __pyx_t_9 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_best_move-&gt;__pyx_vtab)-&gt;calc_bound(__pyx_v_best_move, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)</span>
@@ -1618,7 +1618,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_4local_search(CYT
         <span class='pyx_macro_api'>__Pyx_DECREF_SET</span>(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_4));
         __pyx_t_4 = 0;
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">149</span>:                 sol_alt.sigma1.job_to_bottom(job)</pre>
-<pre class='cython code score-0 '>        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol_alt-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_sol_alt-&gt;sigma1, __pyx_v_job, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)</span>
+<pre class='cython code score-0 '>        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol_alt-&gt;sigma1-&gt;__pyx_vtab)-&gt;job_to_bottom(__pyx_v_sol_alt-&gt;sigma1, __pyx_v_job);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)</span>
       }
 </pre><pre class="cython line score-0">&#xA0;<span class="">150</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">151</span>:             # New bound is computed considering sigma C</pre>
