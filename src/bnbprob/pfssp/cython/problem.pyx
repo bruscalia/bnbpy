@@ -174,13 +174,16 @@ cdef class PermFlowShop:
 
     cpdef list[PermFlowShop] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
+        cdef:
+            int j
         return [
             self._child_push(j)
             for j in range(len(self.solution.free_jobs))
         ]
 
     cdef PermFlowShop _child_push(PermFlowShop self, int j):
-        child = self.copy()
+        cdef:
+            PermFlowShop child = self.copy()
         child.solution.push_job(j)
         return child
 
@@ -190,7 +193,9 @@ cdef class PermFlowShop:
         self.solution.set_lb(lb)
 
     cpdef PermFlowShop copy(PermFlowShop self):
-        child_solution = self.solution.copy()
+        cdef:
+            PermFlowShop child
+            FlowSolution child_solution = self.solution.copy()
         child = type(self)(child_solution, self.constructive)
         return child
 

@@ -11,13 +11,13 @@ from bnbprob.pfssp.cython.heuristics cimport (
     quick_constructive as qc,
 )
 from bnbprob.pfssp.cython.permutation cimport Permutation
-from bnbprob.pfssp.cython.solution import FlowSolution
+from bnbprob.pfssp.cython.solution cimport FlowSolution
 
 
 cdef class PermFlowShop:
 
     cdef public:
-        object solution
+        FlowSolution solution
         str constructive
 
     cpdef void cleanup(PermFlowShop self)
