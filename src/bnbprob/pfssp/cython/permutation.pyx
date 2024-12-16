@@ -163,7 +163,7 @@ cdef class Permutation:
 
         seq = self.get_sequence()
         for j in range(len(seq)):
-            seq[j].r = array('i', [0] * self.m)[:]
+            seq[j].r = vector[int](self.m, 0)
 
         seq[0].r[0] = 0
         for m in range(1, self.m):

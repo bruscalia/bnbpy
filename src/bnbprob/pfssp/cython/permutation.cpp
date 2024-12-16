@@ -1662,7 +1662,7 @@ struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 
-/* "bnbprob/pfssp/cython/job.pxd":5
+/* "bnbprob/pfssp/cython/job.pxd":7
  * 
  * 
  * cdef class Job:             # <<<<<<<<<<<<<<
@@ -1674,15 +1674,15 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job {
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtab;
   int j;
   __Pyx_memviewslice p;
-  __Pyx_memviewslice r;
-  __Pyx_memviewslice q;
+  std::vector<int>  r;
+  std::vector<int>  q;
   __Pyx_memviewslice lat;
   int slope;
   int T;
 };
 
 
-/* "bnbprob/pfssp/cython/sequence.pxd":7
+/* "bnbprob/pfssp/cython/sequence.pxd":9
  * 
  * 
  * cdef class Sigma:             # <<<<<<<<<<<<<<
@@ -1693,7 +1693,7 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma {
   PyObject_HEAD
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_vtab;
   PyObject *jobs;
-  __Pyx_memviewslice C;
+  std::vector<int>  C;
   int m;
 };
 
@@ -1793,7 +1793,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "bnbprob/pfssp/cython/job.pxd":5
+/* "bnbprob/pfssp/cython/job.pxd":7
  * 
  * 
  * cdef class Job:             # <<<<<<<<<<<<<<
@@ -1807,7 +1807,7 @@ struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job {
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job;
 
 
-/* "bnbprob/pfssp/cython/sequence.pxd":7
+/* "bnbprob/pfssp/cython/sequence.pxd":9
  * 
  * 
  * cdef class Sigma:             # <<<<<<<<<<<<<<
@@ -2908,6 +2908,9 @@ static void __Pyx_CppExn2PyErr() {
 }
 #endif
 
+/* None.proto */
+#include <new>
+
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
@@ -2951,9 +2954,6 @@ static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
 #define __PYX_XCLEAR_MEMVIEW(slice, have_gil) __Pyx_XCLEAR_MEMVIEW(slice, have_gil, __LINE__)
 static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
 static CYTHON_INLINE void __Pyx_XCLEAR_MEMVIEW(__Pyx_memviewslice *, int, int);
-
-/* None.proto */
-#include <new>
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
@@ -3040,6 +3040,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_makespan(PyObj
 static CYTHON_INLINE int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_1_sort(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static CYTHON_INLINE int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_key_2_sort(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_11permutation___pyx_unpickle_Permutation__set_state(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, PyObject *); /*proto*/
+static PyObject *__pyx_convert_vector_to_py_int(std::vector<int>  const &); /*proto*/
 static int __pyx_array_allocate_buffer(struct __pyx_array_obj *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -3084,9 +3085,9 @@ int __pyx_module_is_main_bnbprob__pfssp__cython__permutation = 0;
 /* Implementation of "bnbprob.pfssp.cython.permutation" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_range;
+static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin___import__;
 static PyObject *__pyx_builtin_ValueError;
-static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_AssertionError;
@@ -4451,6 +4452,155 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_codeobj__44 __pyx_mstate_global->__pyx_codeobj__44
 #define __pyx_codeobj__45 __pyx_mstate_global->__pyx_codeobj__45
 /* #### Code section: module_code ### */
+
+/* "vector.to_py":66
+ * 
+ * @cname("__pyx_convert_vector_to_py_int")
+ * cdef object __pyx_convert_vector_to_py_int(const vector[X]& v):             # <<<<<<<<<<<<<<
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:
+ *         raise MemoryError()
+ */
+
+static PyObject *__pyx_convert_vector_to_py_int(std::vector<int>  const &__pyx_v_v) {
+  Py_ssize_t __pyx_v_v_size_signed;
+  PyObject *__pyx_v_o = NULL;
+  Py_ssize_t __pyx_v_i;
+  PyObject *__pyx_v_item = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  Py_ssize_t __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_to_py_int", 1);
+
+  /* "vector.to_py":67
+ * @cname("__pyx_convert_vector_to_py_int")
+ * cdef object __pyx_convert_vector_to_py_int(const vector[X]& v):
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:             # <<<<<<<<<<<<<<
+ *         raise MemoryError()
+ *     v_size_signed = <Py_ssize_t> v.size()
+ */
+  __pyx_t_1 = (__pyx_v_v.size() > ((size_t)PY_SSIZE_T_MAX));
+  if (unlikely(__pyx_t_1)) {
+
+    /* "vector.to_py":68
+ * cdef object __pyx_convert_vector_to_py_int(const vector[X]& v):
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:
+ *         raise MemoryError()             # <<<<<<<<<<<<<<
+ *     v_size_signed = <Py_ssize_t> v.size()
+ * 
+ */
+    PyErr_NoMemory(); __PYX_ERR(1, 68, __pyx_L1_error)
+
+    /* "vector.to_py":67
+ * @cname("__pyx_convert_vector_to_py_int")
+ * cdef object __pyx_convert_vector_to_py_int(const vector[X]& v):
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:             # <<<<<<<<<<<<<<
+ *         raise MemoryError()
+ *     v_size_signed = <Py_ssize_t> v.size()
+ */
+  }
+
+  /* "vector.to_py":69
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:
+ *         raise MemoryError()
+ *     v_size_signed = <Py_ssize_t> v.size()             # <<<<<<<<<<<<<<
+ * 
+ *     o = PyList_New(v_size_signed)
+ */
+  __pyx_v_v_size_signed = ((Py_ssize_t)__pyx_v_v.size());
+
+  /* "vector.to_py":71
+ *     v_size_signed = <Py_ssize_t> v.size()
+ * 
+ *     o = PyList_New(v_size_signed)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef Py_ssize_t i
+ */
+  __pyx_t_2 = PyList_New(__pyx_v_v_size_signed); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_o = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "vector.to_py":76
+ *     cdef object item
+ * 
+ *     for i in range(v_size_signed):             # <<<<<<<<<<<<<<
+ *         item = v[i]
+ *         Py_INCREF(item)
+ */
+  __pyx_t_3 = __pyx_v_v_size_signed;
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
+
+    /* "vector.to_py":77
+ * 
+ *     for i in range(v_size_signed):
+ *         item = v[i]             # <<<<<<<<<<<<<<
+ *         Py_INCREF(item)
+ *         PyList_SET_ITEM(o, i, item)
+ */
+    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_v[__pyx_v_i])); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 77, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "vector.to_py":78
+ *     for i in range(v_size_signed):
+ *         item = v[i]
+ *         Py_INCREF(item)             # <<<<<<<<<<<<<<
+ *         PyList_SET_ITEM(o, i, item)
+ * 
+ */
+    Py_INCREF(__pyx_v_item);
+
+    /* "vector.to_py":79
+ *         item = v[i]
+ *         Py_INCREF(item)
+ *         PyList_SET_ITEM(o, i, item)             # <<<<<<<<<<<<<<
+ * 
+ *     return o
+ */
+    PyList_SET_ITEM(__pyx_v_o, __pyx_v_i, __pyx_v_item);
+  }
+
+  /* "vector.to_py":81
+ *         PyList_SET_ITEM(o, i, item)
+ * 
+ *     return o             # <<<<<<<<<<<<<<
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_o);
+  __pyx_r = __pyx_v_o;
+  goto __pyx_L0;
+
+  /* "vector.to_py":66
+ * 
+ * @cname("__pyx_convert_vector_to_py_int")
+ * cdef object __pyx_convert_vector_to_py_int(const vector[X]& v):             # <<<<<<<<<<<<<<
+ *     if v.size() > <size_t> PY_SSIZE_T_MAX:
+ *         raise MemoryError()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("vector.to_py.__pyx_convert_vector_to_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_o);
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
 
 /* "View.MemoryView":131
  *         cdef bint dtype_is_object
@@ -20196,15 +20346,14 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
   PyObject *__pyx_t_1 = NULL;
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
+  int __pyx_t_4;
+  int __pyx_t_5;
   int __pyx_t_6;
-  int __pyx_t_7;
+  Py_ssize_t __pyx_t_7;
   int __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
-  int __pyx_t_12;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20248,9 +20397,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *             for k in range(1, self.m):
  *                 job.r[k] = max(
  */
-    __pyx_t_4 = 0;
-    __pyx_t_5 = 0;
-    *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_5)) )) = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma1->C.data) + __pyx_t_4)) )));
+    (__pyx_v_job->r[0]) = (__pyx_v_self->sigma1->C[0]);
 
     /* "bnbprob/pfssp/cython/permutation.pyx":112
  *         for job in self.free_jobs:
@@ -20259,10 +20406,10 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *                 job.r[k] = max(
  *                     self.sigma1.C[k],
  */
-    __pyx_t_6 = __pyx_v_self->m;
-    __pyx_t_7 = __pyx_t_6;
-    for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_k = __pyx_t_8;
+    __pyx_t_4 = __pyx_v_self->m;
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = 1; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_k = __pyx_t_6;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":115
  *                 job.r[k] = max(
@@ -20271,9 +20418,8 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *                 )
  * 
  */
-      __pyx_t_4 = (__pyx_v_k - 1);
-      __pyx_t_5 = (__pyx_v_k - 1);
-      __pyx_t_9 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_4)) ))) + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_5)) ))));
+      __pyx_t_7 = (__pyx_v_k - 1);
+      __pyx_t_8 = ((__pyx_v_job->r[(__pyx_v_k - 1)]) + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_7)) ))));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":114
  *             for k in range(1, self.m):
@@ -20282,8 +20428,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *                     job.r[k - 1] + job.p[k - 1]
  *                 )
  */
-      __pyx_t_5 = __pyx_v_k;
-      __pyx_t_10 = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma1->C.data) + __pyx_t_5)) )));
+      __pyx_t_9 = (__pyx_v_self->sigma1->C[__pyx_v_k]);
 
       /* "bnbprob/pfssp/cython/permutation.pyx":115
  *                 job.r[k] = max(
@@ -20292,11 +20437,11 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *                 )
  * 
  */
-      __pyx_t_12 = (__pyx_t_9 > __pyx_t_10);
-      if (__pyx_t_12) {
-        __pyx_t_11 = __pyx_t_9;
+      __pyx_t_11 = (__pyx_t_8 > __pyx_t_9);
+      if (__pyx_t_11) {
+        __pyx_t_10 = __pyx_t_8;
       } else {
-        __pyx_t_11 = __pyx_t_10;
+        __pyx_t_10 = __pyx_t_9;
       }
 
       /* "bnbprob/pfssp/cython/permutation.pyx":113
@@ -20306,8 +20451,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *                     self.sigma1.C[k],
  *                     job.r[k - 1] + job.p[k - 1]
  */
-      __pyx_t_5 = __pyx_v_k;
-      *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_5)) )) = __pyx_t_11;
+      (__pyx_v_job->r[__pyx_v_k]) = __pyx_t_10;
     }
 
     /* "bnbprob/pfssp/cython/permutation.pyx":110
@@ -20355,15 +20499,14 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
   PyObject *__pyx_t_1 = NULL;
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  long __pyx_t_6;
-  long __pyx_t_7;
+  long __pyx_t_4;
+  long __pyx_t_5;
+  int __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
   int __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
-  int __pyx_t_12;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20416,9 +20559,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *             for k in range(1, m + 1):
  *                 job.q[m - k] = max(
  */
-    __pyx_t_4 = __pyx_v_m;
-    __pyx_t_5 = __pyx_v_m;
-    *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_5)) )) = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma2->C.data) + __pyx_t_4)) )));
+    (__pyx_v_job->q[__pyx_v_m]) = (__pyx_v_self->sigma2->C[__pyx_v_m]);
 
     /* "bnbprob/pfssp/cython/permutation.pyx":126
  *         for job in self.free_jobs:
@@ -20427,10 +20568,10 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *                 job.q[m - k] = max(
  *                     self.sigma2.C[m - k],
  */
-    __pyx_t_6 = (__pyx_v_m + 1);
-    __pyx_t_7 = __pyx_t_6;
-    for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_k = __pyx_t_8;
+    __pyx_t_4 = (__pyx_v_m + 1);
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = 1; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_k = __pyx_t_6;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":129
  *                 job.q[m - k] = max(
@@ -20439,9 +20580,8 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *                 )
  * 
  */
-      __pyx_t_4 = ((__pyx_v_m - __pyx_v_k) + 1);
-      __pyx_t_5 = ((__pyx_v_m - __pyx_v_k) + 1);
-      __pyx_t_9 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_4)) ))) + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_5)) ))));
+      __pyx_t_7 = ((__pyx_v_m - __pyx_v_k) + 1);
+      __pyx_t_8 = ((__pyx_v_job->q[((__pyx_v_m - __pyx_v_k) + 1)]) + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_7)) ))));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":128
  *             for k in range(1, m + 1):
@@ -20450,8 +20590,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *                     job.q[m - k + 1] + job.p[m - k + 1]
  *                 )
  */
-      __pyx_t_5 = (__pyx_v_m - __pyx_v_k);
-      __pyx_t_10 = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma2->C.data) + __pyx_t_5)) )));
+      __pyx_t_9 = (__pyx_v_self->sigma2->C[(__pyx_v_m - __pyx_v_k)]);
 
       /* "bnbprob/pfssp/cython/permutation.pyx":129
  *                 job.q[m - k] = max(
@@ -20460,11 +20599,11 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *                 )
  * 
  */
-      __pyx_t_12 = (__pyx_t_9 > __pyx_t_10);
-      if (__pyx_t_12) {
-        __pyx_t_11 = __pyx_t_9;
+      __pyx_t_11 = (__pyx_t_8 > __pyx_t_9);
+      if (__pyx_t_11) {
+        __pyx_t_10 = __pyx_t_8;
       } else {
-        __pyx_t_11 = __pyx_t_10;
+        __pyx_t_10 = __pyx_t_9;
       }
 
       /* "bnbprob/pfssp/cython/permutation.pyx":127
@@ -20474,8 +20613,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *                     self.sigma2.C[m - k],
  *                     job.q[m - k + 1] + job.p[m - k + 1]
  */
-      __pyx_t_5 = (__pyx_v_m - __pyx_v_k);
-      *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_5)) )) = __pyx_t_11;
+      (__pyx_v_job->q[(__pyx_v_m - __pyx_v_k)]) = __pyx_t_10;
     }
 
     /* "bnbprob/pfssp/cython/permutation.pyx":124
@@ -21010,14 +21148,12 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_calc_lb_f
   PyObject *__pyx_t_4 = NULL;
   unsigned int __pyx_t_5;
   int __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
-  Py_ssize_t __pyx_t_8;
+  int __pyx_t_7;
+  int __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  int __pyx_t_13;
-  int __pyx_t_14;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -21083,9 +21219,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_calc_lb_f
  *         for k in range(1, self.m):
  *             cost = max(cost, self.sigma1.C[k] + self.sigma2.C[k])
  */
-  __pyx_t_7 = 0;
-  __pyx_t_8 = 0;
-  __pyx_v_cost = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma1->C.data) + __pyx_t_7)) ))) + (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma2->C.data) + __pyx_t_8)) ))));
+  __pyx_v_cost = ((__pyx_v_self->sigma1->C[0]) + (__pyx_v_self->sigma2->C[0]));
 
   /* "bnbprob/pfssp/cython/permutation.pyx":155
  *         # All positions are filled take values from self
@@ -21095,9 +21229,9 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_calc_lb_f
  *         return cost
  */
   __pyx_t_6 = __pyx_v_self->m;
-  __pyx_t_9 = __pyx_t_6;
-  for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_k = __pyx_t_10;
+  __pyx_t_7 = __pyx_t_6;
+  for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+    __pyx_v_k = __pyx_t_8;
 
     /* "bnbprob/pfssp/cython/permutation.pyx":156
  *         cost = self.sigma1.C[0] + self.sigma2.C[0]
@@ -21106,17 +21240,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_calc_lb_f
  *         return cost
  * 
  */
-    __pyx_t_8 = __pyx_v_k;
-    __pyx_t_7 = __pyx_v_k;
-    __pyx_t_11 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma1->C.data) + __pyx_t_8)) ))) + (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_self->sigma2->C.data) + __pyx_t_7)) ))));
-    __pyx_t_12 = __pyx_v_cost;
-    __pyx_t_14 = (__pyx_t_11 > __pyx_t_12);
-    if (__pyx_t_14) {
-      __pyx_t_13 = __pyx_t_11;
+    __pyx_t_9 = ((__pyx_v_self->sigma1->C[__pyx_v_k]) + (__pyx_v_self->sigma2->C[__pyx_v_k]));
+    __pyx_t_10 = __pyx_v_cost;
+    __pyx_t_12 = (__pyx_t_9 > __pyx_t_10);
+    if (__pyx_t_12) {
+      __pyx_t_11 = __pyx_t_9;
     } else {
-      __pyx_t_13 = __pyx_t_12;
+      __pyx_t_11 = __pyx_t_10;
     }
-    __pyx_v_cost = __pyx_t_13;
+    __pyx_v_cost = __pyx_t_11;
   }
 
   /* "bnbprob/pfssp/cython/permutation.pyx":157
@@ -21247,11 +21379,12 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   int __pyx_t_8;
-  int __pyx_t_9;
+  std::vector<int>  __pyx_t_9;
   int __pyx_t_10;
-  long __pyx_t_11;
-  int __pyx_t_12;
+  int __pyx_t_11;
+  long __pyx_t_12;
   int __pyx_t_13;
+  int __pyx_t_14;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -21313,7 +21446,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
  * 
  *         seq = self.get_sequence()             # <<<<<<<<<<<<<<
  *         for j in range(len(seq)):
- *             seq[j].r = array('i', [0] * self.m)[:]
+ *             seq[j].r = vector[int](self.m, 0)
  */
   __pyx_t_1 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self->__pyx_vtab)->get_sequence(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -21324,7 +21457,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
  * 
  *         seq = self.get_sequence()
  *         for j in range(len(seq)):             # <<<<<<<<<<<<<<
- *             seq[j].r = array('i', [0] * self.m)[:]
+ *             seq[j].r = vector[int](self.m, 0)
  * 
  */
   if (unlikely(__pyx_v_seq == Py_None)) {
@@ -21339,57 +21472,28 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
     /* "bnbprob/pfssp/cython/permutation.pyx":166
  *         seq = self.get_sequence()
  *         for j in range(len(seq)):
- *             seq[j].r = array('i', [0] * self.m)[:]             # <<<<<<<<<<<<<<
+ *             seq[j].r = vector[int](self.m, 0)             # <<<<<<<<<<<<<<
  * 
  *         seq[0].r[0] = 0
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyList_New(1 * ((__pyx_v_self->m<0) ? 0:__pyx_v_self->m)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    { Py_ssize_t __pyx_temp;
-      for (__pyx_temp=0; __pyx_temp < __pyx_v_self->m; __pyx_temp++) {
-        __Pyx_INCREF(__pyx_int_0);
-        __Pyx_GIVEREF(__pyx_int_0);
-        if (__Pyx_PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_int_0)) __PYX_ERR(0, 166, __pyx_L1_error);
-      }
+    try {
+      __pyx_t_9 = std::vector<int> (__pyx_v_self->m, 0);
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(0, 166, __pyx_L1_error)
     }
-    __pyx_t_4 = NULL;
-    __pyx_t_5 = 0;
-    #if CYTHON_UNPACK_METHODS
-    if (unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-        __pyx_t_5 = 1;
-      }
-    }
-    #endif
-    {
-      PyObject *__pyx_callargs[3] = {__pyx_t_4, __pyx_n_u_i, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    }
-    __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, 0, NULL, NULL, &__pyx_slice__5, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __pyx_convert_vector_to_py_int(__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_seq == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 166, __pyx_L1_error)
     }
-    if (__Pyx_PyObject_SetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r, __pyx_t_2) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (__Pyx_PyObject_SetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r, __pyx_t_1) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
   /* "bnbprob/pfssp/cython/permutation.pyx":168
- *             seq[j].r = array('i', [0] * self.m)[:]
+ *             seq[j].r = vector[int](self.m, 0)
  * 
  *         seq[0].r[0] = 0             # <<<<<<<<<<<<<<
  *         for m in range(1, self.m):
@@ -21399,10 +21503,10 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(0, 168, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_r); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely((__Pyx_SetItemInt(__pyx_t_2, 0, __pyx_int_0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0))) __PYX_ERR(0, 168, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely((__Pyx_SetItemInt(__pyx_t_1, 0, __pyx_int_0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0))) __PYX_ERR(0, 168, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "bnbprob/pfssp/cython/permutation.pyx":169
  * 
@@ -21412,9 +21516,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
  * 
  */
   __pyx_t_8 = __pyx_v_self->m;
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_m = __pyx_t_10;
+  __pyx_t_10 = __pyx_t_8;
+  for (__pyx_t_11 = 1; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_m = __pyx_t_11;
 
     /* "bnbprob/pfssp/cython/permutation.pyx":170
  *         seq[0].r[0] = 0
@@ -21427,25 +21531,25 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 170, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_r); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_11 = (__pyx_v_m - 1);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, __pyx_t_11, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_12 = (__pyx_v_m - 1);
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, __pyx_t_12, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_v_seq == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 170, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_11 = (__pyx_v_m - 1);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, __pyx_t_11, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_12 = (__pyx_v_m - 1);
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, __pyx_t_12, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (unlikely(__pyx_v_seq == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -21453,9 +21557,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
     }
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, 0), __pyx_n_s_r); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (unlikely((__Pyx_SetItemInt(__pyx_t_3, __pyx_v_m, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 0, 0, 0) < 0))) __PYX_ERR(0, 170, __pyx_L1_error)
+    if (unlikely((__Pyx_SetItemInt(__pyx_t_3, __pyx_v_m, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 0, 0) < 0))) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
   /* "bnbprob/pfssp/cython/permutation.pyx":172
@@ -21485,35 +21589,35 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 173, __pyx_L1_error)
     }
-    __pyx_t_11 = (__pyx_v_j - 1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_11), __pyx_n_s_r); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_12 = (__pyx_v_j - 1);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_12), __pyx_n_s_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_v_seq == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 173, __pyx_L1_error)
     }
-    __pyx_t_11 = (__pyx_v_j - 1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_11), __pyx_n_s_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_12 = (__pyx_v_j - 1);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_12), __pyx_n_s_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (unlikely(__pyx_v_seq == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 173, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely((__Pyx_SetItemInt(__pyx_t_1, 0, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0))) __PYX_ERR(0, 173, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    if (unlikely((__Pyx_SetItemInt(__pyx_t_2, 0, __pyx_t_1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0))) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "bnbprob/pfssp/cython/permutation.pyx":174
  *         for j in range(1, len(seq)):
@@ -21522,10 +21626,10 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
  *                 seq[j].r[m] = max(
  *                     seq[j].r[m - 1] + seq[j].p[m - 1],
  */
-    __pyx_t_9 = __pyx_v_self->m;
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_12 = 1; __pyx_t_12 < __pyx_t_10; __pyx_t_12+=1) {
-      __pyx_v_m = __pyx_t_12;
+    __pyx_t_10 = __pyx_v_self->m;
+    __pyx_t_11 = __pyx_t_10;
+    for (__pyx_t_13 = 1; __pyx_t_13 < __pyx_t_11; __pyx_t_13+=1) {
+      __pyx_v_m = __pyx_t_13;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":177
  *                 seq[j].r[m] = max(
@@ -21538,25 +21642,25 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 177, __pyx_L1_error)
       }
-      __pyx_t_11 = (__pyx_v_j - 1);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_11), __pyx_n_s_r); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, __pyx_v_m, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_12 = (__pyx_v_j - 1);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_12), __pyx_n_s_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_m, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (unlikely(__pyx_v_seq == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 177, __pyx_L1_error)
       }
-      __pyx_t_11 = (__pyx_v_j - 1);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_11), __pyx_n_s_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, __pyx_v_m, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_12 = (__pyx_v_j - 1);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_t_12), __pyx_n_s_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_m, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":176
@@ -21572,9 +21676,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
       }
       __pyx_t_3 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_11 = (__pyx_v_m - 1);
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, __pyx_t_11, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_12 = (__pyx_v_m - 1);
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_3, __pyx_t_12, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       if (unlikely(__pyx_v_seq == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -21582,13 +21686,13 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
       }
       __pyx_t_3 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_p); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_11 = (__pyx_v_m - 1);
-      __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, __pyx_t_11, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_12 = (__pyx_v_m - 1);
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, __pyx_t_12, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":177
@@ -21598,20 +21702,20 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
  *                 )
  * 
  */
-      __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_13 < 0))) __PYX_ERR(0, 177, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__pyx_t_13) {
-        __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_4 = __pyx_t_2;
+      __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_14 < 0))) __PYX_ERR(0, 177, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (__pyx_t_14) {
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_4 = __pyx_t_1;
       } else {
         __Pyx_INCREF(__pyx_t_3);
         __pyx_t_4 = __pyx_t_3;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __pyx_t_4;
-      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __pyx_t_4;
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
       /* "bnbprob/pfssp/cython/permutation.pyx":175
@@ -21627,9 +21731,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_compute_
       }
       __pyx_t_4 = __Pyx_PyObject_GetAttrStr(PyList_GET_ITEM(__pyx_v_seq, __pyx_v_j), __pyx_n_s_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely((__Pyx_SetItemInt(__pyx_t_4, __pyx_v_m, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 0, 0, 0) < 0))) __PYX_ERR(0, 175, __pyx_L1_error)
+      if (unlikely((__Pyx_SetItemInt(__pyx_t_4, __pyx_v_m, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 0, 0) < 0))) __PYX_ERR(0, 175, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
   }
 
@@ -21756,8 +21860,8 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
   int __pyx_t_7;
   int __pyx_t_8;
   Py_ssize_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  int __pyx_t_11;
+  int __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -21902,9 +22006,8 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                     min_r = job.r[k]
  *                 if job.q[k] < min_q:
  */
-      __pyx_t_10 = __pyx_v_k;
-      __pyx_t_11 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_10)) ))) < __pyx_v_min_r);
-      if (__pyx_t_11) {
+      __pyx_t_10 = ((__pyx_v_job->r[__pyx_v_k]) < __pyx_v_min_r);
+      if (__pyx_t_10) {
 
         /* "bnbprob/pfssp/cython/permutation.pyx":194
  *             for job in self.free_jobs:
@@ -21913,8 +22016,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                 if job.q[k] < min_q:
  *                     min_q = job.q[k]
  */
-        __pyx_t_10 = __pyx_v_k;
-        __pyx_v_min_r = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_10)) )));
+        __pyx_v_min_r = (__pyx_v_job->r[__pyx_v_k]);
 
         /* "bnbprob/pfssp/cython/permutation.pyx":193
  * 
@@ -21932,9 +22034,8 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                     min_q = job.q[k]
  *                 sum_p += job.p[k]
  */
-      __pyx_t_10 = __pyx_v_k;
-      __pyx_t_11 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_10)) ))) < __pyx_v_min_q);
-      if (__pyx_t_11) {
+      __pyx_t_10 = ((__pyx_v_job->q[__pyx_v_k]) < __pyx_v_min_q);
+      if (__pyx_t_10) {
 
         /* "bnbprob/pfssp/cython/permutation.pyx":196
  *                     min_r = job.r[k]
@@ -21943,8 +22044,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                 sum_p += job.p[k]
  * 
  */
-        __pyx_t_10 = __pyx_v_k;
-        __pyx_v_min_q = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_10)) )));
+        __pyx_v_min_q = (__pyx_v_job->q[__pyx_v_k]);
 
         /* "bnbprob/pfssp/cython/permutation.pyx":195
  *                 if job.r[k] < min_r:
@@ -21962,8 +22062,8 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  * 
  *             temp_value = min_r + sum_p + min_q
  */
-      __pyx_t_10 = __pyx_v_k;
-      __pyx_v_sum_p = (__pyx_v_sum_p + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_10)) ))));
+      __pyx_t_11 = __pyx_v_k;
+      __pyx_v_sum_p = (__pyx_v_sum_p + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_11)) ))));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":192
  *             sum_p = 0
@@ -21991,8 +22091,8 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                 max_value = temp_value
  * 
  */
-    __pyx_t_11 = (__pyx_v_temp_value > __pyx_v_max_value);
-    if (__pyx_t_11) {
+    __pyx_t_10 = (__pyx_v_temp_value > __pyx_v_max_value);
+    if (__pyx_t_10) {
 
       /* "bnbprob/pfssp/cython/permutation.pyx":201
  *             temp_value = min_r + sum_p + min_q
@@ -22436,8 +22536,7 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  Py_ssize_t __pyx_t_8;
-  int __pyx_t_9;
+  int __pyx_t_8;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -22517,9 +22616,8 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
  *                     min_rm = job.r[m]
  *             r[m] = min_rm
  */
-      __pyx_t_8 = __pyx_v_m;
-      __pyx_t_9 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_8)) ))) < __pyx_v_min_rm);
-      if (__pyx_t_9) {
+      __pyx_t_8 = ((__pyx_v_job->r[__pyx_v_m]) < __pyx_v_min_rm);
+      if (__pyx_t_8) {
 
         /* "bnbprob/pfssp/cython/permutation.pyx":237
  *             for job in self.free_jobs:
@@ -22528,8 +22626,7 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
  *             r[m] = min_rm
  * 
  */
-        __pyx_t_8 = __pyx_v_m;
-        __pyx_v_min_rm = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->r.data) + __pyx_t_8)) )));
+        __pyx_v_min_rm = (__pyx_v_job->r[__pyx_v_m]);
 
         /* "bnbprob/pfssp/cython/permutation.pyx":236
  *             min_rm = LARGE_INT
@@ -22612,8 +22709,7 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  Py_ssize_t __pyx_t_8;
-  int __pyx_t_9;
+  int __pyx_t_8;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -22693,9 +22789,8 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
  *                     min_qm = job.q[m]
  *             q[m] = min_qm
  */
-      __pyx_t_8 = __pyx_v_m;
-      __pyx_t_9 = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_8)) ))) < __pyx_v_min_qm);
-      if (__pyx_t_9) {
+      __pyx_t_8 = ((__pyx_v_job->q[__pyx_v_m]) < __pyx_v_min_qm);
+      if (__pyx_t_8) {
 
         /* "bnbprob/pfssp/cython/permutation.pyx":253
  *             for job in self.free_jobs:
@@ -22704,8 +22799,7 @@ static std::vector<int>  __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permuta
  *             q[m] = min_qm
  * 
  */
-        __pyx_t_8 = __pyx_v_m;
-        __pyx_v_min_qm = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_job->q.data) + __pyx_t_8)) )));
+        __pyx_v_min_qm = (__pyx_v_job->q[__pyx_v_m]);
 
         /* "bnbprob/pfssp/cython/permutation.pyx":252
  *             min_qm = LARGE_INT
@@ -26747,9 +26841,9 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 68, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_n_s_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 141, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 156, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 159, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_AssertionError = __Pyx_GetBuiltinName(__pyx_n_s_AssertionError); if (!__pyx_builtin_AssertionError) __PYX_ERR(1, 373, __pyx_L1_error)
@@ -27382,15 +27476,15 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 5, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "Job", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job) __PYX_ERR(3, 5, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job)) __PYX_ERR(3, 5, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "Job", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job) __PYX_ERR(3, 7, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job)) __PYX_ERR(3, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 7, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.sequence", "Sigma", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma) __PYX_ERR(4, 7, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_Sigma = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_Sigma)) __PYX_ERR(4, 7, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.sequence", "Sigma", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma) __PYX_ERR(4, 9, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_Sigma = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_Sigma)) __PYX_ERR(4, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

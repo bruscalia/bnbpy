@@ -1,14 +1,16 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libcpp.vector cimport vector
+
 
 cdef class Job:
 
     cdef public:
         int j
         const int[::1] p
-        int[::1] r
-        int[::1] q
+        vector[int] r
+        vector[int] q
         const int[:, ::1] lat
         int slope
         int T

@@ -1,13 +1,14 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-from array import array
+from libcpp.vector cimport vector
+
 from bnbprob.pfssp.cython.job cimport Job
 
 
 cdef class Sigma:
 
-    def __init__(self, list[Job] jobs, int[::1] C):
+    def __init__(self, list[Job] jobs, vector[int] C):
         self.jobs = jobs
         self.C = C
         self.m = len(self.C)
@@ -42,8 +43,8 @@ cdef class Sigma:
             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
 
     cdef Sigma copy(Sigma self):
-        return Sigma(self.jobs.copy(), self.C.copy())
+        return Sigma(self.jobs.copy(), vector[int](self.C))
 
 
 cdef Sigma empty_sigma(int m):
-    return Sigma([], array('i', [0] * m)[:])
+    return Sigma([], vector[int](m, 0))

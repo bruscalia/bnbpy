@@ -1,6 +1,8 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libcpp.vector cimport vector
+
 from bnbprob.pfssp.cython.job cimport Job
 
 
@@ -8,7 +10,7 @@ cdef class Sigma:
 
     cdef public:
         list[Job] jobs
-        int[::1] C
+        vector[int] C
         int m
 
     cdef void job_to_bottom(Sigma self, Job job)
