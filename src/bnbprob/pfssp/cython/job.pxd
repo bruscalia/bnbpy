@@ -6,14 +6,14 @@ cdef class Job:
 
     cdef public:
         int j
-        int[:] p
-        int[:] r
-        int[:] q
-        int[:, :] lat
+        const int[::1] p
+        int[::1] r
+        int[::1] q
+        const int[:, ::1] lat
         int slope
         int T
 
     cpdef Job copy(Job self)
 
 
-cdef Job start_job(int j, int[:] p)
+cdef Job start_job(int j, const int[::1] p)

@@ -37,3 +37,8 @@ cdef class PermFlowShop:
     cdef PermFlowShop _child_push(PermFlowShop self, int j)
 
     cpdef PermFlowShop copy(PermFlowShop self)
+
+
+cdef class PermFlowShopLazy(PermFlowShop):
+
+    cpdef int calc_bound(PermFlowShopLazy self)

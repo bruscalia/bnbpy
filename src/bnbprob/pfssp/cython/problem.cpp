@@ -1507,6 +1507,7 @@ static const char *__pyx_f[] = {
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\job.pxd",
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\sequence.pxd",
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\permutation.pxd",
+  "src\\\\bnbprob\\\\pfssp\\\\cython\\\\solution.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* ForceInitThreads.proto */
@@ -1658,6 +1659,7 @@ typedef struct {
 struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation;
+struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy;
 struct __pyx_array_obj;
@@ -1719,6 +1721,23 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation {
 };
 
 
+/* "bnbprob/pfssp/cython/solution.pxd":13
+ * 
+ * 
+ * cdef class FlowSolution:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef public:
+ */
+struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_vtab;
+  int cost;
+  int lb;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *perm;
+  PyObject *status;
+};
+
+
 /* "bnbprob/pfssp/cython/problem.pxd":17
  * 
  * 
@@ -1734,12 +1753,12 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop {
 };
 
 
-/* "bnbprob/pfssp/cython/problem.pyx":198
+/* "bnbprob/pfssp/cython/problem.pxd":42
  * 
  * 
  * cdef class PermFlowShopLazy(PermFlowShop):             # <<<<<<<<<<<<<<
  * 
- *     cpdef int calc_bound(PermFlowShopLazy self):
+ *     cpdef int calc_bound(PermFlowShopLazy self)
  */
 struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop __pyx_base;
@@ -1881,6 +1900,31 @@ struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation;
+
+
+/* "bnbprob/pfssp/cython/solution.pxd":13
+ * 
+ * 
+ * cdef class FlowSolution:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef public:
+ */
+
+struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution {
+  void (*set_optimal)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  void (*set_lb)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int, int __pyx_skip_dispatch);
+  void (*set_feasible)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  void (*set_infeasible)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  void (*fathom)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  bool (*is_feasible)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  int (*calc_lb_1m)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  int (*calc_lb_2m)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  int (*lower_bound_1m)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  int (*lower_bound_2m)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+  void (*push_job)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int, int __pyx_skip_dispatch);
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_vtabptr_7bnbprob_5pfssp_6cython_8solution_FlowSolution;
 
 
 /* "bnbprob/pfssp/cython/problem.pyx":21
@@ -2905,6 +2949,9 @@ typedef const char *__Pyx_TypeName;
 static unsigned long __Pyx_get_runtime_version(void);
 static int __Pyx_check_binary_version(unsigned long ct_version, unsigned long rt_version, int allow_newer);
 
+/* VoidPtrImport.proto */
+static int __Pyx_ImportVoidPtr_3_0_11(PyObject *module, const char *name, void **p, const char *sig);
+
 /* FunctionImport.proto */
 static int __Pyx_ImportFunction_3_0_11(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
 
@@ -2949,6 +2996,10 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_7problem_16PermFlowShopLazy_calc_boun
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
+
+/* Module declarations from "bnbprob.pfssp.cython.solution" */
+static int *__pyx_vp_7bnbprob_5pfssp_6cython_8solution_LARGE_INT = 0;
+#define __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT (*__pyx_vp_7bnbprob_5pfssp_6cython_8solution_LARGE_INT)
 
 /* Module declarations from "bnbprob.pfssp.cython.problem" */
 static PyObject *__pyx_collections_abc_Sequence = 0;
@@ -3185,7 +3236,6 @@ static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cyt
 static const char __pyx_k_PermFlowShop___reduce_cython[] = "PermFlowShop.__reduce_cython__";
 static const char __pyx_k_bnbprob_pfssp_cython_problem[] = "bnbprob.pfssp.cython.problem";
 static const char __pyx_k_PermFlowShop_neh_constructive[] = "PermFlowShop.neh_constructive";
-static const char __pyx_k_bnbprob_pfssp_cython_solution[] = "bnbprob.pfssp.cython.solution";
 static const char __pyx_k_pyx_unpickle_PermFlowShopLazy[] = "__pyx_unpickle_PermFlowShopLazy";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_PermFlowShop___setstate_cython[] = "PermFlowShop.__setstate_cython__";
@@ -3252,7 +3302,7 @@ static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewsl
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self, PyObject *__pyx_v_solution, PyObject *__pyx_v_constructive); /* proto */
+static int __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self, struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_solution, PyObject *__pyx_v_constructive); /* proto */
 static void __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_2__del__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_4cleanup(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_2lb___get__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
@@ -3260,9 +3310,9 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_6compu
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_8check_feasible(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_10set_solution(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self, PyObject *__pyx_v_solution); /* proto */
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_12from_p(PyTypeObject *__pyx_v_cls, PyObject *__pyx_v_p, PyObject *__pyx_v_constructive); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20local_search(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_22calc_bound(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_24is_feasible(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self); /* proto */
@@ -3330,6 +3380,9 @@ typedef struct {
   PyTypeObject *__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation;
   #if CYTHON_USE_MODULE_STATE
   #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  PyTypeObject *__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution;
   #if CYTHON_USE_MODULE_STATE
   PyObject *__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShop;
   PyObject *__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy;
@@ -3419,7 +3472,6 @@ typedef struct {
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_base;
   PyObject *__pyx_n_s_bnbprob_pfssp_cython_problem;
-  PyObject *__pyx_n_s_bnbprob_pfssp_cython_solution;
   PyObject *__pyx_n_s_bnbpy_status;
   PyObject *__pyx_n_s_bound_upgrade;
   PyObject *__pyx_n_s_branch;
@@ -3642,6 +3694,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job);
   Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma);
   Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation);
+  Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
   Py_CLEAR(clear_module_state->__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
   Py_CLEAR(clear_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy);
@@ -3729,7 +3782,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_base);
   Py_CLEAR(clear_module_state->__pyx_n_s_bnbprob_pfssp_cython_problem);
-  Py_CLEAR(clear_module_state->__pyx_n_s_bnbprob_pfssp_cython_solution);
   Py_CLEAR(clear_module_state->__pyx_n_s_bnbpy_status);
   Py_CLEAR(clear_module_state->__pyx_n_s_bound_upgrade);
   Py_CLEAR(clear_module_state->__pyx_n_s_branch);
@@ -3930,6 +3982,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job);
   Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma);
   Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation);
+  Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
   Py_VISIT(traverse_module_state->__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
   Py_VISIT(traverse_module_state->__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy);
@@ -4017,7 +4070,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_base);
   Py_VISIT(traverse_module_state->__pyx_n_s_bnbprob_pfssp_cython_problem);
-  Py_VISIT(traverse_module_state->__pyx_n_s_bnbprob_pfssp_cython_solution);
   Py_VISIT(traverse_module_state->__pyx_n_s_bnbpy_status);
   Py_VISIT(traverse_module_state->__pyx_n_s_bound_upgrade);
   Py_VISIT(traverse_module_state->__pyx_n_s_branch);
@@ -4239,6 +4291,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
+#endif
+#define __pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution __pyx_mstate_global->__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution
+#if CYTHON_USE_MODULE_STATE
 #define __pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShop __pyx_mstate_global->__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShop
 #define __pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy __pyx_mstate_global->__pyx_type_7bnbprob_5pfssp_6cython_7problem_PermFlowShopLazy
 #define __pyx_type___pyx_array __pyx_mstate_global->__pyx_type___pyx_array
@@ -4327,7 +4382,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_base __pyx_mstate_global->__pyx_n_s_base
 #define __pyx_n_s_bnbprob_pfssp_cython_problem __pyx_mstate_global->__pyx_n_s_bnbprob_pfssp_cython_problem
-#define __pyx_n_s_bnbprob_pfssp_cython_solution __pyx_mstate_global->__pyx_n_s_bnbprob_pfssp_cython_solution
 #define __pyx_n_s_bnbpy_status __pyx_mstate_global->__pyx_n_s_bnbpy_status
 #define __pyx_n_s_bound_upgrade __pyx_mstate_global->__pyx_n_s_bound_upgrade
 #define __pyx_n_s_branch __pyx_mstate_global->__pyx_n_s_branch
@@ -18146,7 +18200,7 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
 /* Python wrapper */
 static int __pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_solution = 0;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_solution = 0;
   PyObject *__pyx_v_constructive = 0;
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
@@ -18206,7 +18260,7 @@ static int __pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_1__init__(Py
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_solution = values[0];
+    __pyx_v_solution = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)values[0]);
     __pyx_v_constructive = values[1];
   }
   goto __pyx_L6_skip;
@@ -18225,9 +18279,14 @@ static int __pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_1__init__(Py
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_solution), __pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution, 0, "solution", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *)__pyx_v_self), __pyx_v_solution, __pyx_v_constructive);
 
   /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = -1;
+  __pyx_L0:;
   {
     Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -18238,7 +18297,7 @@ static int __pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_1__init__(Py
   return __pyx_r;
 }
 
-static int __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self, PyObject *__pyx_v_solution, PyObject *__pyx_v_constructive) {
+static int __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self, struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_solution, PyObject *__pyx_v_constructive) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -18254,11 +18313,11 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop___init__(str
  *         self.constructive = constructive
  * 
  */
-  __Pyx_INCREF(__pyx_v_solution);
-  __Pyx_GIVEREF(__pyx_v_solution);
+  __Pyx_INCREF((PyObject *)__pyx_v_solution);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_solution);
   __Pyx_GOTREF(__pyx_v_self->solution);
   __Pyx_DECREF(__pyx_v_self->solution);
-  __pyx_v_self->solution = __pyx_v_solution;
+  __pyx_v_self->solution = ((PyObject *)__pyx_v_solution);
 
   /* "bnbprob/pfssp/cython/problem.pyx":29
  *     ) -> None:
@@ -19484,7 +19543,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_12from_p(PyTypeObject *__pyx_v_cls, PyObject *__pyx_v_p, PyObject *__pyx_v_constructive) {
   PyObject *__pyx_v_perm = NULL;
-  PyObject *__pyx_v_solution = NULL;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_solution = NULL;
   struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -19537,31 +19596,9 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_
  *         return cls(
  *             solution,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_FlowSolution); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_v_perm};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  }
-  __pyx_v_solution = __pyx_t_1;
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __pyx_v_perm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_solution = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_1);
   __pyx_t_1 = 0;
 
   /* "bnbprob/pfssp/cython/problem.pyx":81
@@ -19582,9 +19619,9 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_
  */
   __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_v_solution);
-  __Pyx_GIVEREF(__pyx_v_solution);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_solution)) __PYX_ERR(0, 81, __pyx_L1_error);
+  __Pyx_INCREF((PyObject *)__pyx_v_solution);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_solution);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_solution))) __PYX_ERR(0, 81, __pyx_L1_error);
 
   /* "bnbprob/pfssp/cython/problem.pyx":83
  *         return cls(
@@ -19630,7 +19667,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_perm);
-  __Pyx_XDECREF(__pyx_v_solution);
+  __Pyx_XDECREF((PyObject *)__pyx_v_solution);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -19645,7 +19682,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_pf_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19654,7 +19691,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart, "\n        Computes an initial feasible solution based on the method of choice.\n\n        If the attribute `constructive` is 'neh', the heuristic\n        of Nawaz et al. (1983) is adopted, otherwise\n        the strategy by Palmer (1965).\n\n        Returns\n        -------\n        FlowSolution\n            Solution to the problem\n\n        References\n        ----------\n        Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).\n        A heuristic algorithm for the m-machine,\n        n-job flow-shop sequencing problem.\n        Omega, 11(1), 91-95.\n\n        Palmer, D. S. (1965). Sequencing jobs through a multi-stage process\n        in the minimum total time\342\200\224a quick method of obtaining a near optimum.\n        Journal of the Operational Research Society, 16(1), 101-107\n        ");
 static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart = {"warmstart", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19665,7 +19702,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("warmstart (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
@@ -19686,8 +19723,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warmstart(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -19716,7 +19753,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
  *         return self.quick_constructive()
  * 
  */
-    __Pyx_XDECREF(__pyx_r);
+    __Pyx_XDECREF((PyObject *)__pyx_r);
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_neh_constructive); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
@@ -19741,7 +19778,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
-    __pyx_r = __pyx_t_2;
+    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution))))) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
@@ -19761,7 +19799,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
  * 
  *     def quick_constructive(self) -> FlowSolution:
  */
-  __Pyx_XDECREF(__pyx_r);
+  __Pyx_XDECREF((PyObject *)__pyx_r);
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_quick_constructive); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
@@ -19786,7 +19824,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_r = __pyx_t_2;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution))))) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
@@ -19806,7 +19845,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
   __Pyx_AddTraceback("bnbprob.pfssp.cython.problem.PermFlowShop.warmstart", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19820,7 +19859,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_14warm
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19829,7 +19868,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive, "Computes a feasible solution based on the sorting\n        strategy by Palmer (1965).\n\n        Returns\n        -------\n        FlowSolution\n            Solution to the problem\n\n        References\n        ----------\n        Palmer, D. S. (1965). Sequencing jobs through a multi-stage process\n        in the minimum total time\342\200\224a quick method of obtaining a near optimum.\n        Journal of the Operational Research Society, 16(1), 101-107\n        ");
 static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive = {"quick_constructive", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19840,7 +19879,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("quick_constructive (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
@@ -19861,14 +19900,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quick_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_perm = NULL;
-  PyObject *__pyx_r = NULL;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  unsigned int __pyx_t_4;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -19897,32 +19934,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quic
  * 
  *     def neh_constructive(self) -> FlowSolution:
  */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FlowSolution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_3, ((PyObject *)__pyx_v_perm)};
-    __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-  __pyx_r = __pyx_t_2;
+  __Pyx_XDECREF((PyObject *)__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), ((PyObject *)__pyx_v_perm)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
@@ -19938,12 +19953,11 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quic
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.problem.PermFlowShop.quick_constructive", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_perm);
-  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19957,7 +19971,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_16quic
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19966,7 +19980,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive, "Constructive heuristic of Nawaz et al. (1983) based\n        on best-insertion of jobs sorted according to total processing\n        time in descending order.\n\n        Returns\n        -------\n        FlowSolution\n            Solution to the problem\n\n        Reference\n        ---------\n        Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).\n        A heuristic algorithm for the m-machine,\n        n-job flow-shop sequencing problem.\n        Omega, 11(1), 91-95.\n        ");
 static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive = {"neh_constructive", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive(PyObject *__pyx_v_self, 
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pw_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19977,7 +19991,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject *__pyx_r = 0;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("neh_constructive (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
@@ -19998,14 +20012,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_constructive(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_perm = NULL;
-  PyObject *__pyx_r = NULL;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  unsigned int __pyx_t_4;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20034,32 +20046,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_
  * 
  *     def local_search(self) -> Optional[FlowSolution]:
  */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FlowSolution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_3, ((PyObject *)__pyx_v_perm)};
-    __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-  __pyx_r = __pyx_t_2;
+  __Pyx_XDECREF((PyObject *)__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), ((PyObject *)__pyx_v_perm)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
@@ -20075,12 +20065,11 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_18neh_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.problem.PermFlowShop.neh_constructive", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_perm);
-  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20138,8 +20127,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20local_search(struct __pyx_obj_7bnbprob_5pfssp_6cython_7problem_PermFlowShop *__pyx_v_self) {
   PyObject *__pyx_v_lb = NULL;
   struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_v_perm = NULL;
-  PyObject *__pyx_v_sol_alt = NULL;
-  PyObject *__pyx_v_new_cost = NULL;
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_sol_alt = NULL;
+  int __pyx_v_new_cost;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -20147,6 +20136,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
   PyObject *__pyx_t_3 = NULL;
   unsigned int __pyx_t_4;
   int __pyx_t_5;
+  int __pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20223,31 +20213,9 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
  *         new_cost = sol_alt.perm.calc_bound()
  *         if new_cost < lb:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FlowSolution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_2);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_2, ((PyObject *)__pyx_v_perm)};
-    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-  __pyx_v_sol_alt = __pyx_t_3;
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), ((PyObject *)__pyx_v_perm)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_sol_alt = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_3);
   __pyx_t_3 = 0;
 
   /* "bnbprob/pfssp/cython/problem.pyx":164
@@ -20257,35 +20225,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
  *         if new_cost < lb:
  *             return sol_alt
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_sol_alt, __pyx_n_s_perm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_calc_bound); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_1, NULL};
-    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  }
-  __pyx_v_new_cost = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_t_5 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_sol_alt->perm->__pyx_vtab)->calc_bound(__pyx_v_sol_alt->perm, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_v_new_cost = __pyx_t_5;
 
   /* "bnbprob/pfssp/cython/problem.pyx":165
  *         sol_alt = FlowSolution(perm)
@@ -20294,10 +20235,13 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
  *             return sol_alt
  *         return None
  */
-  __pyx_t_3 = PyObject_RichCompare(__pyx_v_new_cost, __pyx_v_lb, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_new_cost); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_v_lb, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__pyx_t_5) {
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_6) {
 
     /* "bnbprob/pfssp/cython/problem.pyx":166
  *         new_cost = sol_alt.perm.calc_bound()
@@ -20307,8 +20251,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_v_sol_alt);
-    __pyx_r = __pyx_v_sol_alt;
+    __Pyx_INCREF((PyObject *)__pyx_v_sol_alt);
+    __pyx_r = ((PyObject *)__pyx_v_sol_alt);
     goto __pyx_L0;
 
     /* "bnbprob/pfssp/cython/problem.pyx":165
@@ -20349,8 +20293,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_20loca
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_lb);
   __Pyx_XDECREF((PyObject *)__pyx_v_perm);
-  __Pyx_XDECREF(__pyx_v_sol_alt);
-  __Pyx_XDECREF(__pyx_v_new_cost);
+  __Pyx_XDECREF((PyObject *)__pyx_v_sol_alt);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -25094,7 +25037,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
     {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
     {&__pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_k_bnbprob_pfssp_cython_problem, sizeof(__pyx_k_bnbprob_pfssp_cython_problem), 0, 0, 1, 1},
-    {&__pyx_n_s_bnbprob_pfssp_cython_solution, __pyx_k_bnbprob_pfssp_cython_solution, sizeof(__pyx_k_bnbprob_pfssp_cython_solution), 0, 0, 1, 1},
     {&__pyx_n_s_bnbpy_status, __pyx_k_bnbpy_status, sizeof(__pyx_k_bnbpy_status), 0, 0, 1, 1},
     {&__pyx_n_s_bound_upgrade, __pyx_k_bound_upgrade, sizeof(__pyx_k_bound_upgrade), 0, 0, 1, 1},
     {&__pyx_n_s_branch, __pyx_k_branch, sizeof(__pyx_k_branch), 0, 0, 1, 1},
@@ -25908,6 +25850,11 @@ static int __Pyx_modinit_type_import_code(void) {
   __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.permutation", "Permutation", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation) __PYX_ERR(5, 11, __pyx_L1_error)
   __pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation)) __PYX_ERR(5, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.solution"); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 13, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.solution", "FlowSolution", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution) __PYX_ERR(6, 13, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_8solution_FlowSolution = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_8solution_FlowSolution)) __PYX_ERR(6, 13, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -25918,10 +25865,22 @@ static int __Pyx_modinit_type_import_code(void) {
 
 static int __Pyx_modinit_variable_import_code(void) {
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_import_code", 0);
   /*--- Variable import code ---*/
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.solution"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportVoidPtr_3_0_11(__pyx_t_1, "LARGE_INT", (void **)&__pyx_vp_7bnbprob_5pfssp_6cython_8solution_LARGE_INT, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_function_import_code(void) {
@@ -26223,7 +26182,7 @@ if (!__Pyx_RefNanny) {
   (void)__Pyx_modinit_function_export_code();
   if (unlikely((__Pyx_modinit_type_init_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   if (unlikely((__Pyx_modinit_type_import_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
-  (void)__Pyx_modinit_variable_import_code();
+  if (unlikely((__Pyx_modinit_variable_import_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   if (unlikely((__Pyx_modinit_function_import_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
@@ -26790,47 +26749,26 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "bnbprob/pfssp/cython/problem.pyx":15
- * )
- * from bnbprob.pfssp.cython.permutation cimport Permutation
- * from bnbprob.pfssp.cython.solution import FlowSolution             # <<<<<<<<<<<<<<
- * from bnbpy.status import OptStatus
- * 
- */
-  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_INCREF(__pyx_n_s_FlowSolution);
-  __Pyx_GIVEREF(__pyx_n_s_FlowSolution);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_FlowSolution)) __PYX_ERR(0, 15, __pyx_L1_error);
-  __pyx_t_7 = __Pyx_Import(__pyx_n_s_bnbprob_pfssp_cython_solution, __pyx_t_4, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_7, __pyx_n_s_FlowSolution); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FlowSolution, __pyx_t_4) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
   /* "bnbprob/pfssp/cython/problem.pyx":16
  * from bnbprob.pfssp.cython.permutation cimport Permutation
- * from bnbprob.pfssp.cython.solution import FlowSolution
+ * from bnbprob.pfssp.cython.solution cimport FlowSolution
  * from bnbpy.status import OptStatus             # <<<<<<<<<<<<<<
  * 
  * log = logging.getLogger(__name__)
  */
-  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_n_s_OptStatus);
   __Pyx_GIVEREF(__pyx_n_s_OptStatus);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_7, 0, __pyx_n_s_OptStatus)) __PYX_ERR(0, 16, __pyx_L1_error);
-  __pyx_t_4 = __Pyx_Import(__pyx_n_s_bnbpy_status, __pyx_t_7, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_OptStatus); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_OptStatus)) __PYX_ERR(0, 16, __pyx_L1_error);
+  __pyx_t_7 = __Pyx_Import(__pyx_n_s_bnbpy_status, __pyx_t_4, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_OptStatus, __pyx_t_7) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_7, __pyx_n_s_OptStatus); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_OptStatus, __pyx_t_4) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "bnbprob/pfssp/cython/problem.pyx":18
  * from bnbpy.status import OptStatus
@@ -26839,17 +26777,17 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_getLogger); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_logging); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_name_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_getLogger); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_name_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_log, __pyx_t_5) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
@@ -26917,19 +26855,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_p, __pyx_kp_s_List_List_int) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_constructive, __pyx_kp_s_Literal_neh_quick) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, __pyx_kp_s_PermFlowShop_2) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_13from_p, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_from_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_tuple__29);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_5);
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_13from_p, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_from_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_7, __pyx_tuple__29);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_7, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_from_p, __pyx_t_4) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_from_p, __pyx_t_7) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
-  __Pyx_GetNameInClass(__pyx_t_4, (PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_from_p); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_Method_ClassMethod(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_7, (PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_from_p); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_5 = __Pyx_Method_ClassMethod(__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_from_p, __pyx_t_5) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
@@ -26944,12 +26882,12 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, __pyx_n_s_FlowSolution) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_warmstart, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_5);
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_15warmstart, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_warmstart, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_7, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_warmstart, __pyx_t_4) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_warmstart, __pyx_t_7) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
 
   /* "bnbprob/pfssp/cython/problem.pyx":114
@@ -26959,13 +26897,13 @@ if (!__Pyx_RefNanny) {
  *         """Computes a feasible solution based on the sorting
  *         strategy by Palmer (1965).
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_s_FlowSolution) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_n_s_FlowSolution) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_17quick_constructive, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_quick_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_4);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_7);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_quick_constructive, __pyx_t_5) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
@@ -26980,12 +26918,12 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, __pyx_n_s_FlowSolution) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_neh_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_5);
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_19neh_constructive, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_neh_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_7, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_neh_constructive, __pyx_t_4) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_neh_constructive, __pyx_t_7) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
 
   /* "bnbprob/pfssp/cython/problem.pyx":152
@@ -26995,13 +26933,13 @@ if (!__Pyx_RefNanny) {
  *         """Local search heuristic from a current solution based on insertion
  * 
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_kp_s_Optional_FlowSolution) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_kp_s_Optional_FlowSolution) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
   __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_7problem_12PermFlowShop_21local_search, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PermFlowShop_local_search, NULL, __pyx_n_s_bnbprob_pfssp_cython_problem, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_4);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_7);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop, __pyx_n_s_local_search, __pyx_t_5) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_7problem_PermFlowShop);
@@ -33261,6 +33199,39 @@ static int __Pyx_check_binary_version(unsigned long ct_version, unsigned long rt
         return PyErr_WarnEx(NULL, message, 1);
     }
 }
+
+/* VoidPtrImport */
+#ifndef __PYX_HAVE_RT_ImportVoidPtr_3_0_11
+#define __PYX_HAVE_RT_ImportVoidPtr_3_0_11
+static int __Pyx_ImportVoidPtr_3_0_11(PyObject *module, const char *name, void **p, const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
+    if (!d)
+        goto bad;
+    cobj = PyDict_GetItemString(d, name);
+    if (!cobj) {
+        PyErr_Format(PyExc_ImportError,
+            "%.200s does not export expected C variable %.200s",
+                PyModule_GetName(module), name);
+        goto bad;
+    }
+    if (!PyCapsule_IsValid(cobj, sig)) {
+        PyErr_Format(PyExc_TypeError,
+            "C variable %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
+             PyModule_GetName(module), name, sig, PyCapsule_GetName(cobj));
+        goto bad;
+    }
+    *p = PyCapsule_GetPointer(cobj, sig);
+    if (!(*p))
+        goto bad;
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(d);
+    return -1;
+}
+#endif
 
 /* FunctionImport */
 #ifndef __PYX_HAVE_RT_ImportFunction_3_0_11

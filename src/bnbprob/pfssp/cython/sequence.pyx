@@ -1,12 +1,13 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from array import array
 from bnbprob.pfssp.cython.job cimport Job
 
 
 cdef class Sigma:
 
-    def __init__(self, list[Job] jobs, int[:] C):
+    def __init__(self, list[Job] jobs, int[::1] C):
         self.jobs = jobs
         self.C = C
         self.m = len(self.C)
@@ -42,3 +43,7 @@ cdef class Sigma:
 
     cdef Sigma copy(Sigma self):
         return Sigma(self.jobs.copy(), self.C.copy())
+
+
+cdef Sigma empty_sigma(int m):
+    return Sigma([], array('i', [0] * m)[:])

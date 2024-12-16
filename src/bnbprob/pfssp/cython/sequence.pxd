@@ -8,7 +8,7 @@ cdef class Sigma:
 
     cdef public:
         list[Job] jobs
-        int[:] C
+        int[::1] C
         int m
 
     cdef void job_to_bottom(Sigma self, Job job)
@@ -16,3 +16,6 @@ cdef class Sigma:
     cdef void job_to_top(Sigma self, Job job)
 
     cdef Sigma copy(Sigma self)
+
+
+cdef Sigma empty_sigma(int m)

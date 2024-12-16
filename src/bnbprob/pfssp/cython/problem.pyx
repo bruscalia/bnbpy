@@ -12,7 +12,7 @@ from bnbprob.pfssp.cython.heuristics cimport (
     quick_constructive as qc,
 )
 from bnbprob.pfssp.cython.permutation cimport Permutation
-from bnbprob.pfssp.cython.solution import FlowSolution
+from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.status import OptStatus
 
 log = logging.getLogger(__name__)

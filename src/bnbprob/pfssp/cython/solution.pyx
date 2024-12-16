@@ -1,23 +1,46 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-import copy
+from libcpp cimport bool
 
 from bnbprob.pfssp.cython.permutation cimport Permutation
-from bnbpy import Solution
+from bnbpy.status import OptStatus
 
 
-class FlowSolution(Solution):
+cdef:
+    int LARGE_INT = 10000000
 
-    perm: Permutation
 
-    def __init__(self, perm: Permutation):
-        super().__init__(0)
+cdef class FlowSolution:
+
+    def __init__(self, Permutation perm):
         self.perm = perm
+        self.cost = LARGE_INT
+        self.lb = 0
+        self.status = OptStatus.NO_SOLUTION
 
     def __del__(self):
         del self.perm
         self.perm = None
+
+    def __repr__(self) -> str:
+        return self._signature
+
+    def __str__(self) -> str:
+        return self._signature
+
+    @property
+    def _signature(self):
+        return (
+            f'Status: {self.status.name} | Cost: {self.cost} | LB: {self.lb}'
+        )
+
+    def get_status_cls(self):
+        return self.status.__class__
+
+    def get_status_options(self):
+        status_cls = self.get_status_cls()
+        return {status.name: status.value for status in status_cls}
 
     @property
     def sequence(self):
@@ -27,25 +50,43 @@ class FlowSolution(Solution):
     def free_jobs(self):
         return self.perm.free_jobs
 
-    def is_feasible(self):
+    cpdef void set_optimal(FlowSolution self):
+        self.status = OptStatus.OPTIMAL
+
+    cpdef void set_lb(FlowSolution self, int lb):
+        self.lb = lb
+        if self.status == OptStatus.NO_SOLUTION:
+            self.status = OptStatus.RELAXATION
+
+    cpdef void set_feasible(FlowSolution self):
+        self.status = OptStatus.FEASIBLE
+        self.cost = self.lb
+
+    cpdef void set_infeasible(FlowSolution self):
+        self.status = OptStatus.INFEASIBLE
+        self.cost = LARGE_INT
+
+    cpdef void fathom(FlowSolution self):
+        self.status = OptStatus.FATHOM
+        self.cost = LARGE_INT
+
+    cpdef bool is_feasible(FlowSolution self):
         return self.perm.is_feasible()
 
-    def calc_lb_1m(self):
+    cpdef int calc_lb_1m(FlowSolution self):
         return self.perm.calc_lb_1m()
 
-    def calc_lb_2m(self):
+    cpdef int calc_lb_2m(FlowSolution self):
         return self.perm.calc_lb_2m()
 
-    def lower_bound_1m(self):
+    cpdef int lower_bound_1m(FlowSolution self):
         return self.perm.lower_bound_1m()
 
-    def lower_bound_2m(self):
+    cpdef int lower_bound_2m(FlowSolution self):
         return self.perm.lower_bound_1m()
 
-    def push_job(self, j: int):
+    cpdef void push_job(FlowSolution self, int j):
         self.perm.push_job(j)
 
-    def copy(self):
-        other = copy.copy(self)
-        other.perm = self.perm.copy()
-        return other
+    cpdef FlowSolution copy(FlowSolution self):
+        return FlowSolution(self.perm.copy())

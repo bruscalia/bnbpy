@@ -1,6 +1,8 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from array import array
+
 import numpy as np
 
 
@@ -9,10 +11,10 @@ cdef class Job:
     def __init__(
         self,
         int j,
-        int[:] p,
-        int[:] r,
-        int[:] q,
-        int[:, :] lat,
+        const int[::1] p,
+        int[::1] r,
+        int[::1] q,
+        const int[:, ::1] lat,
         int slope,
         int T
     ):
@@ -36,16 +38,16 @@ cdef class Job:
         )
 
 
-cdef Job start_job(int j, int[:] p):
+cdef Job start_job(int j, const int[::1] p):
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
-        int[:] r, q
-        int[:, :] lat
+        int[::1] r, q
+        int[:, ::1] lat
 
     m = <int>len(p)
 
-    r = np.zeros(m, dtype='i')[:]
-    q = np.zeros(m, dtype='i')[:]
+    r = array('i', [0] * m)[:]
+    q = array('i', [0] * m)[:]
 
     # Resize `lat` to m x m
     lat = np.zeros((m, m), dtype='i')[:, :]

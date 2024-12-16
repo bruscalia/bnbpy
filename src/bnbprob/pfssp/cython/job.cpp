@@ -2657,8 +2657,7 @@ static int __pyx_slices_overlap(__Pyx_memviewslice *slice1,
                                 int ndim, size_t itemsize);
 
 /* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_int(const char *itemp, PyObject *obj);
+static CYTHON_INLINE PyObject *__pyx_memview_get_int__const__(const char *itemp);
 
 /* IsLittleEndian.proto */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void);
@@ -2684,10 +2683,20 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_int(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_int__const__(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_int__const__(PyObject *, int writable_flag);
+
+/* MemviewDtypeToObject.proto */
+static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_int(const char *itemp, PyObject *obj);
+
+/* ObjectToMemviewSlice.proto */
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_int(PyObject *, int writable_flag);
+
+/* ObjectToMemviewSlice.proto */
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(PyObject *, int writable_flag);
 
 /* MemviewSliceCopyTemplate.proto */
 static __Pyx_memviewslice
@@ -2828,6 +2837,7 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
+static __Pyx_TypeInfo __Pyx_TypeInfo_int__const__ = { "const int", NULL, sizeof(int const ), { 0 }, 0, __PYX_IS_UNSIGNED(int const ) ? 'U' : 'I', __PYX_IS_UNSIGNED(int const ), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, __PYX_IS_UNSIGNED(int) ? 'U' : 'I', __PYX_IS_UNSIGNED(int), 0 };
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.job"
@@ -17690,10 +17700,10 @@ static int __pyx_pw_7bnbprob_5pfssp_6cython_3job_3Job_1__init__(PyObject *__pyx_
       values[6] = __Pyx_Arg_VARARGS(__pyx_args, 6);
     }
     __pyx_v_j = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_j == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
-    __pyx_v_p = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_p.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
-    __pyx_v_r = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_r.memview)) __PYX_ERR(0, 15, __pyx_L3_error)
-    __pyx_v_q = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_q.memview)) __PYX_ERR(0, 16, __pyx_L3_error)
-    __pyx_v_lat = __Pyx_PyObject_to_MemoryviewSlice_dsds_int(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lat.memview)) __PYX_ERR(0, 17, __pyx_L3_error)
+    __pyx_v_p = __Pyx_PyObject_to_MemoryviewSlice_dc_int__const__(values[1], 0); if (unlikely(!__pyx_v_p.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
+    __pyx_v_r = __Pyx_PyObject_to_MemoryviewSlice_dc_int(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_r.memview)) __PYX_ERR(0, 15, __pyx_L3_error)
+    __pyx_v_q = __Pyx_PyObject_to_MemoryviewSlice_dc_int(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_q.memview)) __PYX_ERR(0, 16, __pyx_L3_error)
+    __pyx_v_lat = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int__const__(values[4], 0); if (unlikely(!__pyx_v_lat.memview)) __PYX_ERR(0, 17, __pyx_L3_error)
     __pyx_v_slope = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_slope == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L3_error)
     __pyx_v_T = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_T == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 19, __pyx_L3_error)
   }
@@ -17934,7 +17944,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *             self.r.copy(),
  *             self.q.copy(),
  */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
   /* "bnbprob/pfssp/cython/job.pyx":33
@@ -17970,7 +17980,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *             self.slope,
  *             self.T
  */
-  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
 
   /* "bnbprob/pfssp/cython/job.pyx":36
@@ -18128,8 +18138,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_2copy(struct __pyx_o
  * 
  *     cdef public:
  *         int j             # <<<<<<<<<<<<<<
- *         int[:] p
- *         int[:] r
+ *         const int[::1] p
+ *         int[::1] r
  */
 
 /* Python wrapper */
@@ -18210,9 +18220,9 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1j_2__set__(struct __pyx_o
 /* "bnbprob/pfssp/cython/job.pxd":9
  *     cdef public:
  *         int j
- *         int[:] p             # <<<<<<<<<<<<<<
- *         int[:] r
- *         int[:] q
+ *         const int[::1] p             # <<<<<<<<<<<<<<
+ *         int[::1] r
+ *         int[::1] q
  */
 
 /* Python wrapper */
@@ -18239,7 +18249,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1p___get__(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 9, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -18277,7 +18287,7 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1p_2__set__(struct __pyx_o
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_int__const__(__pyx_v_value, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 9, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->p, 0);
   __pyx_v_self->p = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -18296,10 +18306,10 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1p_2__set__(struct __pyx_o
 
 /* "bnbprob/pfssp/cython/job.pxd":10
  *         int j
- *         int[:] p
- *         int[:] r             # <<<<<<<<<<<<<<
- *         int[:] q
- *         int[:, :] lat
+ *         const int[::1] p
+ *         int[::1] r             # <<<<<<<<<<<<<<
+ *         int[::1] q
+ *         const int[:, ::1] lat
  */
 
 /* Python wrapper */
@@ -18364,7 +18374,7 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1r_2__set__(struct __pyx_o
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 10, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 10, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->r, 0);
   __pyx_v_self->r = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -18382,10 +18392,10 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1r_2__set__(struct __pyx_o
 }
 
 /* "bnbprob/pfssp/cython/job.pxd":11
- *         int[:] p
- *         int[:] r
- *         int[:] q             # <<<<<<<<<<<<<<
- *         int[:, :] lat
+ *         const int[::1] p
+ *         int[::1] r
+ *         int[::1] q             # <<<<<<<<<<<<<<
+ *         const int[:, ::1] lat
  *         int slope
  */
 
@@ -18451,7 +18461,7 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1q_2__set__(struct __pyx_o
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 11, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->q, 0);
   __pyx_v_self->q = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -18469,9 +18479,9 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_1q_2__set__(struct __pyx_o
 }
 
 /* "bnbprob/pfssp/cython/job.pxd":12
- *         int[:] r
- *         int[:] q
- *         int[:, :] lat             # <<<<<<<<<<<<<<
+ *         int[::1] r
+ *         int[::1] q
+ *         const int[:, ::1] lat             # <<<<<<<<<<<<<<
  *         int slope
  *         int T
  */
@@ -18500,7 +18510,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_3lat___get__(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 12, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -18538,7 +18548,7 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_3lat_2__set__(struct __pyx
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dsds_int(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int__const__(__pyx_v_value, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(2, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->lat, 0);
   __pyx_v_self->lat = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -18556,8 +18566,8 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_3lat_2__set__(struct __pyx
 }
 
 /* "bnbprob/pfssp/cython/job.pxd":13
- *         int[:] q
- *         int[:, :] lat
+ *         int[::1] q
+ *         const int[:, ::1] lat
  *         int slope             # <<<<<<<<<<<<<<
  *         int T
  * 
@@ -18639,7 +18649,7 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_5slope_2__set__(struct __p
 }
 
 /* "bnbprob/pfssp/cython/job.pxd":14
- *         int[:, :] lat
+ *         const int[:, ::1] lat
  *         int slope
  *         int T             # <<<<<<<<<<<<<<
  * 
@@ -18799,9 +18809,9 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_4__reduce_cython__(s
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->j); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->q, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -19166,7 +19176,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_3Job_6__setstate_cython__
 /* "bnbprob/pfssp/cython/job.pyx":41
  * 
  * 
- * cdef Job start_job(int j, int[:] p):             # <<<<<<<<<<<<<<
+ * cdef Job start_job(int j, const int[::1] p):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i, m, m1, m2, T, sum_p, k, slope
  */
@@ -19190,35 +19200,36 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  unsigned int __pyx_t_6;
   __Pyx_memviewslice __pyx_t_7 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_t_8;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_9;
   int __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
-  int __pyx_t_12;
+  int __pyx_t_11;
+  Py_ssize_t __pyx_t_12;
   int __pyx_t_13;
   int __pyx_t_14;
   int __pyx_t_15;
   int __pyx_t_16;
   int __pyx_t_17;
   int __pyx_t_18;
-  Py_ssize_t __pyx_t_19;
-  PyObject *__pyx_t_20 = NULL;
+  int __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
   PyObject *__pyx_t_21 = NULL;
   PyObject *__pyx_t_22 = NULL;
   PyObject *__pyx_t_23 = NULL;
+  PyObject *__pyx_t_24 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("start_job", 1);
 
   /* "bnbprob/pfssp/cython/job.pyx":47
- *         int[:, :] lat
+ *         int[:, ::1] lat
  * 
  *     m = <int>len(p)             # <<<<<<<<<<<<<<
  * 
- *     r = np.zeros(m, dtype='i')[:]
+ *     r = array('i', [0] * m)[:]
  */
   __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_p); 
   __pyx_v_m = ((int)__pyx_t_1);
@@ -19226,74 +19237,102 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
   /* "bnbprob/pfssp/cython/job.pyx":49
  *     m = <int>len(p)
  * 
- *     r = np.zeros(m, dtype='i')[:]             # <<<<<<<<<<<<<<
- *     q = np.zeros(m, dtype='i')[:]
+ *     r = array('i', [0] * m)[:]             # <<<<<<<<<<<<<<
+ *     q = array('i', [0] * m)[:]
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = PyList_New(1 * ((__pyx_v_m<0) ? 0:__pyx_v_m)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  { Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < __pyx_v_m; __pyx_temp++) {
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      if (__Pyx_PyList_SET_ITEM(__pyx_t_4, __pyx_temp, __pyx_int_0)) __PYX_ERR(0, 49, __pyx_L1_error);
+    }
+  }
+  __pyx_t_5 = NULL;
+  __pyx_t_6 = 0;
+  #if CYTHON_UNPACK_METHODS
+  if (unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __pyx_t_6 = 1;
+    }
+  }
+  #endif
+  {
+    PyObject *__pyx_callargs[3] = {__pyx_t_5, __pyx_n_u_i, __pyx_t_4};
+    __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_6, 2+__pyx_t_6);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  }
+  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, 0, NULL, NULL, &__pyx_slice__5, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error);
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_n_u_i) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_t_5, 0, 0, NULL, NULL, &__pyx_slice__5, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_r = __pyx_t_6;
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+  __pyx_v_r = __pyx_t_7;
+  __pyx_t_7.memview = NULL;
+  __pyx_t_7.data = NULL;
 
   /* "bnbprob/pfssp/cython/job.pyx":50
  * 
- *     r = np.zeros(m, dtype='i')[:]
- *     q = np.zeros(m, dtype='i')[:]             # <<<<<<<<<<<<<<
+ *     r = array('i', [0] * m)[:]
+ *     q = array('i', [0] * m)[:]             # <<<<<<<<<<<<<<
  * 
  *     # Resize `lat` to m x m
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(1 * ((__pyx_v_m<0) ? 0:__pyx_v_m)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error);
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_n_u_i) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  { Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < __pyx_v_m; __pyx_temp++) {
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      if (__Pyx_PyList_SET_ITEM(__pyx_t_4, __pyx_temp, __pyx_int_0)) __PYX_ERR(0, 50, __pyx_L1_error);
+    }
+  }
+  __pyx_t_5 = NULL;
+  __pyx_t_6 = 0;
+  #if CYTHON_UNPACK_METHODS
+  if (unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_6 = 1;
+    }
+  }
+  #endif
+  {
+    PyObject *__pyx_callargs[3] = {__pyx_t_5, __pyx_n_u_i, __pyx_t_4};
+    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_6, 2+__pyx_t_6);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
   __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_t_3, 0, 0, NULL, NULL, &__pyx_slice__5, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_q = __pyx_t_6;
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+  __pyx_v_q = __pyx_t_7;
+  __pyx_t_7.memview = NULL;
+  __pyx_t_7.data = NULL;
 
   /* "bnbprob/pfssp/cython/job.pyx":53
  * 
@@ -19335,11 +19374,11 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
   __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_2, __pyx_tuple__9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dsds_int(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_lat = __pyx_t_7;
-  __pyx_t_7.memview = NULL;
-  __pyx_t_7.data = NULL;
+  __pyx_v_lat = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
 
   /* "bnbprob/pfssp/cython/job.pyx":56
  * 
@@ -19357,10 +19396,10 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         T += p[m1]
  *         for m2 in range(m):
  */
-  __pyx_t_8 = __pyx_v_m;
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_m1 = __pyx_t_10;
+  __pyx_t_9 = __pyx_v_m;
+  __pyx_t_10 = __pyx_t_9;
+  for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_m1 = __pyx_t_11;
 
     /* "bnbprob/pfssp/cython/job.pyx":58
  *     T = 0
@@ -19369,8 +19408,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         for m2 in range(m):
  *             if m2 + 1 < m1:  # Ensure range is valid
  */
-    __pyx_t_11 = __pyx_v_m1;
-    __pyx_v_T = (__pyx_v_T + (*((int *) ( /* dim=0 */ (__pyx_v_p.data + __pyx_t_11 * __pyx_v_p.strides[0]) ))));
+    __pyx_t_12 = __pyx_v_m1;
+    __pyx_v_T = (__pyx_v_T + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_p.data) + __pyx_t_12)) ))));
 
     /* "bnbprob/pfssp/cython/job.pyx":59
  *     for m1 in range(m):
@@ -19379,10 +19418,10 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *             if m2 + 1 < m1:  # Ensure range is valid
  *                 sum_p = 0
  */
-    __pyx_t_12 = __pyx_v_m;
-    __pyx_t_13 = __pyx_t_12;
-    for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-      __pyx_v_m2 = __pyx_t_14;
+    __pyx_t_13 = __pyx_v_m;
+    __pyx_t_14 = __pyx_t_13;
+    for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
+      __pyx_v_m2 = __pyx_t_15;
 
       /* "bnbprob/pfssp/cython/job.pyx":60
  *         T += p[m1]
@@ -19391,8 +19430,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *                 sum_p = 0
  *                 for i in range(m2 + 1, m1):
  */
-      __pyx_t_15 = ((__pyx_v_m2 + 1) < __pyx_v_m1);
-      if (__pyx_t_15) {
+      __pyx_t_16 = ((__pyx_v_m2 + 1) < __pyx_v_m1);
+      if (__pyx_t_16) {
 
         /* "bnbprob/pfssp/cython/job.pyx":61
  *         for m2 in range(m):
@@ -19410,10 +19449,10 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *                     sum_p += p[i]
  *                 lat[m1, m2] = sum_p
  */
-        __pyx_t_16 = __pyx_v_m1;
-        __pyx_t_17 = __pyx_t_16;
-        for (__pyx_t_18 = (__pyx_v_m2 + 1); __pyx_t_18 < __pyx_t_17; __pyx_t_18+=1) {
-          __pyx_v_i = __pyx_t_18;
+        __pyx_t_17 = __pyx_v_m1;
+        __pyx_t_18 = __pyx_t_17;
+        for (__pyx_t_19 = (__pyx_v_m2 + 1); __pyx_t_19 < __pyx_t_18; __pyx_t_19+=1) {
+          __pyx_v_i = __pyx_t_19;
 
           /* "bnbprob/pfssp/cython/job.pyx":63
  *                 sum_p = 0
@@ -19422,8 +19461,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *                 lat[m1, m2] = sum_p
  * 
  */
-          __pyx_t_11 = __pyx_v_i;
-          __pyx_v_sum_p = (__pyx_v_sum_p + (*((int *) ( /* dim=0 */ (__pyx_v_p.data + __pyx_t_11 * __pyx_v_p.strides[0]) ))));
+          __pyx_t_12 = __pyx_v_i;
+          __pyx_v_sum_p = (__pyx_v_sum_p + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_p.data) + __pyx_t_12)) ))));
         }
 
         /* "bnbprob/pfssp/cython/job.pyx":64
@@ -19433,9 +19472,9 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  * 
  *     m += 1
  */
-        __pyx_t_11 = __pyx_v_m1;
-        __pyx_t_19 = __pyx_v_m2;
-        *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_lat.data + __pyx_t_11 * __pyx_v_lat.strides[0]) ) + __pyx_t_19 * __pyx_v_lat.strides[1]) )) = __pyx_v_sum_p;
+        __pyx_t_12 = __pyx_v_m1;
+        __pyx_t_20 = __pyx_v_m2;
+        *((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_lat.data + __pyx_t_12 * __pyx_v_lat.strides[0]) )) + __pyx_t_20)) )) = __pyx_v_sum_p;
 
         /* "bnbprob/pfssp/cython/job.pyx":60
  *         T += p[m1]
@@ -19473,10 +19512,10 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         slope += (k - (m + 1) / 2) * p[k - 1]
  * 
  */
-  __pyx_t_8 = __pyx_v_m;
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_k = __pyx_t_10;
+  __pyx_t_9 = __pyx_v_m;
+  __pyx_t_10 = __pyx_t_9;
+  for (__pyx_t_11 = 1; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_k = __pyx_t_11;
 
     /* "bnbprob/pfssp/cython/job.pyx":69
  *     slope = 0
@@ -19485,8 +19524,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  * 
  *     return Job(
  */
-    __pyx_t_19 = (__pyx_v_k - 1);
-    __pyx_v_slope = (__pyx_v_slope + ((__pyx_v_k - ((__pyx_v_m + 1) / 2)) * (*((int *) ( /* dim=0 */ (__pyx_v_p.data + __pyx_t_19 * __pyx_v_p.strides[0]) )))));
+    __pyx_t_20 = (__pyx_v_k - 1);
+    __pyx_v_slope = (__pyx_v_slope + ((__pyx_v_k - ((__pyx_v_m + 1) / 2)) * (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_p.data) + __pyx_t_20)) )))));
   }
 
   /* "bnbprob/pfssp/cython/job.pyx":71
@@ -19515,7 +19554,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         r,
  *         q,
  */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_p, 1, (PyObject *(*)(char *)) __pyx_memview_get_int__const__, (int (*)(char *, PyObject *)) NULL, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
   /* "bnbprob/pfssp/cython/job.pyx":74
@@ -19545,8 +19584,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         slope,
  *         T
  */
-  __pyx_t_20 = __pyx_memoryview_fromslice(__pyx_v_lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_20);
+  __pyx_t_21 = __pyx_memoryview_fromslice(__pyx_v_lat, 2, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_21);
 
   /* "bnbprob/pfssp/cython/job.pyx":77
  *         q,
@@ -19555,8 +19594,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         T
  *     )
  */
-  __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_slope); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_21);
+  __pyx_t_22 = __Pyx_PyInt_From_int(__pyx_v_slope); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_22);
 
   /* "bnbprob/pfssp/cython/job.pyx":78
  *         lat,
@@ -19564,8 +19603,8 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         T             # <<<<<<<<<<<<<<
  *     )
  */
-  __pyx_t_22 = __Pyx_PyInt_From_int(__pyx_v_T); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 78, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_22);
+  __pyx_t_23 = __Pyx_PyInt_From_int(__pyx_v_T); if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_23);
 
   /* "bnbprob/pfssp/cython/job.pyx":71
  *         slope += (k - (m + 1) / 2) * p[k - 1]
@@ -19574,40 +19613,40 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
  *         j,
  *         p,
  */
-  __pyx_t_23 = PyTuple_New(7); if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_23);
+  __pyx_t_24 = PyTuple_New(7); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_24);
   __Pyx_GIVEREF(__pyx_t_5);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 0, __pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 1, __pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 1, __pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 2, __pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 2, __pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 3, __pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error);
-  __Pyx_GIVEREF(__pyx_t_20);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 4, __pyx_t_20)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 3, __pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_21);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 5, __pyx_t_21)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 4, __pyx_t_21)) __PYX_ERR(0, 71, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_22);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_23, 6, __pyx_t_22)) __PYX_ERR(0, 71, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 5, __pyx_t_22)) __PYX_ERR(0, 71, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_23);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_24, 6, __pyx_t_23)) __PYX_ERR(0, 71, __pyx_L1_error);
   __pyx_t_5 = 0;
   __pyx_t_2 = 0;
   __pyx_t_4 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_20 = 0;
   __pyx_t_21 = 0;
   __pyx_t_22 = 0;
-  __pyx_t_22 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job), __pyx_t_23, NULL); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_22);
-  __Pyx_DECREF(__pyx_t_23); __pyx_t_23 = 0;
-  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_22);
-  __pyx_t_22 = 0;
+  __pyx_t_23 = 0;
+  __pyx_t_23 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job), __pyx_t_24, NULL); if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_23);
+  __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
+  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_23);
+  __pyx_t_23 = 0;
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/job.pyx":41
  * 
  * 
- * cdef Job start_job(int j, int[:] p):             # <<<<<<<<<<<<<<
+ * cdef Job start_job(int j, const int[::1] p):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i, m, m1, m2, T, sum_p, k, slope
  */
@@ -19618,12 +19657,12 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_f_7bnbprob_5pfss
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_6, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_7, 1);
-  __Pyx_XDECREF(__pyx_t_20);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_8, 1);
   __Pyx_XDECREF(__pyx_t_21);
   __Pyx_XDECREF(__pyx_t_22);
   __Pyx_XDECREF(__pyx_t_23);
+  __Pyx_XDECREF(__pyx_t_24);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.job.start_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -19954,13 +19993,14 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
   int __pyx_t_1;
   __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_t_3 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
+  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
-  unsigned int __pyx_t_10;
+  PyObject *__pyx_t_10 = NULL;
+  unsigned int __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -19989,7 +20029,7 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dsds_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int__const__(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), 0); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->lat, 0);
   __pyx_v___pyx_result->lat = __pyx_t_2;
   __pyx_t_2.memview = NULL;
@@ -19998,7 +20038,7 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 3), PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_dc_int__const__(PyTuple_GET_ITEM(__pyx_v___pyx_state, 3), 0); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->p, 0);
   __pyx_v___pyx_result->p = __pyx_t_3;
   __pyx_t_3.memview = NULL;
@@ -20007,20 +20047,20 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 4), PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 4), PyBUF_WRITABLE); if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->q, 0);
-  __pyx_v___pyx_result->q = __pyx_t_3;
-  __pyx_t_3.memview = NULL;
-  __pyx_t_3.data = NULL;
+  __pyx_v___pyx_result->q = __pyx_t_4;
+  __pyx_t_4.memview = NULL;
+  __pyx_t_4.data = NULL;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 5), PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 5), PyBUF_WRITABLE); if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->r, 0);
-  __pyx_v___pyx_result->r = __pyx_t_3;
-  __pyx_t_3.memview = NULL;
-  __pyx_t_3.data = NULL;
+  __pyx_v___pyx_result->r = __pyx_t_4;
+  __pyx_t_4.memview = NULL;
+  __pyx_t_4.data = NULL;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
@@ -20038,55 +20078,55 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
     __PYX_ERR(1, 13, __pyx_L1_error)
   }
-  __pyx_t_5 = __Pyx_PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
-  __pyx_t_6 = (__pyx_t_5 > 7);
-  if (__pyx_t_6) {
+  __pyx_t_6 = __Pyx_PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_7 = (__pyx_t_6 > 7);
+  if (__pyx_t_7) {
   } else {
-    __pyx_t_4 = __pyx_t_6;
+    __pyx_t_5 = __pyx_t_7;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_6 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
-  __pyx_t_4 = __pyx_t_6;
+  __pyx_t_7 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_5 = __pyx_t_7;
   __pyx_L4_bool_binop_done:;
-  if (__pyx_t_4) {
+  if (__pyx_t_5) {
 
     /* "(tree fragment)":14
  *     __pyx_result.T = __pyx_state[0]; __pyx_result.j = __pyx_state[1]; __pyx_result.lat = __pyx_state[2]; __pyx_result.p = __pyx_state[3]; __pyx_result.q = __pyx_state[4]; __pyx_result.r = __pyx_state[5]; __pyx_result.slope = __pyx_state[6]
  *     if len(__pyx_state) > 7 and hasattr(__pyx_result, '__dict__'):
  *         __pyx_result.__dict__.update(__pyx_state[7])             # <<<<<<<<<<<<<<
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_update); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_update); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     if (unlikely(__pyx_v___pyx_state == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 14, __pyx_L1_error)
     }
-    __pyx_t_8 = NULL;
-    __pyx_t_10 = 0;
+    __pyx_t_9 = NULL;
+    __pyx_t_11 = 0;
     #if CYTHON_UNPACK_METHODS
-    if (likely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_8);
+    if (likely(PyMethod_Check(__pyx_t_10))) {
+      __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_10);
+      if (likely(__pyx_t_9)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+        __Pyx_INCREF(__pyx_t_9);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_9, function);
-        __pyx_t_10 = 1;
+        __Pyx_DECREF_SET(__pyx_t_10, function);
+        __pyx_t_11 = 1;
       }
     }
     #endif
     {
-      PyObject *__pyx_callargs[2] = {__pyx_t_8, PyTuple_GET_ITEM(__pyx_v___pyx_state, 7)};
-      __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_9, __pyx_callargs+1-__pyx_t_10, 1+__pyx_t_10);
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 14, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      PyObject *__pyx_callargs[2] = {__pyx_t_9, PyTuple_GET_ITEM(__pyx_v___pyx_state, 7)};
+      __pyx_t_8 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_11, 1+__pyx_t_11);
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 14, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
     /* "(tree fragment)":13
  * cdef __pyx_unpickle_Job__set_state(Job __pyx_result, tuple __pyx_state):
@@ -20110,9 +20150,10 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_3job___pyx_unpickle_Job__set_st
   __pyx_L1_error:;
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_2, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_3, 1);
-  __Pyx_XDECREF(__pyx_t_7);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_4, 1);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.job.__pyx_unpickle_Job__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -27724,15 +27765,8 @@ __pyx_slices_overlap(__Pyx_memviewslice *slice1,
     }
 
 /* MemviewDtypeToObject */
-static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp) {
-    return (PyObject *) __Pyx_PyInt_From_int(*(int *) itemp);
-}
-static CYTHON_INLINE int __pyx_memview_set_int(const char *itemp, PyObject *obj) {
-    int value = __Pyx_PyInt_As_int(obj);
-    if (unlikely((value == (int)-1) && PyErr_Occurred()))
-        return 0;
-    *(int *) itemp = value;
-    return 1;
+static CYTHON_INLINE PyObject *__pyx_memview_get_int__const__(const char *itemp) {
+    return (PyObject *) __Pyx_PyInt_From_int(*(int const  *) itemp);
 }
 
 /* IsLittleEndian */
@@ -28480,17 +28514,75 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_int(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_int__const__(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
     int retcode;
     if (obj == Py_None) {
         result.memview = (struct __pyx_memoryview_obj *) Py_None;
         return result;
     }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS_RO | writable_flag, 2,
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
+                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
+                                                 &__Pyx_TypeInfo_int__const__, stack,
+                                                 &result, obj);
+    if (unlikely(retcode == -1))
+        goto __pyx_fail;
+    return result;
+__pyx_fail:
+    result.memview = NULL;
+    result.data = NULL;
+    return result;
+}
+
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_int__const__(PyObject *obj, int writable_flag) {
+    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
+    __Pyx_BufFmt_StackElem stack[1];
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
+    int retcode;
+    if (obj == Py_None) {
+        result.memview = (struct __pyx_memoryview_obj *) Py_None;
+        return result;
+    }
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
+                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 1,
+                                                 &__Pyx_TypeInfo_int__const__, stack,
+                                                 &result, obj);
+    if (unlikely(retcode == -1))
+        goto __pyx_fail;
+    return result;
+__pyx_fail:
+    result.memview = NULL;
+    result.data = NULL;
+    return result;
+}
+
+/* MemviewDtypeToObject */
+  static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp) {
+    return (PyObject *) __Pyx_PyInt_From_int(*(int *) itemp);
+}
+static CYTHON_INLINE int __pyx_memview_set_int(const char *itemp, PyObject *obj) {
+    int value = __Pyx_PyInt_As_int(obj);
+    if (unlikely((value == (int)-1) && PyErr_Occurred()))
+        return 0;
+    *(int *) itemp = value;
+    return 1;
+}
+
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_int(PyObject *obj, int writable_flag) {
+    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
+    __Pyx_BufFmt_StackElem stack[1];
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
+    int retcode;
+    if (obj == Py_None) {
+        result.memview = (struct __pyx_memoryview_obj *) Py_None;
+        return result;
+    }
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
+                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 1,
                                                  &__Pyx_TypeInfo_int, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
@@ -28503,17 +28595,17 @@ __pyx_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
     int retcode;
     if (obj == Py_None) {
         result.memview = (struct __pyx_memoryview_obj *) Py_None;
         return result;
     }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS_RO | writable_flag, 1,
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
+                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
                                                  &__Pyx_TypeInfo_int, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
