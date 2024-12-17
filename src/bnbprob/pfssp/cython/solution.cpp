@@ -1663,6 +1663,23 @@ struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
+struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
+typedef struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
+
+/* "bnbprob/pfssp/cython/permutation.pxd":55
+ * 
+ * 
+ * ctypedef struct JobParams:             # <<<<<<<<<<<<<<
+ *     int t1
+ *     int t2
+ */
+struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams {
+  int t1;
+  int t2;
+  int const *p1;
+  int const *p2;
+  int const *lat;
+};
 
 /* "bnbprob/pfssp/cython/job.pxd":7
  * 
@@ -21075,7 +21092,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_32pus
  *         self.perm.push_job(j)
  * 
  *     cpdef FlowSolution copy(FlowSolution self):             # <<<<<<<<<<<<<<
- *         return FlowSolution(self.perm.copy())
+ *         cdef:
+ *             FlowSolution sol
  */
 
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_35copy(PyObject *__pyx_v_self, 
@@ -21086,6 +21104,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_f_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_copy(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_sol = 0;
   struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21152,26 +21171,84 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_f_
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/solution.pyx":92
+  /* "bnbprob/pfssp/cython/solution.pyx":95
+ *             FlowSolution sol
  * 
- *     cpdef FlowSolution copy(FlowSolution self):
- *         return FlowSolution(self.perm.copy())             # <<<<<<<<<<<<<<
+ *         sol = FlowSolution.__new__(FlowSolution)             # <<<<<<<<<<<<<<
+ *         sol.perm = self.perm.copy()
+ *         sol.cost = LARGE_INT
  */
-  __Pyx_XDECREF((PyObject *)__pyx_r);
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self->perm->__pyx_vtab)->copy(__pyx_v_self->perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 92, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8solution_FlowSolution(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 95, __pyx_L1_error)
+  __Pyx_GOTREF((PyObject *)__pyx_t_1);
+  __pyx_v_sol = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "bnbprob/pfssp/cython/solution.pyx":96
+ * 
+ *         sol = FlowSolution.__new__(FlowSolution)
+ *         sol.perm = self.perm.copy()             # <<<<<<<<<<<<<<
+ *         sol.cost = LARGE_INT
+ *         sol.lb = 0
+ */
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self->perm->__pyx_vtab)->copy(__pyx_v_self->perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 92, __pyx_L1_error)
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF((PyObject *)__pyx_v_sol->perm);
+  __Pyx_DECREF((PyObject *)__pyx_v_sol->perm);
+  __pyx_v_sol->perm = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "bnbprob/pfssp/cython/solution.pyx":97
+ *         sol = FlowSolution.__new__(FlowSolution)
+ *         sol.perm = self.perm.copy()
+ *         sol.cost = LARGE_INT             # <<<<<<<<<<<<<<
+ *         sol.lb = 0
+ *         sol.status = OptStatus.NO_SOLUTION
+ */
+  __pyx_v_sol->cost = __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT;
+
+  /* "bnbprob/pfssp/cython/solution.pyx":98
+ *         sol.perm = self.perm.copy()
+ *         sol.cost = LARGE_INT
+ *         sol.lb = 0             # <<<<<<<<<<<<<<
+ *         sol.status = OptStatus.NO_SOLUTION
+ *         return sol
+ */
+  __pyx_v_sol->lb = 0;
+
+  /* "bnbprob/pfssp/cython/solution.pyx":99
+ *         sol.cost = LARGE_INT
+ *         sol.lb = 0
+ *         sol.status = OptStatus.NO_SOLUTION             # <<<<<<<<<<<<<<
+ *         return sol
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_OptStatus); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_NO_SOLUTION); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 99, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  __Pyx_GOTREF(__pyx_v_sol->status);
+  __Pyx_DECREF(__pyx_v_sol->status);
+  __pyx_v_sol->status = __pyx_t_2;
   __pyx_t_2 = 0;
+
+  /* "bnbprob/pfssp/cython/solution.pyx":100
+ *         sol.lb = 0
+ *         sol.status = OptStatus.NO_SOLUTION
+ *         return sol             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF((PyObject *)__pyx_r);
+  __Pyx_INCREF((PyObject *)__pyx_v_sol);
+  __pyx_r = __pyx_v_sol;
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/solution.pyx":91
  *         self.perm.push_job(j)
  * 
  *     cpdef FlowSolution copy(FlowSolution self):             # <<<<<<<<<<<<<<
- *         return FlowSolution(self.perm.copy())
+ *         cdef:
+ *             FlowSolution sol
  */
 
   /* function exit code */
@@ -21183,6 +21260,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_f_
   __Pyx_AddTraceback("bnbprob.pfssp.cython.solution.FlowSolution.copy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_sol);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -24242,7 +24320,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         self.perm.push_job(j)
  * 
  *     cpdef FlowSolution copy(FlowSolution self):             # <<<<<<<<<<<<<<
- *         return FlowSolution(self.perm.copy())
+ *         cdef:
+ *             FlowSolution sol
  */
   __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_copy, 91, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 91, __pyx_L1_error)
 
@@ -25599,7 +25678,8 @@ if (!__Pyx_RefNanny) {
  *         self.perm.push_job(j)
  * 
  *     cpdef FlowSolution copy(FlowSolution self):             # <<<<<<<<<<<<<<
- *         return FlowSolution(self.perm.copy())
+ *         cdef:
+ *             FlowSolution sol
  */
   __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_35copy, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_FlowSolution_copy, NULL, __pyx_n_s_bnbprob_pfssp_cython_solution, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);

@@ -8,34 +8,37 @@ import numpy as np
 
 cdef class Job:
 
-    def __init__(
-        self,
-        int j,
-        const int[::1] p,
-        vector[int] r,
-        vector[int] q,
-        const int[:, ::1] lat,
-        int slope,
-        int T
-    ):
-        self.j = j
-        self.p = p
-        self.r = r
-        self.q = q
-        self.lat = lat
-        self.slope = slope
-        self.T = T
+    # def __init__(
+    #     self,
+    #     int j,
+    #     const int[::1] p,
+    #     vector[int] r,
+    #     vector[int] q,
+    #     const int[:, ::1] lat,
+    #     int slope,
+    #     int T
+    # ):
+    #     self.j = j
+    #     self.p = p
+    #     self.r = r
+    #     self.q = q
+    #     self.lat = lat
+    #     self.slope = slope
+    #     self.T = T
 
     cpdef Job copy(Job self):
-        return Job(
-            self.j,
-            self.p,
-            vector[int](self.r),
-            vector[int](self.q),
-            self.lat,
-            self.slope,
-            self.T
-        )
+        cdef:
+            Job job
+        job = Job.__new__(Job)
+        job.j = self.j
+        job.p = self.p
+        job.r = vector[int](self.r)
+        job.q = vector[int](self.q)
+        job.lat = self.lat
+        job.slope = self.slope
+        job.T = self.T
+
+        return job
 
 
 cdef Job start_job(int j, const int[::1] p):
@@ -43,6 +46,7 @@ cdef Job start_job(int j, const int[::1] p):
         int i, m, m1, m2, T, sum_p, k, slope
         vector[int] r, q
         int[:, ::1] lat
+        Job job
 
     m = <int>len(p)
 
@@ -68,12 +72,13 @@ cdef Job start_job(int j, const int[::1] p):
     for k in range(1, m):
         slope += (k - (m + 1) / 2) * p[k - 1]
 
-    return Job(
-        j,
-        p,
-        r,
-        q,
-        lat,
-        slope,
-        T
-    )
+    job = Job.__new__(Job)
+    job.j = j
+    job.p = p
+    job.r = r
+    job.q = q
+    job.lat = lat
+    job.slope = slope
+    job.T = T
+
+    return job

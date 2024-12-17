@@ -43,8 +43,20 @@ cdef class Sigma:
             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
 
     cdef Sigma copy(Sigma self):
-        return Sigma(self.jobs.copy(), vector[int](self.C))
+        cdef:
+            Sigma sigma
+        sigma = Sigma.__new__(Sigma)
+        sigma.jobs = self.jobs.copy()
+        sigma.C = vector[int](self.C)
+        sigma.m = self.m
+        return sigma
 
 
 cdef Sigma empty_sigma(int m):
-    return Sigma([], vector[int](m, 0))
+    cdef:
+        Sigma sigma
+    sigma = Sigma.__new__(Sigma)
+    sigma.jobs = []
+    sigma.C = vector[int](m, 0)
+    sigma.m = m
+    return sigma

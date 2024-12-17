@@ -89,4 +89,12 @@ cdef class FlowSolution:
         self.perm.push_job(j)
 
     cpdef FlowSolution copy(FlowSolution self):
-        return FlowSolution(self.perm.copy())
+        cdef:
+            FlowSolution sol
+
+        sol = FlowSolution.__new__(FlowSolution)
+        sol.perm = self.perm.copy()
+        sol.cost = LARGE_INT
+        sol.lb = 0
+        sol.status = OptStatus.NO_SOLUTION
+        return sol

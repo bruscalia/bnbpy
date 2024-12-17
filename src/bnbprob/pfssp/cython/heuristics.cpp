@@ -1661,6 +1661,23 @@ struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
+struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
+typedef struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
+
+/* "bnbprob/pfssp/cython/permutation.pxd":55
+ * 
+ * 
+ * ctypedef struct JobParams:             # <<<<<<<<<<<<<<
+ *     int t1
+ *     int t2
+ */
+struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams {
+  int t1;
+  int t2;
+  int const *p1;
+  int const *p2;
+  int const *lat;
+};
 
 /* "bnbprob/pfssp/cython/job.pxd":7
  * 

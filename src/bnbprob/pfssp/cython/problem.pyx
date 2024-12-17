@@ -195,8 +195,9 @@ cdef class PermFlowShop:
     cpdef PermFlowShop copy(PermFlowShop self):
         cdef:
             PermFlowShop child
-            FlowSolution child_solution = self.solution.copy()
-        child = type(self)(child_solution, self.constructive)
+        child = type(self).__new__(type(self))
+        child.solution = self.solution.copy()
+        child.constructive = self.constructive
         return child
 
 

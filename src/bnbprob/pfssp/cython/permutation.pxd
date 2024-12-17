@@ -52,10 +52,19 @@ cdef class Permutation:
     cpdef Permutation copy(Permutation self)
 
 
+ctypedef struct JobParams:
+    int t1
+    int t2
+    const int* p1
+    const int* p2
+    const int* lat
+
+
 cdef int two_mach_problem(list[Job] jobs, int m1, int m2)
 
+
 cdef int two_mach_makespan(
-    list[tuple[Job, int, int]] job_times,
+    vector[JobParams] &job_times,
     int m1,
     int m2
 )

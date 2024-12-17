@@ -295,17 +295,17 @@ body.cython { font-family: courier; font-size: 12; }
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <p>Raw output: <a href="solution.cpp">solution.cpp</a></p>
-<div class="cython"><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">01</span>: # distutils: language = c++</pre>
+<div class="cython"><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">001</span>: # distutils: language = c++</pre>
 <pre class='cython code score-8 '>  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyDict_NewPresized</span>(0);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_test, __pyx_t_4) &lt; 0) <span class='error_goto'>__PYX_ERR(1, 1, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">02</span>: # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False</pre>
-<pre class="cython line score-0">&#xA0;<span class="">03</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">04</span>: from libcpp cimport bool</pre>
-<pre class="cython line score-0">&#xA0;<span class="">05</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">06</span>: from bnbprob.pfssp.cython.permutation cimport Permutation</pre>
-<pre class="cython line score-20" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">07</span>: from bnbpy.status import OptStatus</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">002</span>: # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False</pre>
+<pre class="cython line score-0">&#xA0;<span class="">003</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">004</span>: from libcpp cimport bool</pre>
+<pre class="cython line score-0">&#xA0;<span class="">005</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">006</span>: from bnbprob.pfssp.cython.permutation cimport Permutation</pre>
+<pre class="cython line score-20" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">007</span>: from bnbpy.status import OptStatus</pre>
 <pre class='cython code score-20 '>  __pyx_t_7 = <span class='py_c_api'>PyList_New</span>(1);<span class='error_goto'> if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 7, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_n_s_OptStatus);
@@ -319,14 +319,14 @@ body.cython { font-family: courier; font-size: 12; }
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_OptStatus, __pyx_t_7) &lt; 0) <span class='error_goto'>__PYX_ERR(1, 7, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">08</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">09</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">10</span>: cdef:</pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">11</span>:     int LARGE_INT = 10000000</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">008</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">009</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">010</span>: cdef:</pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">011</span>:     int LARGE_INT = 10000000</pre>
 <pre class='cython code score-0 '>  __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT = 0x989680;
-</pre><pre class="cython line score-0">&#xA0;<span class="">12</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">13</span>: </pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">14</span>: cdef class FlowSolution:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">012</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">013</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">014</span>: cdef class FlowSolution:</pre>
 <pre class='cython code score-0 '>struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution {
   void (*set_optimal)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int __pyx_skip_dispatch);
   void (*set_lb)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *, int, int __pyx_skip_dispatch);
@@ -343,8 +343,8 @@ body.cython { font-family: courier; font-size: 12; }
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_vtabptr_7bnbprob_5pfssp_6cython_8solution_FlowSolution;
 
-</pre><pre class="cython line score-0">&#xA0;<span class="">15</span>: </pre>
-<pre class="cython line score-39" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">16</span>:     def __init__(self, Permutation perm):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">015</span>: </pre>
+<pre class="cython line score-39" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">016</span>:     def __init__(self, Permutation perm):</pre>
 <pre class='cython code score-39 '>/* Python wrapper */
 static int __pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
@@ -444,17 +444,17 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution___init__(st
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">17</span>:         self.perm = perm</pre>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">017</span>:         self.perm = perm</pre>
 <pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_INCREF</span>((PyObject *)__pyx_v_perm);
   <span class='refnanny'>__Pyx_GIVEREF</span>((PyObject *)__pyx_v_perm);
   <span class='refnanny'>__Pyx_GOTREF</span>((PyObject *)__pyx_v_self-&gt;perm);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>((PyObject *)__pyx_v_self-&gt;perm);
   __pyx_v_self-&gt;perm = __pyx_v_perm;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">18</span>:         self.cost = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">018</span>:         self.cost = LARGE_INT</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;cost = __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">19</span>:         self.lb = 0</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">019</span>:         self.lb = 0</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;lb = 0;
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">20</span>:         self.status = OptStatus.NO_SOLUTION</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">020</span>:         self.status = OptStatus.NO_SOLUTION</pre>
 <pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 20, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_NO_SOLUTION);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 20, __pyx_L1_error)</span>
@@ -465,8 +465,8 @@ static int __pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution___init__(st
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
   __pyx_v_self-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">21</span>: </pre>
-<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">22</span>:     def __del__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">021</span>: </pre>
+<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">022</span>:     def __del__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static void __pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_3__del__(PyObject *__pyx_v_self); /*proto*/
 static void __pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_3__del__(PyObject *__pyx_v_self) {
@@ -489,16 +489,16 @@ static void __pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_2__del__(s
   __pyx_L0:;
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
 }
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">23</span>:         del self.perm</pre>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">023</span>:         del self.perm</pre>
 <pre class='cython code score-2 '>  if (<span class='pyx_c_api'>__Pyx_PyObject_DelAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_perm) &lt; 0) <span class='error_goto'>__PYX_ERR(1, 23, __pyx_L1_error)</span>
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">24</span>:         self.perm = None</pre>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">024</span>:         self.perm = None</pre>
 <pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_INCREF</span>(Py_None);
   <span class='refnanny'>__Pyx_GIVEREF</span>(Py_None);
   <span class='refnanny'>__Pyx_GOTREF</span>((PyObject *)__pyx_v_self-&gt;perm);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>((PyObject *)__pyx_v_self-&gt;perm);
   __pyx_v_self-&gt;perm = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)Py_None);
-</pre><pre class="cython line score-0">&#xA0;<span class="">25</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">26</span>:     def __repr__(self) -&gt; str:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">025</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">026</span>:     def __repr__(self) -&gt; str:</pre>
 <pre class='cython code score-5 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_5__repr__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_5__repr__(PyObject *__pyx_v_self) {
@@ -527,15 +527,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_4__re
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">27</span>:         return self._signature</pre>
+</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">027</span>:         return self._signature</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_signature);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 27, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">28</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">29</span>:     def __str__(self) -&gt; str:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">028</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">029</span>:     def __str__(self) -&gt; str:</pre>
 <pre class='cython code score-5 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_7__str__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_7__str__(PyObject *__pyx_v_self) {
@@ -564,15 +564,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_6__st
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">30</span>:         return self._signature</pre>
+</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">030</span>:         return self._signature</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_signature);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 30, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">31</span>: </pre>
-<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">32</span>:     @property</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">031</span>: </pre>
+<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">032</span>:     @property</pre>
 <pre class='cython code score-7 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10_signature_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10_signature_1__get__(PyObject *__pyx_v_self) {
@@ -603,10 +603,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10_si
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">33</span>:     def _signature(self):</pre>
-<pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">34</span>:         return (</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">033</span>:     def _signature(self):</pre>
+<pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">034</span>:         return (</pre>
 <pre class='cython code score-1 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-</pre><pre class="cython line score-36" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">35</span>:             f'Status: {self.status.name} | Cost: {self.cost} | LB: {self.lb}'</pre>
+</pre><pre class="cython line score-36" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">035</span>:             f'Status: {self.status.name} | Cost: {self.cost} | LB: {self.lb}'</pre>
 <pre class='cython code score-36 '>  __pyx_t_1 = <span class='py_c_api'>PyTuple_New</span>(6);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 35, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = 0;
@@ -651,9 +651,9 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10_si
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">36</span>:         )</pre>
-<pre class="cython line score-0">&#xA0;<span class="">37</span>: </pre>
-<pre class="cython line score-34" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">38</span>:     def get_status_cls(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">036</span>:         )</pre>
+<pre class="cython line score-0">&#xA0;<span class="">037</span>: </pre>
+<pre class="cython line score-34" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">038</span>:     def get_status_cls(self):</pre>
 <pre class='cython code score-34 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9get_status_cls(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -719,15 +719,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_8get_
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   __pyx_codeobj__22 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_get_status_cls, 38, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(1, 38, __pyx_L1_error)</span>
-</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">39</span>:         return self.status.__class__</pre>
+</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">039</span>:         return self.status.__class__</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self-&gt;status, __pyx_n_s_class);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">40</span>: </pre>
-<pre class="cython line score-39" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">41</span>:     def get_status_options(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">040</span>: </pre>
+<pre class="cython line score-39" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">041</span>:     def get_status_options(self):</pre>
 <pre class='cython code score-39 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_11get_status_options(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
@@ -800,7 +800,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10get
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   __pyx_codeobj__24 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_get_status_options, 41, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(1, 41, __pyx_L1_error)</span>
-</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">42</span>:         status_cls = self.get_status_cls()</pre>
+</pre><pre class="cython line score-16" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">042</span>:         status_cls = self.get_status_cls()</pre>
 <pre class='cython code score-16 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_get_status_cls);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 42, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_t_3 = NULL;
@@ -827,7 +827,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10get
   }
   __pyx_v_status_cls = __pyx_t_1;
   __pyx_t_1 = 0;
-</pre><pre class="cython line score-68" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">43</span>:         return {status.name: status.value for status in status_cls}</pre>
+</pre><pre class="cython line score-68" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">043</span>:         return {status.name: status.value for status in status_cls}</pre>
 <pre class='cython code score-68 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   { /* enter inner scope */
     __pyx_t_1 = <span class='py_c_api'>PyDict_New</span>();<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 43, __pyx_L5_error)</span>
@@ -905,8 +905,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_10get
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">44</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">45</span>:     @property</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">044</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">045</span>:     @property</pre>
 <pre class='cython code score-5 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_8sequence_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_8sequence_1__get__(PyObject *__pyx_v_self) {
@@ -935,16 +935,16 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_8sequ
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">46</span>:     def sequence(self):</pre>
-<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">47</span>:         return self.perm.sequence</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">046</span>:     def sequence(self):</pre>
+<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">047</span>:         return self.perm.sequence</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self-&gt;perm), __pyx_n_s_sequence);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">48</span>: </pre>
-<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">49</span>:     @property</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">048</span>: </pre>
+<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">049</span>:     @property</pre>
 <pre class='cython code score-2 '>/* Python wrapper */
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free_jobs_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free_jobs_1__get__(PyObject *__pyx_v_self) {
@@ -969,14 +969,14 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">50</span>:     def free_jobs(self):</pre>
-<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">51</span>:         return self.perm.free_jobs</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">050</span>:     def free_jobs(self):</pre>
+<pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">051</span>:         return self.perm.free_jobs</pre>
 <pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_self-&gt;perm-&gt;free_jobs);
   __pyx_r = __pyx_v_self-&gt;perm-&gt;free_jobs;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">52</span>: </pre>
-<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">53</span>:     cpdef void set_optimal(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">052</span>: </pre>
+<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">053</span>:     cpdef void set_optimal(FlowSolution self):</pre>
 <pre class='cython code score-60 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_13set_optimal(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1118,7 +1118,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_12set
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__25 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_set_optimal, 53, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(1, 53, __pyx_L1_error)</span>
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">54</span>:         self.status = OptStatus.OPTIMAL</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">054</span>:         self.status = OptStatus.OPTIMAL</pre>
 <pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_OPTIMAL);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 54, __pyx_L1_error)</span>
@@ -1129,8 +1129,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_12set
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
   __pyx_v_self-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">55</span>: </pre>
-<pre class="cython line score-95" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">56</span>:     cpdef void set_lb(FlowSolution self, int lb):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">055</span>: </pre>
+<pre class="cython line score-95" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">056</span>:     cpdef void set_lb(FlowSolution self, int lb):</pre>
 <pre class='cython code score-95 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_15set_lb(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1334,9 +1334,9 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_14set
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   __pyx_codeobj__27 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_set_lb, 56, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(1, 56, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">57</span>:         self.lb = lb</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">057</span>:         self.lb = lb</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;lb = __pyx_v_lb;
-</pre><pre class="cython line score-14" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">58</span>:         if self.status == OptStatus.NO_SOLUTION:</pre>
+</pre><pre class="cython line score-14" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">058</span>:         if self.status == OptStatus.NO_SOLUTION:</pre>
 <pre class='cython code score-14 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_NO_SOLUTION);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)</span>
@@ -1349,7 +1349,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_14set
   if (__pyx_t_7) {
 /* … */
   }
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">59</span>:             self.status = OptStatus.RELAXATION</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">059</span>:             self.status = OptStatus.RELAXATION</pre>
 <pre class='cython code score-6 '>    <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
     __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_RELAXATION);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)</span>
@@ -1360,8 +1360,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_14set
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
     __pyx_v_self-&gt;status = __pyx_t_2;
     __pyx_t_2 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">60</span>: </pre>
-<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">61</span>:     cpdef void set_feasible(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">060</span>: </pre>
+<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">061</span>:     cpdef void set_feasible(FlowSolution self):</pre>
 <pre class='cython code score-60 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_17set_feasible(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1503,7 +1503,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_16set
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__28 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_set_feasible, 61, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(1, 61, __pyx_L1_error)</span>
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">62</span>:         self.status = OptStatus.FEASIBLE</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">062</span>:         self.status = OptStatus.FEASIBLE</pre>
 <pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 62, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_FEASIBLE);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 62, __pyx_L1_error)</span>
@@ -1514,11 +1514,11 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_16set
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
   __pyx_v_self-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">63</span>:         self.cost = self.lb</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">063</span>:         self.cost = self.lb</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = __pyx_v_self-&gt;lb;
   __pyx_v_self-&gt;cost = __pyx_t_6;
-</pre><pre class="cython line score-0">&#xA0;<span class="">64</span>: </pre>
-<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">65</span>:     cpdef void set_infeasible(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">064</span>: </pre>
+<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">065</span>:     cpdef void set_infeasible(FlowSolution self):</pre>
 <pre class='cython code score-60 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_19set_infeasible(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1660,7 +1660,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_18set
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__29 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_set_infeasible, 65, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(1, 65, __pyx_L1_error)</span>
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">66</span>:         self.status = OptStatus.INFEASIBLE</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">066</span>:         self.status = OptStatus.INFEASIBLE</pre>
 <pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 66, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_INFEASIBLE);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)</span>
@@ -1671,10 +1671,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_18set
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
   __pyx_v_self-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">67</span>:         self.cost = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">067</span>:         self.cost = LARGE_INT</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;cost = __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT;
-</pre><pre class="cython line score-0">&#xA0;<span class="">68</span>: </pre>
-<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">69</span>:     cpdef void fathom(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">068</span>: </pre>
+<pre class="cython line score-60" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">069</span>:     cpdef void fathom(FlowSolution self):</pre>
 <pre class='cython code score-60 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_21fathom(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1816,7 +1816,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_20fat
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__30 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_fathom, 69, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(1, 69, __pyx_L1_error)</span>
-</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">70</span>:         self.status = OptStatus.FATHOM</pre>
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">070</span>:         self.status = OptStatus.FATHOM</pre>
 <pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_FATHOM);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)</span>
@@ -1827,10 +1827,10 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_20fat
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;status);
   __pyx_v_self-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">71</span>:         self.cost = LARGE_INT</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">071</span>:         self.cost = LARGE_INT</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;cost = __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT;
-</pre><pre class="cython line score-0">&#xA0;<span class="">72</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">73</span>:     cpdef bool is_feasible(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">072</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">073</span>:     cpdef bool is_feasible(FlowSolution self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_23is_feasible(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -1976,12 +1976,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_22is_
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__31 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_is_feasible, 73, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(1, 73, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">74</span>:         return self.perm.is_feasible()</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">074</span>:         return self.perm.is_feasible()</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;is_feasible(__pyx_v_self-&gt;perm, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 74, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_6;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">75</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">76</span>:     cpdef int calc_lb_1m(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">075</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">076</span>:     cpdef int calc_lb_1m(FlowSolution self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_25calc_lb_1m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -2127,12 +2127,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_24cal
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__32 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_calc_lb_1m, 76, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(1, 76, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">77</span>:         return self.perm.calc_lb_1m()</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">077</span>:         return self.perm.calc_lb_1m()</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;calc_lb_1m(__pyx_v_self-&gt;perm, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 77, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_6;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">78</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">79</span>:     cpdef int calc_lb_2m(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">078</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">079</span>:     cpdef int calc_lb_2m(FlowSolution self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_27calc_lb_2m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -2278,12 +2278,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_26cal
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__33 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_calc_lb_2m, 79, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(1, 79, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">80</span>:         return self.perm.calc_lb_2m()</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">080</span>:         return self.perm.calc_lb_2m()</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;calc_lb_2m(__pyx_v_self-&gt;perm, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 80, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_6;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">81</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">82</span>:     cpdef int lower_bound_1m(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">081</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">082</span>:     cpdef int lower_bound_1m(FlowSolution self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_29lower_bound_1m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -2429,12 +2429,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_28low
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__34 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_lower_bound_1m, 82, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(1, 82, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">83</span>:         return self.perm.lower_bound_1m()</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">083</span>:         return self.perm.lower_bound_1m()</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;lower_bound_1m(__pyx_v_self-&gt;perm, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 83, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_6;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">84</span>: </pre>
-<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">85</span>:     cpdef int lower_bound_2m(FlowSolution self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">084</span>: </pre>
+<pre class="cython line score-69" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">085</span>:     cpdef int lower_bound_2m(FlowSolution self):</pre>
 <pre class='cython code score-69 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_31lower_bound_2m(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -2580,12 +2580,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_30low
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__35 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_lower_bound_2m, 85, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 85, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">86</span>:         return self.perm.lower_bound_1m()</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">086</span>:         return self.perm.lower_bound_1m()</pre>
 <pre class='cython code score-0 '>  __pyx_t_6 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;lower_bound_1m(__pyx_v_self-&gt;perm, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 86, __pyx_L1_error)</span>
   __pyx_r = __pyx_t_6;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">87</span>: </pre>
-<pre class="cython line score-95" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">88</span>:     cpdef void push_job(FlowSolution self, int j):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">087</span>: </pre>
+<pre class="cython line score-95" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">088</span>:     cpdef void push_job(FlowSolution self, int j):</pre>
 <pre class='cython code score-95 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_33push_job(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -2789,11 +2789,11 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_32pus
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
   __pyx_codeobj__37 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_push_job, 88, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 88, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">89</span>:         self.perm.push_job(j)</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">089</span>:         self.perm.push_job(j)</pre>
 <pre class='cython code score-0 '>  ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;push_job(__pyx_v_self-&gt;perm, __pyx_v_j, 0);<span class='error_goto'> if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 89, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">90</span>: </pre>
-<pre class="cython line score-62" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">91</span>:     cpdef FlowSolution copy(FlowSolution self):</pre>
-<pre class='cython code score-62 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_35copy(PyObject *__pyx_v_self, 
+</pre><pre class="cython line score-0">&#xA0;<span class="">090</span>: </pre>
+<pre class="cython line score-63" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">091</span>:     cpdef FlowSolution copy(FlowSolution self):</pre>
+<pre class='cython code score-63 '>static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_35copy(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -2801,6 +2801,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_f_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_copy(struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_v_sol = 0;
   struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_r = NULL;
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
@@ -2866,6 +2867,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *__pyx_f_
   <span class='pyx_c_api'>__Pyx_AddTraceback</span>("bnbprob.pfssp.cython.solution.FlowSolution.copy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_v_sol);
   <span class='refnanny'>__Pyx_XGIVEREF</span>((PyObject *)__pyx_r);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
@@ -2939,14 +2941,40 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_34cop
   <span class='py_c_api'>PyType_Modified</span>(__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution);
 /* … */
   __pyx_codeobj__38 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_solutio, __pyx_n_s_copy, 91, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 91, __pyx_L1_error)</span>
-</pre><pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">92</span>:         return FlowSolution(self.perm.copy())</pre>
-<pre class='cython code score-4 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_r);
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;perm, 0));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 92, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">092</span>:         cdef:</pre>
+<pre class="cython line score-0">&#xA0;<span class="">093</span>:             FlowSolution sol</pre>
+<pre class="cython line score-0">&#xA0;<span class="">094</span>: </pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">095</span>:         sol = FlowSolution.__new__(FlowSolution)</pre>
+<pre class='cython code score-0 '>  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8solution_FlowSolution(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __pyx_empty_tuple, NULL));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 95, __pyx_L1_error)</span>
+  <span class='refnanny'>__Pyx_GOTREF</span>((PyObject *)__pyx_t_1);
+  __pyx_v_sol = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_1);
+  __pyx_t_1 = 0;
+</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">096</span>:         sol.perm = self.perm.copy()</pre>
+<pre class='cython code score-1 '>  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_self-&gt;perm-&gt;__pyx_vtab)-&gt;copy(__pyx_v_self-&gt;perm, 0));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 96, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8solution_FlowSolution), __pyx_t_1);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 92, __pyx_L1_error)</span>
+  <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_1);
+  <span class='refnanny'>__Pyx_GOTREF</span>((PyObject *)__pyx_v_sol-&gt;perm);
+  <span class='pyx_macro_api'>__Pyx_DECREF</span>((PyObject *)__pyx_v_sol-&gt;perm);
+  __pyx_v_sol-&gt;perm = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_1);
+  __pyx_t_1 = 0;
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">097</span>:         sol.cost = LARGE_INT</pre>
+<pre class='cython code score-0 '>  __pyx_v_sol-&gt;cost = __pyx_v_7bnbprob_5pfssp_6cython_8solution_LARGE_INT;
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">098</span>:         sol.lb = 0</pre>
+<pre class='cython code score-0 '>  __pyx_v_sol-&gt;lb = 0;
+</pre><pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">099</span>:         sol.status = OptStatus.NO_SOLUTION</pre>
+<pre class='cython code score-6 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_1, __pyx_n_s_OptStatus);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)</span>
+  <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_1, __pyx_n_s_NO_SOLUTION);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 99, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution *)__pyx_t_2);
+  <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_2);
+  <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_v_sol-&gt;status);
+  <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_sol-&gt;status);
+  __pyx_v_sol-&gt;status = __pyx_t_2;
   __pyx_t_2 = 0;
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">100</span>:         return sol</pre>
+<pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>((PyObject *)__pyx_r);
+  <span class='pyx_macro_api'>__Pyx_INCREF</span>((PyObject *)__pyx_v_sol);
+  __pyx_r = __pyx_v_sol;
   goto __pyx_L0;
 </pre></div></body></html>

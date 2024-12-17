@@ -2,6 +2,7 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from libcpp.algorithm cimport sort
 from libcpp.vector cimport vector
 
 from array import array
@@ -65,7 +66,7 @@ cdef class Permutation:
         return len(self.free_jobs)
 
     cpdef list[Job] get_sequence(Permutation self):
-        return self.free_jobs +self.sigma1.jobs + self.sigma2.jobs
+        return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
 
     cpdef list[Job] get_sequence_copy(Permutation self):
         cdef:
@@ -159,22 +160,26 @@ cdef class Permutation:
     cpdef void compute_starts(Permutation self):
         cdef:
             int m, j
+            Job job, prev
             list[Job] seq
 
         seq = self.get_sequence()
         for j in range(len(seq)):
-            seq[j].r = vector[int](self.m, 0)
+            job = seq[j]
+            job.r = vector[int](self.m, 0)
 
-        seq[0].r[0] = 0
+        job = seq[0]
         for m in range(1, self.m):
-            seq[0].r[m] = seq[0].r[m - 1] + seq[0].p[m - 1]
+            job.r[m] = job.r[m - 1] + job.p[m - 1]
 
         for j in range(1, len(seq)):
-            seq[j].r[0] = seq[j - 1].r[0] + seq[j - 1].p[0]
+            job = seq[j]
+            prev = seq[j - 1]
+            job.r[0] = prev.r[0] + prev.p[0]
             for m in range(1, self.m):
-                seq[j].r[m] = max(
-                    seq[j].r[m - 1] + seq[j].p[m - 1],
-                    seq[j - 1].r[m] + seq[j - 1].p[m]
+                job.r[m] = max(
+                    job.r[m - 1] + job.p[m - 1],
+                    prev.r[m] + prev.p[m]
                 )
 
     cpdef int lower_bound_1m(Permutation self):
@@ -258,13 +263,15 @@ cdef class Permutation:
     cpdef Permutation copy(Permutation self):
         cdef:
             Job job
-        return Permutation(
-            self.m,
-            [job.copy() for job in self.free_jobs],
-            self.sigma1.copy(),
-            self.sigma2.copy(),
-            self.level,
-        )
+            Permutation perm
+
+        perm = Permutation.__new__(Permutation)
+        perm.m = self.m
+        perm.free_jobs = [job.copy() for job in self.free_jobs]
+        perm.sigma1 = self.sigma1.copy()
+        perm.sigma2 = self.sigma2.copy()
+        perm.level = self.level
+        return perm
 
 
 cpdef inline int key_1_sort(tuple[Job, int, int] x):
@@ -275,43 +282,54 @@ cpdef inline int key_2_sort(tuple[Job, int, int] x):
     return x[2]
 
 
+cdef inline bool asc_t1(const JobParams& a, const JobParams& b):
+    return a.t1 < b.t1  # Sort by t1 in ascending order
+
+
+cdef inline bool desc_t2(const JobParams& a, const JobParams& b):
+    return b.t2 < a.t2  # Sort by t2 in descending order
+
+
 cdef int two_mach_problem(list[Job] jobs, int m1, int m2):
     cdef:
         int J, j, t1, t2, res
         Job job
-        tuple[Job, int, int] jparam
-        list[tuple[Job, int, int]] j1, j2
+        JobParams jparam
+        vector[JobParams] j1, j2
 
     J = <int>len(jobs)
 
-    j1 = []
-    j2 = []
+    j1 = vector[JobParams]()
+    j2 = vector[JobParams]()
 
     for j in range(J):
         job = jobs[j]
         t1 = job.p[m1] + job.lat[m2][m1]
         t2 = job.p[m2] + job.lat[m2][m1]
 
-        jparam = (job, t1, t2)
+        jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
 
         if t1 <= t2:
-            j1.append(jparam)
+            j1.push_back(jparam)
         else:
-            j2.append(jparam)
+            j2.push_back(jparam)
 
     # Sort set1 in ascending order of t1
-    j1.sort(key=key_1_sort, reverse=False)
+    sort(j1.begin(), j1.end(), asc_t1)
 
     # Sort set2 in descending order of t2
-    j2.sort(key=key_2_sort, reverse=True)
+    sort(j2.begin(), j2.end(), desc_t2)
+
+    # Include j2 into j1
+    j1.insert(j1.end(), j2.begin(), j2.end())
 
     # Concatenate the sorted lists
-    res = two_mach_makespan(j1 + j2, m1, m2)
+    res = two_mach_makespan(j1, m1, m2)
     return res
 
 
 cdef int two_mach_makespan(
-    list[tuple[Job, int, int]] job_times,
+    vector[JobParams] &job_times,
     int m1,
     int m2
 ):
@@ -322,16 +340,15 @@ cdef int two_mach_makespan(
     time_m1 = 0  # Completion time for machine 1
     time_m2 = 0  # Completion time for machine 2
 
-    for j in range(len(job_times)):
-        job = job_times[j][0]
+    for j in range(job_times.size()):
         # Machine 1 processes each job sequentially
-        time_m1 += job.p[m1]
+        time_m1 += job_times[j].p1[0]
 
         # Machine 2 starts after the job is done
         # on Machine 1 and any lag is considered
         time_m2 = max(
-            time_m1 + job.lat[m2][m1],
+            time_m1 + job_times[j].lat[0],
             time_m2
-        ) + job.p[m2]
+        ) + job_times[j].p2[0]
 
     return max(time_m1, time_m2)
