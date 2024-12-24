@@ -8,25 +8,28 @@ import numpy as np
 
 cdef class Job:
 
-    # def __init__(
-    #     self,
-    #     int j,
-    #     const int[::1] p,
-    #     vector[int] r,
-    #     vector[int] q,
-    #     const int[:, ::1] lat,
-    #     int slope,
-    #     int T
-    # ):
-    #     self.j = j
-    #     self.p = p
-    #     self.r = r
-    #     self.q = q
-    #     self.lat = lat
-    #     self.slope = slope
-    #     self.T = T
+    def __init__(
+        self,
+        int j,
+        const int[::1] p,
+        vector[int] r,
+        vector[int] q,
+        const int[:, ::1] lat,
+        int slope,
+        int T
+    ):
+        self.j = j
+        self.p = p
+        self.r = r
+        self.q = q
+        self.lat = lat
+        self.slope = slope
+        self.T = T
 
-    cpdef Job copy(Job self):
+    cpdef Job pycopy(Job self):
+        return self.copy()
+
+    cdef Job copy(Job self):
         cdef:
             Job job
         job = Job.__new__(Job)

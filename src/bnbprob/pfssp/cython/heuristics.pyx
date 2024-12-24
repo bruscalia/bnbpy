@@ -7,7 +7,7 @@ import numpy as np
 
 from bnbprob.pfssp.cython.job cimport Job, start_job
 from bnbprob.pfssp.cython.sequence cimport Sigma, empty_sigma
-from bnbprob.pfssp.cython.permutation cimport Permutation
+from bnbprob.pfssp.cython.permutation cimport Permutation, start_perm
 
 cdef:
     int LARGE_INT = 10000000
@@ -38,22 +38,10 @@ cpdef Permutation neh_constructive(Permutation perm):
     perm.free_jobs.sort(key=key_T_sort, reverse=True)
 
     vec = [perm.free_jobs[0], perm.free_jobs[1]]
-    s1 = Permutation(
-        perm.m,
-        vec,
-        perm.sigma1.copy(),
-        perm.sigma2.copy(),
-        perm.level
-    )
+    s1 = start_perm(perm.m, vec)
 
     vec = [perm.free_jobs[1], perm.free_jobs[0]]
-    s2 = Permutation(
-        perm.m,
-        vec,
-        perm.sigma1.copy(),
-        perm.sigma2.copy(),
-        perm.level
-    )
+    s2 = start_perm(perm.m, vec)
 
     c1 = s1.calc_bound()
     c2 = s2.calc_bound()
@@ -69,15 +57,9 @@ cpdef Permutation neh_constructive(Permutation perm):
         best_sol = perm.copy()
         # Positions in sequence
         for i in range(seq_size + 1):
-            s_alt = Permutation(
-                sol.m,
-                sol.get_sequence_copy(),
-                empty_sigma(sol.m),
-                empty_sigma(sol.m),
-                0
-            )
-            job = perm.free_jobs[j].copy()
-            s_alt.free_jobs.insert(i, job)
+            s_alt = start_perm(sol.m, sol.get_sequence_copy())
+            job = perm.free_jobs[j]
+            s_alt.free_jobs.insert(i, job.copy())
             # Fix all jobs
             for k in range(len(s_alt.free_jobs)):
                 job_i = s_alt.free_jobs.pop(0)
@@ -103,24 +85,12 @@ cpdef Permutation local_search(Permutation perm):
     solved = False
 
     # A new base solution following the same sequence of the current
-    sol_base = Permutation(
-        perm.m,
-        perm.get_sequence_copy(),
-        empty_sigma(perm.m),
-        empty_sigma(perm.m),
-        0
-    )
+    sol_base = start_perm(perm.m, perm.get_sequence_copy())
 
     # The release date in the first machine must be recomputed
     # As positions might change
     recompute_r0(sol_base.free_jobs)
-    best_move = Permutation(
-        perm.m,
-        perm.get_sequence_copy(),
-        empty_sigma(perm.m),
-        empty_sigma(perm.m),
-        0
-    )
+    best_move = start_perm(perm.m, perm.get_sequence_copy())
     for i in range(len(best_move.free_jobs)):
         job = best_move.free_jobs.pop(0)
         best_move.sigma1.job_to_bottom(job)

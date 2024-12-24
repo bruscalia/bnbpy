@@ -15,7 +15,9 @@ cdef class Job:
         int slope
         int T
 
-    cpdef Job copy(Job self)
+    cpdef Job pycopy(Job self)
+
+    cdef Job copy(Job self)
 
 
 cdef Job start_job(int j, const int[::1] p)

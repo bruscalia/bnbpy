@@ -30,9 +30,10 @@ cdef class Permutation:
         self.sigma1 = sigma1
         self.sigma2 = sigma2
         self.level = level
+        self.update_params()
 
-    @classmethod
-    def from_p(cls, p: List[List[int]]):
+    @staticmethod
+    def from_p(p: List[List[int]]):
         cdef:
             int j, m
             list[int] pi
@@ -47,10 +48,7 @@ cdef class Permutation:
             for j in range(len(p))
         ]
 
-        sigma1 = empty_sigma(m)
-        sigma2 = empty_sigma(m)
-
-        return cls(m, jobs, sigma1, sigma2, 0)
+        return start_perm(m, jobs)
 
     @property
     def sequence(self) -> List[Job]:
@@ -272,6 +270,20 @@ cdef class Permutation:
         perm.sigma2 = self.sigma2.copy()
         perm.level = self.level
         return perm
+
+
+cpdef Permutation start_perm(int m, list[Job] free_jobs):
+    cdef:
+        Permutation perm
+
+    perm = Permutation.__new__(Permutation)
+    perm.m = m
+    perm.free_jobs = free_jobs
+    perm.sigma1 = empty_sigma(m)
+    perm.sigma2 = empty_sigma(m)
+    perm.level = 0
+    perm.update_params()
+    return perm
 
 
 cpdef inline int key_1_sort(tuple[Job, int, int] x):
