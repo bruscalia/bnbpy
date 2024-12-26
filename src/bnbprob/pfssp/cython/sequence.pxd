@@ -13,6 +13,8 @@ cdef class Sigma:
         vector[int] C
         int m
 
+    cpdef void cleanup(Sigma self)
+
     cdef void job_to_bottom(Sigma self, Job job)
 
     cdef void job_to_top(Sigma self, Job job)

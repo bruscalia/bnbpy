@@ -32,6 +32,7 @@ class Permutation(Solution):
         if sigma2 is None:
             sigma2 = Sigma2(C=[0 for _ in range(m)])
         self.sigma2 = sigma2
+        self.update_params()
 
     @property
     def sequence(self) -> List[Job]:

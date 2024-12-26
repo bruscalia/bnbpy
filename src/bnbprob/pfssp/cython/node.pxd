@@ -5,16 +5,16 @@ from libcpp cimport bool
 
 import copy
 import itertools
-from typing import List, Optional, Union
+from typing import List, Optional
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbprob.pfssp.cython.problem cimport PermFlowShop
+from bnbprob.pfssp.cython.solution cimport FlowSolution
 
 
 cdef class Node:
 
     cdef public:
-        object problem
+        PermFlowShop problem
         Node parent
         int level
         double lb
@@ -28,12 +28,12 @@ cdef class Node:
 
     cpdef bool check_feasible(Node self)
 
-    cpdef void set_solution(Node self, solution: Solution)
+    cpdef void set_solution(Node self, FlowSolution solution)
 
     cpdef void fathom(Node self)
 
     cpdef list[Node] branch(Node self)
 
-    cpdef Node child_problem(Node self, object problem)
+    cpdef Node child_problem(Node self, PermFlowShop problem)
 
     cpdef Node shallow_copy(Node self)

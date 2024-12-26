@@ -1,31 +1,28 @@
+# distutils: language = c++
+# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+
+from libcpp cimport bool
+
 import copy
 import itertools
-from typing import List, Optional, Union
+from typing import List, Optional
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbprob.pfssp.cython.problem cimport PermFlowShop
+from bnbprob.pfssp.cython.solution cimport FlowSolution
 
 
-class Node:
+cdef class Node:
     """Class for representing a node in a search tree."""
 
-    problem: Problem
-    parent: Optional['Node']
-    level: int
-    lb: Union[float, int]
-    children: List['Node']
-    _sort_index: int
-    _counter = itertools.count
-
     def __init__(
-        self, problem: Problem, parent: Optional['Node'] = None
+        self, PermFlowShop problem, parent: Optional['Node'] = None
     ) -> None:
         """Instantiates a new `Node` object based on a (sub)problem.
         The node is evaluated in terms of lower bound as it is initialized.
 
         Parameters
         ----------
-        problem : Problem
+        problem : PermFlowShop
             Problem instance derived from parent node
 
         parent : Optional[Node], optional
@@ -47,7 +44,7 @@ class Node:
     def __del__(self):
         self.cleanup()
 
-    def cleanup(self):
+    cpdef void cleanup(self):
         if self.problem:
             del self.problem
             self.problem = None
@@ -61,47 +58,26 @@ class Node:
         return self._sort_index > other._sort_index
 
     @property
-    def solution(self) -> Solution:
+    def solution(self) -> FlowSolution:
         return self.problem.solution
 
     @property
     def index(self):
         return self._sort_index
 
-    def compute_bound(self, **options):
+    cpdef void compute_bound(Node self):
         """
         Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
         """
-        self.problem.compute_bound(**options)
+        self.problem.compute_bound()
         self.lb = max(self.lb, self.problem.lb)
 
-    def check_feasible(self):
+    cpdef bool check_feasible(Node self):
         """Calls `problem` `check_feasible()` method"""
         return self.problem.check_feasible()
 
-    def branch(self) -> Optional[List['Node']]:
-        """Calls `problem` `branch()` method to create derived sub-problems.
-        Each subproblem is used to instantiate a child node.
-        Child nodes are evaluated in terms of lower bound as they are
-        initialized.
-
-        Returns
-        -------
-        Optional[List['Node']]
-            List of child nodes, if any
-        """
-        prob_children = self.problem.branch()
-        if prob_children is None:
-            return None
-        children = [
-            Node(problem=prob_child, parent=self)
-            for prob_child in prob_children
-        ]
-        self.children = children
-        return self.children
-
-    def set_solution(self, solution: Solution):
+    cpdef void set_solution(Node self, FlowSolution solution):
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -113,7 +89,7 @@ class Node:
         self.problem.set_solution(solution)
         self.lb = self.problem.lb
 
-    def fathom(self):
+    cpdef void fathom(Node self):
         """Sets solution status of node as 'FATHOMED'"""
         self.solution.fathom()
 
@@ -126,6 +102,49 @@ class Node:
         other = copy.deepcopy(self)
         return other
 
-    def shallow_copy(self):
-        other = copy.copy(self)
+    cpdef list[Node] branch(Node self):
+        """Calls `problem` `branch()` method to create derived sub-problems.
+        Each subproblem is used to instantiate a child node.
+        Child nodes are evaluated in terms of lower bound as they are
+        initialized.
+
+        Returns
+        -------
+        Optional[List['Node']]
+            List of child nodes, if any
+        """
+        cdef:
+            list prob_children
+            list[Node] children
+
+        prob_children = self.problem.branch()
+        if prob_children is None:
+            return []
+        children = [
+            self.child_problem(prob_child)
+            for prob_child in prob_children
+        ]
+        self.children = children
+        return self.children
+
+    cpdef Node child_problem(Node self, PermFlowShop problem):
+        other = Node.__new__(Node)
+        other.problem = problem
+        other.parent = self
+        other.children = []
+        other._counter = self._counter
+        other.lb = self.lb
+        other.level = self.level + 1
+        other._sort_index = next(other._counter)
+        return other
+
+    cpdef Node shallow_copy(Node self):
+        other = Node.__new__(Node)
+        other.problem = self.problem
+        other.parent = self
+        other.children = []
+        other._counter = self._counter
+        other.lb = self.lb
+        other.level = self.level + 1
+        other._sort_index = next(other._counter)
         return other

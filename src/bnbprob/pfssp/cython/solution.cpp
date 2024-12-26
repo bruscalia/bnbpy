@@ -1666,7 +1666,7 @@ struct __pyx_memoryviewslice_obj;
 struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
 typedef struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
 
-/* "bnbprob/pfssp/cython/permutation.pxd":58
+/* "bnbprob/pfssp/cython/permutation.pxd":60
  * 
  * 
  * ctypedef struct JobParams:             # <<<<<<<<<<<<<<
@@ -1853,6 +1853,7 @@ static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtabptr_7
  */
 
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma {
+  void (*cleanup)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *, int __pyx_skip_dispatch);
   void (*job_to_bottom)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *, struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
   void (*job_to_top)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *, struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
   struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *);
@@ -1869,6 +1870,7 @@ static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_vt
  */
 
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation {
+  void (*cleanup)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch);
   PyObject *(*get_sequence)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch);
   PyObject *(*get_sequence_copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch);
   int (*calc_bound)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch);

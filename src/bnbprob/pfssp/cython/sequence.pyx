@@ -13,6 +13,17 @@ cdef class Sigma:
         self.C = C
         self.m = len(self.C)
 
+    def __del__(self):
+        self.cleanup()
+
+    cpdef void cleanup(Sigma self):
+        cdef:
+            Job job
+
+        for job in self.jobs:
+            del job
+        del self.jobs
+
     cdef void job_to_bottom(Sigma self, Job job):
         cdef:
             int k

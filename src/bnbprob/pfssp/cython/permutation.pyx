@@ -32,6 +32,14 @@ cdef class Permutation:
         self.level = level
         self.update_params()
 
+    def __del__(self):
+        self.cleanup()
+
+    cpdef void cleanup(Permutation self):
+        del self.free_jobs
+        del self.sigma1
+        del self.sigma2
+
     @staticmethod
     def from_p(p: List[List[int]]):
         cdef:

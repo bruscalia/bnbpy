@@ -1,6 +1,8 @@
 # distutils: language = c++
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libcpp cimport bool
+
 import copy
 import itertools
 from typing import List, Optional, Union
@@ -42,9 +44,9 @@ cdef class Node:
     def __del__(self):
         self.cleanup()
 
-    def cleanup(self):
+    cpdef void cleanup(self):
         if self.problem:
-            self.problem.cleanup()
+            del self.problem
             self.problem = None
         if self.children:
             for child in self.children:
@@ -63,19 +65,19 @@ cdef class Node:
     def index(self):
         return self._sort_index
 
-    def compute_bound(self, **options):
+    cpdef void compute_bound(Node self):
         """
         Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
         """
-        self.problem.compute_bound(**options)
+        self.problem.compute_bound()
         self.lb = max(self.lb, self.problem.lb)
 
-    def check_feasible(self):
+    cpdef bool check_feasible(Node self):
         """Calls `problem` `check_feasible()` method"""
         return self.problem.check_feasible()
 
-    def set_solution(self, solution: Solution):
+    cpdef void set_solution(Node self, solution: Solution):
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -87,7 +89,7 @@ cdef class Node:
         self.problem.set_solution(solution)
         self.lb = self.problem.lb
 
-    def fathom(self):
+    cpdef void fathom(Node self):
         """Sets solution status of node as 'FATHOMED'"""
         self.solution.fathom()
 
