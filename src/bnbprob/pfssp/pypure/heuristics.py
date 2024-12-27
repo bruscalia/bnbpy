@@ -57,11 +57,17 @@ def neh_constructive(perm: Permutation) -> Permutation:
     # Find best order of two jobs with longest processing times
     perm.free_jobs.sort(key=lambda x: x.T, reverse=True)
 
-    vec = [perm.free_jobs[0], perm.free_jobs[1]]
+    vec = [perm.free_jobs[0].copy(), perm.free_jobs[1].copy()]
     s1 = start_perm(perm.m, vec)
+    for _ in range(len(s1.free_jobs)):
+        job_i = s1.free_jobs.pop(0)
+        s1.sigma1.job_to_bottom(job_i)
 
-    vec = [perm.free_jobs[1], perm.free_jobs[0]]
+    vec = [perm.free_jobs[1].copy(), perm.free_jobs[0].copy()]
     s2 = start_perm(perm.m, vec)
+    for _ in range(len(s2.free_jobs)):
+        job_i = s2.free_jobs.pop(0)
+        s2.sigma1.job_to_bottom(job_i)
 
     c1 = s1.calc_bound()
     c2 = s2.calc_bound()
@@ -99,11 +105,17 @@ def neh_history(perm: Permutation) -> list[Permutation]:
     # Find best order of two jobs with longest processing times
     perm.free_jobs.sort(key=lambda x: x.T, reverse=True)
 
-    vec = [perm.free_jobs[0], perm.free_jobs[1]]
+    vec = [perm.free_jobs[0].copy(), perm.free_jobs[1].copy()]
     s1 = start_perm(perm.m, vec)
+    for _ in range(len(s1.free_jobs)):
+        job_i = s1.free_jobs.pop(0)
+        s1.sigma1.job_to_bottom(job_i)
 
-    vec = [perm.free_jobs[1], perm.free_jobs[0]]
+    vec = [perm.free_jobs[1].copy(), perm.free_jobs[0].copy()]
     s2 = start_perm(perm.m, vec)
+    for _ in range(len(s2.free_jobs)):
+        job_i = s2.free_jobs.pop(0)
+        s2.sigma1.job_to_bottom(job_i)
 
     c1 = s1.calc_bound()
     c2 = s2.calc_bound()
