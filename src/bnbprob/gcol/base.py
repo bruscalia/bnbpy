@@ -37,7 +37,9 @@ class BaseNode:
 class BaseGraph:
     nodes: Dict[int, 'BaseNode']
 
-    def __init__(self, edges: List[Tuple[int]], cls: Type[BaseNode] = BaseNode):
+    def __init__(
+        self, edges: List[Tuple[int]], cls: Type[BaseNode] = BaseNode
+    ):
         self.nodes = {}
         for i, j in edges:
             n_i = self.get_node(i, cls=cls)

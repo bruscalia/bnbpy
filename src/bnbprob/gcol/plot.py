@@ -4,7 +4,7 @@ import gif
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
-from matplotlib.cm import get_cmap
+from matplotlib import colormaps
 from matplotlib.colors import ListedColormap
 
 from bnbprob.gcol.coloring import ColorNode
@@ -17,8 +17,10 @@ SMALL = 1e-6
 
 def draw_gc_from_nodes(nodes: Dict[int, ColorNode], **kwargs):
     N = [n.index for n in nodes.values()]
-    C = [n.color.index for n in nodes.values()]
+    N.sort(reverse=False)
+    C = [nodes[n].color.index for n in N]
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
+    E.sort(reverse=False)
     _draw_colored_graph(N, C, E, **kwargs)
     # Show the plot if no axis provided (for standalone usage)
     if kwargs.get('ax', None) is None:
@@ -40,13 +42,15 @@ def draw_colored_gif(  # noqa: PLR0913, PLR0917
     N = [n.index for n in nodes.values()]
     C = {n.index: n.color.index for n in nodes.values()}
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
+    N.sort(reverse=False)
+    E.sort(reverse=False)
 
     @gif.frame
     def new_frame(i: int):
         Ni = [n for n in N if nodes[n] in history[:i]]
         Nx = [n for n in N if nodes[n] in history[i:]]
         Ci = [C[i] for i in Ni]
-        node = nodes[i - 1]
+        node = history[i - 1]
         Ei = [(node.index, j.index) for j in node.neighbors]
         G, pos, ax = _draw_colored_graph(
             Ni,
@@ -124,7 +128,7 @@ def draw_mis_gif(  # noqa: PLR0913, PLR0917
         Ni = [n for n in N if nodes[n] in history[:i]]
         Nx = [n for n in N if nodes[n] not in history[:i]]
         Ci = [C[i] for i in Ni]
-        node = nodes[i - 1]
+        node = history[i - 1]
         Ei = [(node.index, j.index) for j in node.neighbors]
         G, pos, ax = _draw_colored_graph(
             Ni,
@@ -183,10 +187,10 @@ def _draw_colored_graph(  # noqa: PLR0913, PLR0917
     # Create a list of colors base on two colormaps
     if plot_colors is None:
         plot_colors = (
-            get_cmap('Dark2').colors
-            + get_cmap('Set1').colors
-            + get_cmap('Set2').colors
-            + get_cmap('Set3').colors
+            colormaps['Dark2'].colors
+            + colormaps['Set1'].colors
+            + colormaps['Set2'].colors
+            + colormaps['Set3'].colors
         )
 
     # Expand plot_colors to handle any number of distinct colors
@@ -239,12 +243,13 @@ def plot_columns_gcol(
     columns = (-sol.problem.A_ub > INT_TOL).astype(int)
     cols_x = np.nonzero(sol.x > INT_TOL)[0]
 
+    # Create a list of colors base on two colormaps
     if plot_colors is None:
         plot_colors = (
-            plt.get_cmap('Dark2').colors
-            + plt.get_cmap('Set1').colors
-            + plt.get_cmap('Set2').colors
-            + plt.get_cmap('Set3').colors
+            colormaps['Dark2'].colors
+            + colormaps['Set1'].colors
+            + colormaps['Set2'].colors
+            + colormaps['Set3'].colors
         )
 
     cmap = ListedColormap(
