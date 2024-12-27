@@ -39,7 +39,7 @@ base_kwargs = dict(  # noqa: C408
         'Optimization',
         'Operations Research',
         'Combinatorial Optimization',
-        'Scheduling'
+
     ],
     install_requires=[
         'numpy>=1.21.0',
