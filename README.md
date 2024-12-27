@@ -160,12 +160,13 @@ print(f"Sol: {sol} | x: {sol.x}")
 
 ### Flow Shop
 
-This instance from the literature takes slightly more than 1s to be solved. It
+In this example, I used an instance from the literature with 20 jobs on 10 machines.
+It takes slightly more than 1s to be solved, which
 is an incredible performance even compared to the best commercial MILP solvers.
 
 ```python
 import json
-from bnbprob.pfssp import CallbackBnB, PermFlowShop
+from bnbprob.pfssp import CallbackBnB, PermFlowShop, plot_gantt
 
 with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
     p = json.load(f)
@@ -180,7 +181,11 @@ sol = bnb.solve(
 )
 print(sol)
 # >>> Status: OPTIMAL | Cost: 1431 | LB: 1431
+
+plot_gantt(sol.sequence, figsize=[8, 3])
 ```
+
+![pfssp](./data/images/gantt.png)
 
 
 ### Graph Coloring
