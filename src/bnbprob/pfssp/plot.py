@@ -1,5 +1,6 @@
 from typing import List, Optional, Union
 
+import gif
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import Colormap, ListedColormap
@@ -10,7 +11,6 @@ MAX_LABEL = 10
 
 
 class RandomCmap:
-
     def __init__(self, seed=None):
         self._rng = np.random.default_rng(seed)
 
@@ -26,6 +26,85 @@ def plot_gantt(  # noqa: PLR0913, PLR0917
     dpi=100,
     filename: Optional[str] = None,
     seed=None,
+    label_cols=1,
+    label_fontsize=8,
+    max_label=MAX_LABEL,
+):
+    _ = _plot_gantt(
+        jobs,
+        figsize,
+        cmap,
+        dpi,
+        filename,
+        seed,
+        label_cols,
+        label_fontsize,
+        max_label,
+    )
+    plt.show()
+
+
+def draw_gantt_gif(  # noqa: PLR0913, PLR0917
+    jobs: List[List[Job]],
+    figsize=None,
+    cmap: Optional[Union[list, Colormap, str]] = None,
+    dpi=100,
+    filename: Optional[str] = None,
+    seed=None,
+    duration=200,
+    label_cols=1,
+    label_fontsize=8,
+    max_label=MAX_LABEL,
+):
+    J = len(jobs[-1])
+
+    # Define a color map for the jobs
+    if cmap is None:
+        rcmap = RandomCmap(seed)
+        colors = rcmap.create(J)
+    elif isinstance(cmap, list):
+        colors = ListedColormap(cmap)
+    elif isinstance(cmap, str):
+        colors = plt.get_cmap(cmap, len(jobs))
+    elif isinstance(cmap, Colormap):
+        colors = cmap
+    else:
+        raise ValueError('Bad argument for cmap')
+
+    @gif.frame
+    def new_frame(i: int):
+        c = [colors(job.j % J) for job in jobs[i]]
+        _ = _plot_gantt(
+            jobs[i],
+            figsize=figsize,
+            cmap=c,
+            dpi=dpi,
+            filename=None,
+            seed=seed,
+            label_cols=label_cols,
+            label_fontsize=label_fontsize,
+            max_label=max_label
+        )
+
+    # Construct "frames"
+    frames = [new_frame(i) for i in range(len(jobs))]
+
+    # Save "frames" to gif with a specified duration (milliseconds)
+    # between each frame
+    gif.save(frames, filename, duration=duration)
+    plt.close()
+
+
+def _plot_gantt(  # noqa: PLR0913, PLR0917
+    jobs: List[Job],
+    figsize=None,
+    cmap: Optional[Union[list, Colormap, str]] = None,
+    dpi=100,
+    filename: Optional[str] = None,
+    seed=None,
+    label_cols=1,
+    label_fontsize=8,
+    max_label=MAX_LABEL,
 ):
     """
     Plots a Gantt chart for a given list of Job objects in a sequence.
@@ -53,7 +132,7 @@ def plot_gantt(  # noqa: PLR0913, PLR0917
     elif isinstance(cmap, Colormap):
         colors = cmap
     else:
-        raise ValueError("Bad argument for cmap")
+        raise ValueError('Bad argument for cmap')
 
     # Iterate over the jobs to plot them on the Gantt chart
     for j, job in enumerate(jobs):
@@ -76,7 +155,7 @@ def plot_gantt(  # noqa: PLR0913, PLR0917
     # Labeling and legend
     ax.set_xlabel('Time')
 
-    if len(jobs) <= MAX_LABEL:
+    if len(jobs) <= max_label:
         handles, labels = ax.get_legend_handles_labels()
         by_label = dict(zip(labels, handles))
         ax.legend(
@@ -84,6 +163,8 @@ def plot_gantt(  # noqa: PLR0913, PLR0917
             by_label.keys(),
             loc='upper left',
             bbox_to_anchor=(1.0, 1.0),
+            ncol=label_cols,
+            fontsize=label_fontsize,
         )
 
     plt.tight_layout()
@@ -91,4 +172,4 @@ def plot_gantt(  # noqa: PLR0913, PLR0917
     if filename:
         plt.savefig(filename)
 
-    plt.show()
+    return ax

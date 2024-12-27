@@ -94,6 +94,55 @@ def neh_constructive(perm: Permutation) -> Permutation:
     return sol
 
 
+def neh_history(perm: Permutation) -> list[Permutation]:
+
+    # Find best order of two jobs with longest processing times
+    perm.free_jobs.sort(key=lambda x: x.T, reverse=True)
+
+    vec = [perm.free_jobs[0], perm.free_jobs[1]]
+    s1 = start_perm(perm.m, vec)
+
+    vec = [perm.free_jobs[1], perm.free_jobs[0]]
+    s2 = start_perm(perm.m, vec)
+
+    c1 = s1.calc_bound()
+    c2 = s2.calc_bound()
+    if c1 <= c2:
+        sol = s1
+    else:
+        sol = s2
+
+    s1.compute_starts()
+    s2.compute_starts()
+    history = [s1.sequence, s2.sequence]
+
+    # Find best insert for every other job
+    seq_size = 2
+    for j in range(2, len(perm.free_jobs)):
+        best_cost = LARGE_INT
+        best_sol = perm.copy()
+        # Positions in sequence
+        for i in range(seq_size + 1):
+            s_alt = start_perm(sol.m, sol.get_sequence_copy())
+            job = perm.free_jobs[j]
+            s_alt.free_jobs.insert(i, job.copy())
+            # Fix all jobs
+            for _ in range(len(s_alt.free_jobs)):
+                job_i = s_alt.free_jobs.pop(0)
+                s_alt.sigma1.job_to_bottom(job_i)
+            cost_alt = s_alt.calc_bound()
+            # Update best of iteration
+            if cost_alt < best_cost:
+                best_cost = cost_alt
+                best_sol = s_alt
+        seq_size += 1
+        sol = best_sol
+        sol_app = sol.copy()
+        sol_app.compute_starts()
+        history.append(sol_app.sequence)
+    return history
+
+
 def local_search(perm: Permutation) -> Permutation:
     """Best insertion heuristic
 
