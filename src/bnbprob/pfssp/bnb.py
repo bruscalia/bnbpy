@@ -1,7 +1,7 @@
 from bnbprob.pfssp.cython.node import Node
 
 # from bnbprob.pfssp.cython.search import BranchAndBound
-from bnbpy.cython.search import BranchAndBound
+from bnbpy.search import BranchAndBound
 
 RESTART = 10_000
 

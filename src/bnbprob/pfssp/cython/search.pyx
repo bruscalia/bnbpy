@@ -248,7 +248,7 @@ cdef class BranchAndBound:
                 self._enqueue_core(child)
         else:
             self.log_row('Cutoff')
-        if not self.save_tree:
+        if not self.save_tree and node is not self.root:
             node.cleanup()
             del node
 
@@ -264,7 +264,7 @@ cdef class BranchAndBound:
             Node to be fathomed
         """
         node.fathom()
-        if not self.save_tree:
+        if not self.save_tree and node is not self.root:
             node.cleanup()
             del node
 

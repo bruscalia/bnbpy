@@ -8,7 +8,11 @@ from typing import List, Literal, Optional
 
 from bnbprob.pfssp.cython.heuristics cimport (
     local_search as ls,
+)
+from bnbprob.pfssp.cython.heuristics cimport (
     neh_constructive as neh,
+)
+from bnbprob.pfssp.cython.heuristics cimport (
     quick_constructive as qc,
 )
 from bnbprob.pfssp.cython.permutation cimport Permutation
@@ -62,21 +66,6 @@ cdef class PermFlowShop:
         p: List[List[int]],
         constructive: Literal['neh', 'quick'] = 'neh'
     ) -> 'PermFlowShop':
-        """Instantiate problem based on processing times only
-
-        Parameters
-        ----------
-        p : List[List[int]]
-            Processing times for each job
-
-        constructive: Literal['neh', 'quick']
-            Constructive heuristic, by default 'neh'
-
-        Returns
-        -------
-        PermFlowShop
-            Instance of the problem
-        """
         perm = Permutation.from_p(p)
         solution = FlowSolution(perm)
         return cls(
@@ -84,80 +73,20 @@ cdef class PermFlowShop:
             constructive=constructive,
         )
 
-    def warmstart(self) -> FlowSolution:
-        """
-        Computes an initial feasible solution based on the method of choice.
-
-        If the attribute `constructive` is 'neh', the heuristic
-        of Nawaz et al. (1983) is adopted, otherwise
-        the strategy by Palmer (1965).
-
-        Returns
-        -------
-        FlowSolution
-            Solution to the problem
-
-        References
-        ----------
-        Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).
-        A heuristic algorithm for the m-machine,
-        n-job flow-shop sequencing problem.
-        Omega, 11(1), 91-95.
-
-        Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
-        in the minimum total time—a quick method of obtaining a near optimum.
-        Journal of the Operational Research Society, 16(1), 101-107
-        """
+    cpdef FlowSolution warmstart(PermFlowShop self):
         if self.constructive == 'neh':
             return self.neh_constructive()
         return self.quick_constructive()
 
-    def quick_constructive(self) -> FlowSolution:
-        """Computes a feasible solution based on the sorting
-        strategy by Palmer (1965).
-
-        Returns
-        -------
-        FlowSolution
-            Solution to the problem
-
-        References
-        ----------
-        Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
-        in the minimum total time—a quick method of obtaining a near optimum.
-        Journal of the Operational Research Society, 16(1), 101-107
-        """
+    cpdef FlowSolution quick_constructive(PermFlowShop self):
         perm = qc(self.solution.perm)
         return FlowSolution(perm)
 
-    def neh_constructive(self) -> FlowSolution:
-        """Constructive heuristic of Nawaz et al. (1983) based
-        on best-insertion of jobs sorted according to total processing
-        time in descending order.
-
-        Returns
-        -------
-        FlowSolution
-            Solution to the problem
-
-        Reference
-        ---------
-        Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).
-        A heuristic algorithm for the m-machine,
-        n-job flow-shop sequencing problem.
-        Omega, 11(1), 91-95.
-        """
+    cpdef FlowSolution neh_constructive(PermFlowShop self):
         perm = neh(self.solution.perm)
         return FlowSolution(perm)
 
     def local_search(self) -> Optional[FlowSolution]:
-        """Local search heuristic from a current solution based on insertion
-
-        Returns
-        -------
-        Optional[FlowSolution]
-            New solution (best improvement) if exists
-        """
         log.debug('Starting Heuristic')
         lb = self.solution.lb
         perm = ls(self.solution.perm)
@@ -168,7 +97,7 @@ cdef class PermFlowShop:
         return None
 
     cpdef int calc_bound(PermFlowShop self):
-        return self.solution.perm.calc_bound()
+        return self.solution.perm.calc_lb_1m()
 
     cpdef bool is_feasible(PermFlowShop self):
         return self.solution.perm.is_feasible()
@@ -188,8 +117,14 @@ cdef class PermFlowShop:
         child.solution.push_job(j)
         return child
 
-    def bound_upgrade(self):
-        lb5 = self.solution.perm.calc_lb_2m()
+    cpdef void bound_upgrade(PermFlowShop self):
+        cdef:
+            int lb5, lb
+
+        if <int>len(self.solution.perm.free_jobs) == 0:
+            lb5 = self.solution.perm.calc_lb_full()
+        else:
+            lb5 = self.solution.perm.lower_bound_2m()
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 
@@ -202,7 +137,7 @@ cdef class PermFlowShop:
         return child
 
 
-cdef class PermFlowShopLazy(PermFlowShop):
+cdef class PermFlowShop2M(PermFlowShop):
 
-    cpdef int calc_bound(PermFlowShopLazy self):
-        return self.solution.perm.calc_lb_1m()
+    cpdef int calc_bound(PermFlowShop2M self):
+        return self.solution.perm.calc_lb_2m()

@@ -23,6 +23,7 @@ cdef class Sigma:
         for job in self.jobs:
             del job
         del self.jobs
+        self.jobs = None
 
     cdef void job_to_bottom(Sigma self, Job job):
         cdef:

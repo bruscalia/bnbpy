@@ -3,10 +3,7 @@
 
 from libcpp cimport bool
 
-import numpy as np
-
-from bnbprob.pfssp.cython.job cimport Job, start_job
-from bnbprob.pfssp.cython.sequence cimport Sigma, empty_sigma
+from bnbprob.pfssp.cython.job cimport Job
 from bnbprob.pfssp.cython.permutation cimport Permutation, start_perm
 
 cdef:
@@ -109,6 +106,9 @@ cpdef Permutation local_search(Permutation perm):
             sol_alt = sol_base.copy()
             job = sol_alt.free_jobs.pop(i)
             sol_alt.free_jobs.insert(j, job)
+            # Careful recomputation althuogh it worked without it
+            # probably because of memoryviews
+            recompute_r0(sol_alt.free_jobs)
 
             # In the new solution jobs are sequentially
             # inserted in the last position, so only sigma 1 is modified

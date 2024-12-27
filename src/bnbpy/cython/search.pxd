@@ -25,12 +25,13 @@ cdef class BranchAndBound:
         Node root
         double gap
         object queue
-        object Solution
         double rtol
         double atol
         int explored
+        object eval_node
         bool eval_in
         bool eval_out
+        bool save_tree
         Node incumbent
         Node bound_node
         object __logger

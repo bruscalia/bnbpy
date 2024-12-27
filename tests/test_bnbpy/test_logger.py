@@ -20,9 +20,9 @@ def search_logger(mock_logger):
 @pytest.mark.searchlogger
 class TestLogger:
 
-    underscores = '----- | ---------- | ---------- | ------- | --------------'
-    header = 'Node  |  Best Sol  |     LB     |   Gap   |    Message    '
-    ref_row = '  A   |    123     |  456.789   |   12%   |   Processing  '
+    underscores = '------- | ---------- | ---------- | ------- | --------------'
+    header = ' Node   |  Best Sol  |     LB     |   Gap   |    Message    '
+    ref_row = '   A    |    123     |  456.789   |   12%   |   Processing  '
     ref_args = ('A', '123', '456.789', '12%', 'Processing')
 
     def test_log_headers(self, search_logger, mock_logger):

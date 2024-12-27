@@ -39,11 +39,12 @@ base_kwargs = dict(  # noqa: C408
         'Optimization',
         'Operations Research',
         'Combinatorial Optimization',
+        'Scheduling'
     ],
     install_requires=[
         'numpy>=1.21.0',
-        'pydantic==0.2.*',
         'scipy>=1.9.0',
+        'Cython==3.*'
     ],
 )
 
@@ -201,10 +202,9 @@ if not params.nolibs:
         print('External cython modules found.')
         print('To verify compilation success run:')
         print(
-            'from pymoode.survival.rank_and_crowding.metrics'
-            ' import IS_COMPILED'
+            'from bnbpy import is_compiled'
         )
-        print('This variable will be True to mark compilation success;')
+        print('This function will be True to mark compilation success;')
         print(
             'If no compilation occurs, .py files will be used instead,'
             ' which provide the same results but'
@@ -224,7 +224,7 @@ try:
     print('*' * 75)
     print('Installation successful at the first attempt.')
     print('To verify compilation success run:')
-    print('from pymoode.survival.rank_and_crowding.metrics import IS_COMPILED')
+    print('from bnbpy import is_compiled')
     print('*' * 75)
 except Exception as e:
     print('*' * 75)

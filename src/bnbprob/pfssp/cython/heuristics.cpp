@@ -2901,12 +2901,10 @@ static PyObject *__pyx_memoryviewslice__get_base(struct __pyx_memoryviewslice_ob
 /* Module declarations from "libcpp.vector" */
 
 /* Module declarations from "bnbprob.pfssp.cython.job" */
-static struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*__pyx_f_7bnbprob_5pfssp_6cython_3job_start_job)(int, __Pyx_memviewslice); /*proto*/
 
 /* Module declarations from "libcpp" */
 
 /* Module declarations from "bnbprob.pfssp.cython.sequence" */
-static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *(*__pyx_f_7bnbprob_5pfssp_6cython_8sequence_empty_sigma)(int); /*proto*/
 
 /* Module declarations from "bnbprob.pfssp.cython.permutation" */
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm)(int, PyObject *, int __pyx_skip_dispatch); /*proto*/
@@ -2992,7 +2990,6 @@ static const char __pyx_k__6[] = "'";
 static const char __pyx_k__7[] = ")";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_id[] = "id";
-static const char __pyx_k_np[] = "np";
 static const char __pyx_k__27[] = "?";
 static const char __pyx_k_abc[] = "abc";
 static const char __pyx_k_and[] = " and ";
@@ -3022,7 +3019,6 @@ static const char __pyx_k_count[] = "count";
 static const char __pyx_k_error[] = "error";
 static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_index[] = "index";
-static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
@@ -3301,8 +3297,6 @@ typedef struct {
   PyObject *__pyx_n_s_neh_constructive;
   PyObject *__pyx_n_s_new;
   PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
-  PyObject *__pyx_n_s_np;
-  PyObject *__pyx_n_s_numpy;
   PyObject *__pyx_n_s_obj;
   PyObject *__pyx_n_s_p;
   PyObject *__pyx_n_s_pack;
@@ -3516,8 +3510,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_neh_constructive);
   Py_CLEAR(clear_module_state->__pyx_n_s_new);
   Py_CLEAR(clear_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
-  Py_CLEAR(clear_module_state->__pyx_n_s_np);
-  Py_CLEAR(clear_module_state->__pyx_n_s_numpy);
   Py_CLEAR(clear_module_state->__pyx_n_s_obj);
   Py_CLEAR(clear_module_state->__pyx_n_s_p);
   Py_CLEAR(clear_module_state->__pyx_n_s_pack);
@@ -3709,8 +3701,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_neh_constructive);
   Py_VISIT(traverse_module_state->__pyx_n_s_new);
   Py_VISIT(traverse_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
-  Py_VISIT(traverse_module_state->__pyx_n_s_np);
-  Py_VISIT(traverse_module_state->__pyx_n_s_numpy);
   Py_VISIT(traverse_module_state->__pyx_n_s_obj);
   Py_VISIT(traverse_module_state->__pyx_n_s_p);
   Py_VISIT(traverse_module_state->__pyx_n_s_pack);
@@ -3922,8 +3912,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_neh_constructive __pyx_mstate_global->__pyx_n_s_neh_constructive
 #define __pyx_n_s_new __pyx_mstate_global->__pyx_n_s_new
 #define __pyx_kp_s_no_default___reduce___due_to_non __pyx_mstate_global->__pyx_kp_s_no_default___reduce___due_to_non
-#define __pyx_n_s_np __pyx_mstate_global->__pyx_n_s_np
-#define __pyx_n_s_numpy __pyx_mstate_global->__pyx_n_s_numpy
 #define __pyx_n_s_obj __pyx_mstate_global->__pyx_n_s_obj
 #define __pyx_n_s_p __pyx_mstate_global->__pyx_n_s_p
 #define __pyx_n_s_pack __pyx_mstate_global->__pyx_n_s_pack
@@ -17626,7 +17614,7 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/heuristics.pyx":16
+/* "bnbprob/pfssp/cython/heuristics.pyx":13
  * 
  * 
  * cpdef Permutation quick_constructive(Permutation perm):             # <<<<<<<<<<<<<<
@@ -17658,41 +17646,41 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("quick_constructive", 1);
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":22
+  /* "bnbprob/pfssp/cython/heuristics.pyx":19
  *         Job job
  * 
  *     sol = perm.copy()             # <<<<<<<<<<<<<<
  *     sol.free_jobs.sort(key=key_slope_sort, reverse=True)
  *     for i in range(len(sol.free_jobs)):
  */
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->copy(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->copy(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_sol = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":23
+  /* "bnbprob/pfssp/cython/heuristics.pyx":20
  * 
  *     sol = perm.copy()
  *     sol.free_jobs.sort(key=key_slope_sort, reverse=True)             # <<<<<<<<<<<<<<
  *     for i in range(len(sol.free_jobs)):
  *         job = sol.free_jobs.pop(0)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_sol->free_jobs, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_sol->free_jobs, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_key_slope_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_key_slope_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_reverse, Py_True) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_reverse, Py_True) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":24
+  /* "bnbprob/pfssp/cython/heuristics.pyx":21
  *     sol = perm.copy()
  *     sol.free_jobs.sort(key=key_slope_sort, reverse=True)
  *     for i in range(len(sol.free_jobs)):             # <<<<<<<<<<<<<<
@@ -17703,15 +17691,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __Pyx_INCREF(__pyx_t_3);
   if (unlikely(__pyx_t_3 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 24, __pyx_L1_error)
+    __PYX_ERR(0, 21, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_PyList_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyList_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_5 = __pyx_t_4;
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":25
+    /* "bnbprob/pfssp/cython/heuristics.pyx":22
  *     sol.free_jobs.sort(key=key_slope_sort, reverse=True)
  *     for i in range(len(sol.free_jobs)):
  *         job = sol.free_jobs.pop(0)             # <<<<<<<<<<<<<<
@@ -17720,25 +17708,25 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
     if (unlikely(__pyx_v_sol->free_jobs == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-      __PYX_ERR(0, 25, __pyx_L1_error)
+      __PYX_ERR(0, 22, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_PyList_PopIndex(__pyx_v_sol->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyList_PopIndex(__pyx_v_sol->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 22, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":26
+    /* "bnbprob/pfssp/cython/heuristics.pyx":23
  *     for i in range(len(sol.free_jobs)):
  *         job = sol.free_jobs.pop(0)
  *         sol.sigma1.job_to_bottom(job)             # <<<<<<<<<<<<<<
  *     return sol
  * 
  */
-    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_sol->sigma1, __pyx_v_job); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_sol->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_sol->sigma1, __pyx_v_job); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   }
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":27
+  /* "bnbprob/pfssp/cython/heuristics.pyx":24
  *         job = sol.free_jobs.pop(0)
  *         sol.sigma1.job_to_bottom(job)
  *     return sol             # <<<<<<<<<<<<<<
@@ -17750,7 +17738,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __pyx_r = __pyx_v_sol;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":16
+  /* "bnbprob/pfssp/cython/heuristics.pyx":13
  * 
  * 
  * cpdef Permutation quick_constructive(Permutation perm):             # <<<<<<<<<<<<<<
@@ -17826,12 +17814,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "quick_constructive") < 0)) __PYX_ERR(0, 16, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "quick_constructive") < 0)) __PYX_ERR(0, 13, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -17842,7 +17830,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("quick_constructive", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("quick_constructive", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 13, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17856,7 +17844,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 13, __pyx_L1_error)
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive(__pyx_self, __pyx_v_perm);
 
   /* function exit code */
@@ -17883,7 +17871,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_quick_constructiv
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("quick_constructive", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17900,7 +17888,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_quick_constructiv
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/heuristics.pyx":30
+/* "bnbprob/pfssp/cython/heuristics.pyx":27
  * 
  * 
  * cpdef Permutation neh_constructive(Permutation perm):             # <<<<<<<<<<<<<<
@@ -17953,33 +17941,71 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("neh_constructive", 1);
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":38
+  /* "bnbprob/pfssp/cython/heuristics.pyx":35
  * 
  *     # Find best order of two jobs with longest processing times
  *     perm.free_jobs.sort(key=key_T_sort, reverse=True)             # <<<<<<<<<<<<<<
  * 
  *     vec = [perm.free_jobs[0], perm.free_jobs[1]]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_perm->free_jobs, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_perm->free_jobs, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_key_T_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_key_T_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_3) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_reverse, Py_True) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_reverse, Py_True) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":40
+  /* "bnbprob/pfssp/cython/heuristics.pyx":37
  *     perm.free_jobs.sort(key=key_T_sort, reverse=True)
  * 
  *     vec = [perm.free_jobs[0], perm.free_jobs[1]]             # <<<<<<<<<<<<<<
  *     s1 = start_perm(perm.m, vec)
+ * 
+ */
+  if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(0, 37, __pyx_L1_error)
+  }
+  if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(0, 37, __pyx_L1_error)
+  }
+  __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
+  __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 0, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0))) __PYX_ERR(0, 37, __pyx_L1_error);
+  __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
+  __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 1, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1))) __PYX_ERR(0, 37, __pyx_L1_error);
+  __pyx_v_vec = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":38
+ * 
+ *     vec = [perm.free_jobs[0], perm.free_jobs[1]]
+ *     s1 = start_perm(perm.m, vec)             # <<<<<<<<<<<<<<
+ * 
+ *     vec = [perm.free_jobs[1], perm.free_jobs[0]]
+ */
+  __pyx_t_3 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, __pyx_v_vec, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_s1 = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":40
+ *     s1 = start_perm(perm.m, vec)
+ * 
+ *     vec = [perm.free_jobs[1], perm.free_jobs[0]]             # <<<<<<<<<<<<<<
+ *     s2 = start_perm(perm.m, vec)
  * 
  */
   if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
@@ -17992,86 +18018,48 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   }
   __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
-  __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 0, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0))) __PYX_ERR(0, 40, __pyx_L1_error);
   __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
   __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 1, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1))) __PYX_ERR(0, 40, __pyx_L1_error);
-  __pyx_v_vec = ((PyObject*)__pyx_t_3);
-  __pyx_t_3 = 0;
-
-  /* "bnbprob/pfssp/cython/heuristics.pyx":41
- * 
- *     vec = [perm.free_jobs[0], perm.free_jobs[1]]
- *     s1 = start_perm(perm.m, vec)             # <<<<<<<<<<<<<<
- * 
- *     vec = [perm.free_jobs[1], perm.free_jobs[0]]
- */
-  __pyx_t_3 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, __pyx_v_vec, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_v_s1 = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_3);
-  __pyx_t_3 = 0;
-
-  /* "bnbprob/pfssp/cython/heuristics.pyx":43
- *     s1 = start_perm(perm.m, vec)
- * 
- *     vec = [perm.free_jobs[1], perm.free_jobs[0]]             # <<<<<<<<<<<<<<
- *     s2 = start_perm(perm.m, vec)
- * 
- */
-  if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 43, __pyx_L1_error)
-  }
-  if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 43, __pyx_L1_error)
-  }
-  __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
-  __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1));
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 0, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1))) __PYX_ERR(0, 43, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 0, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 1))) __PYX_ERR(0, 40, __pyx_L1_error);
   __Pyx_INCREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
   __Pyx_GIVEREF(PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0));
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 1, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0))) __PYX_ERR(0, 43, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_3, 1, PyList_GET_ITEM(__pyx_v_perm->free_jobs, 0))) __PYX_ERR(0, 40, __pyx_L1_error);
   __Pyx_DECREF_SET(__pyx_v_vec, ((PyObject*)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":44
+  /* "bnbprob/pfssp/cython/heuristics.pyx":41
  * 
  *     vec = [perm.free_jobs[1], perm.free_jobs[0]]
  *     s2 = start_perm(perm.m, vec)             # <<<<<<<<<<<<<<
  * 
  *     c1 = s1.calc_bound()
  */
-  __pyx_t_3 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, __pyx_v_vec, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_3 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, __pyx_v_vec, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_s2 = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":46
+  /* "bnbprob/pfssp/cython/heuristics.pyx":43
  *     s2 = start_perm(perm.m, vec)
  * 
  *     c1 = s1.calc_bound()             # <<<<<<<<<<<<<<
  *     c2 = s2.calc_bound()
  *     if c1 <= c2:
  */
-  __pyx_t_4 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s1->__pyx_vtab)->calc_bound(__pyx_v_s1, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_4 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s1->__pyx_vtab)->calc_bound(__pyx_v_s1, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L1_error)
   __pyx_v_c1 = __pyx_t_4;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":47
+  /* "bnbprob/pfssp/cython/heuristics.pyx":44
  * 
  *     c1 = s1.calc_bound()
  *     c2 = s2.calc_bound()             # <<<<<<<<<<<<<<
  *     if c1 <= c2:
  *         sol = s1
  */
-  __pyx_t_4 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s2->__pyx_vtab)->calc_bound(__pyx_v_s2, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_4 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s2->__pyx_vtab)->calc_bound(__pyx_v_s2, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
   __pyx_v_c2 = __pyx_t_4;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":48
+  /* "bnbprob/pfssp/cython/heuristics.pyx":45
  *     c1 = s1.calc_bound()
  *     c2 = s2.calc_bound()
  *     if c1 <= c2:             # <<<<<<<<<<<<<<
@@ -18081,7 +18069,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __pyx_t_5 = (__pyx_v_c1 <= __pyx_v_c2);
   if (__pyx_t_5) {
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":49
+    /* "bnbprob/pfssp/cython/heuristics.pyx":46
  *     c2 = s2.calc_bound()
  *     if c1 <= c2:
  *         sol = s1             # <<<<<<<<<<<<<<
@@ -18091,7 +18079,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     __Pyx_INCREF((PyObject *)__pyx_v_s1);
     __pyx_v_sol = __pyx_v_s1;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":48
+    /* "bnbprob/pfssp/cython/heuristics.pyx":45
  *     c1 = s1.calc_bound()
  *     c2 = s2.calc_bound()
  *     if c1 <= c2:             # <<<<<<<<<<<<<<
@@ -18101,7 +18089,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     goto __pyx_L3;
   }
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":51
+  /* "bnbprob/pfssp/cython/heuristics.pyx":48
  *         sol = s1
  *     else:
  *         sol = s2             # <<<<<<<<<<<<<<
@@ -18114,7 +18102,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   }
   __pyx_L3:;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":54
+  /* "bnbprob/pfssp/cython/heuristics.pyx":51
  * 
  *     # Find best insert for every other job
  *     seq_size = 2             # <<<<<<<<<<<<<<
@@ -18123,7 +18111,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
   __pyx_v_seq_size = 2;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":55
+  /* "bnbprob/pfssp/cython/heuristics.pyx":52
  *     # Find best insert for every other job
  *     seq_size = 2
  *     for j in range(2, len(perm.free_jobs)):             # <<<<<<<<<<<<<<
@@ -18134,15 +18122,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __Pyx_INCREF(__pyx_t_3);
   if (unlikely(__pyx_t_3 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 55, __pyx_L1_error)
+    __PYX_ERR(0, 52, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_PyList_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyList_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_7 = __pyx_t_6;
   for (__pyx_t_4 = 2; __pyx_t_4 < __pyx_t_7; __pyx_t_4+=1) {
     __pyx_v_j = __pyx_t_4;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":56
+    /* "bnbprob/pfssp/cython/heuristics.pyx":53
  *     seq_size = 2
  *     for j in range(2, len(perm.free_jobs)):
  *         best_cost = LARGE_INT             # <<<<<<<<<<<<<<
@@ -18151,19 +18139,19 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
     __pyx_v_best_cost = __pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":57
+    /* "bnbprob/pfssp/cython/heuristics.pyx":54
  *     for j in range(2, len(perm.free_jobs)):
  *         best_cost = LARGE_INT
  *         best_sol = perm.copy()             # <<<<<<<<<<<<<<
  *         # Positions in sequence
  *         for i in range(seq_size + 1):
  */
-    __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->copy(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->copy(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_XDECREF_SET(__pyx_v_best_sol, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":59
+    /* "bnbprob/pfssp/cython/heuristics.pyx":56
  *         best_sol = perm.copy()
  *         # Positions in sequence
  *         for i in range(seq_size + 1):             # <<<<<<<<<<<<<<
@@ -18175,22 +18163,22 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_i = __pyx_t_10;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":60
+      /* "bnbprob/pfssp/cython/heuristics.pyx":57
  *         # Positions in sequence
  *         for i in range(seq_size + 1):
  *             s_alt = start_perm(sol.m, sol.get_sequence_copy())             # <<<<<<<<<<<<<<
  *             job = perm.free_jobs[j]
  *             s_alt.free_jobs.insert(i, job.copy())
  */
-      __pyx_t_3 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_sol->__pyx_vtab)->get_sequence_copy(__pyx_v_sol, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_3 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_sol->__pyx_vtab)->get_sequence_copy(__pyx_v_sol, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_sol->m, ((PyObject*)__pyx_t_3), 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_2 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_sol->m, ((PyObject*)__pyx_t_3), 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_XDECREF_SET(__pyx_v_s_alt, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":61
+      /* "bnbprob/pfssp/cython/heuristics.pyx":58
  *         for i in range(seq_size + 1):
  *             s_alt = start_perm(sol.m, sol.get_sequence_copy())
  *             job = perm.free_jobs[j]             # <<<<<<<<<<<<<<
@@ -18199,15 +18187,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
       if (unlikely(__pyx_v_perm->free_jobs == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 61, __pyx_L1_error)
+        __PYX_ERR(0, 58, __pyx_L1_error)
       }
-      if (!(likely(((PyList_GET_ITEM(__pyx_v_perm->free_jobs, __pyx_v_j)) == Py_None) || likely(__Pyx_TypeTest(PyList_GET_ITEM(__pyx_v_perm->free_jobs, __pyx_v_j), __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 61, __pyx_L1_error)
+      if (!(likely(((PyList_GET_ITEM(__pyx_v_perm->free_jobs, __pyx_v_j)) == Py_None) || likely(__Pyx_TypeTest(PyList_GET_ITEM(__pyx_v_perm->free_jobs, __pyx_v_j), __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 58, __pyx_L1_error)
       __pyx_t_2 = PyList_GET_ITEM(__pyx_v_perm->free_jobs, __pyx_v_j);
       __Pyx_INCREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":62
+      /* "bnbprob/pfssp/cython/heuristics.pyx":59
  *             s_alt = start_perm(sol.m, sol.get_sequence_copy())
  *             job = perm.free_jobs[j]
  *             s_alt.free_jobs.insert(i, job.copy())             # <<<<<<<<<<<<<<
@@ -18216,14 +18204,14 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
       if (unlikely(__pyx_v_s_alt->free_jobs == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "insert");
-        __PYX_ERR(0, 62, __pyx_L1_error)
+        __PYX_ERR(0, 59, __pyx_L1_error)
       }
-      __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_v_job->__pyx_vtab)->copy(__pyx_v_job)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+      __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_v_job->__pyx_vtab)->copy(__pyx_v_job)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_11 = PyList_Insert(__pyx_v_s_alt->free_jobs, __pyx_v_i, __pyx_t_2); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
+      __pyx_t_11 = PyList_Insert(__pyx_v_s_alt->free_jobs, __pyx_v_i, __pyx_t_2); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":64
+      /* "bnbprob/pfssp/cython/heuristics.pyx":61
  *             s_alt.free_jobs.insert(i, job.copy())
  *             # Fix all jobs
  *             for k in range(len(s_alt.free_jobs)):             # <<<<<<<<<<<<<<
@@ -18234,15 +18222,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
       __Pyx_INCREF(__pyx_t_2);
       if (unlikely(__pyx_t_2 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        __PYX_ERR(0, 64, __pyx_L1_error)
+        __PYX_ERR(0, 61, __pyx_L1_error)
       }
-      __pyx_t_12 = __Pyx_PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(0, 64, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_13 = __pyx_t_12;
       for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
         __pyx_v_k = __pyx_t_14;
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":65
+        /* "bnbprob/pfssp/cython/heuristics.pyx":62
  *             # Fix all jobs
  *             for k in range(len(s_alt.free_jobs)):
  *                 job_i = s_alt.free_jobs.pop(0)             # <<<<<<<<<<<<<<
@@ -18251,35 +18239,35 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
         if (unlikely(__pyx_v_s_alt->free_jobs == Py_None)) {
           PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-          __PYX_ERR(0, 65, __pyx_L1_error)
+          __PYX_ERR(0, 62, __pyx_L1_error)
         }
-        __pyx_t_2 = __Pyx_PyList_PopIndex(__pyx_v_s_alt->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyList_PopIndex(__pyx_v_s_alt->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 65, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_XDECREF_SET(__pyx_v_job_i, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_2));
         __pyx_t_2 = 0;
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":66
+        /* "bnbprob/pfssp/cython/heuristics.pyx":63
  *             for k in range(len(s_alt.free_jobs)):
  *                 job_i = s_alt.free_jobs.pop(0)
  *                 s_alt.sigma1.job_to_bottom(job_i)             # <<<<<<<<<<<<<<
  *             cost_alt = s_alt.calc_bound()
  *             # Update best of iteration
  */
-        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_s_alt->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_s_alt->sigma1, __pyx_v_job_i); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L1_error)
+        ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_s_alt->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_s_alt->sigma1, __pyx_v_job_i); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
       }
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":67
+      /* "bnbprob/pfssp/cython/heuristics.pyx":64
  *                 job_i = s_alt.free_jobs.pop(0)
  *                 s_alt.sigma1.job_to_bottom(job_i)
  *             cost_alt = s_alt.calc_bound()             # <<<<<<<<<<<<<<
  *             # Update best of iteration
  *             if cost_alt < best_cost:
  */
-      __pyx_t_14 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s_alt->__pyx_vtab)->calc_bound(__pyx_v_s_alt, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
+      __pyx_t_14 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_s_alt->__pyx_vtab)->calc_bound(__pyx_v_s_alt, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
       __pyx_v_cost_alt = __pyx_t_14;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":69
+      /* "bnbprob/pfssp/cython/heuristics.pyx":66
  *             cost_alt = s_alt.calc_bound()
  *             # Update best of iteration
  *             if cost_alt < best_cost:             # <<<<<<<<<<<<<<
@@ -18289,7 +18277,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
       __pyx_t_5 = (__pyx_v_cost_alt < __pyx_v_best_cost);
       if (__pyx_t_5) {
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":70
+        /* "bnbprob/pfssp/cython/heuristics.pyx":67
  *             # Update best of iteration
  *             if cost_alt < best_cost:
  *                 best_cost = cost_alt             # <<<<<<<<<<<<<<
@@ -18298,7 +18286,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
         __pyx_v_best_cost = __pyx_v_cost_alt;
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":71
+        /* "bnbprob/pfssp/cython/heuristics.pyx":68
  *             if cost_alt < best_cost:
  *                 best_cost = cost_alt
  *                 best_sol = s_alt             # <<<<<<<<<<<<<<
@@ -18308,7 +18296,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
         __Pyx_INCREF((PyObject *)__pyx_v_s_alt);
         __Pyx_DECREF_SET(__pyx_v_best_sol, __pyx_v_s_alt);
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":69
+        /* "bnbprob/pfssp/cython/heuristics.pyx":66
  *             cost_alt = s_alt.calc_bound()
  *             # Update best of iteration
  *             if cost_alt < best_cost:             # <<<<<<<<<<<<<<
@@ -18318,7 +18306,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
       }
     }
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":72
+    /* "bnbprob/pfssp/cython/heuristics.pyx":69
  *                 best_cost = cost_alt
  *                 best_sol = s_alt
  *         seq_size += 1             # <<<<<<<<<<<<<<
@@ -18327,7 +18315,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
     __pyx_v_seq_size = (__pyx_v_seq_size + 1);
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":73
+    /* "bnbprob/pfssp/cython/heuristics.pyx":70
  *                 best_sol = s_alt
  *         seq_size += 1
  *         sol = best_sol             # <<<<<<<<<<<<<<
@@ -18338,7 +18326,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     __Pyx_DECREF_SET(__pyx_v_sol, __pyx_v_best_sol);
   }
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":74
+  /* "bnbprob/pfssp/cython/heuristics.pyx":71
  *         seq_size += 1
  *         sol = best_sol
  *     return sol             # <<<<<<<<<<<<<<
@@ -18350,7 +18338,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __pyx_r = __pyx_v_sol;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":30
+  /* "bnbprob/pfssp/cython/heuristics.pyx":27
  * 
  * 
  * cpdef Permutation neh_constructive(Permutation perm):             # <<<<<<<<<<<<<<
@@ -18432,12 +18420,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "neh_constructive") < 0)) __PYX_ERR(0, 30, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "neh_constructive") < 0)) __PYX_ERR(0, 27, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18448,7 +18436,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("neh_constructive", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 30, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("neh_constructive", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 27, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18462,7 +18450,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 27, __pyx_L1_error)
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive(__pyx_self, __pyx_v_perm);
 
   /* function exit code */
@@ -18489,7 +18477,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("neh_constructive", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -18506,7 +18494,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_2neh_constructive
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/heuristics.pyx":77
+/* "bnbprob/pfssp/cython/heuristics.pyx":74
  * 
  * 
  * cpdef Permutation local_search(Permutation perm):             # <<<<<<<<<<<<<<
@@ -18553,7 +18541,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("local_search", 1);
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":85
+  /* "bnbprob/pfssp/cython/heuristics.pyx":82
  * 
  *     # Solved will only be updated in case a good solution is found
  *     solved = False             # <<<<<<<<<<<<<<
@@ -18562,22 +18550,22 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
   __pyx_v_solved = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":88
+  /* "bnbprob/pfssp/cython/heuristics.pyx":85
  * 
  *     # A new base solution following the same sequence of the current
  *     sol_base = start_perm(perm.m, perm.get_sequence_copy())             # <<<<<<<<<<<<<<
  * 
  *     # The release date in the first machine must be recomputed
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->get_sequence_copy(__pyx_v_perm, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->get_sequence_copy(__pyx_v_perm, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, ((PyObject*)__pyx_t_1), 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, ((PyObject*)__pyx_t_1), 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_sol_base = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":92
+  /* "bnbprob/pfssp/cython/heuristics.pyx":89
  *     # The release date in the first machine must be recomputed
  *     # As positions might change
  *     recompute_r0(sol_base.free_jobs)             # <<<<<<<<<<<<<<
@@ -18586,25 +18574,25 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
   __pyx_t_2 = __pyx_v_sol_base->free_jobs;
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(((PyObject*)__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":93
+  /* "bnbprob/pfssp/cython/heuristics.pyx":90
  *     # As positions might change
  *     recompute_r0(sol_base.free_jobs)
  *     best_move = start_perm(perm.m, perm.get_sequence_copy())             # <<<<<<<<<<<<<<
  *     for i in range(len(best_move.free_jobs)):
  *         job = best_move.free_jobs.pop(0)
  */
-  __pyx_t_2 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->get_sequence_copy(__pyx_v_perm, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_perm->__pyx_vtab)->get_sequence_copy(__pyx_v_perm, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, ((PyObject*)__pyx_t_2), 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm(__pyx_v_perm->m, ((PyObject*)__pyx_t_2), 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_best_move = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":94
+  /* "bnbprob/pfssp/cython/heuristics.pyx":91
  *     recompute_r0(sol_base.free_jobs)
  *     best_move = start_perm(perm.m, perm.get_sequence_copy())
  *     for i in range(len(best_move.free_jobs)):             # <<<<<<<<<<<<<<
@@ -18615,15 +18603,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 94, __pyx_L1_error)
+    __PYX_ERR(0, 91, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_4 = __pyx_t_3;
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":95
+    /* "bnbprob/pfssp/cython/heuristics.pyx":92
  *     best_move = start_perm(perm.m, perm.get_sequence_copy())
  *     for i in range(len(best_move.free_jobs)):
  *         job = best_move.free_jobs.pop(0)             # <<<<<<<<<<<<<<
@@ -18632,35 +18620,35 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
     if (unlikely(__pyx_v_best_move->free_jobs == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-      __PYX_ERR(0, 95, __pyx_L1_error)
+      __PYX_ERR(0, 92, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyList_PopIndex(__pyx_v_best_move->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyList_PopIndex(__pyx_v_best_move->free_jobs, __pyx_int_0, 0, 1, Py_ssize_t, PyInt_FromSsize_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 95, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":96
+    /* "bnbprob/pfssp/cython/heuristics.pyx":93
  *     for i in range(len(best_move.free_jobs)):
  *         job = best_move.free_jobs.pop(0)
  *         best_move.sigma1.job_to_bottom(job)             # <<<<<<<<<<<<<<
  *     best_cost = best_move.calc_bound()
  * 
  */
-    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_best_move->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_best_move->sigma1, __pyx_v_job); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_v_best_move->sigma1->__pyx_vtab)->job_to_bottom(__pyx_v_best_move->sigma1, __pyx_v_job); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
   }
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":97
+  /* "bnbprob/pfssp/cython/heuristics.pyx":94
  *         job = best_move.free_jobs.pop(0)
  *         best_move.sigma1.job_to_bottom(job)
  *     best_cost = best_move.calc_bound()             # <<<<<<<<<<<<<<
  * 
  *     # Try to remove every job
  */
-  __pyx_t_5 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_best_move->__pyx_vtab)->calc_bound(__pyx_v_best_move, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_5 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_best_move->__pyx_vtab)->calc_bound(__pyx_v_best_move, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
   __pyx_v_best_cost = __pyx_t_5;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":100
+  /* "bnbprob/pfssp/cython/heuristics.pyx":97
  * 
  *     # Try to remove every job
  *     for i in range(len(sol_base.free_jobs)):             # <<<<<<<<<<<<<<
@@ -18671,15 +18659,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 100, __pyx_L1_error)
+    __PYX_ERR(0, 97, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_4 = __pyx_t_3;
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "bnbprob/pfssp/cython/heuristics.pyx":102
+    /* "bnbprob/pfssp/cython/heuristics.pyx":99
  *     for i in range(len(sol_base.free_jobs)):
  *         # The current list decreases size in one unit after removal
  *         for j in range(len(sol_base.free_jobs)):             # <<<<<<<<<<<<<<
@@ -18690,15 +18678,15 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 102, __pyx_L1_error)
+      __PYX_ERR(0, 99, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_7 = __pyx_t_6;
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_j = __pyx_t_8;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":105
+      /* "bnbprob/pfssp/cython/heuristics.pyx":102
  *             # Job shouldn't be inserted in the same original position
  *             # and avoids symmetric swaps
  *             if j == i or j == i + 1:             # <<<<<<<<<<<<<<
@@ -18716,7 +18704,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
       __pyx_L10_bool_binop_done:;
       if (__pyx_t_9) {
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":106
+        /* "bnbprob/pfssp/cython/heuristics.pyx":103
  *             # and avoids symmetric swaps
  *             if j == i or j == i + 1:
  *                 continue             # <<<<<<<<<<<<<<
@@ -18725,7 +18713,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
         goto __pyx_L7_continue;
 
-        /* "bnbprob/pfssp/cython/heuristics.pyx":105
+        /* "bnbprob/pfssp/cython/heuristics.pyx":102
  *             # Job shouldn't be inserted in the same original position
  *             # and avoids symmetric swaps
  *             if j == i or j == i + 1:             # <<<<<<<<<<<<<<
@@ -18734,47 +18722,59 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
  */
       }
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":109
+      /* "bnbprob/pfssp/cython/heuristics.pyx":106
  * 
  *             # Here the swap is performed
  *             sol_alt = sol_base.copy()             # <<<<<<<<<<<<<<
  *             job = sol_alt.free_jobs.pop(i)
  *             sol_alt.free_jobs.insert(j, job)
  */
-      __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_sol_base->__pyx_vtab)->copy(__pyx_v_sol_base, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_v_sol_base->__pyx_vtab)->copy(__pyx_v_sol_base, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_XDECREF_SET(__pyx_v_sol_alt, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":110
+      /* "bnbprob/pfssp/cython/heuristics.pyx":107
  *             # Here the swap is performed
  *             sol_alt = sol_base.copy()
  *             job = sol_alt.free_jobs.pop(i)             # <<<<<<<<<<<<<<
  *             sol_alt.free_jobs.insert(j, job)
- * 
+ *             # Careful recomputation althuogh it worked without it
  */
       if (unlikely(__pyx_v_sol_alt->free_jobs == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-        __PYX_ERR(0, 110, __pyx_L1_error)
+        __PYX_ERR(0, 107, __pyx_L1_error)
       }
-      __pyx_t_1 = __Pyx_PyList_PopIndex(__pyx_v_sol_alt->free_jobs, Py_None, __pyx_v_i, 1, int, __Pyx_PyInt_From_int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyList_PopIndex(__pyx_v_sol_alt->free_jobs, Py_None, __pyx_v_i, 1, int, __Pyx_PyInt_From_int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 110, __pyx_L1_error)
+      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_Job))))) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_XDECREF_SET(__pyx_v_job, ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "bnbprob/pfssp/cython/heuristics.pyx":111
+      /* "bnbprob/pfssp/cython/heuristics.pyx":108
  *             sol_alt = sol_base.copy()
  *             job = sol_alt.free_jobs.pop(i)
  *             sol_alt.free_jobs.insert(j, job)             # <<<<<<<<<<<<<<
- * 
- *             # In the new solution jobs are sequentially
+ *             # Careful recomputation althuogh it worked without it
+ *             # probably because of memoryviews
  */
       if (unlikely(__pyx_v_sol_alt->free_jobs == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "insert");
-        __PYX_ERR(0, 111, __pyx_L1_error)
+        __PYX_ERR(0, 108, __pyx_L1_error)
       }
-      __pyx_t_11 = PyList_Insert(__pyx_v_sol_alt->free_jobs, __pyx_v_j, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_11 = PyList_Insert(__pyx_v_sol_alt->free_jobs, __pyx_v_j, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":111
+ *             # Careful recomputation althuogh it worked without it
+ *             # probably because of memoryviews
+ *             recompute_r0(sol_alt.free_jobs)             # <<<<<<<<<<<<<<
+ * 
+ *             # In the new solution jobs are sequentially
+ */
+      __pyx_t_1 = __pyx_v_sol_alt->free_jobs;
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(((PyObject*)__pyx_t_1)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
       /* "bnbprob/pfssp/cython/heuristics.pyx":116
  *             # inserted in the last position, so only sigma 1 is modified
@@ -18894,7 +18894,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx
   __pyx_r = __pyx_v_best_move;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":77
+  /* "bnbprob/pfssp/cython/heuristics.pyx":74
  * 
  * 
  * cpdef Permutation local_search(Permutation perm):             # <<<<<<<<<<<<<<
@@ -18971,12 +18971,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "local_search") < 0)) __PYX_ERR(0, 77, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "local_search") < 0)) __PYX_ERR(0, 74, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18987,7 +18987,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("local_search", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 77, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("local_search", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 74, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19001,7 +19001,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_perm), __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation, 1, "perm", 0))) __PYX_ERR(0, 74, __pyx_L1_error)
   __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_4local_search(__pyx_self, __pyx_v_perm);
 
   /* function exit code */
@@ -19028,7 +19028,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_4local_search(CYT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("local_search", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search(__pyx_v_perm, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -20562,8 +20562,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_neh_constructive, __pyx_k_neh_constructive, sizeof(__pyx_k_neh_constructive), 0, 0, 1, 1},
     {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
     {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
-    {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
-    {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
     {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
     {&__pyx_n_s_p, __pyx_k_p, sizeof(__pyx_k_p), 0, 0, 1, 1},
     {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
@@ -20614,7 +20612,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 21, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_n_s_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 141, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 156, __pyx_L1_error)
@@ -20771,35 +20769,35 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__18);
   __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(1, 1, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":16
+  /* "bnbprob/pfssp/cython/heuristics.pyx":13
  * 
  * 
  * cpdef Permutation quick_constructive(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_n_s_perm); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_n_s_perm); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_quick_constructive, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_quick_constructive, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 13, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":30
+  /* "bnbprob/pfssp/cython/heuristics.pyx":27
  * 
  * 
  * cpdef Permutation neh_constructive(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int c1, c2, j, i, k, best_cost, seq_size, cost_alt
  */
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_neh_constructive, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_neh_constructive, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 27, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":77
+  /* "bnbprob/pfssp/cython/heuristics.pyx":74
  * 
  * 
  * cpdef Permutation local_search(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         bool solved
  */
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_local_search, 77, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_local_search, 74, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 74, __pyx_L1_error)
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":130
  * 
@@ -21107,14 +21105,6 @@ static int __Pyx_modinit_function_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "start_job", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_3job_start_job, "struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(int, __Pyx_memviewslice)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "empty_sigma", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_8sequence_empty_sigma, "struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *(int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.permutation"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "start_perm", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_11permutation_start_perm, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(int, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -21924,19 +21914,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_7) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":6
- * from libcpp cimport bool
- * 
- * import numpy as np             # <<<<<<<<<<<<<<
- * 
- * from bnbprob.pfssp.cython.job cimport Job, start_job
- */
-  __pyx_t_7 = __Pyx_ImportDottedModule(__pyx_n_s_numpy, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 6, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_7) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
-  /* "bnbprob/pfssp/cython/heuristics.pyx":13
+  /* "bnbprob/pfssp/cython/heuristics.pyx":10
  * 
  * cdef:
  *     int LARGE_INT = 10000000             # <<<<<<<<<<<<<<
@@ -21945,40 +21923,40 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT = 0x989680;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":16
+  /* "bnbprob/pfssp/cython/heuristics.pyx":13
  * 
  * 
  * cpdef Permutation quick_constructive(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_1quick_constructive, 0, __pyx_n_s_quick_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_1quick_constructive, 0, __pyx_n_s_quick_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quick_constructive, __pyx_t_7) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quick_constructive, __pyx_t_7) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":30
+  /* "bnbprob/pfssp/cython/heuristics.pyx":27
  * 
  * 
  * cpdef Permutation neh_constructive(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         int c1, c2, j, i, k, best_cost, seq_size, cost_alt
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_3neh_constructive, 0, __pyx_n_s_neh_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_3neh_constructive, 0, __pyx_n_s_neh_constructive, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_neh_constructive, __pyx_t_7) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_neh_constructive, __pyx_t_7) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "bnbprob/pfssp/cython/heuristics.pyx":77
+  /* "bnbprob/pfssp/cython/heuristics.pyx":74
  * 
  * 
  * cpdef Permutation local_search(Permutation perm):             # <<<<<<<<<<<<<<
  *     cdef:
  *         bool solved
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_5local_search, 0, __pyx_n_s_local_search, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_5local_search, 0, __pyx_n_s_local_search, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_local_search, __pyx_t_7) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_local_search, __pyx_t_7) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":130

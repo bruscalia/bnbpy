@@ -5,7 +5,7 @@ from libcpp cimport bool
 
 import copy
 import itertools
-from typing import List, Optional, Union
+from typing import Optional
 
 from bnbpy.problem import Problem
 from bnbpy.solution import Solution

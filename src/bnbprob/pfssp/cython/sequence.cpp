@@ -18237,7 +18237,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_cleanup(struct __py
  *         for job in self.jobs:
  *             del job             # <<<<<<<<<<<<<<
  *         del self.jobs
- * 
+ *         self.jobs = None
  */
     __Pyx_DECREF((PyObject *)__pyx_v_job); __pyx_v_job = 0;
 
@@ -18255,10 +18255,23 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_cleanup(struct __py
  *         for job in self.jobs:
  *             del job
  *         del self.jobs             # <<<<<<<<<<<<<<
+ *         self.jobs = None
+ * 
+ */
+  if (__Pyx_PyObject_DelAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_jobs) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+
+  /* "bnbprob/pfssp/cython/sequence.pyx":26
+ *             del job
+ *         del self.jobs
+ *         self.jobs = None             # <<<<<<<<<<<<<<
  * 
  *     cdef void job_to_bottom(Sigma self, Job job):
  */
-  if (__Pyx_PyObject_DelAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_jobs) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_INCREF(Py_None);
+  __Pyx_GIVEREF(Py_None);
+  __Pyx_GOTREF(__pyx_v_self->jobs);
+  __Pyx_DECREF(__pyx_v_self->jobs);
+  __pyx_v_self->jobs = ((PyObject*)Py_None);
 
   /* "bnbprob/pfssp/cython/sequence.pyx":19
  *         self.cleanup()
@@ -18349,8 +18362,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8sequence_5Sigma_4cleanup(stru
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/sequence.pyx":27
- *         del self.jobs
+/* "bnbprob/pfssp/cython/sequence.pyx":28
+ *         self.jobs = None
  * 
  *     cdef void job_to_bottom(Sigma self, Job job):             # <<<<<<<<<<<<<<
  *         cdef:
@@ -18373,7 +18386,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":31
+  /* "bnbprob/pfssp/cython/sequence.pyx":32
  *             int k
  * 
  *         self.jobs.append(job)             # <<<<<<<<<<<<<<
@@ -18382,11 +18395,11 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
  */
   if (unlikely(__pyx_v_self->jobs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-    __PYX_ERR(0, 31, __pyx_L1_error)
+    __PYX_ERR(0, 32, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_Append(__pyx_v_self->jobs, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyList_Append(__pyx_v_self->jobs, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":33
+  /* "bnbprob/pfssp/cython/sequence.pyx":34
  *         self.jobs.append(job)
  *         # Update
  *         self.C[0] = max(self.C[0], job.r[0]) + job.p[0]             # <<<<<<<<<<<<<<
@@ -18404,7 +18417,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
   __pyx_t_6 = 0;
   (__pyx_v_self->C[0]) = (__pyx_t_4 + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_6)) ))));
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":34
+  /* "bnbprob/pfssp/cython/sequence.pyx":35
  *         # Update
  *         self.C[0] = max(self.C[0], job.r[0]) + job.p[0]
  *         for k in range(1, self.m):             # <<<<<<<<<<<<<<
@@ -18416,7 +18429,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
   for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_3; __pyx_t_7+=1) {
     __pyx_v_k = __pyx_t_7;
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":35
+    /* "bnbprob/pfssp/cython/sequence.pyx":36
  *         self.C[0] = max(self.C[0], job.r[0]) + job.p[0]
  *         for k in range(1, self.m):
  *             self.C[k] = max(self.C[k], self.C[k - 1]) + job.p[k]             # <<<<<<<<<<<<<<
@@ -18435,8 +18448,8 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
     (__pyx_v_self->C[__pyx_v_k]) = (__pyx_t_10 + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_6)) ))));
   }
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":27
- *         del self.jobs
+  /* "bnbprob/pfssp/cython/sequence.pyx":28
+ *         self.jobs = None
  * 
  *     cdef void job_to_bottom(Sigma self, Job job):             # <<<<<<<<<<<<<<
  *         cdef:
@@ -18450,7 +18463,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_bottom(struc
   __pyx_L0:;
 }
 
-/* "bnbprob/pfssp/cython/sequence.pyx":37
+/* "bnbprob/pfssp/cython/sequence.pyx":38
  *             self.C[k] = max(self.C[k], self.C[k - 1]) + job.p[k]
  * 
  *     cdef void job_to_top(Sigma self, Job job):             # <<<<<<<<<<<<<<
@@ -18475,7 +18488,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":41
+  /* "bnbprob/pfssp/cython/sequence.pyx":42
  *             int k, m
  * 
  *         self.jobs.insert(0, job)             # <<<<<<<<<<<<<<
@@ -18484,11 +18497,11 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
   if (unlikely(__pyx_v_self->jobs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "insert");
-    __PYX_ERR(0, 41, __pyx_L1_error)
+    __PYX_ERR(0, 42, __pyx_L1_error)
   }
-  __pyx_t_1 = PyList_Insert(__pyx_v_self->jobs, 0, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_1 = PyList_Insert(__pyx_v_self->jobs, 0, ((PyObject *)__pyx_v_job)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 42, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":43
+  /* "bnbprob/pfssp/cython/sequence.pyx":44
  *         self.jobs.insert(0, job)
  *         # Update
  *         m = self.m - 1             # <<<<<<<<<<<<<<
@@ -18497,7 +18510,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
   __pyx_v_m = (__pyx_v_self->m - 1);
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":45
+  /* "bnbprob/pfssp/cython/sequence.pyx":46
  *         m = self.m - 1
  * 
  *         if m == -1:             # <<<<<<<<<<<<<<
@@ -18507,7 +18520,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   __pyx_t_2 = (__pyx_v_m == -1L);
   if (__pyx_t_2) {
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":46
+    /* "bnbprob/pfssp/cython/sequence.pyx":47
  * 
  *         if m == -1:
  *             return             # <<<<<<<<<<<<<<
@@ -18516,7 +18529,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
     goto __pyx_L0;
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":45
+    /* "bnbprob/pfssp/cython/sequence.pyx":46
  *         m = self.m - 1
  * 
  *         if m == -1:             # <<<<<<<<<<<<<<
@@ -18525,7 +18538,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
   }
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":48
+  /* "bnbprob/pfssp/cython/sequence.pyx":49
  *             return
  * 
  *         self.C[m] = max(self.C[m], job.q[m]) + job.p[m]             # <<<<<<<<<<<<<<
@@ -18543,7 +18556,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   __pyx_t_6 = __pyx_v_m;
   (__pyx_v_self->C[__pyx_v_m]) = (__pyx_t_5 + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_6)) ))));
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":50
+  /* "bnbprob/pfssp/cython/sequence.pyx":51
  *         self.C[m] = max(self.C[m], job.q[m]) + job.p[m]
  * 
  *         if m == 0:             # <<<<<<<<<<<<<<
@@ -18553,7 +18566,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   __pyx_t_2 = (__pyx_v_m == 0);
   if (__pyx_t_2) {
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":51
+    /* "bnbprob/pfssp/cython/sequence.pyx":52
  * 
  *         if m == 0:
  *             return             # <<<<<<<<<<<<<<
@@ -18562,7 +18575,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
     goto __pyx_L0;
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":50
+    /* "bnbprob/pfssp/cython/sequence.pyx":51
  *         self.C[m] = max(self.C[m], job.q[m]) + job.p[m]
  * 
  *         if m == 0:             # <<<<<<<<<<<<<<
@@ -18571,7 +18584,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
  */
   }
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":53
+  /* "bnbprob/pfssp/cython/sequence.pyx":54
  *             return
  * 
  *         for k in range(1, m + 1):             # <<<<<<<<<<<<<<
@@ -18583,7 +18596,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   for (__pyx_t_3 = 1; __pyx_t_3 < __pyx_t_8; __pyx_t_3+=1) {
     __pyx_v_k = __pyx_t_3;
 
-    /* "bnbprob/pfssp/cython/sequence.pyx":54
+    /* "bnbprob/pfssp/cython/sequence.pyx":55
  * 
  *         for k in range(1, m + 1):
  *             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]             # <<<<<<<<<<<<<<
@@ -18602,7 +18615,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
     (__pyx_v_self->C[(__pyx_v_m - __pyx_v_k)]) = (__pyx_t_10 + (*((int const  *) ( /* dim=0 */ ((char *) (((int const  *) __pyx_v_job->p.data) + __pyx_t_6)) ))));
   }
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":37
+  /* "bnbprob/pfssp/cython/sequence.pyx":38
  *             self.C[k] = max(self.C[k], self.C[k - 1]) + job.p[k]
  * 
  *     cdef void job_to_top(Sigma self, Job job):             # <<<<<<<<<<<<<<
@@ -18617,7 +18630,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_5Sigma_job_to_top(struct _
   __pyx_L0:;
 }
 
-/* "bnbprob/pfssp/cython/sequence.pyx":56
+/* "bnbprob/pfssp/cython/sequence.pyx":57
  *             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
  * 
  *     cdef Sigma copy(Sigma self):             # <<<<<<<<<<<<<<
@@ -18640,26 +18653,26 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("copy", 1);
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":59
+  /* "bnbprob/pfssp/cython/sequence.pyx":60
  *         cdef:
  *             Sigma sigma
  *         sigma = Sigma.__new__(Sigma)             # <<<<<<<<<<<<<<
  *         sigma.jobs = self.jobs.copy()
  *         sigma.C = vector[int](self.C)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8sequence_Sigma(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8sequence_Sigma(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF((PyObject *)__pyx_t_1);
   __pyx_v_sigma = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":60
+  /* "bnbprob/pfssp/cython/sequence.pyx":61
  *             Sigma sigma
  *         sigma = Sigma.__new__(Sigma)
  *         sigma.jobs = self.jobs.copy()             # <<<<<<<<<<<<<<
  *         sigma.C = vector[int](self.C)
  *         sigma.m = self.m
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->jobs, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->jobs, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -18679,18 +18692,18 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_sigma->jobs);
   __Pyx_DECREF(__pyx_v_sigma->jobs);
   __pyx_v_sigma->jobs = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":61
+  /* "bnbprob/pfssp/cython/sequence.pyx":62
  *         sigma = Sigma.__new__(Sigma)
  *         sigma.jobs = self.jobs.copy()
  *         sigma.C = vector[int](self.C)             # <<<<<<<<<<<<<<
@@ -18701,11 +18714,11 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
     __pyx_t_5 = std::vector<int> (__pyx_v_self->C);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 61, __pyx_L1_error)
+    __PYX_ERR(0, 62, __pyx_L1_error)
   }
   __pyx_v_sigma->C = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_5);
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":62
+  /* "bnbprob/pfssp/cython/sequence.pyx":63
  *         sigma.jobs = self.jobs.copy()
  *         sigma.C = vector[int](self.C)
  *         sigma.m = self.m             # <<<<<<<<<<<<<<
@@ -18715,7 +18728,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_sigma->m = __pyx_t_6;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":63
+  /* "bnbprob/pfssp/cython/sequence.pyx":64
  *         sigma.C = vector[int](self.C)
  *         sigma.m = self.m
  *         return sigma             # <<<<<<<<<<<<<<
@@ -18727,7 +18740,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   __pyx_r = __pyx_v_sigma;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":56
+  /* "bnbprob/pfssp/cython/sequence.pyx":57
  *             self.C[m - k] = max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
  * 
  *     cdef Sigma copy(Sigma self):             # <<<<<<<<<<<<<<
@@ -19440,7 +19453,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8sequence_5Sigma_8__setstate_c
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/sequence.pyx":66
+/* "bnbprob/pfssp/cython/sequence.pyx":67
  * 
  * 
  * cdef Sigma empty_sigma(int m):             # <<<<<<<<<<<<<<
@@ -19459,26 +19472,26 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("empty_sigma", 1);
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":69
+  /* "bnbprob/pfssp/cython/sequence.pyx":70
  *     cdef:
  *         Sigma sigma
  *     sigma = Sigma.__new__(Sigma)             # <<<<<<<<<<<<<<
  *     sigma.jobs = []
  *     sigma.C = vector[int](m, 0)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8sequence_Sigma(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_8sequence_Sigma(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_Sigma), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF((PyObject *)__pyx_t_1);
   __pyx_v_sigma = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":70
+  /* "bnbprob/pfssp/cython/sequence.pyx":71
  *         Sigma sigma
  *     sigma = Sigma.__new__(Sigma)
  *     sigma.jobs = []             # <<<<<<<<<<<<<<
  *     sigma.C = vector[int](m, 0)
  *     sigma.m = m
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_sigma->jobs);
@@ -19486,7 +19499,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   __pyx_v_sigma->jobs = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":71
+  /* "bnbprob/pfssp/cython/sequence.pyx":72
  *     sigma = Sigma.__new__(Sigma)
  *     sigma.jobs = []
  *     sigma.C = vector[int](m, 0)             # <<<<<<<<<<<<<<
@@ -19497,11 +19510,11 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
     __pyx_t_2 = std::vector<int> (__pyx_v_m, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 71, __pyx_L1_error)
+    __PYX_ERR(0, 72, __pyx_L1_error)
   }
   __pyx_v_sigma->C = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_2);
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":72
+  /* "bnbprob/pfssp/cython/sequence.pyx":73
  *     sigma.jobs = []
  *     sigma.C = vector[int](m, 0)
  *     sigma.m = m             # <<<<<<<<<<<<<<
@@ -19509,7 +19522,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
  */
   __pyx_v_sigma->m = __pyx_v_m;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":73
+  /* "bnbprob/pfssp/cython/sequence.pyx":74
  *     sigma.C = vector[int](m, 0)
  *     sigma.m = m
  *     return sigma             # <<<<<<<<<<<<<<
@@ -19519,7 +19532,7 @@ static struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_Sigma *__pyx_f_7bnbpro
   __pyx_r = __pyx_v_sigma;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/sequence.pyx":66
+  /* "bnbprob/pfssp/cython/sequence.pyx":67
  * 
  * 
  * cdef Sigma empty_sigma(int m):             # <<<<<<<<<<<<<<
@@ -21339,7 +21352,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 35, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 68, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_n_s_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 141, __pyx_L1_error)

@@ -1,24 +1,13 @@
 import logging
 from typing import List, Literal, Optional
 
-from bnbprob.pfssp.pypure.heuristics import (
-    local_search as ls,
-)
-from bnbprob.pfssp.pypure.heuristics import (
-    neh_constructive as neh,
-)
-from bnbprob.pfssp.pypure.heuristics import (
-    quick_constructive as qc,
-)
-from bnbprob.pfssp.pypure.permutation import Permutation
-from bnbprob.pfssp.pypure.solution import FlowSolution
-from bnbpy import Problem
+from bnbprob.pfssp.cython.solution import FlowSolution
 
 log = logging.getLogger(__name__)
 
-
-class PermFlowShop(Problem):
-    """Class to represent a permutation flow-shop scheduling problem
+class PermFlowShop:
+    """
+    Class to represent a permutation flow-shop scheduling problem
     with lower bounds computed by the max of a single machine and
     a two machine relaxations.
 
@@ -50,23 +39,32 @@ class PermFlowShop(Problem):
     """
 
     solution: FlowSolution
-    m: int
 
     def __init__(
         self,
         solution: FlowSolution,
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
-        super().__init__()
-        self.solution = solution
-        self.constructive = constructive
+        ...
 
     def __del__(self):
-        self.cleanup()
+        ...
 
-    def cleanup(self) -> None:
-        del self.solution
-        self.solution = None
+    def cleanup(self):
+        ...
+
+    @property
+    def lb(self):
+        ...
+
+    def compute_bound(self) -> None:
+        ...
+
+    def check_feasible(self) -> bool:
+        ...
+
+    def set_solution(self, solution: FlowSolution) -> None:
+        ...
 
     @classmethod
     def from_p(
@@ -89,12 +87,7 @@ class PermFlowShop(Problem):
         PermFlowShop
             Instance of the problem
         """
-        perm = Permutation.from_p(p)
-        solution = FlowSolution(perm)
-        return cls(
-            solution,
-            constructive=constructive,
-        )
+        ...
 
     def warmstart(self) -> FlowSolution:
         """
@@ -120,9 +113,7 @@ class PermFlowShop(Problem):
         in the minimum total time—a quick method of obtaining a near optimum.
         Journal of the Operational Research Society, 16(1), 101-107
         """
-        if self.constructive == 'neh':
-            return self.neh_constructive()
-        return self.quick_constructive()
+        ...
 
     def quick_constructive(self) -> FlowSolution:
         """Computes a feasible solution based on the sorting
@@ -139,8 +130,7 @@ class PermFlowShop(Problem):
         in the minimum total time—a quick method of obtaining a near optimum.
         Journal of the Operational Research Society, 16(1), 101-107
         """
-        perm = qc(self.solution.perm)
-        return FlowSolution(perm)
+        ...
 
     def neh_constructive(self) -> FlowSolution:
         """Constructive heuristic of Nawaz et al. (1983) based
@@ -159,8 +149,7 @@ class PermFlowShop(Problem):
         n-job flow-shop sequencing problem.
         Omega, 11(1), 91-95.
         """
-        perm = neh(self.solution.perm)
-        return FlowSolution(perm)
+        ...
 
     def local_search(self) -> Optional[FlowSolution]:
         """Local search heuristic from a current solution based on insertion
@@ -170,49 +159,28 @@ class PermFlowShop(Problem):
         Optional[FlowSolution]
             New solution (best improvement) if exists
         """
-        log.debug('Starting Heuristic')
-        lb = self.solution.lb
-        perm = ls(self.solution.perm)
-        sol_alt = FlowSolution(perm)
-        new_cost = sol_alt.perm.calc_bound()
-        if new_cost < lb:
-            return sol_alt
-        return None
+        ...
 
     def calc_bound(self) -> int:
-        return self.solution.perm.calc_lb_1m()
+        ...
 
     def is_feasible(self) -> bool:
-        return self.solution.perm.is_feasible()
+        ...
 
     def branch(self) -> list['PermFlowShop']:
         # Get fixed and unfixed job lists to create new solution
-        return [
-            self._child_push(j)
-            for j in range(len(self.solution.free_jobs))
-        ]
+        ...
 
-    def _child_push(self, j: int) -> 'PermFlowShop':
-        child = self.copy()
-        child.solution.push_job(j)
-        return child
+    def bound_upgrade(self):
+        """
+        Solves 2-machine subproblems to upgrade current lower bound
+        """
+        ...
 
-    def bound_upgrade(self) -> None:
-        if len(self.solution.perm.free_jobs) == 0:
-            lb5 = self.solution.perm.calc_lb_full()
-        else:
-            lb5 = self.solution.perm.lower_bound_2m()
-        lb = max(self.solution.lb, lb5)
-        self.solution.set_lb(lb)
-
-    def copy(self) -> 'PermFlowShop':
-        child = type(self).__new__(type(self))
-        child.solution = self.solution.copy()
-        child.constructive = self.constructive
-        return child
-
+    def copy(self):
+        ...
 
 class PermFlowShop2M(PermFlowShop):
 
     def calc_bound(self) -> int:
-        return self.solution.perm.calc_lb_2m()
+        ...

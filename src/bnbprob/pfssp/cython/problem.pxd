@@ -3,7 +3,7 @@
 
 from libcpp cimport bool
 
-from typing import List, Literal, Optional
+from typing import Optional
 
 from bnbprob.pfssp.cython.heuristics cimport (
     local_search as ls,
@@ -28,6 +28,12 @@ cdef class PermFlowShop:
 
     cpdef void set_solution(PermFlowShop self, object solution)
 
+    cpdef FlowSolution warmstart(PermFlowShop self)
+
+    cpdef FlowSolution quick_constructive(PermFlowShop self)
+
+    cpdef FlowSolution neh_constructive(PermFlowShop self)
+
     cpdef int calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)
@@ -36,9 +42,11 @@ cdef class PermFlowShop:
 
     cdef PermFlowShop _child_push(PermFlowShop self, int j)
 
+    cpdef void bound_upgrade(PermFlowShop self)
+
     cpdef PermFlowShop copy(PermFlowShop self)
 
 
-cdef class PermFlowShopLazy(PermFlowShop):
+cdef class PermFlowShop2M(PermFlowShop):
 
-    cpdef int calc_bound(PermFlowShopLazy self)
+    cpdef int calc_bound(PermFlowShop2M self)

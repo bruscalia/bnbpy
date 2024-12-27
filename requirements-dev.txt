@@ -1,9 +1,8 @@
 ipykernel
-pydantic==2.9.2 ; python_version >= "3.8" and python_version < "4.0"
-pytest==7.4.4 ; python_version >= "3.8" and python_version < "4.0"
-pytest-mock==3.14.0; python_version >= "3.8" and python_version < "4.0"
-ruff==0.7.0 ; python_version >= "3.8" and python_version < "4.0"
-scipy
-matplotlib
-networkx
+pytest==7.4.4
+pytest-mock==3.14.0
+ruff==0.7.0
+pyomo==6.*
+matplotlib==3.*
+networkx==3.*
 pandas[excel]

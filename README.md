@@ -8,7 +8,7 @@ using Branch & Bound. Also supports Column Generation and Branch & Price.
 See more examples in the [notebooks folder](./notebooks/):
 
 - [Single Machine Scheduling](./notebooks/single-machine.ipynb)
-- [Permutation Flow Shop](./notebooks/pfssp.ipynb)
+- [Permutation Flow Shop](./notebooks/pfssp.ipynb) (main focus so far)
 - [MILP](./notebooks/milp.ipynb)
 - [Cutting Stock](./notebooks/cutting-stock.ipynb)
 - [Graph Coloring](./notebooks/graph-coloring-bak.ipynb)
@@ -16,26 +16,6 @@ See more examples in the [notebooks folder](./notebooks/):
 
 
 ## Configure
-
-### Using poetry
-
-Install poetry in the Python environment.
-
-```
-pip install poetry
-```
-
-Install all dependencies in 'pyproject.toml' file via poetry.
-
-```
-poetry install
-```
-
-Install only basic dependencies.
-
-```
-poetry install --no-dev
-```
 
 ### Using pip
 
@@ -45,7 +25,13 @@ Install all dependencies via pip.
 pip install -r requirements.txt
 ```
 
-Or simply install the packages from the root.
+Build extensions for Cython files.
+
+```
+python setup.py build_ext --inplace
+```
+
+And install the packages from the root.
 
 ```
 pip install .
@@ -56,7 +42,7 @@ pip install .
 ### Branch & Bound
 
 ```python
-from bnb import BrachAndBound, Problem
+from bnbpy import BrachAndBound, Problem
 
 
 class MyProblem(Problem):
@@ -144,7 +130,7 @@ class MyCG(bbp.ColumnGenProblem):
 The package `bnbprob` incorporates elements of `bnbpy` to solve classical examples.
 They are installed simultaneously.
 
-See here a [MILP](#milp) and a [Graph Coloring](#graph-coloring) examples.
+See here examples for a [MILP](#milp), a [Flow Shop](#flow-shop), and a [Graph Coloring](#graph-coloring) problem.
 
 ### MILP
 
@@ -171,6 +157,31 @@ sol = bfs.solve(milp)
 print(f"Sol: {sol} | x: {sol.x}")
 # >>> Sol: Status: OPTIMAL | Cost: -18.0 | LB: -18.0 | x: [2. 2.]
 ```
+
+### Flow Shop
+
+This instance from the literature takes slightly more than 1s to be solved. It
+is an incredible performance even compared to the best commercial MILP solvers.
+
+```python
+import json
+from bnbprob.pfssp import CallbackBnB, PermFlowShop
+
+with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
+    p = json.load(f)
+
+problem = PermFlowShop.from_p(p, constructive='neh')
+bnb = CallbackBnB(
+    eval_node='in', rtol=0.0001, restart_freq=200, save_tree=False
+)
+
+sol = bnb.solve(
+    problem, maxiter=1000000, timelimit=600
+)
+print(sol)
+# >>> Status: OPTIMAL | Cost: 1431 | LB: 1431
+```
+
 
 ### Graph Coloring
 
@@ -206,23 +217,6 @@ print(sol)
 # >>> Status: OPTIMAL | Cost: 17 | LB: 17
 ```
 
-## Development
-
-### Poetry dependencies
-
-Export pyproject.toml file into requirements.
-
-```
-poetry self add poetry-plugin-export
-```
-
-```
-poetry export --without-hashes --output requirements.txt
-```
-
-```
-poetry export --with dev --without-hashes --output requirements-dev.txt
-```
 
 ## Contact
 

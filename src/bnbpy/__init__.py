@@ -16,3 +16,12 @@ from bnbpy.search import (  # noqa: F401
 )
 from bnbpy.solution import Solution  # noqa: F401, F811
 from bnbpy.status import OptStatus  # noqa: F401
+
+try:
+    from bnbpy.cython import is_compiled
+except ModuleNotFoundError as e:
+    print("Cython modules not found")
+    print(e)
+
+    def is_compiled():
+        return False

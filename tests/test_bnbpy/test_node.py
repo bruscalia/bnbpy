@@ -74,7 +74,7 @@ class TestNode:
         # Verify that the children are instances of Node
         # and have the correct parent
         for child in children:
-            assert isinstance(child, Node)
+            assert type(child) is type(node), f'{type(child)} x {type(node)}'
             assert child.parent == node
 
         # Check that the children have the correct lower bounds
