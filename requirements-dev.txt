@@ -3,6 +3,7 @@ pytest==7.4.4
 pytest-mock==3.14.0
 ruff==0.7.0
 pyomo==6.*
+gif==23.*
 matplotlib==3.*
 networkx==3.*
 pandas[excel]

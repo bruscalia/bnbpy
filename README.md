@@ -176,6 +176,8 @@ bnb = CallbackBnB(
     eval_node='in', rtol=0.0001, restart_freq=200, save_tree=False
 )
 
+# The commercial solver Gurobi took 600s (timeout) to find the near optimal
+# solution 1432
 sol = bnb.solve(
     problem, maxiter=1000000, timelimit=600
 )
