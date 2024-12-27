@@ -139,7 +139,7 @@ class PermFlowShop(Problem):
         in the minimum total time—a quick method of obtaining a near optimum.
         Journal of the Operational Research Society, 16(1), 101-107
         """
-        perm = qc(self.solution.perm)
+        perm = qc(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
     def neh_constructive(self) -> FlowSolution:
@@ -159,7 +159,7 @@ class PermFlowShop(Problem):
         n-job flow-shop sequencing problem.
         Omega, 11(1), 91-95.
         """
-        perm = neh(self.solution.perm)
+        perm = neh(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
     def local_search(self) -> Optional[FlowSolution]:

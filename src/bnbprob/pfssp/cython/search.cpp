@@ -3242,8 +3242,8 @@ static bool __pyx_f_7bnbprob_5pfssp_6cython_6search_14BranchAndBound__optimality
 /* Module declarations from "bnbprob.pfssp.cython.permutation" */
 
 /* Module declarations from "bnbprob.pfssp.cython.heuristics" */
-static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
-static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive)(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive)(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(*__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search)(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch); /*proto*/
 
 /* Module declarations from "bnbprob.pfssp.cython.solution" */
@@ -33798,8 +33798,8 @@ static int __Pyx_modinit_function_import_code(void) {
   /*--- Function import code ---*/
   __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.heuristics"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "quick_constructive", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "neh_constructive", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "quick_constructive", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "neh_constructive", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction_3_0_11(__pyx_t_1, "local_search", (void (**)(void))&__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search, "struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();

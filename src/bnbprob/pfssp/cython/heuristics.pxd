@@ -5,10 +5,10 @@ from bnbprob.pfssp.cython.job cimport Job
 from bnbprob.pfssp.cython.permutation cimport Permutation
 
 
-cpdef Permutation quick_constructive(Permutation perm)
+cpdef Permutation quick_constructive(list[Job] jobs)
 
 
-cpdef Permutation neh_constructive(Permutation perm)
+cpdef Permutation neh_constructive(list[Job] jobs)
 
 
 cpdef Permutation local_search(Permutation perm)

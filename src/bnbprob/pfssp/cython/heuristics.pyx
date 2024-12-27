@@ -10,13 +10,14 @@ cdef:
     int LARGE_INT = 10000000
 
 
-cpdef Permutation quick_constructive(Permutation perm):
+cpdef Permutation quick_constructive(list[Job] jobs):
     cdef:
-        int i
+        int i, M
         Permutation sol
         Job job
 
-    sol = perm.copy()
+    M = <int>len(jobs[0].p)
+    sol = start_perm(M, jobs)
     sol.free_jobs.sort(key=key_slope_sort, reverse=True)
     for i in range(len(sol.free_jobs)):
         job = sol.free_jobs.pop(0)
@@ -24,24 +25,26 @@ cpdef Permutation quick_constructive(Permutation perm):
     return sol
 
 
-cpdef Permutation neh_constructive(Permutation perm):
+cpdef Permutation neh_constructive(list[Job] jobs):
     cdef:
-        int c1, c2, j, i, k, best_cost, seq_size, cost_alt
+        int c1, c2, j, i, k, M, best_cost, seq_size, cost_alt
         Permutation s1, s2, sol, s_alt
         Job job, job_i
         list[Job] vec
 
     # Find best order of two jobs with longest processing times
-    perm.free_jobs.sort(key=key_T_sort, reverse=True)
+    jobs.sort(key=key_T_sort, reverse=True)
 
-    vec = [perm.free_jobs[0].pycopy(), perm.free_jobs[1].pycopy()]
-    s1 = start_perm(perm.m, vec)
+    M = <int>len(jobs[0].p)
+
+    vec = [jobs[0].pycopy(), jobs[1].pycopy()]
+    s1 = start_perm(M, vec)
     for k in range(len(s1.free_jobs)):
         job_i = s1.free_jobs.pop(0)
         s1.sigma1.job_to_bottom(job_i)
 
-    vec = [perm.free_jobs[1].pycopy(), perm.free_jobs[0].pycopy()]
-    s2 = start_perm(perm.m, vec)
+    vec = [jobs[1].pycopy(), jobs[0].pycopy()]
+    s2 = start_perm(M, vec)
     for k in range(len(s2.free_jobs)):
         job_i = s2.free_jobs.pop(0)
         s2.sigma1.job_to_bottom(job_i)
@@ -55,13 +58,13 @@ cpdef Permutation neh_constructive(Permutation perm):
 
     # Find best insert for every other job
     seq_size = 2
-    for j in range(2, len(perm.free_jobs)):
+    for j in range(2, len(jobs)):
         best_cost = LARGE_INT
-        best_sol = perm.copy()
+        best_sol = start_perm(M, [])
         # Positions in sequence
         for i in range(seq_size + 1):
             s_alt = start_perm(sol.m, sol.get_sequence_copy())
-            job = perm.free_jobs[j]
+            job = jobs[j]
             s_alt.free_jobs.insert(i, job.copy())
             # Fix all jobs
             for k in range(len(s_alt.free_jobs)):

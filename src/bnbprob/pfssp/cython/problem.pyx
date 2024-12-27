@@ -79,11 +79,11 @@ cdef class PermFlowShop:
         return self.quick_constructive()
 
     cpdef FlowSolution quick_constructive(PermFlowShop self):
-        perm = qc(self.solution.perm)
+        perm = qc(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
     cpdef FlowSolution neh_constructive(PermFlowShop self):
-        perm = neh(self.solution.perm)
+        perm = neh(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
     def local_search(self) -> Optional[FlowSolution]:
