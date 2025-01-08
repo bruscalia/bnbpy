@@ -7,3 +7,4 @@ gif==23.*
 matplotlib==3.*
 networkx==3.*
 pandas[excel]
+ortools==9.11.*
