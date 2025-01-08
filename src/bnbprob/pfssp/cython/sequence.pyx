@@ -16,13 +16,7 @@ cdef class Sigma:
     def __del__(self):
         self.cleanup()
 
-    cpdef void cleanup(Sigma self):
-        cdef:
-            Job job
-
-        for job in self.jobs:
-            del job
-        del self.jobs
+    cdef void cleanup(Sigma self):
         self.jobs = None
 
     cdef void job_to_bottom(Sigma self, Job job):

@@ -44,7 +44,10 @@ cdef class Node:
     def __del__(self):
         self.cleanup()
 
-    cpdef void cleanup(self):
+    cdef void cleanup(Node self):
+        cdef:
+            Node child
+
         if self.problem:
             del self.problem
             self.problem = None

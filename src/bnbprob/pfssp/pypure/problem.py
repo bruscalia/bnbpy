@@ -65,7 +65,6 @@ class PermFlowShop(Problem):
         self.cleanup()
 
     def cleanup(self) -> None:
-        del self.solution
         self.solution = None
 
     @classmethod

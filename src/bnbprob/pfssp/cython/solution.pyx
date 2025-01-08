@@ -20,7 +20,6 @@ cdef class FlowSolution:
         self.status = OptStatus.NO_SOLUTION
 
     def __del__(self):
-        del self.perm
         self.perm = None
 
     def __repr__(self) -> str:

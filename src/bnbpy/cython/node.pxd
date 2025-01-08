@@ -22,7 +22,7 @@ cdef class Node:
         int _sort_index
         object _counter
 
-    cpdef void cleanup(self)
+    cdef void cleanup(Node self)
 
     cpdef void compute_bound(Node self)
 

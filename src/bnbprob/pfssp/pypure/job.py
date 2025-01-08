@@ -34,10 +34,6 @@ class Job:
     def __str__(self) -> str:
         return self._signature
 
-    def __del__(self):
-        del self.r
-        del self.q
-
     @property
     def _signature(self):
         return f'Job {self.j}'

@@ -35,10 +35,7 @@ cdef class Permutation:
     def __del__(self):
         self.cleanup()
 
-    cpdef void cleanup(Permutation self):
-        del self.free_jobs
-        del self.sigma1
-        del self.sigma2
+    cdef void cleanup(Permutation self):
         self.free_jobs = None
         self.sigma1 = None
         self.sigma2 = None

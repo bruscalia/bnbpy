@@ -35,8 +35,7 @@ cdef class PermFlowShop:
     def __del__(self):
         self.cleanup()
 
-    cpdef void cleanup(PermFlowShop self):
-        del self.solution
+    cdef void cleanup(PermFlowShop self):
         self.solution = None
 
     @property

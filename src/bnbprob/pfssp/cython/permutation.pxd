@@ -17,7 +17,7 @@ cdef class Permutation:
         Sigma sigma2
         int level
 
-    cpdef void cleanup(Permutation self)
+    cdef void cleanup(Permutation self)
 
     cpdef list[Job] get_sequence(Permutation self)
 

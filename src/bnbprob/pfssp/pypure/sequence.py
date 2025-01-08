@@ -25,9 +25,7 @@ class Sigma:
         self.cleanup()
 
     def cleanup(self) -> None:
-        for job in self.jobs:
-            del job
-        del self.jobs
+        self.jobs = None
 
     def job_to_bottom(self, job: Job) -> None:
         """Inserts job to the last position of sequence

@@ -1570,7 +1570,7 @@ struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound {
  */
 
 struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node {
-  void (*cleanup)(struct __pyx_obj_5bnbpy_6cython_4node_Node *, int __pyx_skip_dispatch);
+  void (*cleanup)(struct __pyx_obj_5bnbpy_6cython_4node_Node *);
   void (*compute_bound)(struct __pyx_obj_5bnbpy_6cython_4node_Node *, int __pyx_skip_dispatch);
   bool (*check_feasible)(struct __pyx_obj_5bnbpy_6cython_4node_Node *, int __pyx_skip_dispatch);
   void (*set_solution)(struct __pyx_obj_5bnbpy_6cython_4node_Node *, PyObject *, int __pyx_skip_dispatch);
@@ -7838,7 +7838,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
  *             del node
  * 
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 248, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 248, __pyx_L1_error)
 
     /* "bnbpy/cython/search.pyx":249
  *         if not self.save_tree and node is not self.root:
@@ -8170,7 +8170,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
  *             del node
  * 
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L1_error)
 
     /* "bnbpy/cython/search.pyx":266
  *         if not self.save_tree and node is not self.root:

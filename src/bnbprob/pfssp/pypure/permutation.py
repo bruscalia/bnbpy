@@ -33,9 +33,9 @@ class Permutation:  # noqa: PLR0904
         self.cleanup()
 
     def cleanup(self) -> None:
-        del self.free_jobs
-        del self.sigma1
-        del self.sigma2
+        self.free_jobs = None
+        self.sigma1 = None
+        self.sigma2 = None
 
     @staticmethod
     def from_p(p: list[list[int]]):
