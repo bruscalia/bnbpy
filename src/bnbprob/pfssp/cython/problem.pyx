@@ -33,9 +33,12 @@ cdef class PermFlowShop:
         self.constructive = constructive
 
     def __del__(self):
-        self.cleanup()
+        self.ccleanup()
 
-    cdef void cleanup(PermFlowShop self):
+    cpdef void cleanup(PermFlowShop self):
+        self.solution = None
+
+    cdef void ccleanup(PermFlowShop self):
         self.solution = None
 
     @property
@@ -86,7 +89,6 @@ cdef class PermFlowShop:
         return FlowSolution(perm)
 
     def local_search(self) -> Optional[FlowSolution]:
-        log.debug('Starting Heuristic')
         lb = self.solution.lb
         perm = ls(self.solution.perm)
         sol_alt = FlowSolution(perm)

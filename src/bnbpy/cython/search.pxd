@@ -36,17 +36,17 @@ cdef class BranchAndBound:
         Node bound_node
         object __logger
 
-    cpdef double get_ub(BranchAndBound self)
+    cdef double get_ub(BranchAndBound self)
 
-    cpdef double get_lb(BranchAndBound self)
+    cdef double get_lb(BranchAndBound self)
 
-    cpdef object get_solution(BranchAndBound self)
+    cdef object get_solution(BranchAndBound self)
 
     cpdef void _set_problem(BranchAndBound self, problem: Problem)
 
     cpdef void _restart_search(BranchAndBound self)
 
-    cpdef void _do_iter(BranchAndBound self, Node node)
+    cdef void _do_iter(BranchAndBound self, Node node)
 
     cpdef void enqueue(BranchAndBound self, Node node)
 
@@ -76,18 +76,18 @@ cdef class BranchAndBound:
 
     cpdef void set_solution(BranchAndBound self, Node node)
 
-    cpdef void _enqueue_core(BranchAndBound self, Node node)
+    cdef void _enqueue_core(BranchAndBound self, Node node)
 
-    cpdef Node _dequeue_core(BranchAndBound self)
+    cdef Node _dequeue_core(BranchAndBound self)
 
-    cpdef bool _check_termination(BranchAndBound self, int maxiter)
+    cdef bool _check_termination(BranchAndBound self, int maxiter)
 
-    cpdef void _update_bound(BranchAndBound self)
+    cdef void _update_bound(BranchAndBound self)
 
     cpdef void _log_headers(BranchAndBound self)
 
     cpdef void log_row(BranchAndBound self, object message)
 
-    cpdef void _update_gap(BranchAndBound self)
+    cdef void _update_gap(BranchAndBound self)
 
-    cpdef bool _optimality_check(BranchAndBound self)
+    cdef bool _optimality_check(BranchAndBound self)

@@ -228,7 +228,6 @@ class BranchAndBound:
         node : Node
             Node being evaluated
         """
-        log.debug(f'Branch on: {node.lb}')
         children = node.branch()
         if children:
             for child in children:
@@ -251,7 +250,6 @@ class BranchAndBound:
             Node to be fathomed
         """
         node.fathom()
-        log.debug(f'Fathom: {node.lb}')
         if not self.save_tree and node is not self.root:
             node.cleanup()
             del node

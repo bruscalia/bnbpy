@@ -34,6 +34,6 @@ cdef class Node:
 
     cpdef list[Node] branch(Node self)
 
-    cpdef Node child_problem(Node self, object problem)
+    cdef Node child_problem(Node self, object problem)
 
     cpdef Node shallow_copy(Node self)

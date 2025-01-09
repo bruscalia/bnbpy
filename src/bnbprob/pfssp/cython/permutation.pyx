@@ -280,7 +280,7 @@ cdef class Permutation:
         return perm
 
 
-cpdef Permutation start_perm(int m, list[Job] free_jobs):
+cdef Permutation start_perm(int m, list[Job] free_jobs):
     cdef:
         Permutation perm
 

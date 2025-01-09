@@ -49,9 +49,9 @@ class Node:
 
     def cleanup(self):
         if self.problem:
-            del self.problem
+            self.problem.cleanup()
             self.problem = None
-        if self.children:
+        if self.children is not None:
             for child in self.children:
                 child.parent = None
         if self.parent:

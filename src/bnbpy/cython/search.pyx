@@ -68,7 +68,7 @@ cdef class BranchAndBound:
     def ub(self):
         return self.get_ub()
 
-    cpdef double get_ub(BranchAndBound self):
+    cdef double get_ub(BranchAndBound self):
         if self.incumbent is not None:
             return self.incumbent.lb
         return LARGE_POS
@@ -77,7 +77,7 @@ cdef class BranchAndBound:
     def lb(self):
         return self.get_lb()
 
-    cpdef double get_lb(BranchAndBound self):
+    cdef double get_lb(BranchAndBound self):
         if self.bound_node is not None:
             return min(self.bound_node.lb, self.get_ub())
         return LOW_NEG
@@ -86,7 +86,7 @@ cdef class BranchAndBound:
     def solution(self):
         return self.get_solution()
 
-    cpdef object get_solution(BranchAndBound self):
+    cdef object get_solution(BranchAndBound self):
         if self.incumbent is not None:
             return self.incumbent.solution
         elif self.bound_node is not None:
@@ -129,11 +129,13 @@ cdef class BranchAndBound:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
+            int _mxiter = LARGE_INT
             Node node
 
         self._set_problem(problem)
         self._restart_search()
-        maxiter = LARGE_INT if maxiter is None else maxiter
+        if maxiter is not None:
+            _mxiter = maxiter
         if timelimit is not None:
             _tlim = timelimit
             start_time = time.time()
@@ -145,7 +147,7 @@ cdef class BranchAndBound:
             # Check for time termination
             if timelimit is not None:
                 current_time = time.time()
-                if current_time - start_time >= timelimit:
+                if current_time - start_time >= _tlim:
                     break
             node = self._dequeue_core()
             # Avoid node with poor parents in case ub was updated meanwhile
@@ -156,12 +158,12 @@ cdef class BranchAndBound:
             if node is self.bound_node:
                 self._update_bound()
             # Termination by optimality
-            if self._check_termination(maxiter):
+            if self._check_termination(_mxiter):
                 break
         self.solution.set_lb(self.get_lb())
         return self.solution
 
-    cpdef void _do_iter(BranchAndBound self, Node node):
+    cdef void _do_iter(BranchAndBound self, Node node):
         """Do loop iteration using a reference node just dequeued
 
         Parameters
@@ -237,7 +239,6 @@ cdef class BranchAndBound:
             list[Node] children
             Node child
 
-        log.debug(f'Branch on: {node.lb}')
         children = node.branch()
         if children:
             for child in children:
@@ -260,7 +261,6 @@ cdef class BranchAndBound:
             Node to be fathomed
         """
         node.fathom()
-        log.debug(f'Fathom: {node.lb}')
         if not self.save_tree and node is not self.root:
             node.cleanup()
             del node
@@ -320,13 +320,13 @@ cdef class BranchAndBound:
         self.log_row('New incumbent')
         self.solution_callback(node)
 
-    cpdef void _enqueue_core(BranchAndBound self, Node node):
+    cdef void _enqueue_core(BranchAndBound self, Node node):
         if self.eval_in:
             self._node_eval(node)
         self.enqueue_callback(node)
         self.enqueue(node)
 
-    cpdef Node _dequeue_core(BranchAndBound self):
+    cdef Node _dequeue_core(BranchAndBound self):
         node = self.dequeue()
         if self.eval_out:
             self._node_eval(node)
@@ -338,7 +338,7 @@ cdef class BranchAndBound:
             return None
         return node
 
-    cpdef bool _check_termination(BranchAndBound self, int maxiter):
+    cdef bool _check_termination(BranchAndBound self, int maxiter):
         if self._optimality_check():
             self.log_row('Optimal')
             self.solution.set_optimal()
@@ -349,7 +349,7 @@ cdef class BranchAndBound:
             return True
         return False
 
-    cpdef void _update_bound(BranchAndBound self):
+    cdef void _update_bound(BranchAndBound self):
         if len(self.queue) == 0:
             if self.incumbent:
                 self.bound_node = self.incumbent
@@ -374,11 +374,11 @@ cdef class BranchAndBound:
         lb = f'{float(self.get_lb()):^6.4}'
         self.__logger.log_row(self.explored, ub, lb, gap, message)
 
-    cpdef void _update_gap(BranchAndBound self):
+    cdef void _update_gap(BranchAndBound self):
         if self.get_ub() != LARGE_POS:
             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
 
-    cpdef bool _optimality_check(BranchAndBound self):
+    cdef bool _optimality_check(BranchAndBound self):
         return (
             self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol
         )

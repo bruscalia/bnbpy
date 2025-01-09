@@ -169,7 +169,6 @@ class PermFlowShop(Problem):
         Optional[FlowSolution]
             New solution (best improvement) if exists
         """
-        log.debug('Starting Heuristic')
         lb = self.solution.lb
         perm = ls(self.solution.perm)
         sol_alt = FlowSolution(perm)

@@ -49,9 +49,8 @@ cdef class Node:
             Node child
 
         if self.problem:
-            del self.problem
             self.problem = None
-        if self.children:
+        if self.children is not None:
             for child in self.children:
                 child.parent = None
         if self.parent:
@@ -130,7 +129,9 @@ cdef class Node:
         self.children = children
         return self.children
 
-    cpdef Node child_problem(Node self, object problem):
+    cdef Node child_problem(Node self, object problem):
+        cdef:
+            Node other
         other = Node.__new__(Node)
         other.problem = problem
         other.parent = self

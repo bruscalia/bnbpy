@@ -20,7 +20,6 @@ class ParallelBnB(BranchAndBound):
         self.max_workers = max_workers
 
     def branch(self, node: Node):
-        log.debug(f'Branch on: {node.lb}')
         children = node.branch()
         if children:
             # Use ThreadPoolExecutor for parallel execution

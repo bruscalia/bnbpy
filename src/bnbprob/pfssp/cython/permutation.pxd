@@ -54,7 +54,7 @@ cdef class Permutation:
     cpdef Permutation copy(Permutation self)
 
 
-cpdef Permutation start_perm(int m, list[Job] free_jobs)
+cdef Permutation start_perm(int m, list[Job] free_jobs)
 
 
 ctypedef struct JobParams:

@@ -195,8 +195,6 @@ class ColumnGenProblem(Problem):
                 break
             if not self.master.add_col(sol_price.new_col):
                 break
-        if sol_master.cost is not None:
-            log.debug(f'Price finished: {sol_master.cost:.2f}')
         return sol_master
 
     def copy(self, deep=False):

@@ -20,7 +20,9 @@ cdef class PermFlowShop:
         FlowSolution solution
         str constructive
 
-    cdef void cleanup(PermFlowShop self)
+    cpdef void cleanup(PermFlowShop self)
+
+    cdef void ccleanup(PermFlowShop self)
 
     cpdef void compute_bound(PermFlowShop self)
 
