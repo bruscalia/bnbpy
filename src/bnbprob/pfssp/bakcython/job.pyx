@@ -2,17 +2,16 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libc.stdlib cimport malloc, free
-from libcpp cimport bool
-from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
 
-cdef void fill_job(Job* job, j, list[int] p) except *:
+cdef Job start_job(int j, list[int] p):
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
         int* _p, _l
         int** lat
         vector[int] r, q
+        Job job
 
     m = <int>len(p)
 
@@ -21,12 +20,12 @@ cdef void fill_job(Job* job, j, list[int] p) except *:
 
     # Pointers
     _p = <int *> malloc(m * sizeof(int))
-    lat = <int**> malloc(m * sizeof(int*))
+    lat = <int**>malloc(m * sizeof(int*))
 
     # Compute sums
     T = 0
     for m1 in range(m):
-        lat[m1] = <int*> malloc(m * sizeof(int))
+        lat[m1] = <int*>malloc(m * sizeof(int))
         _p[m1] = p[m1]
         T += p[m1]
         for m2 in range(m):
@@ -43,26 +42,20 @@ cdef void fill_job(Job* job, j, list[int] p) except *:
     for k in range(1, m):
         slope += (k - (m + 1) / 2) * p[k - 1]
 
-    job.j = j
-    job.p = _p
-    job.r = r
-    job.q = q
-    job.lat = lat
-    job.slope = slope
-    job.T = T
-
-
-cdef Job start_job(int j, list[int] p):
-    cdef:
-        Job job
-
-    job = Job()
-    fill_job(&job, j, p)
+    job = Job(
+        j,
+        _p,
+        r,
+        q,
+        lat,
+        slope,
+        T
+    )
 
     return job
 
 
-cdef void free_job(Job& job):
+cdef Job free_job(Job& job):
     cdef:
         int i
     free(job.p)
@@ -71,11 +64,13 @@ cdef void free_job(Job& job):
     free(job.lat)
 
 
-cdef class PyJob:
+cdef class JobClass:
 
-    def __dealloc__(PyJob self):
-        if self.unsafe_alloc:
-            free_job(self.job)
+    cdef:
+        Job job
+
+    def __delloc__(self):
+        free_job(self.job)
 
     @staticmethod
     def from_p(int j, list[int] p):
@@ -83,19 +78,12 @@ cdef class PyJob:
             int N, i
             int* _p
             Job job
-            PyJob out
+            JobClass out
 
-        job = start_job(j, p)
-        out = PyJob.__new__(PyJob)
-        out.unsafe_alloc = True
+        job = start_cjob(j, p)
+        out = JobClass.__new__(JobClass)
         out.job = job
         return out
-
-    cpdef int get_T(self):
-        return self.job.T
-
-    cpdef int get_j(self):
-        return self.job.j
 
     cpdef int get_p(self, int i):
         return self.job.p[i]

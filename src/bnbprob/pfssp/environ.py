@@ -6,7 +6,7 @@ try:
         PermFlowShop2M,
     )
     from bnbprob.pfssp.cython.solution import FlowSolution  # noqa: F401
-except ModuleNotFoundError as e:
+except (ModuleNotFoundError, ImportError) as e:
     print("Cython imports failed")
     print(e)
     from bnbprob.pfssp.pypure.job import Job  # noqa: F401

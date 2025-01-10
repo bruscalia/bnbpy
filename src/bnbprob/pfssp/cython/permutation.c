@@ -3,12 +3,12 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "name": "bnbprob.pfssp.cython.solution",
+        "name": "bnbprob.pfssp.cython.permutation",
         "sources": [
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\solution.pyx"
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\permutation.pyx"
         ]
     },
-    "module_name": "bnbprob.pfssp.cython.solution"
+    "module_name": "bnbprob.pfssp.cython.permutation"
 }
 END: Cython Metadata */
 
@@ -1228,8 +1228,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__bnbprob__pfssp__cython__solution
-#define __PYX_HAVE_API__bnbprob__pfssp__cython__solution
+#define __PYX_HAVE__bnbprob__pfssp__cython__permutation
+#define __PYX_HAVE_API__bnbprob__pfssp__cython__permutation
 /* Early includes */
 #ifdef _OPENMP
 #include <omp.h>
@@ -1479,7 +1479,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "src\\\\bnbprob\\\\pfssp\\\\cython\\\\solution.pyx",
+  "src\\\\bnbprob\\\\pfssp\\\\cython\\\\permutation.pyx",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* #### Code section: numeric_typedefs ### */
@@ -1737,14 +1737,14 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* #### Code section: module_declarations ### */
 
-/* Module declarations from "bnbprob.pfssp.cython.solution" */
+/* Module declarations from "bnbprob.pfssp.cython.permutation" */
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.solution"
-extern int __pyx_module_is_main_bnbprob__pfssp__cython__solution;
-int __pyx_module_is_main_bnbprob__pfssp__cython__solution = 0;
+#define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.permutation"
+extern int __pyx_module_is_main_bnbprob__pfssp__cython__permutation;
+int __pyx_module_is_main_bnbprob__pfssp__cython__permutation = 0;
 
-/* Implementation of "bnbprob.pfssp.cython.solution" */
+/* Implementation of "bnbprob.pfssp.cython.permutation" */
 /* #### Code section: global_var ### */
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = "?";
@@ -2016,10 +2016,10 @@ static int __Pyx_modinit_function_import_code(void) {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_solution(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_permutation(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_solution},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_permutation},
   {0, NULL}
 };
 #endif
@@ -2032,7 +2032,7 @@ namespace {
   #endif
   {
       PyModuleDef_HEAD_INIT,
-      "solution",
+      "permutation",
       0, /* m_doc */
     #if CYTHON_PEP489_MULTI_PHASE_INIT
       0, /* m_size */
@@ -2080,11 +2080,11 @@ namespace {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initsolution(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initsolution(void)
+__Pyx_PyMODINIT_FUNC initpermutation(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initpermutation(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_solution(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_solution(void)
+__Pyx_PyMODINIT_FUNC PyInit_permutation(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_permutation(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -2165,7 +2165,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_solution(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_permutation(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -2182,7 +2182,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_solution(PyObject *__pyx_pyinit_mo
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'solution' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'permutation' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -2194,13 +2194,13 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_solution(PyObject *__pyx_pyinit_mo
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("solution", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("permutation", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   if (unlikely(!__pyx_m)) __PYX_ERR(0, 1, __pyx_L1_error)
   #elif CYTHON_USE_MODULE_STATE
   __pyx_t_1 = PyModule_Create(&__pyx_moduledef); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   {
     int add_module_result = PyState_AddModule(__pyx_t_1, &__pyx_moduledef);
-    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "solution" pseudovariable */
+    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "permutation" pseudovariable */
     if (unlikely((add_module_result < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     pystate_addmodule_run = 1;
   }
@@ -2224,7 +2224,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_solution(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_permutation(void)", 0);
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -2262,14 +2262,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_bnbprob__pfssp__cython__solution) {
+  if (__pyx_module_is_main_bnbprob__pfssp__cython__permutation) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "bnbprob.pfssp.cython.solution")) {
-      if (unlikely((PyDict_SetItemString(modules, "bnbprob.pfssp.cython.solution", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "bnbprob.pfssp.cython.permutation")) {
+      if (unlikely((PyDict_SetItemString(modules, "bnbprob.pfssp.cython.permutation", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2290,9 +2290,9 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "bnbprob/pfssp/cython/solution.pyx":1
+  /* "bnbprob/pfssp/cython/permutation.pyx":1
  * # # distutils: language = c++             # <<<<<<<<<<<<<<
- * # # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
+ * # # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -2307,7 +2307,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init bnbprob.pfssp.cython.solution", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init bnbprob.pfssp.cython.permutation", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -2321,7 +2321,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init bnbprob.pfssp.cython.solution");
+    PyErr_SetString(PyExc_ImportError, "init bnbprob.pfssp.cython.permutation");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
