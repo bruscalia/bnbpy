@@ -4,7 +4,7 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob
+from bnbprob.pfssp.cython.job cimport JobPtr, PyJob
 from bnbprob.pfssp.cython.sequence cimport (
     PySigma,
     Sigma
@@ -14,7 +14,7 @@ from bnbprob.pfssp.cython.sequence cimport (
 cdef class Permutation:
 
     cdef:
-        vector[Job] own_jobs
+        vector[JobPtr] own_jobs
         vector[JobPtr] free_jobs
         Sigma sigma1
         Sigma sigma2
@@ -43,7 +43,7 @@ cdef class Permutation:
 
     cdef vector[JobPtr] get_sequence(Permutation self)
 
-    cdef vector[Job] get_sequence_copy(Permutation self)
+    cdef vector[JobPtr] get_sequence_copy(Permutation self)
 
     cdef bool is_feasible(Permutation self)
 
@@ -84,7 +84,10 @@ cdef class Permutation:
     cdef Permutation _copy(Permutation self)
 
 
-cdef Permutation start_perm(int m, vector[Job]& jobs)
+cdef Permutation start_perm(int m, vector[JobPtr]& jobs)
+
+
+cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2)
 
 
 ctypedef struct JobParams:
@@ -93,9 +96,6 @@ ctypedef struct JobParams:
     const int* p1
     const int* p2
     const int* lat
-
-
-cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2)
 
 
 cdef int two_mach_makespan(

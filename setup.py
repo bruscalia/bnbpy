@@ -126,6 +126,7 @@ def construct_build_ext(build_ext):
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
 CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
+CPP_DIR_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
 PYX_FILES = [
     os.path.join(CY_PATH, f) for f in os.listdir(CY_PATH) if f.endswith('.pyx')
 ]
@@ -133,6 +134,11 @@ PYX_FILES_PFSSP = [
     os.path.join(CY_PATH_PFSSP, f)
     for f in os.listdir(CY_PATH_PFSSP)
     if f.endswith('.pyx')
+]
+CPP_FILES = [
+    os.path.join(CPP_DIR_PFSSP, f)
+    for f in os.listdir(CPP_DIR_PFSSP)
+    if f.endswith('.cpp')
 ]
 
 if params.nopyx:
@@ -143,10 +149,14 @@ else:
         if params.nocython:
             ext_modules_base = [
                 Extension(f'bnbprob.pfssp.{source[:-4]}', [source])
-                for source in PYX_FILES_PFSSP
+                for source in PYX_FILES
             ]
             ext_modules_pfssp = [
-                Extension(f'bnbpy.{source[:-4]}', [source])
+                Extension(
+                    f'bnbpy.{source[:-4]}',
+                    [source],
+                    include_dirs=[PYX_FILES_PFSSP]
+                )
                 for source in PYX_FILES_PFSSP
             ]
             ext_modules = ext_modules_base + ext_modules_pfssp
@@ -154,7 +164,10 @@ else:
             try:
                 from Cython.Build import cythonize
 
-                ext_modules = cythonize(PYX_FILES + PYX_FILES_PFSSP)
+                ext_modules = cythonize(
+                    PYX_FILES + PYX_FILES_PFSSP,
+                    include_path=[CY_PATH_PFSSP]
+                )
             except ImportError:
                 print('*' * 75)
                 print('No Cython package found to convert .pyx files.')

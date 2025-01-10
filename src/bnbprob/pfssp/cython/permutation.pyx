@@ -6,7 +6,9 @@ from libcpp.algorithm cimport sort
 from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob, fill_job, free_job
+from cython.operator cimport dereference as deref
+
+from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob, copy_job, start_job, fill_job, free_job
 from bnbprob.pfssp.cython.sequence cimport (
     PySigma,
     Sigma,
@@ -20,19 +22,15 @@ cdef:
     int LARGE_INT = 10000000
 
 
-ctypedef shared_ptr[Job] JobSh
-
-
 cdef class Permutation:
 
     @staticmethod
     def from_p(p: list[list[int]]):
         cdef:
             int j, m, n
-            Job job
-            JobSh jobsh
             JobPtr jobptr
             vector[JobPtr] jobs
+            vector[int] pj
             Sigma sigma1
             Sigma sigma2
             Permutation perm
@@ -44,26 +42,24 @@ cdef class Permutation:
         perm = Permutation.__new__(Permutation)
         perm.m = m
         perm.n = n
-        perm.own_jobs = vector[Job](n)
         perm.free_jobs = vector[JobPtr](n)
 
         # Create jobs used in permutation solution
         perm.unsafe_alloc = True
         for j in range(n):
-            perm.own_jobs[j] = Job()
-            jobptr = &perm.own_jobs[j]
-            fill_job(jobptr, j, p[j])
-            perm.free_jobs[j] = jobptr
-            jobsh = make_shared[Job]()
+            # jobptr = start_job(j, p[j])
+            pj = p[j]
+            perm.free_jobs[j] = make_shared[Job]()
+            fill_job(perm.free_jobs[j], j, pj)
 
         # Assign parameters
         perm.sigma1 = empty_sigma(m)
         perm.sigma2 = empty_sigma(m)
         perm.level = 0
-        perm._update_params()
+        # perm._update_params()
         return perm
 
-    def __dealloc__(Permutation self):
+    def __del__(Permutation self):
         if self.unsafe_alloc:
             self._clean_jobs()
 
@@ -72,21 +68,26 @@ cdef class Permutation:
 
     cdef void _clean_jobs(Permutation self):
         cdef:
-            Job job
-        for job in self.own_jobs:
-            free_job(job)
+            int j
+            JobPtr job
+            vector[JobPtr] seq
+
+        seq = self.get_sequence()
+        for j in range(seq.size()):
+            free_job(seq[j])
+            # del job
 
     cpdef list[PyJob] get_free_jobs(Permutation self):
         cdef:
             int i
             PyJob job
-            Job cjob
+            JobPtr cjob
             list[PyJob] out
 
         out = []
         for i in range(self.free_jobs.size()):
             job = PyJob.__new__(PyJob)
-            cjob = self.free_jobs[i][0]
+            cjob = self.free_jobs[i]
             job.job = cjob
             out.append(job)
         return out
@@ -120,12 +121,13 @@ cdef class Permutation:
 
     def get_indexes(self):
         cdef:
-            vector[Job] vec
-            Job job
+            int j
+            vector[JobPtr] vec
+            JobPtr job
         idx = []
         vec = self.get_sequence_copy()
-        for job in vec:
-            idx.append(job.j)
+        for j in range(vec.size()):
+            idx.append(deref(vec[j]).j)
         return idx
 
     cdef vector[JobPtr] get_sequence(Permutation self):
@@ -137,29 +139,18 @@ cdef class Permutation:
         seq.insert(seq.end(), self.sigma2.jobs.begin(), self.sigma2.jobs.end())
         return seq
 
-    cdef vector[Job] get_sequence_copy(Permutation self):
+    cdef vector[JobPtr] get_sequence_copy(Permutation self):
         cdef:
-            int i
-            JobPtr jobptr
-            Job job
+            int j
+            JobPtr job
             vector[JobPtr] base_seq
-            vector[Job] seq
+            vector[JobPtr] seq
 
         base_seq = self.get_sequence()
-        seq = vector[Job]()
-        for jobptr in base_seq:
-            seq.push_back(jobptr[0])
+        seq = vector[JobPtr](base_seq.size())
+        for j in range(base_seq.size()):
+            seq[j] = copy_job(base_seq[j])
         return seq
-        # for i in range(self.sigma1.jobs.size()):
-        #     job = self.sigma1.jobs[i][0]
-        #     seq.push_back(job)
-        # for i in range(self.free_jobs.size()):
-        #     job = self.free_jobs[i][0]
-        #     seq.push_back(job)
-        # for i in range(self.sigma2.jobs.size()):
-        #     job = self.sigma2.jobs[i][0]
-        #     seq.push_back(job)
-        # return seq
 
     cdef bool is_feasible(Permutation self):
         cdef:
@@ -193,27 +184,33 @@ cdef class Permutation:
 
     cdef void front_updates(Permutation self):
         cdef:
+            JobPtr jobptr
+            Job* job
             int k, j
 
         for j in range(self.free_jobs.size()):
-            self.free_jobs[j].r[0] = self.sigma1.C[0]
+            job = &deref(self.free_jobs[j])
+            job.r[0] = self.sigma1.C[0]
             for k in range(1, self.m):
-                self.free_jobs[j].r[k] = max(
+                job.r[k] = max(
                     self.sigma1.C[k],
-                    self.free_jobs[j].r[k - 1] + self.free_jobs[j].p[k - 1]
+                    job.r[k - 1] + job.p[k - 1]
                 )
 
     cdef void back_updates(Permutation self):
         cdef:
             int j, k, m
+            JobPtr jobptr
+            Job* job
 
         m = self.m - 1
         for j in range(self.free_jobs.size()):
-            self.free_jobs[j].q[m] = self.sigma2.C[m]
+            job = &deref(self.free_jobs[j])
+            job.q[m] = self.sigma2.C[m]
             for k in range(1, m + 1):
-                self.free_jobs[j].q[m - k] = max(
+                job.q[m - k] = max(
                     self.sigma2.C[m - k],
-                    self.free_jobs[j].q[m - k + 1] + self.free_jobs[j].p[m - k + 1]
+                    job.q[m - k + 1] + job.p[m - k + 1]
                 )
 
     cpdef void compute_starts(Permutation self):
@@ -222,21 +219,22 @@ cdef class Permutation:
     cdef void _compute_starts(Permutation self):
         cdef:
             int m, j
-            JobPtr job, prev
+            Job* job
+            Job* prev
             vector[JobPtr] seq
 
         seq = self.get_sequence()
         for j in range(seq.size()):
-            job = seq[j]
+            job = &deref(seq[j])
             job.r = vector[int](self.m, 0)
 
-        job = seq[0]
+        job = &deref(seq[0])
         for m in range(1, self.m):
             job.r[m] = job.r[m - 1] + job.p[m - 1]
 
         for j in range(1, seq.size()):
-            job = seq[j]
-            prev = seq[j - 1]
+            job = &deref(seq[j])
+            prev = &deref(seq[j - 1])
             job.r[0] = prev.r[0] + prev.p[0]
             for m in range(1, self.m):
                 job.r[m] = max(
@@ -277,7 +275,8 @@ cdef class Permutation:
     cdef int lower_bound_1m(Permutation self):
         cdef:
             int k, min_r, min_q, sum_p, max_value, temp_value
-            JobPtr job
+            JobPtr jobptr
+            Job* job
 
         max_value = 0
 
@@ -286,7 +285,8 @@ cdef class Permutation:
             min_q = LARGE_INT
             sum_p = 0
 
-            for job in self.free_jobs:
+            for jobptr in self.free_jobs:
+                job = &deref(jobptr)
                 if job.r[k] < min_r:
                     min_r = job.r[k]
                 if job.q[k] < min_q:
@@ -324,12 +324,14 @@ cdef class Permutation:
         cdef:
             int j, m, min_rm
             vector[int] r
-            JobPtr job
+            JobPtr jobptr
+            Job* job
 
         r = vector[int](self.m, 0)
         for m in range(self.m):
             min_rm = LARGE_INT
-            for job in self.free_jobs:
+            for jobptr in self.free_jobs:
+                job = &deref(jobptr)
                 if job.r[m] < min_rm:
                     min_rm = job.r[m]
             r[m] = min_rm
@@ -340,12 +342,14 @@ cdef class Permutation:
         cdef:
             int j, m, min_qm
             vector[int] q
-            JobPtr job
+            JobPtr jobptr
+            Job* job
 
         q = vector[int](self.m, 0)
         for m in range(self.m):
             min_qm = LARGE_INT
-            for job in self.free_jobs:
+            for jobptr in self.free_jobs:
+                job = &deref(jobptr)
                 if job.q[m] < min_qm:
                     min_qm = job.q[m]
             q[m] = min_qm
@@ -358,31 +362,26 @@ cdef class Permutation:
     cdef Permutation _copy(Permutation self):
         cdef:
             int j
-            Job job
             Permutation perm
             Sigma s1, s2
 
         perm = Permutation.__new__(Permutation)
         perm.m = self.m
         perm.n = self.n
-        perm.own_jobs = vector[Job](self.free_jobs.size())
         perm.free_jobs = vector[JobPtr](self.free_jobs.size())
         for j in range(self.free_jobs.size()):
-            perm.own_jobs[j] = self.free_jobs[j][0]
-            perm.free_jobs[j] = &perm.own_jobs[j]
-        s1 = self.sigma1
-        s2 = self.sigma2
-        perm.sigma1 = s1
-        perm.sigma2 = s2
+            perm.free_jobs[j] = copy_job(self.free_jobs[j])
+        perm.sigma1 = self.sigma1
+        perm.sigma2 = self.sigma2
         perm.level = self.level
         return perm
 
 
 cdef inline bool desc_T(JobPtr a, JobPtr b):
-    return a.T > b.T  # Sort by T in descending order
+    return deref(a).T > deref(b).T  # Sort by T in descending order
 
 
-cdef Permutation start_perm(int m, vector[Job]& jobs):
+cdef Permutation start_perm(int m, vector[JobPtr]& jobs):
     cdef:
         int j
         Permutation perm
@@ -390,14 +389,11 @@ cdef Permutation start_perm(int m, vector[Job]& jobs):
     perm = Permutation.__new__(Permutation)
     perm.m = m
     perm.n = <int> jobs.size()
-    perm.own_jobs = jobs
-    perm.free_jobs = vector[JobPtr](perm.n)
-    for j in range(perm.n):
-        perm.free_jobs[j] = &perm.own_jobs[j]
+    perm.free_jobs = jobs
     perm.sigma1 = empty_sigma(m)
     perm.sigma2 = empty_sigma(m)
     perm.level = 0
-    perm.update_params()
+    perm._update_params()
     return perm
 
 
@@ -412,7 +408,7 @@ cdef inline bool desc_t2(const JobParams& a, const JobParams& b):
 cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
     cdef:
         int J, j, t1, t2, res
-        JobPtr job
+        Job* job
         JobParams jparam
         vector[JobParams] j1, j2
 
@@ -422,7 +418,7 @@ cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
     j2 = vector[JobParams]()
 
     for j in range(J):
-        job = jobs[j]
+        job = &deref(jobs[j])
         t1 = job.p[m1] + job.lat[m2][m1]
         t2 = job.p[m2] + job.lat[m2][m1]
 
@@ -454,7 +450,6 @@ cdef int two_mach_makespan(
 ):
     cdef:
         int j, time_m1, time_m2
-        Job job
 
     time_m1 = 0  # Completion time for machine 1
     time_m2 = 0  # Completion time for machine 2

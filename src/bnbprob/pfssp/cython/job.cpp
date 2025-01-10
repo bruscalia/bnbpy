@@ -3,7 +3,12 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "depends": [],
+        "depends": [
+            "src\\bnbprob\\pfssp\\cython\\job.h"
+        ],
+        "include_dirs": [
+            "src\\bnbprob\\pfssp\\cython"
+        ],
         "language": "c++",
         "name": "bnbprob.pfssp.cython.job",
         "sources": [
@@ -1250,9 +1255,10 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <vector>
+#include <memory>
+#include "job.h"
 #include <string.h>
 #include <stdlib.h>
-#include <memory>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1516,36 +1522,17 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob;
-struct __pyx_t_7bnbprob_5pfssp_6cython_3job_Job;
-typedef struct __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_t_7bnbprob_5pfssp_6cython_3job_Job;
-
-/* "bnbprob/pfssp/cython/job.pxd":8
- * 
- * 
- * ctypedef struct Job:             # <<<<<<<<<<<<<<
- *     int j
- *     int* p
- */
-struct __pyx_t_7bnbprob_5pfssp_6cython_3job_Job {
-  int j;
-  int *p;
-  std::vector<int>  r;
-  std::vector<int>  q;
-  int **lat;
-  int slope;
-  int T;
-};
-
-/* "bnbprob/pfssp/cython/job.pxd":18
- * 
- * 
- * ctypedef Job* JobPtr             # <<<<<<<<<<<<<<
- * 
- * 
- */
-typedef __pyx_t_7bnbprob_5pfssp_6cython_3job_Job *__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr;
 
 /* "bnbprob/pfssp/cython/job.pxd":28
+ * 
+ * 
+ * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
+ * # ctypedef Job* JobPtr
+ * 
+ */
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr;
+
+/* "bnbprob/pfssp/cython/job.pxd":44
  * 
  * 
  * cdef class PyJob:             # <<<<<<<<<<<<<<
@@ -1555,18 +1542,18 @@ typedef __pyx_t_7bnbprob_5pfssp_6cython_3job_Job *__pyx_t_7bnbprob_5pfssp_6cytho
 struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob {
   PyObject_HEAD
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_vtab;
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job job;
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr job;
   bool unsafe_alloc;
 };
 
 
 
-/* "bnbprob/pfssp/cython/job.pyx":74
+/* "bnbprob/pfssp/cython/job.pyx":101
  * 
  * 
  * cdef class PyJob:             # <<<<<<<<<<<<<<
  * 
- *     def __dealloc__(PyJob self):
+ *     # def __del__(PyJob self):
  */
 
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob {
@@ -1794,11 +1781,6 @@ static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int 
 #define __Pyx_ArgsSlice_VARARGS(args, start, stop) PyTuple_GetSlice(args, start, stop)
 #define __Pyx_ArgsSlice_FASTCALL(args, start, stop) PyTuple_GetSlice(args, start, stop)
 #endif
-
-/* WriteUnraisableException.proto */
-static void __Pyx_WriteUnraisable(const char *name, int clineno,
-                                  int lineno, const char *filename,
-                                  int full_traceback, int nogil);
 
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
@@ -2266,16 +2248,16 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(struct __pyx_obj_
 
 /* Module declarations from "libcpp.vector" */
 
+/* Module declarations from "libcpp.memory" */
+
 /* Module declarations from "libc.string" */
 
 /* Module declarations from "libc.stdlib" */
 
-/* Module declarations from "libcpp.memory" */
-
 /* Module declarations from "bnbprob.pfssp.cython.job" */
-static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_Job *, PyObject *, PyObject *); /*proto*/
-static __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(int, PyObject *); /*proto*/
-static void __pyx_f_7bnbprob_5pfssp_6cython_3job_free_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_Job &); /*proto*/
+static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr &, int &, std::vector<int>  &); /*proto*/
+static __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(int &, std::vector<int>  &); /*proto*/
+static std::vector<int>  __pyx_convert_vector_from_py_int(PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.job"
@@ -2294,7 +2276,6 @@ static const char __pyx_k_j[] = "j";
 static const char __pyx_k_p[] = "p";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k__14[] = "?";
-static const char __pyx_k_job[] = "job";
 static const char __pyx_k_out[] = "out";
 static const char __pyx_k_p_2[] = "_p";
 static const char __pyx_k_dict[] = "__dict__";
@@ -2339,15 +2320,14 @@ static const char __pyx_k_bnbprob_pfssp_cython_job[] = "bnbprob.pfssp.cython.job
 static const char __pyx_k_self_job_cannot_be_converted_to[] = "self.job cannot be converted to a Python object for pickling";
 static const char __pyx_k_src_bnbprob_pfssp_cython_job_pyx[] = "src\\bnbprob\\pfssp\\cython\\job.pyx";
 /* #### Code section: decls ### */
-static void __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob___dealloc__(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(int __pyx_v_j, PyObject *__pyx_v_p); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_T(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_j(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_p(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_r(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12get_lat(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i, int __pyx_v_j); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_16__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_from_p(int __pyx_v_j, PyObject *__pyx_v_p); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2get_T(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_j(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_p(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_r(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_lat(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i, int __pyx_v_j); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_7bnbprob_5pfssp_6cython_3job_PyJob(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -2420,7 +2400,6 @@ typedef struct {
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_kp_u_isenabled;
   PyObject *__pyx_n_s_j;
-  PyObject *__pyx_n_s_job;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_out;
@@ -2527,7 +2506,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
   Py_CLEAR(clear_module_state->__pyx_n_s_j);
-  Py_CLEAR(clear_module_state->__pyx_n_s_job);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_out);
@@ -2612,7 +2590,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
   Py_VISIT(traverse_module_state->__pyx_n_s_j);
-  Py_VISIT(traverse_module_state->__pyx_n_s_job);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_out);
@@ -2717,7 +2694,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
 #define __pyx_n_s_j __pyx_mstate_global->__pyx_n_s_j
-#define __pyx_n_s_job __pyx_mstate_global->__pyx_n_s_job
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_out __pyx_mstate_global->__pyx_n_s_out
@@ -2752,15 +2728,155 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_codeobj__13 __pyx_mstate_global->__pyx_codeobj__13
 /* #### Code section: module_code ### */
 
-/* "bnbprob/pfssp/cython/job.pyx":10
+/* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_int")
+ * cdef vector[X] __pyx_convert_vector_from_py_int(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+static std::vector<int>  __pyx_convert_vector_from_py_int(PyObject *__pyx_v_o) {
+  std::vector<int>  __pyx_v_v;
+  PyObject *__pyx_v_item = NULL;
+  std::vector<int>  __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *(*__pyx_t_3)(PyObject *);
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_from_py_int", 1);
+
+  /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_int(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  if (likely(PyList_CheckExact(__pyx_v_o)) || PyTuple_CheckExact(__pyx_v_o)) {
+    __pyx_t_1 = __pyx_v_o; __Pyx_INCREF(__pyx_t_1);
+    __pyx_t_2 = 0;
+    __pyx_t_3 = NULL;
+  } else {
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 47, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_3)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        {
+          Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
+          #if !CYTHON_ASSUME_SAFE_MACROS
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 47, __pyx_L1_error)
+          #endif
+          if (__pyx_t_2 >= __pyx_temp) break;
+        }
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        {
+          Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_1);
+          #if !CYTHON_ASSUME_SAFE_MACROS
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(1, 47, __pyx_L1_error)
+          #endif
+          if (__pyx_t_2 >= __pyx_temp) break;
+        }
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(1, 47, __pyx_L1_error)
+        #else
+        __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_3(__pyx_t_1);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(1, 47, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "vector.from_py":48
+ *     cdef vector[X] v
+ *     for item in o:
+ *         v.push_back(<X>item)             # <<<<<<<<<<<<<<
+ *     return v
+ * 
+ */
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_item); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L1_error)
+    try {
+      __pyx_v_v.push_back(((int)__pyx_t_5));
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(1, 48, __pyx_L1_error)
+    }
+
+    /* "vector.from_py":47
+ * cdef vector[X] __pyx_convert_vector_from_py_int(object o) except *:
+ *     cdef vector[X] v
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         v.push_back(<X>item)
+ *     return v
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "vector.from_py":49
+ *     for item in o:
+ *         v.push_back(<X>item)
+ *     return v             # <<<<<<<<<<<<<<
  * 
  * 
- * cdef void fill_job(Job* job, j, list[int] p) except *:             # <<<<<<<<<<<<<<
+ */
+  __pyx_r = __pyx_v_v;
+  goto __pyx_L0;
+
+  /* "vector.from_py":45
+ * 
+ * @cname("__pyx_convert_vector_from_py_int")
+ * cdef vector[X] __pyx_convert_vector_from_py_int(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef vector[X] v
+ *     for item in o:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("vector.from_py.__pyx_convert_vector_from_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/job.pyx":11
+ * 
+ * 
+ * cdef void fill_job(JobPtr& job, int& j, vector[int]& p) except *:             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i, m, m1, m2, T, sum_p, k, slope
  */
 
-static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_Job *__pyx_v_job, PyObject *__pyx_v_j, PyObject *__pyx_v_p) {
+static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr &__pyx_v_job, int &__pyx_v_j, std::vector<int>  &__pyx_v_p) {
   int __pyx_v_i;
   int __pyx_v_m;
   int __pyx_v_m1;
@@ -2773,59 +2889,46 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
   int **__pyx_v_lat;
   std::vector<int>  __pyx_v_r;
   std::vector<int>  __pyx_v_q;
-  __Pyx_RefNannyDeclarations
-  Py_ssize_t __pyx_t_1;
-  std::vector<int>  __pyx_t_2;
+  std::vector<int>  __pyx_t_1;
+  int __pyx_t_2;
   int __pyx_t_3;
   int __pyx_t_4;
   int __pyx_t_5;
   int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_7;
+  int __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
-  int __pyx_t_12;
-  int __pyx_t_13;
-  int __pyx_t_14;
-  int __pyx_t_15;
-  long __pyx_t_16;
-  PyObject *__pyx_t_17 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("fill_job", 1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":17
+  /* "bnbprob/pfssp/cython/job.pyx":18
  *         vector[int] r, q
  * 
- *     m = <int>len(p)             # <<<<<<<<<<<<<<
+ *     m = <int> p.size()             # <<<<<<<<<<<<<<
  * 
  *     r = vector[int](m, 0)
  */
-  if (unlikely(__pyx_v_p == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 17, __pyx_L1_error)
-  }
-  __pyx_t_1 = __Pyx_PyList_GET_SIZE(__pyx_v_p); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 17, __pyx_L1_error)
-  __pyx_v_m = ((int)__pyx_t_1);
+  __pyx_v_m = ((int)__pyx_v_p.size());
 
-  /* "bnbprob/pfssp/cython/job.pyx":19
- *     m = <int>len(p)
+  /* "bnbprob/pfssp/cython/job.pyx":20
+ *     m = <int> p.size()
  * 
  *     r = vector[int](m, 0)             # <<<<<<<<<<<<<<
  *     q = vector[int](m, 0)
  * 
  */
   try {
-    __pyx_t_2 = std::vector<int> (__pyx_v_m, 0);
+    __pyx_t_1 = std::vector<int> (__pyx_v_m, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 19, __pyx_L1_error)
+    __PYX_ERR(0, 20, __pyx_L1_error)
   }
-  __pyx_v_r = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_2);
+  __pyx_v_r = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":20
+  /* "bnbprob/pfssp/cython/job.pyx":21
  * 
  *     r = vector[int](m, 0)
  *     q = vector[int](m, 0)             # <<<<<<<<<<<<<<
@@ -2833,14 +2936,14 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  *     # Pointers
  */
   try {
-    __pyx_t_2 = std::vector<int> (__pyx_v_m, 0);
+    __pyx_t_1 = std::vector<int> (__pyx_v_m, 0);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 20, __pyx_L1_error)
+    __PYX_ERR(0, 21, __pyx_L1_error)
   }
-  __pyx_v_q = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_2);
+  __pyx_v_q = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":23
+  /* "bnbprob/pfssp/cython/job.pyx":24
  * 
  *     # Pointers
  *     _p = <int *> malloc(m * sizeof(int))             # <<<<<<<<<<<<<<
@@ -2849,7 +2952,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
   __pyx_v__p = ((int *)malloc((__pyx_v_m * (sizeof(int)))));
 
-  /* "bnbprob/pfssp/cython/job.pyx":24
+  /* "bnbprob/pfssp/cython/job.pyx":25
  *     # Pointers
  *     _p = <int *> malloc(m * sizeof(int))
  *     lat = <int**> malloc(m * sizeof(int*))             # <<<<<<<<<<<<<<
@@ -2858,7 +2961,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
   __pyx_v_lat = ((int **)malloc((__pyx_v_m * (sizeof(int *)))));
 
-  /* "bnbprob/pfssp/cython/job.pyx":27
+  /* "bnbprob/pfssp/cython/job.pyx":28
  * 
  *     # Compute sums
  *     T = 0             # <<<<<<<<<<<<<<
@@ -2867,19 +2970,19 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
   __pyx_v_T = 0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":28
+  /* "bnbprob/pfssp/cython/job.pyx":29
  *     # Compute sums
  *     T = 0
  *     for m1 in range(m):             # <<<<<<<<<<<<<<
  *         lat[m1] = <int*> malloc(m * sizeof(int))
  *         _p[m1] = p[m1]
  */
-  __pyx_t_3 = __pyx_v_m;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_m1 = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_m;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_m1 = __pyx_t_4;
 
-    /* "bnbprob/pfssp/cython/job.pyx":29
+    /* "bnbprob/pfssp/cython/job.pyx":30
  *     T = 0
  *     for m1 in range(m):
  *         lat[m1] = <int*> malloc(m * sizeof(int))             # <<<<<<<<<<<<<<
@@ -2888,63 +2991,47 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
     (__pyx_v_lat[__pyx_v_m1]) = ((int *)malloc((__pyx_v_m * (sizeof(int)))));
 
-    /* "bnbprob/pfssp/cython/job.pyx":30
+    /* "bnbprob/pfssp/cython/job.pyx":31
  *     for m1 in range(m):
  *         lat[m1] = <int*> malloc(m * sizeof(int))
  *         _p[m1] = p[m1]             # <<<<<<<<<<<<<<
  *         T += p[m1]
  *         for m2 in range(m):
  */
-    if (unlikely(__pyx_v_p == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 30, __pyx_L1_error)
-    }
-    __pyx_t_6 = __Pyx_PyInt_As_int(PyList_GET_ITEM(__pyx_v_p, __pyx_v_m1)); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
-    (__pyx_v__p[__pyx_v_m1]) = __pyx_t_6;
+    (__pyx_v__p[__pyx_v_m1]) = (__pyx_v_p[__pyx_v_m1]);
 
-    /* "bnbprob/pfssp/cython/job.pyx":31
+    /* "bnbprob/pfssp/cython/job.pyx":32
  *         lat[m1] = <int*> malloc(m * sizeof(int))
  *         _p[m1] = p[m1]
  *         T += p[m1]             # <<<<<<<<<<<<<<
  *         for m2 in range(m):
  *             if m2 + 1 < m1:  # Ensure range is valid
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_T); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely(__pyx_v_p == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 31, __pyx_L1_error)
-    }
-    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_t_7, PyList_GET_ITEM(__pyx_v_p, __pyx_v_m1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_v_T = __pyx_t_6;
+    __pyx_v_T = (__pyx_v_T + (__pyx_v_p[__pyx_v_m1]));
 
-    /* "bnbprob/pfssp/cython/job.pyx":32
+    /* "bnbprob/pfssp/cython/job.pyx":33
  *         _p[m1] = p[m1]
  *         T += p[m1]
  *         for m2 in range(m):             # <<<<<<<<<<<<<<
  *             if m2 + 1 < m1:  # Ensure range is valid
  *                 sum_p = 0
  */
-    __pyx_t_6 = __pyx_v_m;
-    __pyx_t_9 = __pyx_t_6;
-    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-      __pyx_v_m2 = __pyx_t_10;
+    __pyx_t_5 = __pyx_v_m;
+    __pyx_t_6 = __pyx_t_5;
+    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+      __pyx_v_m2 = __pyx_t_7;
 
-      /* "bnbprob/pfssp/cython/job.pyx":33
+      /* "bnbprob/pfssp/cython/job.pyx":34
  *         T += p[m1]
  *         for m2 in range(m):
  *             if m2 + 1 < m1:  # Ensure range is valid             # <<<<<<<<<<<<<<
  *                 sum_p = 0
  *                 for i in range(m2 + 1, m1):
  */
-      __pyx_t_11 = ((__pyx_v_m2 + 1) < __pyx_v_m1);
-      if (__pyx_t_11) {
+      __pyx_t_8 = ((__pyx_v_m2 + 1) < __pyx_v_m1);
+      if (__pyx_t_8) {
 
-        /* "bnbprob/pfssp/cython/job.pyx":34
+        /* "bnbprob/pfssp/cython/job.pyx":35
  *         for m2 in range(m):
  *             if m2 + 1 < m1:  # Ensure range is valid
  *                 sum_p = 0             # <<<<<<<<<<<<<<
@@ -2953,40 +3040,29 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
         __pyx_v_sum_p = 0;
 
-        /* "bnbprob/pfssp/cython/job.pyx":35
+        /* "bnbprob/pfssp/cython/job.pyx":36
  *             if m2 + 1 < m1:  # Ensure range is valid
  *                 sum_p = 0
  *                 for i in range(m2 + 1, m1):             # <<<<<<<<<<<<<<
  *                     sum_p += p[i]
  *                 lat[m1][m2] = sum_p
  */
-        __pyx_t_12 = __pyx_v_m1;
-        __pyx_t_13 = __pyx_t_12;
-        for (__pyx_t_14 = (__pyx_v_m2 + 1); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-          __pyx_v_i = __pyx_t_14;
+        __pyx_t_9 = __pyx_v_m1;
+        __pyx_t_10 = __pyx_t_9;
+        for (__pyx_t_11 = (__pyx_v_m2 + 1); __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+          __pyx_v_i = __pyx_t_11;
 
-          /* "bnbprob/pfssp/cython/job.pyx":36
+          /* "bnbprob/pfssp/cython/job.pyx":37
  *                 sum_p = 0
  *                 for i in range(m2 + 1, m1):
  *                     sum_p += p[i]             # <<<<<<<<<<<<<<
  *                 lat[m1][m2] = sum_p
  *             else:
  */
-          __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_sum_p); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 36, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_8);
-          if (unlikely(__pyx_v_p == Py_None)) {
-            PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-            __PYX_ERR(0, 36, __pyx_L1_error)
-          }
-          __pyx_t_7 = PyNumber_InPlaceAdd(__pyx_t_8, PyList_GET_ITEM(__pyx_v_p, __pyx_v_i)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 36, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 36, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-          __pyx_v_sum_p = __pyx_t_15;
+          __pyx_v_sum_p = (__pyx_v_sum_p + (__pyx_v_p[__pyx_v_i]));
         }
 
-        /* "bnbprob/pfssp/cython/job.pyx":37
+        /* "bnbprob/pfssp/cython/job.pyx":38
  *                 for i in range(m2 + 1, m1):
  *                     sum_p += p[i]
  *                 lat[m1][m2] = sum_p             # <<<<<<<<<<<<<<
@@ -2995,7 +3071,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
         ((__pyx_v_lat[__pyx_v_m1])[__pyx_v_m2]) = __pyx_v_sum_p;
 
-        /* "bnbprob/pfssp/cython/job.pyx":33
+        /* "bnbprob/pfssp/cython/job.pyx":34
  *         T += p[m1]
  *         for m2 in range(m):
  *             if m2 + 1 < m1:  # Ensure range is valid             # <<<<<<<<<<<<<<
@@ -3005,7 +3081,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
         goto __pyx_L7;
       }
 
-      /* "bnbprob/pfssp/cython/job.pyx":39
+      /* "bnbprob/pfssp/cython/job.pyx":40
  *                 lat[m1][m2] = sum_p
  *             else:
  *                 lat[m1][m2] = 0             # <<<<<<<<<<<<<<
@@ -3019,7 +3095,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
     }
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":41
+  /* "bnbprob/pfssp/cython/job.pyx":42
  *                 lat[m1][m2] = 0
  * 
  *     m += 1             # <<<<<<<<<<<<<<
@@ -3028,7 +3104,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
   __pyx_v_m = (__pyx_v_m + 1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":42
+  /* "bnbprob/pfssp/cython/job.pyx":43
  * 
  *     m += 1
  *     slope = 0             # <<<<<<<<<<<<<<
@@ -3037,114 +3113,95 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
  */
   __pyx_v_slope = 0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":43
+  /* "bnbprob/pfssp/cython/job.pyx":44
  *     m += 1
  *     slope = 0
  *     for k in range(1, m):             # <<<<<<<<<<<<<<
  *         slope += (k - (m + 1) / 2) * p[k - 1]
  * 
  */
-  __pyx_t_3 = __pyx_v_m;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_k = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_m;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_k = __pyx_t_4;
 
-    /* "bnbprob/pfssp/cython/job.pyx":44
+    /* "bnbprob/pfssp/cython/job.pyx":45
  *     slope = 0
  *     for k in range(1, m):
  *         slope += (k - (m + 1) / 2) * p[k - 1]             # <<<<<<<<<<<<<<
  * 
- *     job.j = j
+ *     deref(job).j = j
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_slope); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyInt_From_long((__pyx_v_k - ((__pyx_v_m + 1) / 2))); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    if (unlikely(__pyx_v_p == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 44, __pyx_L1_error)
-    }
-    __pyx_t_16 = (__pyx_v_k - 1);
-    __pyx_t_17 = PyNumber_Multiply(__pyx_t_8, PyList_GET_ITEM(__pyx_v_p, __pyx_t_16)); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_t_7, __pyx_t_17); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_v_slope = __pyx_t_6;
+    __pyx_v_slope = (__pyx_v_slope + ((__pyx_v_k - ((__pyx_v_m + 1) / 2)) * (__pyx_v_p[(__pyx_v_k - 1)])));
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":46
+  /* "bnbprob/pfssp/cython/job.pyx":47
  *         slope += (k - (m + 1) / 2) * p[k - 1]
  * 
- *     job.j = j             # <<<<<<<<<<<<<<
- *     job.p = _p
- *     job.r = r
+ *     deref(job).j = j             # <<<<<<<<<<<<<<
+ *     deref(job).p = _p
+ *     deref(job).r = r
  */
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_j); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
-  __pyx_v_job->j = __pyx_t_3;
-
-  /* "bnbprob/pfssp/cython/job.pyx":47
- * 
- *     job.j = j
- *     job.p = _p             # <<<<<<<<<<<<<<
- *     job.r = r
- *     job.q = q
- */
-  __pyx_v_job->p = __pyx_v__p;
+  (*__pyx_v_job).j = __pyx_v_j;
 
   /* "bnbprob/pfssp/cython/job.pyx":48
- *     job.j = j
- *     job.p = _p
- *     job.r = r             # <<<<<<<<<<<<<<
- *     job.q = q
- *     job.lat = lat
+ * 
+ *     deref(job).j = j
+ *     deref(job).p = _p             # <<<<<<<<<<<<<<
+ *     deref(job).r = r
+ *     deref(job).q = q
  */
-  __pyx_v_job->r = __pyx_v_r;
+  (*__pyx_v_job).p = __pyx_v__p;
 
   /* "bnbprob/pfssp/cython/job.pyx":49
- *     job.p = _p
- *     job.r = r
- *     job.q = q             # <<<<<<<<<<<<<<
- *     job.lat = lat
- *     job.slope = slope
+ *     deref(job).j = j
+ *     deref(job).p = _p
+ *     deref(job).r = r             # <<<<<<<<<<<<<<
+ *     deref(job).q = q
+ *     deref(job).lat = lat
  */
-  __pyx_v_job->q = __pyx_v_q;
+  (*__pyx_v_job).r = __pyx_v_r;
 
   /* "bnbprob/pfssp/cython/job.pyx":50
- *     job.r = r
- *     job.q = q
- *     job.lat = lat             # <<<<<<<<<<<<<<
- *     job.slope = slope
- *     job.T = T
+ *     deref(job).p = _p
+ *     deref(job).r = r
+ *     deref(job).q = q             # <<<<<<<<<<<<<<
+ *     deref(job).lat = lat
+ *     deref(job).slope = slope
  */
-  __pyx_v_job->lat = __pyx_v_lat;
+  (*__pyx_v_job).q = __pyx_v_q;
 
   /* "bnbprob/pfssp/cython/job.pyx":51
- *     job.q = q
- *     job.lat = lat
- *     job.slope = slope             # <<<<<<<<<<<<<<
- *     job.T = T
- * 
+ *     deref(job).r = r
+ *     deref(job).q = q
+ *     deref(job).lat = lat             # <<<<<<<<<<<<<<
+ *     deref(job).slope = slope
+ *     deref(job).T = T
  */
-  __pyx_v_job->slope = __pyx_v_slope;
+  (*__pyx_v_job).lat = __pyx_v_lat;
 
   /* "bnbprob/pfssp/cython/job.pyx":52
- *     job.lat = lat
- *     job.slope = slope
- *     job.T = T             # <<<<<<<<<<<<<<
+ *     deref(job).q = q
+ *     deref(job).lat = lat
+ *     deref(job).slope = slope             # <<<<<<<<<<<<<<
+ *     deref(job).T = T
+ * 
+ */
+  (*__pyx_v_job).slope = __pyx_v_slope;
+
+  /* "bnbprob/pfssp/cython/job.pyx":53
+ *     deref(job).lat = lat
+ *     deref(job).slope = slope
+ *     deref(job).T = T             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_v_job->T = __pyx_v_T;
+  (*__pyx_v_job).T = __pyx_v_T;
 
-  /* "bnbprob/pfssp/cython/job.pyx":10
+  /* "bnbprob/pfssp/cython/job.pyx":11
  * 
  * 
- * cdef void fill_job(Job* job, j, list[int] p) except *:             # <<<<<<<<<<<<<<
+ * cdef void fill_job(JobPtr& job, int& j, vector[int]& p) except *:             # <<<<<<<<<<<<<<
  *     cdef:
  *         int i, m, m1, m2, T, sum_p, k, slope
  */
@@ -3152,56 +3209,52 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_t_7bnbprob_5pfss
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_17);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.job.fill_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":55
+/* "bnbprob/pfssp/cython/job.pyx":56
  * 
  * 
- * cdef Job start_job(int j, list[int] p):             # <<<<<<<<<<<<<<
+ * cdef JobPtr start_job(int& j, vector[int]& p):             # <<<<<<<<<<<<<<
  *     cdef:
- *         Job job
+ *         JobPtr job
  */
 
-static __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(int __pyx_v_j, PyObject *__pyx_v_p) {
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_v_job;
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+static __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(int &__pyx_v_j, std::vector<int>  &__pyx_v_p) {
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_v_job;
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_r;
+  std::shared_ptr<Job>  __pyx_t_1;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("start_job", 1);
-
-  /* "bnbprob/pfssp/cython/job.pyx":59
- *         Job job
- * 
- *     job = Job()             # <<<<<<<<<<<<<<
- *     fill_job(&job, j, p)
- * 
- */
-  __pyx_v_job = __pyx_t_1;
 
   /* "bnbprob/pfssp/cython/job.pyx":60
+ *         JobPtr job
  * 
- *     job = Job()
- *     fill_job(&job, j, p)             # <<<<<<<<<<<<<<
+ *     job = make_shared[Job]()             # <<<<<<<<<<<<<<
+ *     # job = new Job()
+ *     fill_job(job, j, p)
+ */
+  try {
+    __pyx_t_1 = std::make_shared<Job>();
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 60, __pyx_L1_error)
+  }
+  __pyx_v_job = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
+
+  /* "bnbprob/pfssp/cython/job.pyx":62
+ *     job = make_shared[Job]()
+ *     # job = new Job()
+ *     fill_job(job, j, p)             # <<<<<<<<<<<<<<
  * 
  *     return job
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_j); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job((&__pyx_v_job), __pyx_t_2, __pyx_v_p); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job(__pyx_v_job, __pyx_v_j, __pyx_v_p); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":62
- *     fill_job(&job, j, p)
+  /* "bnbprob/pfssp/cython/job.pyx":64
+ *     fill_job(job, j, p)
  * 
  *     return job             # <<<<<<<<<<<<<<
  * 
@@ -3210,161 +3263,270 @@ static __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_f_7bnbprob_5pfssp_6cython_
   __pyx_r = __pyx_v_job;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":55
+  /* "bnbprob/pfssp/cython/job.pyx":56
  * 
  * 
- * cdef Job start_job(int j, list[int] p):             # <<<<<<<<<<<<<<
+ * cdef JobPtr start_job(int& j, vector[int]& p):             # <<<<<<<<<<<<<<
  *     cdef:
- *         Job job
+ *         JobPtr job
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.job.start_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":65
+/* "bnbprob/pfssp/cython/job.pyx":67
  * 
  * 
- * cdef void free_job(Job& job):             # <<<<<<<<<<<<<<
+ * cdef JobPtr copy_job(shared_ptr[Job]& jobptr):             # <<<<<<<<<<<<<<
  *     cdef:
- *         int i
+ *         JobPtr otherptr
  */
 
-static void __pyx_f_7bnbprob_5pfssp_6cython_3job_free_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_Job &__pyx_v_job) {
-  int __pyx_v_i;
-  std::vector<int> ::size_type __pyx_t_1;
-  std::vector<int> ::size_type __pyx_t_2;
-  int __pyx_t_3;
-
-  /* "bnbprob/pfssp/cython/job.pyx":68
- *     cdef:
- *         int i
- *     free(job.p)             # <<<<<<<<<<<<<<
- *     for i in range(job.r.size()):
- *         free(job.lat[i])
- */
-  free(__pyx_v_job.p);
-
-  /* "bnbprob/pfssp/cython/job.pyx":69
- *         int i
- *     free(job.p)
- *     for i in range(job.r.size()):             # <<<<<<<<<<<<<<
- *         free(job.lat[i])
- *     free(job.lat)
- */
-  __pyx_t_1 = __pyx_v_job.r.size();
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "bnbprob/pfssp/cython/job.pyx":70
- *     free(job.p)
- *     for i in range(job.r.size()):
- *         free(job.lat[i])             # <<<<<<<<<<<<<<
- *     free(job.lat)
- * 
- */
-    free((__pyx_v_job.lat[__pyx_v_i]));
-  }
-
-  /* "bnbprob/pfssp/cython/job.pyx":71
- *     for i in range(job.r.size()):
- *         free(job.lat[i])
- *     free(job.lat)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  free(__pyx_v_job.lat);
-
-  /* "bnbprob/pfssp/cython/job.pyx":65
- * 
- * 
- * cdef void free_job(Job& job):             # <<<<<<<<<<<<<<
- *     cdef:
- *         int i
- */
-
-  /* function exit code */
-}
-
-/* "bnbprob/pfssp/cython/job.pyx":76
- * cdef class PyJob:
- * 
- *     def __dealloc__(PyJob self):             # <<<<<<<<<<<<<<
- *         if self.unsafe_alloc:
- *             free_job(self.job)
- */
-
-/* Python wrapper */
-static void __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1__dealloc__(PyObject *__pyx_v_self); /*proto*/
-static void __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1__dealloc__(PyObject *__pyx_v_self) {
-  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
-  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob___dealloc__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-static void __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob___dealloc__(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
-  int __pyx_t_1;
+static __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_f_7bnbprob_5pfssp_6cython_3job_copy_job(std::shared_ptr<Job>  &__pyx_v_jobptr) {
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_v_otherptr;
+  Job *__pyx_v_job;
+  Job *__pyx_v_other;
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_r;
+  std::shared_ptr<Job>  __pyx_t_1;
+  int __pyx_t_2;
+  int *__pyx_t_3;
+  std::vector<int>  __pyx_t_4;
+  int **__pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":77
+  /* "bnbprob/pfssp/cython/job.pyx":73
+ *         Job* other
  * 
- *     def __dealloc__(PyJob self):
- *         if self.unsafe_alloc:             # <<<<<<<<<<<<<<
- *             free_job(self.job)
- * 
+ *     otherptr = make_shared[Job]()             # <<<<<<<<<<<<<<
+ *     other = &deref(otherptr)
+ *     job = &deref(jobptr)
  */
-  __pyx_t_1 = (__pyx_v_self->unsafe_alloc != 0);
-  if (__pyx_t_1) {
-
-    /* "bnbprob/pfssp/cython/job.pyx":78
- *     def __dealloc__(PyJob self):
- *         if self.unsafe_alloc:
- *             free_job(self.job)             # <<<<<<<<<<<<<<
- * 
- *     @staticmethod
- */
-    __pyx_f_7bnbprob_5pfssp_6cython_3job_free_job(__pyx_v_self->job); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
-
-    /* "bnbprob/pfssp/cython/job.pyx":77
- * 
- *     def __dealloc__(PyJob self):
- *         if self.unsafe_alloc:             # <<<<<<<<<<<<<<
- *             free_job(self.job)
- * 
- */
+  try {
+    __pyx_t_1 = std::make_shared<Job>();
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 73, __pyx_L1_error)
   }
+  __pyx_v_otherptr = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":76
- * cdef class PyJob:
+  /* "bnbprob/pfssp/cython/job.pyx":74
  * 
- *     def __dealloc__(PyJob self):             # <<<<<<<<<<<<<<
- *         if self.unsafe_alloc:
- *             free_job(self.job)
+ *     otherptr = make_shared[Job]()
+ *     other = &deref(otherptr)             # <<<<<<<<<<<<<<
+ *     job = &deref(jobptr)
+ *     # other = new Job()
+ */
+  __pyx_v_other = (&(*__pyx_v_otherptr));
+
+  /* "bnbprob/pfssp/cython/job.pyx":75
+ *     otherptr = make_shared[Job]()
+ *     other = &deref(otherptr)
+ *     job = &deref(jobptr)             # <<<<<<<<<<<<<<
+ *     # other = new Job()
+ *     other.j = job.j
+ */
+  __pyx_v_job = (&(*__pyx_v_jobptr));
+
+  /* "bnbprob/pfssp/cython/job.pyx":77
+ *     job = &deref(jobptr)
+ *     # other = new Job()
+ *     other.j = job.j             # <<<<<<<<<<<<<<
+ *     other.p = job.p
+ *     other.r = job.r
+ */
+  __pyx_t_2 = __pyx_v_job->j;
+  __pyx_v_other->j = __pyx_t_2;
+
+  /* "bnbprob/pfssp/cython/job.pyx":78
+ *     # other = new Job()
+ *     other.j = job.j
+ *     other.p = job.p             # <<<<<<<<<<<<<<
+ *     other.r = job.r
+ *     other.q = job.q
+ */
+  __pyx_t_3 = __pyx_v_job->p;
+  __pyx_v_other->p = __pyx_t_3;
+
+  /* "bnbprob/pfssp/cython/job.pyx":79
+ *     other.j = job.j
+ *     other.p = job.p
+ *     other.r = job.r             # <<<<<<<<<<<<<<
+ *     other.q = job.q
+ *     other.lat = job.lat
+ */
+  __pyx_t_4 = __pyx_v_job->r;
+  __pyx_v_other->r = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_4);
+
+  /* "bnbprob/pfssp/cython/job.pyx":80
+ *     other.p = job.p
+ *     other.r = job.r
+ *     other.q = job.q             # <<<<<<<<<<<<<<
+ *     other.lat = job.lat
+ *     other.slope = job.slope
+ */
+  __pyx_t_4 = __pyx_v_job->q;
+  __pyx_v_other->q = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_4);
+
+  /* "bnbprob/pfssp/cython/job.pyx":81
+ *     other.r = job.r
+ *     other.q = job.q
+ *     other.lat = job.lat             # <<<<<<<<<<<<<<
+ *     other.slope = job.slope
+ *     other.T = job.T
+ */
+  __pyx_t_5 = __pyx_v_job->lat;
+  __pyx_v_other->lat = __pyx_t_5;
+
+  /* "bnbprob/pfssp/cython/job.pyx":82
+ *     other.q = job.q
+ *     other.lat = job.lat
+ *     other.slope = job.slope             # <<<<<<<<<<<<<<
+ *     other.T = job.T
+ * 
+ */
+  __pyx_t_2 = __pyx_v_job->slope;
+  __pyx_v_other->slope = __pyx_t_2;
+
+  /* "bnbprob/pfssp/cython/job.pyx":83
+ *     other.lat = job.lat
+ *     other.slope = job.slope
+ *     other.T = job.T             # <<<<<<<<<<<<<<
+ * 
+ *     return otherptr
+ */
+  __pyx_t_2 = __pyx_v_job->T;
+  __pyx_v_other->T = __pyx_t_2;
+
+  /* "bnbprob/pfssp/cython/job.pyx":85
+ *     other.T = job.T
+ * 
+ *     return otherptr             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_otherptr;
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/job.pyx":67
+ * 
+ * 
+ * cdef JobPtr copy_job(shared_ptr[Job]& jobptr):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         JobPtr otherptr
  */
 
   /* function exit code */
-  goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("bnbprob.pfssp.cython.job.PyJob.__dealloc__", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.job.copy_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
+  return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":80
- *             free_job(self.job)
+/* "bnbprob/pfssp/cython/job.pyx":88
+ * 
+ * 
+ * cdef void free_job(JobPtr& job):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int i
+ */
+
+static void __pyx_f_7bnbprob_5pfssp_6cython_3job_free_job(__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr &__pyx_v_job) {
+  int __pyx_v_i;
+  Job *__pyx_v_job_;
+  int __pyx_t_1;
+  std::vector<int> ::size_type __pyx_t_2;
+  std::vector<int> ::size_type __pyx_t_3;
+  int __pyx_t_4;
+
+  /* "bnbprob/pfssp/cython/job.pyx":93
+ *         Job* job_
+ * 
+ *     job_ = &deref(job)             # <<<<<<<<<<<<<<
+ *     free(job_.p)
+ *     if (job_.lat != NULL):
+ */
+  __pyx_v_job_ = (&(*__pyx_v_job));
+
+  /* "bnbprob/pfssp/cython/job.pyx":94
+ * 
+ *     job_ = &deref(job)
+ *     free(job_.p)             # <<<<<<<<<<<<<<
+ *     if (job_.lat != NULL):
+ *         for i in range(job_.r.size()):
+ */
+  free(__pyx_v_job_->p);
+
+  /* "bnbprob/pfssp/cython/job.pyx":95
+ *     job_ = &deref(job)
+ *     free(job_.p)
+ *     if (job_.lat != NULL):             # <<<<<<<<<<<<<<
+ *         for i in range(job_.r.size()):
+ *             free(job_.lat[i])
+ */
+  __pyx_t_1 = (__pyx_v_job_->lat != NULL);
+  if (__pyx_t_1) {
+
+    /* "bnbprob/pfssp/cython/job.pyx":96
+ *     free(job_.p)
+ *     if (job_.lat != NULL):
+ *         for i in range(job_.r.size()):             # <<<<<<<<<<<<<<
+ *             free(job_.lat[i])
+ *         free(job_.lat)
+ */
+    __pyx_t_2 = __pyx_v_job_->r.size();
+    __pyx_t_3 = __pyx_t_2;
+    for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+      __pyx_v_i = __pyx_t_4;
+
+      /* "bnbprob/pfssp/cython/job.pyx":97
+ *     if (job_.lat != NULL):
+ *         for i in range(job_.r.size()):
+ *             free(job_.lat[i])             # <<<<<<<<<<<<<<
+ *         free(job_.lat)
+ * 
+ */
+      free((__pyx_v_job_->lat[__pyx_v_i]));
+    }
+
+    /* "bnbprob/pfssp/cython/job.pyx":98
+ *         for i in range(job_.r.size()):
+ *             free(job_.lat[i])
+ *         free(job_.lat)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    free(__pyx_v_job_->lat);
+
+    /* "bnbprob/pfssp/cython/job.pyx":95
+ *     job_ = &deref(job)
+ *     free(job_.p)
+ *     if (job_.lat != NULL):             # <<<<<<<<<<<<<<
+ *         for i in range(job_.r.size()):
+ *             free(job_.lat[i])
+ */
+  }
+
+  /* "bnbprob/pfssp/cython/job.pyx":88
+ * 
+ * 
+ * cdef void free_job(JobPtr& job):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int i
+ */
+
+  /* function exit code */
+}
+
+/* "bnbprob/pfssp/cython/job.pyx":108
+ *             # del self.job
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def from_p(int j, list[int] p):
@@ -3372,15 +3534,15 @@ static void __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob___dealloc__(struct __py
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p(CYTHON_UNUSED PyObject *__pyx_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p(CYTHON_UNUSED PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p = {"from_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p(CYTHON_UNUSED PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p = {"from_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p(CYTHON_UNUSED PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3427,7 +3589,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -3435,14 +3597,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("from_p", 1, 2, 2, 1); __PYX_ERR(0, 80, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("from_p", 1, 2, 2, 1); __PYX_ERR(0, 108, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_p") < 0)) __PYX_ERR(0, 80, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_p") < 0)) __PYX_ERR(0, 108, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -3450,12 +3612,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-    __pyx_v_j = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_j == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
+    __pyx_v_j = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_j == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 109, __pyx_L3_error)
     __pyx_v_p = ((PyObject*)values[1]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("from_p", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 80, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("from_p", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 108, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3469,8 +3631,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_p), (&PyList_Type), 1, "p", 1))) __PYX_ERR(0, 81, __pyx_L1_error)
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(__pyx_v_j, __pyx_v_p);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_p), (&PyList_Type), 1, "p", 1))) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_from_p(__pyx_v_j, __pyx_v_p);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3487,61 +3649,53 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(int __pyx_v_j, PyObject *__pyx_v_p) {
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_v_job;
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_from_p(int __pyx_v_j, PyObject *__pyx_v_p) {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_out = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_Job __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_1 = NULL;
+  std::vector<int>  __pyx_t_2;
+  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_t_3;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_p", 1);
 
-  /* "bnbprob/pfssp/cython/job.pyx":88
+  /* "bnbprob/pfssp/cython/job.pyx":115
  *             PyJob out
  * 
- *         job = start_job(j, p)             # <<<<<<<<<<<<<<
- *         out = PyJob.__new__(PyJob)
- *         out.unsafe_alloc = True
- */
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(__pyx_v_j, __pyx_v_p); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L1_error)
-  __pyx_v_job = __pyx_t_1;
-
-  /* "bnbprob/pfssp/cython/job.pyx":89
- * 
- *         job = start_job(j, p)
  *         out = PyJob.__new__(PyJob)             # <<<<<<<<<<<<<<
  *         out.unsafe_alloc = True
- *         out.job = job
+ *         out.job = start_job(j, p)
  */
-  __pyx_t_2 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_3job_PyJob(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
-  __Pyx_GOTREF((PyObject *)__pyx_t_2);
-  __pyx_v_out = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_t_2);
-  __pyx_t_2 = 0;
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_7bnbprob_5pfssp_6cython_3job_PyJob(((PyTypeObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF((PyObject *)__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":90
- *         job = start_job(j, p)
+  /* "bnbprob/pfssp/cython/job.pyx":116
+ * 
  *         out = PyJob.__new__(PyJob)
  *         out.unsafe_alloc = True             # <<<<<<<<<<<<<<
- *         out.job = job
+ *         out.job = start_job(j, p)
  *         return out
  */
   __pyx_v_out->unsafe_alloc = 1;
 
-  /* "bnbprob/pfssp/cython/job.pyx":91
+  /* "bnbprob/pfssp/cython/job.pyx":117
  *         out = PyJob.__new__(PyJob)
  *         out.unsafe_alloc = True
- *         out.job = job             # <<<<<<<<<<<<<<
+ *         out.job = start_job(j, p)             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_v_out->job = __pyx_v_job;
+  __pyx_t_2 = __pyx_convert_vector_from_py_int(__pyx_v_p); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(__pyx_v_j, __pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_v_out->job = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "bnbprob/pfssp/cython/job.pyx":92
+  /* "bnbprob/pfssp/cython/job.pyx":118
  *         out.unsafe_alloc = True
- *         out.job = job
+ *         out.job = start_job(j, p)
  *         return out             # <<<<<<<<<<<<<<
  * 
  *     cpdef int get_T(self):
@@ -3551,8 +3705,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(int __pyx_
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":80
- *             free_job(self.job)
+  /* "bnbprob/pfssp/cython/job.pyx":108
+ *             # del self.job
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def from_p(int j, list[int] p):
@@ -3561,7 +3715,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(int __pyx_
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("bnbprob.pfssp.cython.job.PyJob.from_p", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3571,15 +3725,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2from_p(int __pyx_
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":94
+/* "bnbprob/pfssp/cython/job.pyx":120
  *         return out
  * 
  *     cpdef int get_T(self):             # <<<<<<<<<<<<<<
- *         return self.job.T
+ *         return deref(self.job).T
  * 
  */
 
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3608,9 +3762,9 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(struct __pyx_obj_7b
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -3630,11 +3784,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(struct __pyx_obj_7b
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
-        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3653,21 +3807,21 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(struct __pyx_obj_7b
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":95
+  /* "bnbprob/pfssp/cython/job.pyx":121
  * 
  *     cpdef int get_T(self):
- *         return self.job.T             # <<<<<<<<<<<<<<
+ *         return deref(self.job).T             # <<<<<<<<<<<<<<
  * 
  *     cpdef int get_j(self):
  */
-  __pyx_r = __pyx_v_self->job.T;
+  __pyx_r = (*__pyx_v_self->job).T;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":94
+  /* "bnbprob/pfssp/cython/job.pyx":120
  *         return out
  * 
  *     cpdef int get_T(self):             # <<<<<<<<<<<<<<
- *         return self.job.T
+ *         return deref(self.job).T
  * 
  */
 
@@ -3685,15 +3839,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(struct __pyx_obj_7b
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T = {"get_T", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T = {"get_T", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3718,14 +3872,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("get_T", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "get_T", 0))) return NULL;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_T(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2get_T(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_T(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_2get_T(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3735,8 +3889,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_T(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_T", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_T(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3753,15 +3907,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_T(struct __py
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":97
- *         return self.job.T
+/* "bnbprob/pfssp/cython/job.pyx":123
+ *         return deref(self.job).T
  * 
  *     cpdef int get_j(self):             # <<<<<<<<<<<<<<
- *         return self.job.j
+ *         return deref(self.job).j
  * 
  */
 
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3790,9 +3944,9 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(struct __pyx_obj_7b
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_j); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_j); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -3812,11 +3966,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(struct __pyx_obj_7b
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
-        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3835,21 +3989,21 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(struct __pyx_obj_7b
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":98
+  /* "bnbprob/pfssp/cython/job.pyx":124
  * 
  *     cpdef int get_j(self):
- *         return self.job.j             # <<<<<<<<<<<<<<
+ *         return deref(self.job).j             # <<<<<<<<<<<<<<
  * 
  *     cpdef int get_p(self, int i):
  */
-  __pyx_r = __pyx_v_self->job.j;
+  __pyx_r = (*__pyx_v_self->job).j;
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":97
- *         return self.job.T
+  /* "bnbprob/pfssp/cython/job.pyx":123
+ *         return deref(self.job).T
  * 
  *     cpdef int get_j(self):             # <<<<<<<<<<<<<<
- *         return self.job.j
+ *         return deref(self.job).j
  * 
  */
 
@@ -3867,15 +4021,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(struct __pyx_obj_7b
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j = {"get_j", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j = {"get_j", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3900,14 +4054,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("get_j", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "get_j", 0))) return NULL;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_j(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_j(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_j(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_4get_j(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3917,8 +4071,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_j(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_j", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_j(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3935,15 +4089,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_j(struct __py
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":100
- *         return self.job.j
+/* "bnbprob/pfssp/cython/job.pyx":126
+ *         return deref(self.job).j
  * 
  *     cpdef int get_p(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.p[i]
+ *         return deref(self.job).p[i]
  * 
  */
 
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3973,10 +4127,10 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(struct __pyx_obj_7b
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -3998,11 +4152,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(struct __pyx_obj_7b
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         }
-        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_7;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4021,21 +4175,21 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(struct __pyx_obj_7b
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":101
+  /* "bnbprob/pfssp/cython/job.pyx":127
  * 
  *     cpdef int get_p(self, int i):
- *         return self.job.p[i]             # <<<<<<<<<<<<<<
+ *         return deref(self.job).p[i]             # <<<<<<<<<<<<<<
  * 
  *     cpdef int get_r(self, int i):
  */
-  __pyx_r = (__pyx_v_self->job.p[__pyx_v_i]);
+  __pyx_r = ((*__pyx_v_self->job).p[__pyx_v_i]);
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":100
- *         return self.job.j
+  /* "bnbprob/pfssp/cython/job.pyx":126
+ *         return deref(self.job).j
  * 
  *     cpdef int get_p(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.p[i]
+ *         return deref(self.job).p[i]
  * 
  */
 
@@ -4054,15 +4208,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(struct __pyx_obj_7b
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p = {"get_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p = {"get_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4106,23 +4260,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_p") < 0)) __PYX_ERR(0, 100, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_p") < 0)) __PYX_ERR(0, 126, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
+    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_p", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 100, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_p", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 126, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4136,7 +4290,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_p(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i);
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_p(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i);
 
   /* function exit code */
   {
@@ -4149,7 +4303,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_p(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_6get_p(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -4159,8 +4313,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_p(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_p", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(__pyx_v_self, __pyx_v_i, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_p(__pyx_v_self, __pyx_v_i, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4177,15 +4331,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_p(struct __py
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":103
- *         return self.job.p[i]
+/* "bnbprob/pfssp/cython/job.pyx":129
+ *         return deref(self.job).p[i]
  * 
  *     cpdef int get_r(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.r[i]
+ *         return deref(self.job).r[i]
  * 
  */
 
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4215,10 +4369,10 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(struct __pyx_obj_7b
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_r); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -4240,11 +4394,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(struct __pyx_obj_7b
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         }
-        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_7;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4263,21 +4417,21 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(struct __pyx_obj_7b
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":104
+  /* "bnbprob/pfssp/cython/job.pyx":130
  * 
  *     cpdef int get_r(self, int i):
- *         return self.job.r[i]             # <<<<<<<<<<<<<<
+ *         return deref(self.job).r[i]             # <<<<<<<<<<<<<<
  * 
  *     cpdef int get_lat(self, int i, int j):
  */
-  __pyx_r = (__pyx_v_self->job.r[__pyx_v_i]);
+  __pyx_r = ((*__pyx_v_self->job).r[__pyx_v_i]);
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":103
- *         return self.job.p[i]
+  /* "bnbprob/pfssp/cython/job.pyx":129
+ *         return deref(self.job).p[i]
  * 
  *     cpdef int get_r(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.r[i]
+ *         return deref(self.job).r[i]
  * 
  */
 
@@ -4296,15 +4450,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(struct __pyx_obj_7b
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r = {"get_r", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r = {"get_r", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4348,23 +4502,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_r") < 0)) __PYX_ERR(0, 103, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_r") < 0)) __PYX_ERR(0, 129, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L3_error)
+    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_r", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 103, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_r", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 129, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4378,7 +4532,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_r(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i);
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_r(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i);
 
   /* function exit code */
   {
@@ -4391,7 +4545,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_r(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_8get_r(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -4401,8 +4555,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_r(struct __p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_r", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(__pyx_v_self, __pyx_v_i, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r(__pyx_v_self, __pyx_v_i, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4419,14 +4573,14 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_r(struct __p
   return __pyx_r;
 }
 
-/* "bnbprob/pfssp/cython/job.pyx":106
- *         return self.job.r[i]
+/* "bnbprob/pfssp/cython/job.pyx":132
+ *         return deref(self.job).r[i]
  * 
  *     cpdef int get_lat(self, int i, int j):             # <<<<<<<<<<<<<<
- *         return self.job.lat[i][j]
+ *         return deref(self.job).lat[i][j]
  */
 
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4457,12 +4611,12 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(struct __pyx_obj_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_lat); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_lat); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -4485,11 +4639,11 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(struct __pyx_obj_
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 132, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
-        __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_8;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4508,19 +4662,19 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(struct __pyx_obj_
     #endif
   }
 
-  /* "bnbprob/pfssp/cython/job.pyx":107
+  /* "bnbprob/pfssp/cython/job.pyx":133
  * 
  *     cpdef int get_lat(self, int i, int j):
- *         return self.job.lat[i][j]             # <<<<<<<<<<<<<<
+ *         return deref(self.job).lat[i][j]             # <<<<<<<<<<<<<<
  */
-  __pyx_r = ((__pyx_v_self->job.lat[__pyx_v_i])[__pyx_v_j]);
+  __pyx_r = (((*__pyx_v_self->job).lat[__pyx_v_i])[__pyx_v_j]);
   goto __pyx_L0;
 
-  /* "bnbprob/pfssp/cython/job.pyx":106
- *         return self.job.r[i]
+  /* "bnbprob/pfssp/cython/job.pyx":132
+ *         return deref(self.job).r[i]
  * 
  *     cpdef int get_lat(self, int i, int j):             # <<<<<<<<<<<<<<
- *         return self.job.lat[i][j]
+ *         return deref(self.job).lat[i][j]
  */
 
   /* function exit code */
@@ -4539,15 +4693,15 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(struct __pyx_obj_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat = {"get_lat", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat = {"get_lat", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4594,7 +4748,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -4602,14 +4756,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_lat", 1, 2, 2, 1); __PYX_ERR(0, 106, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_lat", 1, 2, 2, 1); __PYX_ERR(0, 132, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_lat") < 0)) __PYX_ERR(0, 106, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_lat") < 0)) __PYX_ERR(0, 132, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -4617,12 +4771,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
-    __pyx_v_j = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_j == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
+    __pyx_v_i = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
+    __pyx_v_j = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_j == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_lat", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 106, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_lat", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 132, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4636,7 +4790,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12get_lat(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i, __pyx_v_j);
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_lat(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v_i, __pyx_v_j);
 
   /* function exit code */
   {
@@ -4649,7 +4803,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12get_lat(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i, int __pyx_v_j) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_10get_lat(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, int __pyx_v_i, int __pyx_v_j) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -4659,8 +4813,8 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12get_lat(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_lat", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(__pyx_v_self, __pyx_v_i, __pyx_v_j, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat(__pyx_v_self, __pyx_v_i, __pyx_v_j, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4684,15 +4838,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12get_lat(struct _
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4717,14 +4871,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__reduce_cython__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12__reduce_cython__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -4764,15 +4918,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__reduce_cython_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4846,7 +5000,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_16__setstate_cython__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__setstate_cython__(((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -4859,7 +5013,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_16__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_3job_5PyJob_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -4908,7 +5062,7 @@ static PyObject *__pyx_tp_new_7bnbprob_5pfssp_6cython_3job_PyJob(PyTypeObject *t
   #endif
   p = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *)o);
   p->__pyx_vtab = __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob;
-  new((void*)&(p->job)) __pyx_t_7bnbprob_5pfssp_6cython_3job_Job();
+  new((void*)&(p->job)) __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr();
   return o;
 }
 
@@ -4921,14 +5075,6 @@ static void __pyx_tp_dealloc_7bnbprob_5pfssp_6cython_3job_PyJob(PyObject *o) {
     }
   }
   #endif
-  {
-    PyObject *etype, *eval, *etb;
-    PyErr_Fetch(&etype, &eval, &etb);
-    __Pyx_SET_REFCNT(o, Py_REFCNT(o) + 1);
-    __pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1__dealloc__(o);
-    __Pyx_SET_REFCNT(o, Py_REFCNT(o) - 1);
-    PyErr_Restore(etype, eval, etb);
-  }
   __Pyx_call_destructor(p->job);
   #if CYTHON_USE_TYPE_SLOTS || CYTHON_COMPILING_IN_PYPY
   (*Py_TYPE(o)->tp_free)(o);
@@ -4941,9 +5087,9 @@ static void __pyx_tp_dealloc_7bnbprob_5pfssp_6cython_3job_PyJob(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_7bnbprob_5pfssp_6cython_3job_PyJob[] = {
-  {"from_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"from_p", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
@@ -5093,7 +5239,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
     {&__pyx_n_s_j, __pyx_k_j, sizeof(__pyx_k_j), 0, 0, 1, 1},
-    {&__pyx_n_s_job, __pyx_k_job, sizeof(__pyx_k_job), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_out, __pyx_k_out, sizeof(__pyx_k_out), 0, 0, 1, 1},
@@ -5119,8 +5264,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 80, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 29, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -5132,70 +5277,70 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "bnbprob/pfssp/cython/job.pyx":80
- *             free_job(self.job)
+  /* "bnbprob/pfssp/cython/job.pyx":108
+ *             # del self.job
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def from_p(int j, list[int] p):
  *         cdef:
  */
-  __pyx_tuple_ = PyTuple_Pack(7, __pyx_n_s_j, __pyx_n_s_p, __pyx_n_s_N, __pyx_n_s_i, __pyx_n_s_p_2, __pyx_n_s_job, __pyx_n_s_out); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(6, __pyx_n_s_j, __pyx_n_s_p, __pyx_n_s_N, __pyx_n_s_i, __pyx_n_s_p_2, __pyx_n_s_out); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_from_p, 80, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_from_p, 108, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 108, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":94
+  /* "bnbprob/pfssp/cython/job.pyx":120
  *         return out
  * 
  *     cpdef int get_T(self):             # <<<<<<<<<<<<<<
- *         return self.job.T
+ *         return deref(self.job).T
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_T, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_T, 120, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 120, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":97
- *         return self.job.T
+  /* "bnbprob/pfssp/cython/job.pyx":123
+ *         return deref(self.job).T
  * 
  *     cpdef int get_j(self):             # <<<<<<<<<<<<<<
- *         return self.job.j
+ *         return deref(self.job).j
  * 
  */
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_j, 97, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_j, 123, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 123, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":100
- *         return self.job.j
+  /* "bnbprob/pfssp/cython/job.pyx":126
+ *         return deref(self.job).j
  * 
  *     cpdef int get_p(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.p[i]
+ *         return deref(self.job).p[i]
  * 
  */
-  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_i); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_i); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_p, 100, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_p, 126, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 126, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":103
- *         return self.job.p[i]
+  /* "bnbprob/pfssp/cython/job.pyx":129
+ *         return deref(self.job).p[i]
  * 
  *     cpdef int get_r(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.r[i]
+ *         return deref(self.job).r[i]
  * 
  */
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_r, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_r, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 129, __pyx_L1_error)
 
-  /* "bnbprob/pfssp/cython/job.pyx":106
- *         return self.job.r[i]
+  /* "bnbprob/pfssp/cython/job.pyx":132
+ *         return deref(self.job).r[i]
  * 
  *     cpdef int get_lat(self, int i, int j):             # <<<<<<<<<<<<<<
- *         return self.job.lat[i][j]
+ *         return deref(self.job).lat[i][j]
  */
-  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_j); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_j); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_lat, 106, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_job_pyx, __pyx_n_s_get_lat, 132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 132, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -5266,9 +5411,10 @@ static int __Pyx_modinit_function_export_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("fill_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job, "void (__pyx_t_7bnbprob_5pfssp_6cython_3job_Job *, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("start_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_start_job, "__pyx_t_7bnbprob_5pfssp_6cython_3job_Job (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("free_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_free_job, "void (__pyx_t_7bnbprob_5pfssp_6cython_3job_Job &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("fill_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_fill_job, "void (__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr &, int &, std::vector<int>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("start_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_start_job, "__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr (int &, std::vector<int>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("copy_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_copy_job, "__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr (std::shared_ptr<Job>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("free_job", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_3job_free_job, "void (__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5290,15 +5436,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_7bnbprob_5pfssp_6cython_3job_PyJob.get_r = (int (*)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int, int __pyx_skip_dispatch))__pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_r;
   __pyx_vtable_7bnbprob_5pfssp_6cython_3job_PyJob.get_lat = (int (*)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int, int, int __pyx_skip_dispatch))__pyx_f_7bnbprob_5pfssp_6cython_3job_5PyJob_get_lat;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7bnbprob_5pfssp_6cython_3job_PyJob_spec, NULL); if (unlikely(!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob)) __PYX_ERR(0, 74, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7bnbprob_5pfssp_6cython_3job_PyJob_spec, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7bnbprob_5pfssp_6cython_3job_PyJob_spec, NULL); if (unlikely(!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob)) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7bnbprob_5pfssp_6cython_3job_PyJob_spec, __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #else
   __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob = &__pyx_type_7bnbprob_5pfssp_6cython_3job_PyJob;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob->tp_print = 0;
@@ -5308,13 +5454,13 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PyJob, (PyObject *) __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PyJob, (PyObject *) __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -5626,88 +5772,88 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "bnbprob/pfssp/cython/job.pyx":80
- *             free_job(self.job)
+  /* "bnbprob/pfssp/cython/job.pyx":108
+ *             # del self.job
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def from_p(int j, list[int] p):
  *         cdef:
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_3from_p, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_from_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_1from_p, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_from_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p, __pyx_t_2) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p, __pyx_t_2) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p, __pyx_t_3) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_from_p, __pyx_t_3) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
-  /* "bnbprob/pfssp/cython/job.pyx":94
+  /* "bnbprob/pfssp/cython/job.pyx":120
  *         return out
  * 
  *     cpdef int get_T(self):             # <<<<<<<<<<<<<<
- *         return self.job.T
+ *         return deref(self.job).T
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_T, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_T, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_3get_T, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_T, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_T, __pyx_t_3) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_T, __pyx_t_3) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
-  /* "bnbprob/pfssp/cython/job.pyx":97
- *         return self.job.T
+  /* "bnbprob/pfssp/cython/job.pyx":123
+ *         return deref(self.job).T
  * 
  *     cpdef int get_j(self):             # <<<<<<<<<<<<<<
- *         return self.job.j
+ *         return deref(self.job).j
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_j, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_j, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_5get_j, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_j, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_j, __pyx_t_3) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_j, __pyx_t_3) < 0) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
-  /* "bnbprob/pfssp/cython/job.pyx":100
- *         return self.job.j
+  /* "bnbprob/pfssp/cython/job.pyx":126
+ *         return deref(self.job).j
  * 
  *     cpdef int get_p(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.p[i]
+ *         return deref(self.job).p[i]
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_p, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_7get_p, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_p, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_p, __pyx_t_3) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_p, __pyx_t_3) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
-  /* "bnbprob/pfssp/cython/job.pyx":103
- *         return self.job.p[i]
+  /* "bnbprob/pfssp/cython/job.pyx":129
+ *         return deref(self.job).p[i]
  * 
  *     cpdef int get_r(self, int i):             # <<<<<<<<<<<<<<
- *         return self.job.r[i]
+ *         return deref(self.job).r[i]
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_r, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_r, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_9get_r, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_r, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_r, __pyx_t_3) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_r, __pyx_t_3) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
-  /* "bnbprob/pfssp/cython/job.pyx":106
- *         return self.job.r[i]
+  /* "bnbprob/pfssp/cython/job.pyx":132
+ *         return deref(self.job).r[i]
  * 
  *     cpdef int get_lat(self, int i, int j):             # <<<<<<<<<<<<<<
- *         return self.job.lat[i][j]
+ *         return deref(self.job).lat[i][j]
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_13get_lat, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_lat, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_11get_lat, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob_get_lat, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_lat, __pyx_t_3) < 0) __PYX_ERR(0, 106, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob, __pyx_n_s_get_lat, __pyx_t_3) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob);
 
@@ -5716,7 +5862,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "self.job cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_15__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob___reduce_cython, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob___reduce_cython, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5727,7 +5873,7 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self.job cannot be converted to a Python object for pickling"
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_17__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob___setstate_cython, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_3job_5PyJob_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PyJob___setstate_cython, NULL, __pyx_n_s_bnbprob_pfssp_cython_job, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6194,50 +6340,6 @@ bad:
 }
 #endif
 #endif
-
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, int clineno,
-                                  int lineno, const char *filename,
-                                  int full_traceback, int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-#ifdef WITH_THREAD
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-    else state = (PyGILState_STATE)0;
-#endif
-    CYTHON_UNUSED_VAR(clineno);
-    CYTHON_UNUSED_VAR(lineno);
-    CYTHON_UNUSED_VAR(filename);
-    CYTHON_MAYBE_UNUSED_VAR(nogil);
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(0);
-    }
-    #if PY_MAJOR_VERSION < 3
-    ctx = PyString_FromString(name);
-    #else
-    ctx = PyUnicode_FromString(name);
-    #endif
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-#ifdef WITH_THREAD
-    if (nogil)
-        PyGILState_Release(state);
-#endif
-}
 
 /* RaiseArgTupleInvalid */
 static void __Pyx_RaiseArgtupleInvalid(

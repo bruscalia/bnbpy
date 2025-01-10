@@ -3,32 +3,48 @@
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
+from libcpp.memory cimport make_shared, shared_ptr
 
 
-ctypedef struct Job:
-    int j
-    int* p
-    vector[int] r
-    vector[int] q
-    int** lat
-    int slope
-    int T
+cdef extern from "job.h":
+
+    cdef cppclass Job:
+        int j
+        int* p
+        vector[int] r
+        vector[int] q
+        int** lat
+        int slope
+        int T
+
+        # Declare the constructors
+        # Default constructor
+        Job()
+
+        # Parameterized constructor
+        Job(int j_, int* p_, const vector[int]& r_, const vector[int]& q_, int** lat_, int slope_, int T_)
 
 
-ctypedef Job* JobPtr
+ctypedef shared_ptr[Job] JobPtr
+# ctypedef Job* JobPtr
 
 
-cdef void fill_job(Job* job, j, list[int] p) except *
+cdef void fill_job(JobPtr& job, int& j, vector[int]& p) except *
 
-cdef Job start_job(int j, list[int] p)
 
-cdef void free_job(Job& job)
+cdef JobPtr start_job(int& j, vector[int]& p)
+
+
+cdef JobPtr copy_job(shared_ptr[Job]& jobptr)
+
+
+cdef void free_job(JobPtr& job)
 
 
 cdef class PyJob:
 
     cdef:
-        Job job
+        JobPtr job
         bool unsafe_alloc
 
     cpdef int get_T(self)

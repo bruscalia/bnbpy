@@ -2,19 +2,20 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libc.stdlib cimport malloc, free
-from libcpp cimport bool
 from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
+from cython.operator cimport dereference as deref
 
-cdef void fill_job(Job* job, j, list[int] p) except *:
+
+cdef void fill_job(JobPtr& job, int& j, vector[int]& p) except *:
     cdef:
         int i, m, m1, m2, T, sum_p, k, slope
         int* _p, _l
         int** lat
         vector[int] r, q
 
-    m = <int>len(p)
+    m = <int> p.size()
 
     r = vector[int](m, 0)
     q = vector[int](m, 0)
@@ -43,65 +44,90 @@ cdef void fill_job(Job* job, j, list[int] p) except *:
     for k in range(1, m):
         slope += (k - (m + 1) / 2) * p[k - 1]
 
-    job.j = j
-    job.p = _p
-    job.r = r
-    job.q = q
-    job.lat = lat
-    job.slope = slope
-    job.T = T
+    deref(job).j = j
+    deref(job).p = _p
+    deref(job).r = r
+    deref(job).q = q
+    deref(job).lat = lat
+    deref(job).slope = slope
+    deref(job).T = T
 
 
-cdef Job start_job(int j, list[int] p):
+cdef JobPtr start_job(int& j, vector[int]& p):
     cdef:
-        Job job
+        JobPtr job
 
-    job = Job()
-    fill_job(&job, j, p)
+    job = make_shared[Job]()
+    # job = new Job()
+    fill_job(job, j, p)
 
     return job
 
 
-cdef void free_job(Job& job):
+cdef JobPtr copy_job(shared_ptr[Job]& jobptr):
+    cdef:
+        JobPtr otherptr
+        Job* job
+        Job* other
+
+    otherptr = make_shared[Job]()
+    other = &deref(otherptr)
+    job = &deref(jobptr)
+    # other = new Job()
+    other.j = job.j
+    other.p = job.p
+    other.r = job.r
+    other.q = job.q
+    other.lat = job.lat
+    other.slope = job.slope
+    other.T = job.T
+
+    return otherptr
+
+
+cdef void free_job(JobPtr& job):
     cdef:
         int i
-    free(job.p)
-    for i in range(job.r.size()):
-        free(job.lat[i])
-    free(job.lat)
+        Job* job_
+
+    job_ = &deref(job)
+    free(job_.p)
+    if (job_.lat != NULL):
+        for i in range(job_.r.size()):
+            free(job_.lat[i])
+        free(job_.lat)
 
 
 cdef class PyJob:
 
-    def __dealloc__(PyJob self):
-        if self.unsafe_alloc:
-            free_job(self.job)
+    # def __del__(PyJob self):
+    #     if self.unsafe_alloc:
+    #         free_job(self.job)
+            # del self.job
 
     @staticmethod
     def from_p(int j, list[int] p):
         cdef:
             int N, i
             int* _p
-            Job job
             PyJob out
 
-        job = start_job(j, p)
         out = PyJob.__new__(PyJob)
         out.unsafe_alloc = True
-        out.job = job
+        out.job = start_job(j, p)
         return out
 
     cpdef int get_T(self):
-        return self.job.T
+        return deref(self.job).T
 
     cpdef int get_j(self):
-        return self.job.j
+        return deref(self.job).j
 
     cpdef int get_p(self, int i):
-        return self.job.p[i]
+        return deref(self.job).p[i]
 
     cpdef int get_r(self, int i):
-        return self.job.r[i]
+        return deref(self.job).r[i]
 
     cpdef int get_lat(self, int i, int j):
-        return self.job.lat[i][j]
+        return deref(self.job).lat[i][j]

@@ -1,20 +1,20 @@
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport Job, PyJob
+from bnbprob.pfssp.cython.job cimport JobPtr, PyJob
 
 cdef struct Sigma:
-    vector[Job*] jobs
+    vector[JobPtr] jobs
     vector[int] C
     int m
 
 
-cdef void job_to_bottom(Sigma& sigma, Job* job)
+cdef void job_to_bottom(Sigma& sigma, JobPtr& job)
 
 
-cdef void job_to_top(Sigma& sigma, Job* job)
+cdef void job_to_top(Sigma& sigma, JobPtr& job)
 
 
-cdef Sigma empty_sigma(int m)
+cdef Sigma empty_sigma(int& m)
 
 
 cdef class PySigma:
