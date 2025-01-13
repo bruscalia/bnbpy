@@ -50,6 +50,8 @@ cdef class PermFlowShop:
 
     cpdef PermFlowShop copy(PermFlowShop self)
 
+    cdef PermFlowShop _copy(PermFlowShop self)
+
 
 cdef class PermFlowShop2M(PermFlowShop):
 

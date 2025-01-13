@@ -53,6 +53,7 @@ cdef class Job:
         slope = 0
         for k in range(1, m):
             slope += (k - (m + 1) / 2) * self.p[k - 1]
+        return slope
 
     cdef int get_T(Job self):
         cdef:

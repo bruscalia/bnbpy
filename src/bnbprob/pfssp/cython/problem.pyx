@@ -137,10 +137,13 @@ cdef class PermFlowShop:
         self.solution.set_lb(lb)
 
     cpdef PermFlowShop copy(PermFlowShop self):
+        return self._copy()
+
+    cdef PermFlowShop _copy(PermFlowShop self):
         cdef:
             PermFlowShop child
         child = type(self).__new__(type(self))
-        child.solution = self.solution.copy()
+        child.solution = self.solution._copy()
         child.constructive = self.constructive
         return child
 
