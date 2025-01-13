@@ -12,12 +12,14 @@ cdef class Job:
         vector[int] r
         vector[int] q
         const int[:, ::1] lat
-        int slope
-        int T
 
     cpdef Job pycopy(Job self)
 
     cdef Job copy(Job self)
+
+    cdef int get_slope(Job self)
+
+    cdef int get_T(Job self)
 
 
 cdef Job start_job(int j, const int[::1] p)

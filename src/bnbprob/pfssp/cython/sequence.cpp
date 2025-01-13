@@ -1675,8 +1675,6 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job {
   std::vector<int>  r;
   std::vector<int>  q;
   __Pyx_memviewslice lat;
-  int slope;
-  int T;
 };
 
 
@@ -1784,6 +1782,8 @@ struct __pyx_memoryviewslice_obj {
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*pycopy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *, int __pyx_skip_dispatch);
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_slope)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_T)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job;
 

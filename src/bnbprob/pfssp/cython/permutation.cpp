@@ -1708,8 +1708,6 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job {
   std::vector<int>  r;
   std::vector<int>  q;
   __Pyx_memviewslice lat;
-  int slope;
-  int T;
 };
 
 
@@ -1835,6 +1833,8 @@ struct __pyx_memoryviewslice_obj {
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*pycopy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *, int __pyx_skip_dispatch);
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_slope)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_T)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job;
 
@@ -18792,7 +18792,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_8s
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def n_jobs(self):
- *         return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+ *         return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
  */
 
 /* Python wrapper */
@@ -18825,12 +18825,12 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
   /* "bnbprob/pfssp/cython/permutation.pyx":68
  *     @property
  *     def n_jobs(self):
- *         return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)             # <<<<<<<<<<<<<<
+ *         return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_v_self->free_jobs;
+  __pyx_t_1 = __pyx_v_self->sigma1->jobs;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
@@ -18838,7 +18838,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
   }
   __pyx_t_2 = __Pyx_PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_v_self->sigma1->jobs;
+  __pyx_t_1 = __pyx_v_self->free_jobs;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
@@ -18865,7 +18865,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def n_jobs(self):
- *         return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+ *         return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
  */
 
   /* function exit code */
@@ -18880,7 +18880,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
 }
 
 /* "bnbprob/pfssp/cython/permutation.pyx":70
- *         return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+ *         return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def n_free(self):
@@ -18935,7 +18935,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/permutation.pyx":70
- *         return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+ *         return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def n_free(self):
@@ -18957,7 +18957,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6n
  *         return len(self.free_jobs)
  * 
  *     cpdef list[Job] get_sequence(Permutation self):             # <<<<<<<<<<<<<<
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  */
 
@@ -19038,12 +19038,12 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_get
   /* "bnbprob/pfssp/cython/permutation.pyx":75
  * 
  *     cpdef list[Job] get_sequence(Permutation self):
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs             # <<<<<<<<<<<<<<
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs             # <<<<<<<<<<<<<<
  * 
  *     cpdef list[Job] get_sequence_copy(Permutation self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_self->free_jobs, __pyx_v_self->sigma1->jobs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_v_self->sigma1->jobs, __pyx_v_self->free_jobs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_self->sigma2->jobs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -19056,7 +19056,7 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_get
  *         return len(self.free_jobs)
  * 
  *     cpdef list[Job] get_sequence(Permutation self):             # <<<<<<<<<<<<<<
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  */
 
@@ -19142,7 +19142,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_11permutation_11Permutation_6g
 }
 
 /* "bnbprob/pfssp/cython/permutation.pyx":77
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  *     cpdef list[Job] get_sequence_copy(Permutation self):             # <<<<<<<<<<<<<<
  *         cdef:
@@ -19290,7 +19290,7 @@ static PyObject *__pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_get
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/permutation.pyx":77
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  *     cpdef list[Job] get_sequence_copy(Permutation self):             # <<<<<<<<<<<<<<
  *         cdef:
@@ -27077,7 +27077,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         return len(self.free_jobs)
  * 
  *     cpdef list[Job] get_sequence(Permutation self):             # <<<<<<<<<<<<<<
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  */
   __pyx_tuple__23 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 74, __pyx_L1_error)
@@ -27086,7 +27086,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_permuta, __pyx_n_s_get_sequence, 74, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 74, __pyx_L1_error)
 
   /* "bnbprob/pfssp/cython/permutation.pyx":77
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  *     cpdef list[Job] get_sequence_copy(Permutation self):             # <<<<<<<<<<<<<<
  *         cdef:
@@ -28446,7 +28446,7 @@ if (!__Pyx_RefNanny) {
  *         return len(self.free_jobs)
  * 
  *     cpdef list[Job] get_sequence(Permutation self):             # <<<<<<<<<<<<<<
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  */
   __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_11permutation_11Permutation_7get_sequence, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Permutation_get_sequence, NULL, __pyx_n_s_bnbprob_pfssp_cython_permutation, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
@@ -28456,7 +28456,7 @@ if (!__Pyx_RefNanny) {
   PyType_Modified(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation);
 
   /* "bnbprob/pfssp/cython/permutation.pyx":77
- *         return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+ *         return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
  * 
  *     cpdef list[Job] get_sequence_copy(Permutation self):             # <<<<<<<<<<<<<<
  *         cdef:

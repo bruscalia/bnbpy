@@ -25,8 +25,6 @@ class Job:
     """
     lat: np.ndarray[tuple[int, int], int]
     """Job latency between two machines `sum(p_i k < i < m)`"""
-    slope: int = 1
-    """Slope in fast initialization heuristic"""
 
     def __repr__(self) -> str:
         return self._signature
@@ -39,7 +37,17 @@ class Job:
         return f'Job {self.j}'
 
     @property
+    def slope(self):
+        """Slope in fast initialization heuristic"""
+        m = len(self.p) + 1
+        s = 0
+        for k in range(1, m):
+            s += (k - (m + 1) / 2) * self.p[k - 1]
+        return s
+
+    @property
     def T(self):
+        """Total processing time initialization heuristic"""
         return sum(self.p)
 
     @staticmethod
@@ -54,8 +62,7 @@ class Job:
             self.p,
             copy.copy(self.r),
             copy.copy(self.q),
-            self.lat,
-            self.slope
+            self.lat
         )
         return other
 
@@ -80,11 +87,6 @@ def start_job(j: int, p: list[int]) -> Job:
                     sum_p += p[i]
                 lat[m1, m2] = sum_p
 
-    m += 1
-    slope = 0
-    for k in range(1, m):
-        slope += (k - (m + 1) / 2) * p[k - 1]
-
-    job = Job(j, p, r, q, lat, slope)
+    job = Job(j, p, r, q, lat)
 
     return job

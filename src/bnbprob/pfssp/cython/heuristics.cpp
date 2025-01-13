@@ -1694,8 +1694,6 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job {
   std::vector<int>  r;
   std::vector<int>  q;
   __Pyx_memviewslice lat;
-  int slope;
-  int T;
 };
 
 
@@ -1821,6 +1819,8 @@ struct __pyx_memoryviewslice_obj {
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*pycopy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *, int __pyx_skip_dispatch);
   struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *(*copy)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_slope)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
+  int (*get_T)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *);
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_Job;
 
@@ -19290,7 +19290,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_4local_search(CYT
  * 
  * 
  * cpdef inline int key_T_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.T
+ *     return x.get_T()
  * 
  */
 
@@ -19303,26 +19303,34 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 static CYTHON_INLINE int __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_key_T_sort(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_v_x, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_r;
+  int __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":140
  * 
  * cpdef inline int key_T_sort(Job x):
- *     return x.T             # <<<<<<<<<<<<<<
+ *     return x.get_T()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = __pyx_v_x->T;
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_v_x->__pyx_vtab)->get_T(__pyx_v_x); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":139
  * 
  * 
  * cpdef inline int key_T_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.T
+ *     return x.get_T()
  * 
  */
 
   /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.heuristics.key_T_sort", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
   __pyx_L0:;
   return __pyx_r;
 }
@@ -19460,7 +19468,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_10heuristics_6key_T_sort(CYTHO
  * 
  * 
  * cpdef inline int key_slope_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.slope
+ *     return x.get_slope()
  * 
  */
 
@@ -19473,26 +19481,34 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 static CYTHON_INLINE int __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_key_slope_sort(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_Job *__pyx_v_x, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_r;
+  int __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":144
  * 
  * cpdef inline int key_slope_sort(Job x):
- *     return x.slope             # <<<<<<<<<<<<<<
+ *     return x.get_slope()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = __pyx_v_x->slope;
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_Job *)__pyx_v_x->__pyx_vtab)->get_slope(__pyx_v_x); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":143
  * 
  * 
  * cpdef inline int key_slope_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.slope
+ *     return x.get_slope()
  * 
  */
 
   /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.heuristics.key_slope_sort", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
   __pyx_L0:;
   return __pyx_r;
 }
@@ -21049,7 +21065,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  * cpdef inline int key_T_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.T
+ *     return x.get_T()
  * 
  */
   __pyx_tuple__25 = PyTuple_Pack(1, __pyx_n_s_x); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 139, __pyx_L1_error)
@@ -21061,7 +21077,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  * cpdef inline int key_slope_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.slope
+ *     return x.get_slope()
  * 
  */
   __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbprob_pfssp_cython_heurist, __pyx_n_s_key_slope_sort, 143, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 143, __pyx_L1_error)
@@ -22209,7 +22225,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  * cpdef inline int key_T_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.T
+ *     return x.get_T()
  * 
  */
   __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_7key_T_sort, 0, __pyx_n_s_key_T_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 139, __pyx_L1_error)
@@ -22221,7 +22237,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  * cpdef inline int key_slope_sort(Job x):             # <<<<<<<<<<<<<<
- *     return x.slope
+ *     return x.get_slope()
  * 
  */
   __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_7bnbprob_5pfssp_6cython_10heuristics_9key_slope_sort, 0, __pyx_n_s_key_slope_sort, NULL, __pyx_n_s_bnbprob_pfssp_cython_heuristics, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)

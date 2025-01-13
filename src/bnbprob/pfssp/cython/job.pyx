@@ -14,17 +14,21 @@ cdef class Job:
         const int[::1] p,
         vector[int] r,
         vector[int] q,
-        const int[:, ::1] lat,
-        int slope,
-        int T
+        const int[:, ::1] lat
     ):
         self.j = j
         self.p = p
         self.r = r
         self.q = q
         self.lat = lat
-        self.slope = slope
-        self.T = T
+
+    @property
+    def slope(self):
+        return self.slope
+
+    @property
+    def T(self):
+        return self.T
 
     cpdef Job pycopy(Job self):
         return self.copy()
@@ -38,10 +42,26 @@ cdef class Job:
         job.r = vector[int](self.r)
         job.q = vector[int](self.q)
         job.lat = self.lat
-        job.slope = self.slope
-        job.T = self.T
 
         return job
+
+    cdef int get_slope(Job self):
+        cdef:
+            int m, k, slope
+
+        m = <int>len(self.p) + 1
+        slope = 0
+        for k in range(1, m):
+            slope += (k - (m + 1) / 2) * self.p[k - 1]
+
+    cdef int get_T(Job self):
+        cdef:
+            int T, i
+
+        T = 0
+        for i in range(len(self.p)):
+            T += self.p[i]
+        return T
 
 
 cdef Job start_job(int j, const int[::1] p):
@@ -81,7 +101,5 @@ cdef Job start_job(int j, const int[::1] p):
     job.r = r
     job.q = q
     job.lat = lat
-    job.slope = slope
-    job.T = T
 
     return job

@@ -137,11 +137,11 @@ cpdef Permutation local_search(Permutation perm):
 
 
 cpdef inline int key_T_sort(Job x):
-    return x.T
+    return x.get_T()
 
 
 cpdef inline int key_slope_sort(Job x):
-    return x.slope
+    return x.get_slope()
 
 
 cdef void recompute_r0(list[Job] jobs):
