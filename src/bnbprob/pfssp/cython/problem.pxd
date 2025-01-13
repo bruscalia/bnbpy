@@ -36,6 +36,8 @@ cdef class PermFlowShop:
 
     cpdef FlowSolution neh_constructive(PermFlowShop self)
 
+    cpdef FlowSolution local_search(PermFlowShop self)
+
     cpdef int calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)

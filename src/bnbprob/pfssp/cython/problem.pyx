@@ -88,11 +88,15 @@ cdef class PermFlowShop:
         perm = neh(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
-    def local_search(self) -> Optional[FlowSolution]:
+    cpdef FlowSolution local_search(PermFlowShop self):
+        cdef:
+            int lb, new_cost
+            Permutation perm
+            FlowSolution sol_alt
         lb = self.solution.lb
         perm = ls(self.solution.perm)
         sol_alt = FlowSolution(perm)
-        new_cost = sol_alt.perm.calc_bound()
+        new_cost = sol_alt.perm._calc_lb_full()
         if new_cost < lb:
             return sol_alt
         return None
