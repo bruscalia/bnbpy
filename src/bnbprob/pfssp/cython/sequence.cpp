@@ -1523,7 +1523,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma;
 
-/* "bnbprob/pfssp/cython/job.pxd":28
+/* "bnbprob/pfssp/cython/job.pxd":42
  * 
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
@@ -1546,7 +1546,7 @@ struct __pyx_t_7bnbprob_5pfssp_6cython_8sequence_Sigma {
   int m;
 };
 
-/* "bnbprob/pfssp/cython/job.pxd":44
+/* "bnbprob/pfssp/cython/job.pxd":52
  * 
  * 
  * cdef class PyJob:             # <<<<<<<<<<<<<<
@@ -1557,7 +1557,6 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob {
   PyObject_HEAD
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_vtab;
   __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr job;
-  bool unsafe_alloc;
 };
 
 
@@ -1576,7 +1575,7 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma {
 
 
 
-/* "bnbprob/pfssp/cython/job.pxd":44
+/* "bnbprob/pfssp/cython/job.pxd":52
  * 
  * 
  * cdef class PyJob:             # <<<<<<<<<<<<<<
@@ -1585,11 +1584,13 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma {
  */
 
 struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob {
-  int (*get_T)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
   int (*get_j)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
-  int (*get_p)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int, int __pyx_skip_dispatch);
-  int (*get_r)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int, int __pyx_skip_dispatch);
-  int (*get_lat)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int, int, int __pyx_skip_dispatch);
+  PyObject *(*get_p)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
+  PyObject *(*get_r)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
+  PyObject *(*get_q)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
+  PyObject *(*get_lat)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
+  int (*get_slope)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
+  int (*get_T)(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob *__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob;
 
@@ -5012,10 +5013,10 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 44, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.job"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "PyJob", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) __PYX_ERR(2, 44, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob)) __PYX_ERR(2, 44, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.job", "PyJob", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_3job_PyJob),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob) __PYX_ERR(2, 52, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_3job_PyJob*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_3job_PyJob); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_3job_PyJob)) __PYX_ERR(2, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

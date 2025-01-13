@@ -2,7 +2,9 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from libcpp.vector cimport vector
 
+from bnbprob.pfssp.cython.job cimport JobPtr, PyJob, job_to_py
 from bnbprob.pfssp.cython.permutation cimport Permutation
 from bnbpy.status import OptStatus
 
@@ -43,11 +45,29 @@ cdef class FlowSolution:
 
     @property
     def sequence(self):
-        return self.perm.sequence
+        cdef:
+            int i
+            vector[JobPtr] seq
+            PyJob job
+        out = []
+        seq = self.perm.get_sequence()
+        for i in range(seq.size()):
+            job = job_to_py(seq[i])
+            out.append(job)
+        return out
 
     @property
     def free_jobs(self):
-        return self.perm.free_jobs
+        cdef:
+            int i
+            vector[JobPtr] seq
+            PyJob job
+        out = []
+        seq = self.perm.get_free_jobs()
+        for i in range(seq.size()):
+            job = job_to_py(seq[i])
+            out.append(job)
+        return out
 
     cpdef void set_optimal(FlowSolution self):
         self.status = OptStatus.OPTIMAL
@@ -85,14 +105,14 @@ cdef class FlowSolution:
         return self.perm.lower_bound_1m()
 
     cpdef void push_job(FlowSolution self, int j):
-        self.perm.push_job(j)
+        self.perm._push_job(j)
 
     cpdef FlowSolution copy(FlowSolution self):
         cdef:
             FlowSolution sol
 
         sol = FlowSolution.__new__(FlowSolution)
-        sol.perm = self.perm.copy()
+        sol.perm = self.perm._copy()
         sol.cost = LARGE_INT
         sol.lb = 0
         sol.status = OptStatus.NO_SOLUTION

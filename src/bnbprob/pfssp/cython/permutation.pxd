@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
@@ -23,15 +23,8 @@ cdef class Permutation:
         int m
         int n
         int level
-        bool unsafe_alloc
 
-    cpdef void clean_jobs(Permutation self)
-
-    cdef void _clean_jobs(Permutation self)
-
-    cpdef list[PyJob] get_free_jobs(Permutation self)
-
-    cdef vector[JobPtr] _get_free_jobs(Permutation self)
+    cdef vector[JobPtr] get_free_jobs(Permutation self)
 
     cpdef PySigma get_sigma1(Permutation self)
 

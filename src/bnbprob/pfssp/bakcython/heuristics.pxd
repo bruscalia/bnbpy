@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from bnbprob.pfssp.cython.job cimport Job
 from bnbprob.pfssp.cython.permutation cimport Permutation

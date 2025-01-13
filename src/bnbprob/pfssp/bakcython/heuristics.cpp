@@ -22231,7 +22231,7 @@ if (!__Pyx_RefNanny) {
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
- * # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+ * # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  *
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1, __pyx_L1_error)

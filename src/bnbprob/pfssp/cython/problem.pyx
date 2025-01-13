@@ -122,8 +122,8 @@ cdef class PermFlowShop:
         cdef:
             int lb5, lb
 
-        if <int>len(self.solution.perm.free_jobs) == 0:
-            lb5 = self.solution.perm.calc_lb_full()
+        if <int>self.solution.perm.free_jobs.size() == 0:
+            lb5 = self.solution.perm._calc_lb_full()
         else:
             lb5 = self.solution.perm.lower_bound_2m()
         lb = max(self.solution.lb, lb5)

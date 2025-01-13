@@ -6,11 +6,11 @@
 class Job {
 public:
     // Attributes
-    int j;                        // Id
-    int* p;                       // Processing times
+    const int j;                        // Id
+    const std::vector<int> p;                       // Processing times
     std::vector<int> r;           // Release time
     std::vector<int> q;           // Wait time
-    int** lat;                    // Latency
+    std::vector<std::vector<int>> lat;                    // Latency
     int slope;                    // Slope
     int T;                        // Total time
 

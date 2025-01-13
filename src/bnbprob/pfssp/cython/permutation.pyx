@@ -1,14 +1,13 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
 from libcpp.algorithm cimport sort
-from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob, copy_job, start_job, fill_job, free_job
+from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob, copy_job, start_job
 from bnbprob.pfssp.cython.sequence cimport (
     PySigma,
     Sigma,
@@ -45,54 +44,18 @@ cdef class Permutation:
         perm.free_jobs = vector[JobPtr](n)
 
         # Create jobs used in permutation solution
-        perm.unsafe_alloc = True
         for j in range(n):
-            # jobptr = start_job(j, p[j])
             pj = p[j]
-            perm.free_jobs[j] = make_shared[Job]()
-            fill_job(perm.free_jobs[j], j, pj)
+            perm.free_jobs[j] = start_job(j, pj)
 
         # Assign parameters
         perm.sigma1 = empty_sigma(m)
         perm.sigma2 = empty_sigma(m)
         perm.level = 0
-        # perm._update_params()
+        perm._update_params()
         return perm
 
-    def __del__(Permutation self):
-        if self.unsafe_alloc:
-            self._clean_jobs()
-
-    cpdef void clean_jobs(Permutation self):
-        self._clean_jobs()
-
-    cdef void _clean_jobs(Permutation self):
-        cdef:
-            int j
-            JobPtr job
-            vector[JobPtr] seq
-
-        seq = self.get_sequence()
-        for j in range(seq.size()):
-            free_job(seq[j])
-            # del job
-
-    cpdef list[PyJob] get_free_jobs(Permutation self):
-        cdef:
-            int i
-            PyJob job
-            JobPtr cjob
-            list[PyJob] out
-
-        out = []
-        for i in range(self.free_jobs.size()):
-            job = PyJob.__new__(PyJob)
-            cjob = self.free_jobs[i]
-            job.job = cjob
-            out.append(job)
-        return out
-
-    cdef vector[JobPtr] _get_free_jobs(Permutation self):
+    cdef vector[JobPtr] get_free_jobs(Permutation self):
         return self.free_jobs
 
     cpdef PySigma get_sigma1(Permutation self):
@@ -118,17 +81,6 @@ cdef class Permutation:
 
     cdef Sigma _get_sigma2(Permutation self):
         return self.sigma2
-
-    def get_indexes(self):
-        cdef:
-            int j
-            vector[JobPtr] vec
-            JobPtr job
-        idx = []
-        vec = self.get_sequence_copy()
-        for j in range(vec.size()):
-            idx.append(deref(vec[j]).j)
-        return idx
 
     cdef vector[JobPtr] get_sequence(Permutation self):
         cdef:

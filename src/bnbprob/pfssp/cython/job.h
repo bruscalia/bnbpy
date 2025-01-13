@@ -4,34 +4,38 @@
 #include <vector>
 
 struct Job {
-    int j;                          // Single integer value
-    int* p;                         // Pointer to an integer
-    std::vector<int> r;             // Vector of integers
-    std::vector<int> q;             // Vector of integers
-    int** lat;                      // Pointer to a pointer (2D array or similar)
-    int slope;                      // Single integer value
-    int T;                          // Single integer value
+    // Attributes
+    const int j;
+    const std::vector<int> p;
+    std::vector<int> r;
+    std::vector<int> q;
+    std::vector<std::vector<int>> lat;
+    int slope;
+    int T;
 
-    // Default (empty) constructor
+    //  Default (empty) constructor
     Job()
-        : j(0), p(nullptr), r(), q(), lat(nullptr), slope(0), T(0) {}
+        : j(0), p(), r(), q(), lat(), slope(0), T(0) {}
+
+    // Only id and processing times
+    Job(const int j_, const std::vector<int> p_)
+        : j(j_), p(p_), r(), q(), lat(), slope(0), T(0) {}
+
 
     // Constructor
-    Job(int j_, int* p_, const std::vector<int>& r_, const std::vector<int>& q_, int** lat_, int slope_, int T_)
+    Job(
+        const int j_,
+        const std::vector<int> p_,
+        std::vector<int> r_,
+        std::vector<int> q_,
+        std::vector<std::vector<int>> lat_,
+        int slope_,
+        int T_
+    )
         : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_) {}
 
     // Destructor
-    ~Job() {
-        // Free memory for `p` and `lat` if dynamically allocated
-        delete p;
-        if (lat != nullptr) {
-            // Assuming `lat` is dynamically allocated, free memory
-            for (int i = 0; lat[i] != nullptr; ++i) {
-                delete[] lat[i];
-            }
-            delete[] lat;
-        }
-    }
+    // ~Job() {}
 };
 
 #endif // JOB_H
