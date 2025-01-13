@@ -146,7 +146,7 @@ cdef class Permutation:
             for k in range(1, self.m):
                 job.r[k] = max(
                     self.sigma1.C[k],
-                    job.r[k - 1] + job.p[k - 1]
+                    job.r[k - 1] + deref(job.p)[k - 1]
                 )
 
     cdef void back_updates(Permutation self):
@@ -162,7 +162,7 @@ cdef class Permutation:
             for k in range(1, m + 1):
                 job.q[m - k] = max(
                     self.sigma2.C[m - k],
-                    job.q[m - k + 1] + job.p[m - k + 1]
+                    job.q[m - k + 1] + deref(job.p)[m - k + 1]
                 )
 
     cpdef void compute_starts(Permutation self):
@@ -182,16 +182,16 @@ cdef class Permutation:
 
         job = &deref(seq[0])
         for m in range(1, self.m):
-            job.r[m] = job.r[m - 1] + job.p[m - 1]
+            job.r[m] = job.r[m - 1] + deref(job.p)[m - 1]
 
         for j in range(1, seq.size()):
             job = &deref(seq[j])
             prev = &deref(seq[j - 1])
-            job.r[0] = prev.r[0] + prev.p[0]
+            job.r[0] = prev.r[0] + deref(prev.p)[0]
             for m in range(1, self.m):
                 job.r[m] = max(
-                    job.r[m - 1] + job.p[m - 1],
-                    prev.r[m] + prev.p[m]
+                    job.r[m - 1] + deref(job.p)[m - 1],
+                    prev.r[m] + deref(prev.p)[m]
                 )
 
     cpdef int calc_lb_1m(Permutation self):
@@ -243,7 +243,7 @@ cdef class Permutation:
                     min_r = job.r[k]
                 if job.q[k] < min_q:
                     min_q = job.q[k]
-                sum_p += job.p[k]
+                sum_p += deref(job.p)[k]
 
             temp_value = min_r + sum_p + min_q
             if temp_value > max_value:
@@ -371,10 +371,10 @@ cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
 
     for j in range(J):
         job = &deref(jobs[j])
-        t1 = job.p[m1] + job.lat[m2][m1]
-        t2 = job.p[m2] + job.lat[m2][m1]
+        t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]
+        t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]
 
-        jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+        jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
 
         if t1 <= t2:
             j1.push_back(jparam)

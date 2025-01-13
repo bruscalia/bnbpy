@@ -3056,7 +3056,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_bottom(struct __pyx
  * 
  *     sigma.jobs.push_back(job)             # <<<<<<<<<<<<<<
  *     # Update
- *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(job).p[0]
+ *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(deref(job).p)[0]
  */
   try {
     __pyx_v_sigma.jobs.push_back(__pyx_v_job);
@@ -3068,9 +3068,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_bottom(struct __pyx
   /* "bnbprob/pfssp/cython/sequence.pyx":17
  *     sigma.jobs.push_back(job)
  *     # Update
- *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(job).p[0]             # <<<<<<<<<<<<<<
+ *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(deref(job).p)[0]             # <<<<<<<<<<<<<<
  *     for k in range(1, sigma.m):
- *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(job).p[k]
+ *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(deref(job).p)[k]
  */
   __pyx_t_1 = ((*__pyx_v_job).r[0]);
   __pyx_t_2 = (__pyx_v_sigma.C[0]);
@@ -3080,13 +3080,13 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_bottom(struct __pyx
   } else {
     __pyx_t_3 = __pyx_t_2;
   }
-  (__pyx_v_sigma.C[0]) = (__pyx_t_3 + ((*__pyx_v_job).p[0]));
+  (__pyx_v_sigma.C[0]) = (__pyx_t_3 + ((*(*__pyx_v_job).p)[0]));
 
   /* "bnbprob/pfssp/cython/sequence.pyx":18
  *     # Update
- *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(job).p[0]
+ *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(deref(job).p)[0]
  *     for k in range(1, sigma.m):             # <<<<<<<<<<<<<<
- *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(job).p[k]
+ *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(deref(job).p)[k]
  * 
  */
   __pyx_t_1 = __pyx_v_sigma.m;
@@ -3095,9 +3095,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_bottom(struct __pyx
     __pyx_v_k = __pyx_t_5;
 
     /* "bnbprob/pfssp/cython/sequence.pyx":19
- *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(job).p[0]
+ *     sigma.C[0] = max(sigma.C[0], deref(job).r[0]) + deref(deref(job).p)[0]
  *     for k in range(1, sigma.m):
- *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(job).p[k]             # <<<<<<<<<<<<<<
+ *         sigma.C[k] = max(sigma.C[k], sigma.C[k - 1]) + deref(deref(job).p)[k]             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -3109,7 +3109,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_bottom(struct __pyx
     } else {
       __pyx_t_8 = __pyx_t_7;
     }
-    (__pyx_v_sigma.C[__pyx_v_k]) = (__pyx_t_8 + ((*__pyx_v_job).p[__pyx_v_k]));
+    (__pyx_v_sigma.C[__pyx_v_k]) = (__pyx_t_8 + ((*(*__pyx_v_job).p)[__pyx_v_k]));
   }
 
   /* "bnbprob/pfssp/cython/sequence.pyx":11
@@ -3188,7 +3188,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
  *     if m == -1:
  *         return             # <<<<<<<<<<<<<<
  * 
- *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(job).p[m]
+ *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(deref(job).p)[m]
  */
     goto __pyx_L0;
 
@@ -3204,7 +3204,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
   /* "bnbprob/pfssp/cython/sequence.pyx":33
  *         return
  * 
- *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(job).p[m]             # <<<<<<<<<<<<<<
+ *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(deref(job).p)[m]             # <<<<<<<<<<<<<<
  * 
  *     if m == 0:
  */
@@ -3216,10 +3216,10 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
   } else {
     __pyx_t_4 = __pyx_t_3;
   }
-  (__pyx_v_sigma.C[__pyx_v_m]) = (__pyx_t_4 + ((*__pyx_v_job).p[__pyx_v_m]));
+  (__pyx_v_sigma.C[__pyx_v_m]) = (__pyx_t_4 + ((*(*__pyx_v_job).p)[__pyx_v_m]));
 
   /* "bnbprob/pfssp/cython/sequence.pyx":35
- *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(job).p[m]
+ *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(deref(job).p)[m]
  * 
  *     if m == 0:             # <<<<<<<<<<<<<<
  *         return
@@ -3238,7 +3238,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
     goto __pyx_L0;
 
     /* "bnbprob/pfssp/cython/sequence.pyx":35
- *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(job).p[m]
+ *     sigma.C[m] = max(sigma.C[m], deref(job).q[m]) + deref(deref(job).p)[m]
  * 
  *     if m == 0:             # <<<<<<<<<<<<<<
  *         return
@@ -3250,7 +3250,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
  *         return
  * 
  *     for k in range(1, m + 1):             # <<<<<<<<<<<<<<
- *         sigma.C[m - k] = max(sigma.C[m - k], sigma.C[m - k + 1]) + deref(job).p[m - k]
+ *         sigma.C[m - k] = max(sigma.C[m - k], sigma.C[m - k + 1]) + deref(deref(job).p)[m - k]
  * 
  */
   __pyx_t_5 = (__pyx_v_m + 1);
@@ -3261,7 +3261,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
     /* "bnbprob/pfssp/cython/sequence.pyx":39
  * 
  *     for k in range(1, m + 1):
- *         sigma.C[m - k] = max(sigma.C[m - k], sigma.C[m - k + 1]) + deref(job).p[m - k]             # <<<<<<<<<<<<<<
+ *         sigma.C[m - k] = max(sigma.C[m - k], sigma.C[m - k + 1]) + deref(deref(job).p)[m - k]             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -3273,7 +3273,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_8sequence_job_to_top(struct __pyx_t_
     } else {
       __pyx_t_8 = __pyx_t_7;
     }
-    (__pyx_v_sigma.C[(__pyx_v_m - __pyx_v_k)]) = (__pyx_t_8 + ((*__pyx_v_job).p[(__pyx_v_m - __pyx_v_k)]));
+    (__pyx_v_sigma.C[(__pyx_v_m - __pyx_v_k)]) = (__pyx_t_8 + ((*(*__pyx_v_job).p)[(__pyx_v_m - __pyx_v_k)]));
   }
 
   /* "bnbprob/pfssp/cython/sequence.pyx":22

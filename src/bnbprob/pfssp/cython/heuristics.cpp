@@ -3840,7 +3840,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(std::vecto
  *         int j
  *     deref(jobs[0]).r[0] = 0             # <<<<<<<<<<<<<<
  *     for j in range(1, jobs.size()):
- *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(jobs[j - 1]).p[0]
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]
  */
   ((*(__pyx_v_jobs[0])).r[0]) = 0;
 
@@ -3848,7 +3848,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(std::vecto
  *         int j
  *     deref(jobs[0]).r[0] = 0
  *     for j in range(1, jobs.size()):             # <<<<<<<<<<<<<<
- *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(jobs[j - 1]).p[0]
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]
  */
   __pyx_t_1 = __pyx_v_jobs.size();
   __pyx_t_2 = __pyx_t_1;
@@ -3858,9 +3858,9 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(std::vecto
     /* "bnbprob/pfssp/cython/heuristics.pyx":165
  *     deref(jobs[0]).r[0] = 0
  *     for j in range(1, jobs.size()):
- *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(jobs[j - 1]).p[0]             # <<<<<<<<<<<<<<
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]             # <<<<<<<<<<<<<<
  */
-    ((*(__pyx_v_jobs[__pyx_v_j])).r[0]) = (((*(__pyx_v_jobs[(__pyx_v_j - 1)])).r[0]) + ((*(__pyx_v_jobs[(__pyx_v_j - 1)])).p[0]));
+    ((*(__pyx_v_jobs[__pyx_v_j])).r[0]) = (((*(__pyx_v_jobs[(__pyx_v_j - 1)])).r[0]) + ((*(*(__pyx_v_jobs[(__pyx_v_j - 1)])).p)[0]));
   }
 
   /* "bnbprob/pfssp/cython/heuristics.pyx":160

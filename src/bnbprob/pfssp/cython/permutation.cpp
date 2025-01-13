@@ -4943,17 +4943,17 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
       /* "bnbprob/pfssp/cython/permutation.pyx":149
  *                 job.r[k] = max(
  *                     self.sigma1.C[k],
- *                     job.r[k - 1] + job.p[k - 1]             # <<<<<<<<<<<<<<
+ *                     job.r[k - 1] + deref(job.p)[k - 1]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
-      __pyx_t_7 = ((__pyx_v_job->r[(__pyx_v_k - 1)]) + (__pyx_v_job->p[(__pyx_v_k - 1)]));
+      __pyx_t_7 = ((__pyx_v_job->r[(__pyx_v_k - 1)]) + ((*__pyx_v_job->p)[(__pyx_v_k - 1)]));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":148
  *             for k in range(1, self.m):
  *                 job.r[k] = max(
  *                     self.sigma1.C[k],             # <<<<<<<<<<<<<<
- *                     job.r[k - 1] + job.p[k - 1]
+ *                     job.r[k - 1] + deref(job.p)[k - 1]
  *                 )
  */
       __pyx_t_8 = (__pyx_v_self->sigma1.C[__pyx_v_k]);
@@ -4961,7 +4961,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
       /* "bnbprob/pfssp/cython/permutation.pyx":149
  *                 job.r[k] = max(
  *                     self.sigma1.C[k],
- *                     job.r[k - 1] + job.p[k - 1]             # <<<<<<<<<<<<<<
+ *                     job.r[k - 1] + deref(job.p)[k - 1]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
@@ -4977,7 +4977,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_front_up
  *             for k in range(1, self.m):
  *                 job.r[k] = max(             # <<<<<<<<<<<<<<
  *                     self.sigma1.C[k],
- *                     job.r[k - 1] + job.p[k - 1]
+ *                     job.r[k - 1] + deref(job.p)[k - 1]
  */
       (__pyx_v_job->r[__pyx_v_k]) = __pyx_t_9;
     }
@@ -5072,17 +5072,17 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
       /* "bnbprob/pfssp/cython/permutation.pyx":165
  *                 job.q[m - k] = max(
  *                     self.sigma2.C[m - k],
- *                     job.q[m - k + 1] + job.p[m - k + 1]             # <<<<<<<<<<<<<<
+ *                     job.q[m - k + 1] + deref(job.p)[m - k + 1]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
-      __pyx_t_7 = ((__pyx_v_job->q[((__pyx_v_m - __pyx_v_k) + 1)]) + (__pyx_v_job->p[((__pyx_v_m - __pyx_v_k) + 1)]));
+      __pyx_t_7 = ((__pyx_v_job->q[((__pyx_v_m - __pyx_v_k) + 1)]) + ((*__pyx_v_job->p)[((__pyx_v_m - __pyx_v_k) + 1)]));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":164
  *             for k in range(1, m + 1):
  *                 job.q[m - k] = max(
  *                     self.sigma2.C[m - k],             # <<<<<<<<<<<<<<
- *                     job.q[m - k + 1] + job.p[m - k + 1]
+ *                     job.q[m - k + 1] + deref(job.p)[m - k + 1]
  *                 )
  */
       __pyx_t_8 = (__pyx_v_self->sigma2.C[(__pyx_v_m - __pyx_v_k)]);
@@ -5090,7 +5090,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
       /* "bnbprob/pfssp/cython/permutation.pyx":165
  *                 job.q[m - k] = max(
  *                     self.sigma2.C[m - k],
- *                     job.q[m - k + 1] + job.p[m - k + 1]             # <<<<<<<<<<<<<<
+ *                     job.q[m - k + 1] + deref(job.p)[m - k + 1]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
@@ -5106,7 +5106,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_back_upd
  *             for k in range(1, m + 1):
  *                 job.q[m - k] = max(             # <<<<<<<<<<<<<<
  *                     self.sigma2.C[m - k],
- *                     job.q[m - k + 1] + job.p[m - k + 1]
+ *                     job.q[m - k + 1] + deref(job.p)[m - k + 1]
  */
       (__pyx_v_job->q[(__pyx_v_m - __pyx_v_k)]) = __pyx_t_9;
     }
@@ -5380,7 +5380,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
  * 
  *         job = &deref(seq[0])             # <<<<<<<<<<<<<<
  *         for m in range(1, self.m):
- *             job.r[m] = job.r[m - 1] + job.p[m - 1]
+ *             job.r[m] = job.r[m - 1] + deref(job.p)[m - 1]
  */
   __pyx_v_job = (&(*(__pyx_v_seq[0])));
 
@@ -5388,7 +5388,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
  * 
  *         job = &deref(seq[0])
  *         for m in range(1, self.m):             # <<<<<<<<<<<<<<
- *             job.r[m] = job.r[m - 1] + job.p[m - 1]
+ *             job.r[m] = job.r[m - 1] + deref(job.p)[m - 1]
  * 
  */
   __pyx_t_4 = __pyx_v_self->m;
@@ -5399,15 +5399,15 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
     /* "bnbprob/pfssp/cython/permutation.pyx":185
  *         job = &deref(seq[0])
  *         for m in range(1, self.m):
- *             job.r[m] = job.r[m - 1] + job.p[m - 1]             # <<<<<<<<<<<<<<
+ *             job.r[m] = job.r[m - 1] + deref(job.p)[m - 1]             # <<<<<<<<<<<<<<
  * 
  *         for j in range(1, seq.size()):
  */
-    (__pyx_v_job->r[__pyx_v_m]) = ((__pyx_v_job->r[(__pyx_v_m - 1)]) + (__pyx_v_job->p[(__pyx_v_m - 1)]));
+    (__pyx_v_job->r[__pyx_v_m]) = ((__pyx_v_job->r[(__pyx_v_m - 1)]) + ((*__pyx_v_job->p)[(__pyx_v_m - 1)]));
   }
 
   /* "bnbprob/pfssp/cython/permutation.pyx":187
- *             job.r[m] = job.r[m - 1] + job.p[m - 1]
+ *             job.r[m] = job.r[m - 1] + deref(job.p)[m - 1]
  * 
  *         for j in range(1, seq.size()):             # <<<<<<<<<<<<<<
  *             job = &deref(seq[j])
@@ -5423,7 +5423,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
  *         for j in range(1, seq.size()):
  *             job = &deref(seq[j])             # <<<<<<<<<<<<<<
  *             prev = &deref(seq[j - 1])
- *             job.r[0] = prev.r[0] + prev.p[0]
+ *             job.r[0] = prev.r[0] + deref(prev.p)[0]
  */
     __pyx_v_job = (&(*(__pyx_v_seq[__pyx_v_j])));
 
@@ -5431,7 +5431,7 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
  *         for j in range(1, seq.size()):
  *             job = &deref(seq[j])
  *             prev = &deref(seq[j - 1])             # <<<<<<<<<<<<<<
- *             job.r[0] = prev.r[0] + prev.p[0]
+ *             job.r[0] = prev.r[0] + deref(prev.p)[0]
  *             for m in range(1, self.m):
  */
     __pyx_v_prev = (&(*(__pyx_v_seq[(__pyx_v_j - 1)])));
@@ -5439,18 +5439,18 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
     /* "bnbprob/pfssp/cython/permutation.pyx":190
  *             job = &deref(seq[j])
  *             prev = &deref(seq[j - 1])
- *             job.r[0] = prev.r[0] + prev.p[0]             # <<<<<<<<<<<<<<
+ *             job.r[0] = prev.r[0] + deref(prev.p)[0]             # <<<<<<<<<<<<<<
  *             for m in range(1, self.m):
  *                 job.r[m] = max(
  */
-    (__pyx_v_job->r[0]) = ((__pyx_v_prev->r[0]) + (__pyx_v_prev->p[0]));
+    (__pyx_v_job->r[0]) = ((__pyx_v_prev->r[0]) + ((*__pyx_v_prev->p)[0]));
 
     /* "bnbprob/pfssp/cython/permutation.pyx":191
  *             prev = &deref(seq[j - 1])
- *             job.r[0] = prev.r[0] + prev.p[0]
+ *             job.r[0] = prev.r[0] + deref(prev.p)[0]
  *             for m in range(1, self.m):             # <<<<<<<<<<<<<<
  *                 job.r[m] = max(
- *                     job.r[m - 1] + job.p[m - 1],
+ *                     job.r[m - 1] + deref(job.p)[m - 1],
  */
     __pyx_t_6 = __pyx_v_self->m;
     __pyx_t_7 = __pyx_t_6;
@@ -5459,26 +5459,26 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
 
       /* "bnbprob/pfssp/cython/permutation.pyx":194
  *                 job.r[m] = max(
- *                     job.r[m - 1] + job.p[m - 1],
- *                     prev.r[m] + prev.p[m]             # <<<<<<<<<<<<<<
+ *                     job.r[m - 1] + deref(job.p)[m - 1],
+ *                     prev.r[m] + deref(prev.p)[m]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
-      __pyx_t_9 = ((__pyx_v_prev->r[__pyx_v_m]) + (__pyx_v_prev->p[__pyx_v_m]));
+      __pyx_t_9 = ((__pyx_v_prev->r[__pyx_v_m]) + ((*__pyx_v_prev->p)[__pyx_v_m]));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":193
  *             for m in range(1, self.m):
  *                 job.r[m] = max(
- *                     job.r[m - 1] + job.p[m - 1],             # <<<<<<<<<<<<<<
- *                     prev.r[m] + prev.p[m]
+ *                     job.r[m - 1] + deref(job.p)[m - 1],             # <<<<<<<<<<<<<<
+ *                     prev.r[m] + deref(prev.p)[m]
  *                 )
  */
-      __pyx_t_10 = ((__pyx_v_job->r[(__pyx_v_m - 1)]) + (__pyx_v_job->p[(__pyx_v_m - 1)]));
+      __pyx_t_10 = ((__pyx_v_job->r[(__pyx_v_m - 1)]) + ((*__pyx_v_job->p)[(__pyx_v_m - 1)]));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":194
  *                 job.r[m] = max(
- *                     job.r[m - 1] + job.p[m - 1],
- *                     prev.r[m] + prev.p[m]             # <<<<<<<<<<<<<<
+ *                     job.r[m - 1] + deref(job.p)[m - 1],
+ *                     prev.r[m] + deref(prev.p)[m]             # <<<<<<<<<<<<<<
  *                 )
  * 
  */
@@ -5490,11 +5490,11 @@ static void __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation__compute
       }
 
       /* "bnbprob/pfssp/cython/permutation.pyx":192
- *             job.r[0] = prev.r[0] + prev.p[0]
+ *             job.r[0] = prev.r[0] + deref(prev.p)[0]
  *             for m in range(1, self.m):
  *                 job.r[m] = max(             # <<<<<<<<<<<<<<
- *                     job.r[m - 1] + job.p[m - 1],
- *                     prev.r[m] + prev.p[m]
+ *                     job.r[m - 1] + deref(job.p)[m - 1],
+ *                     prev.r[m] + deref(prev.p)[m]
  */
       (__pyx_v_job->r[__pyx_v_m]) = __pyx_t_11;
     }
@@ -6368,7 +6368,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                     min_r = job.r[k]
  *                 if job.q[k] < min_q:             # <<<<<<<<<<<<<<
  *                     min_q = job.q[k]
- *                 sum_p += job.p[k]
+ *                 sum_p += deref(job.p)[k]
  */
       __pyx_t_6 = ((__pyx_v_job->q[__pyx_v_k]) < __pyx_v_min_q);
       if (__pyx_t_6) {
@@ -6377,7 +6377,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                     min_r = job.r[k]
  *                 if job.q[k] < min_q:
  *                     min_q = job.q[k]             # <<<<<<<<<<<<<<
- *                 sum_p += job.p[k]
+ *                 sum_p += deref(job.p)[k]
  * 
  */
         __pyx_v_min_q = (__pyx_v_job->q[__pyx_v_k]);
@@ -6387,18 +6387,18 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
  *                     min_r = job.r[k]
  *                 if job.q[k] < min_q:             # <<<<<<<<<<<<<<
  *                     min_q = job.q[k]
- *                 sum_p += job.p[k]
+ *                 sum_p += deref(job.p)[k]
  */
       }
 
       /* "bnbprob/pfssp/cython/permutation.pyx":246
  *                 if job.q[k] < min_q:
  *                     min_q = job.q[k]
- *                 sum_p += job.p[k]             # <<<<<<<<<<<<<<
+ *                 sum_p += deref(job.p)[k]             # <<<<<<<<<<<<<<
  * 
  *             temp_value = min_r + sum_p + min_q
  */
-      __pyx_v_sum_p = (__pyx_v_sum_p + (__pyx_v_job->p[__pyx_v_k]));
+      __pyx_v_sum_p = (__pyx_v_sum_p + ((*__pyx_v_job->p)[__pyx_v_k]));
 
       /* "bnbprob/pfssp/cython/permutation.pyx":240
  *             sum_p = 0
@@ -6410,7 +6410,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_11Permutation_lower_bou
     }
 
     /* "bnbprob/pfssp/cython/permutation.pyx":248
- *                 sum_p += job.p[k]
+ *                 sum_p += deref(job.p)[k]
  * 
  *             temp_value = min_r + sum_p + min_q             # <<<<<<<<<<<<<<
  *             if temp_value > max_value:
@@ -8050,7 +8050,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(std::v
  * 
  *     for j in range(J):             # <<<<<<<<<<<<<<
  *         job = &deref(jobs[j])
- *         t1 = job.p[m1] + job.lat[m2][m1]
+ *         t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]
  */
   __pyx_t_2 = __pyx_v_J;
   __pyx_t_3 = __pyx_t_2;
@@ -8061,45 +8061,45 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(std::v
  * 
  *     for j in range(J):
  *         job = &deref(jobs[j])             # <<<<<<<<<<<<<<
- *         t1 = job.p[m1] + job.lat[m2][m1]
- *         t2 = job.p[m2] + job.lat[m2][m1]
+ *         t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]
+ *         t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]
  */
     __pyx_v_job = (&(*(__pyx_v_jobs[__pyx_v_j])));
 
     /* "bnbprob/pfssp/cython/permutation.pyx":374
  *     for j in range(J):
  *         job = &deref(jobs[j])
- *         t1 = job.p[m1] + job.lat[m2][m1]             # <<<<<<<<<<<<<<
- *         t2 = job.p[m2] + job.lat[m2][m1]
+ *         t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]             # <<<<<<<<<<<<<<
+ *         t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]
  * 
  */
-    __pyx_v_t1 = ((__pyx_v_job->p[__pyx_v_m1]) + ((__pyx_v_job->lat[__pyx_v_m2])[__pyx_v_m1]));
+    __pyx_v_t1 = (((*__pyx_v_job->p)[__pyx_v_m1]) + (((*__pyx_v_job->lat)[__pyx_v_m2])[__pyx_v_m1]));
 
     /* "bnbprob/pfssp/cython/permutation.pyx":375
  *         job = &deref(jobs[j])
- *         t1 = job.p[m1] + job.lat[m2][m1]
- *         t2 = job.p[m2] + job.lat[m2][m1]             # <<<<<<<<<<<<<<
+ *         t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]
+ *         t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]             # <<<<<<<<<<<<<<
  * 
- *         jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+ *         jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
  */
-    __pyx_v_t2 = ((__pyx_v_job->p[__pyx_v_m2]) + ((__pyx_v_job->lat[__pyx_v_m2])[__pyx_v_m1]));
+    __pyx_v_t2 = (((*__pyx_v_job->p)[__pyx_v_m2]) + (((*__pyx_v_job->lat)[__pyx_v_m2])[__pyx_v_m1]));
 
     /* "bnbprob/pfssp/cython/permutation.pyx":377
- *         t2 = job.p[m2] + job.lat[m2][m1]
+ *         t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]
  * 
- *         jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])             # <<<<<<<<<<<<<<
+ *         jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])             # <<<<<<<<<<<<<<
  * 
  *         if t1 <= t2:
  */
     __pyx_t_5.t1 = __pyx_v_t1;
     __pyx_t_5.t2 = __pyx_v_t2;
-    __pyx_t_5.p1 = (&(__pyx_v_job->p[__pyx_v_m1]));
-    __pyx_t_5.p2 = (&(__pyx_v_job->p[__pyx_v_m2]));
-    __pyx_t_5.lat = (&((__pyx_v_job->lat[__pyx_v_m2])[__pyx_v_m1]));
+    __pyx_t_5.p1 = (&((*__pyx_v_job->p)[__pyx_v_m1]));
+    __pyx_t_5.p2 = (&((*__pyx_v_job->p)[__pyx_v_m2]));
+    __pyx_t_5.lat = (&(((*__pyx_v_job->lat)[__pyx_v_m2])[__pyx_v_m1]));
     __pyx_v_jparam = __pyx_t_5;
 
     /* "bnbprob/pfssp/cython/permutation.pyx":379
- *         jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+ *         jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
  * 
  *         if t1 <= t2:             # <<<<<<<<<<<<<<
  *             j1.push_back(jparam)
@@ -8123,7 +8123,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_11permutation_two_mach_problem(std::v
       }
 
       /* "bnbprob/pfssp/cython/permutation.pyx":379
- *         jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+ *         jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
  * 
  *         if t1 <= t2:             # <<<<<<<<<<<<<<
  *             j1.push_back(jparam)

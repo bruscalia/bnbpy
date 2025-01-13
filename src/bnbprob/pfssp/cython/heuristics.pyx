@@ -162,4 +162,4 @@ cdef void recompute_r0(vector[JobPtr]& jobs):
         int j
     deref(jobs[0]).r[0] = 0
     for j in range(1, jobs.size()):
-        deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(jobs[j - 1]).p[0]
+        deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]

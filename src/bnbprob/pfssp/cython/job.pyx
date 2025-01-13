@@ -14,12 +14,14 @@ cdef JobPtr start_job(int& j, vector[int]& p) except *:
     cdef:
         int i, m, m1, m2, sum_p, k, slope
         vector[int] _l
+        shared_ptr[vector[int]] p_
         JobPtr jobptr
         Job* job
 
     # Create the shared pointer and a regular pointer
     # referencing it's memory location
-    jobptr = make_shared[Job](j, p)
+    p_ = make_shared[vector[int]](p)
+    jobptr = make_shared[Job](j, p_)
     job = &deref(jobptr)
 
     # Number of machines
@@ -31,16 +33,16 @@ cdef JobPtr start_job(int& j, vector[int]& p) except *:
 
     # Compute sums
     job.T = 0
-    job.lat = vector[vector[int]](m)
+    job.lat = make_shared[vector[vector[int]]](m)
     for m1 in range(m):
-        job.lat[m1] = vector[int](m, 0)
+        deref(job.lat)[m1] = vector[int](m, 0)
         job.T += p[m1]
         for m2 in range(m):
             if m2 + 1 < m1:  # Ensure range is valid
                 sum_p = 0
                 for i in range(m2 + 1, m1):
                     sum_p += p[i]
-                job.lat[m1][m2] = sum_p
+                deref(job.lat)[m1][m2] = sum_p
 
     # Slope
     m += 1
@@ -123,8 +125,8 @@ cdef class PyJob:
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).p.size()):
-            pi = deref(self.job).p[i]
+        for i in range(deref(deref(self.job).p).size()):
+            pi = deref(deref(self.job).p)[i]
             out.append(pi)
         return out
 
@@ -160,10 +162,10 @@ cdef class PyJob:
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).lat.size()):
+        for i in range(deref(deref(self.job).lat).size()):
             out.append([])
-            for j in range(deref(self.job).lat[i].size()):
-                li = deref(self.job).lat[i][j]
+            for j in range(deref(deref(self.job).lat)[i].size()):
+                li = deref(deref(self.job).lat)[i][j]
                 out[i].append(li)
         return out
 

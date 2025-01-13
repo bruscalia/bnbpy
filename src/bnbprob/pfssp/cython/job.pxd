@@ -10,10 +10,10 @@ cdef extern from "job.h":
 
     cdef cppclass Job:
         const int j
-        const vector[int] p
+        shared_ptr[vector[int]] p
         vector[int] r
         vector[int] q
-        vector[vector[int]] lat
+        shared_ptr[vector[vector[int]]] lat
         int slope
         int T
 
@@ -21,19 +21,19 @@ cdef extern from "job.h":
         # Default constructor
         Job()
 
-         # Only id and processing times
+        # Constructor with job ID and shared_ptr for processing times
         Job(
             const int j_,
-            const vector[int] p_
+            shared_ptr[vector[int]]& p_
         )
 
         # Parameterized constructor
         Job(
             const int j_,
-            const vector[int] p_,
+            shared_ptr[vector[int]]& p_,
             vector[int] r_,
             vector[int] q_,
-            vector[vector[int]] lat_,
+            shared_ptr[vector[vector[int]]]& lat_,
             int slope_,
             int T_
         )
