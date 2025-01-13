@@ -65,14 +65,14 @@ cdef class Permutation:
 
     @property
     def n_jobs(self):
-        return len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+        return len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
 
     @property
     def n_free(self):
         return len(self.free_jobs)
 
     cpdef list[Job] get_sequence(Permutation self):
-        return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+        return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
 
     cpdef list[Job] get_sequence_copy(Permutation self):
         cdef:
