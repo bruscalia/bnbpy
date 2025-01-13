@@ -110,11 +110,14 @@ cdef class PermFlowShop:
     cpdef list[PermFlowShop] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
         cdef:
-            int j
-        return [
-            self._child_push(j)
-            for j in range(len(self.solution.free_jobs))
-        ]
+            int j, J
+            list[PermFlowShop] out
+
+        J = len(self.solution.free_jobs)
+        out = [None] * J
+        for j in range(J):
+            out[j] = self._child_push(j)
+        return out
 
     cdef PermFlowShop _child_push(PermFlowShop self, int j):
         cdef:

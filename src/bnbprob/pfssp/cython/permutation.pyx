@@ -267,6 +267,9 @@ cdef class Permutation:
         return q
 
     cpdef Permutation copy(Permutation self):
+        return self._copy()
+
+    cdef Permutation _copy(Permutation self):
         cdef:
             Job job
             Permutation perm
@@ -294,14 +297,6 @@ cdef Permutation start_perm(int m, list[Job] free_jobs):
     return perm
 
 
-cpdef inline int key_1_sort(tuple[Job, int, int] x):
-    return x[1]
-
-
-cpdef inline int key_2_sort(tuple[Job, int, int] x):
-    return x[2]
-
-
 cdef inline bool asc_t1(const JobParams& a, const JobParams& b):
     return a.t1 < b.t1  # Sort by t1 in ascending order
 
@@ -310,7 +305,7 @@ cdef inline bool desc_t2(const JobParams& a, const JobParams& b):
     return b.t2 < a.t2  # Sort by t2 in descending order
 
 
-cdef int two_mach_problem(list[Job] jobs, int m1, int m2):
+cdef int two_mach_problem(list[Job] jobs, int& m1, int& m2):
     cdef:
         int J, j, t1, t2, res
         Job job
@@ -327,12 +322,14 @@ cdef int two_mach_problem(list[Job] jobs, int m1, int m2):
         t1 = job.p[m1] + job.lat[m2][m1]
         t2 = job.p[m2] + job.lat[m2][m1]
 
-        jparam = JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
-
         if t1 <= t2:
-            j1.push_back(jparam)
+            j1.push_back(
+                JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+            )
         else:
-            j2.push_back(jparam)
+            j2.push_back(
+                JobParams(t1, t2, &job.p[m1], &job.p[m2], &job.lat[m2][m1])
+            )
 
     # Sort set1 in ascending order of t1
     sort(j1.begin(), j1.end(), asc_t1)
@@ -350,8 +347,8 @@ cdef int two_mach_problem(list[Job] jobs, int m1, int m2):
 
 cdef int two_mach_makespan(
     vector[JobParams] &job_times,
-    int m1,
-    int m2
+    int& m1,
+    int& m2
 ):
     cdef:
         int j, time_m1, time_m2
