@@ -104,10 +104,16 @@ cdef class FlowSolution:
     cpdef int lower_bound_2m(FlowSolution self):
         return self.perm.lower_bound_1m()
 
-    cpdef void push_job(FlowSolution self, int j):
+    cpdef void push_job(FlowSolution self, int& j):
+        self.perm._push_job(j)
+
+    cdef void _push_job(FlowSolution self, int& j):
         self.perm._push_job(j)
 
     cpdef FlowSolution copy(FlowSolution self):
+        return self._copy()
+
+    cdef FlowSolution _copy(FlowSolution self):
         cdef:
             FlowSolution sol
 

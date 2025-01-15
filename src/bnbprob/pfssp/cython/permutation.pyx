@@ -41,12 +41,12 @@ cdef class Permutation:
         perm = Permutation.__new__(Permutation)
         perm.m = m
         perm.n = n
-        perm.free_jobs = vector[JobPtr](n)
+        perm.free_jobs = vector[JobPtr]()
 
         # Create jobs used in permutation solution
         for j in range(n):
             pj = p[j]
-            perm.free_jobs[j] = start_job(j, pj)
+            perm.free_jobs.push_back(start_job(j, pj))
 
         # Assign parameters
         perm.sigma1 = empty_sigma(m)
@@ -99,9 +99,9 @@ cdef class Permutation:
             vector[JobPtr] seq
 
         base_seq = self.get_sequence()
-        seq = vector[JobPtr](base_seq.size())
+        seq = vector[JobPtr]()
         for j in range(base_seq.size()):
-            seq[j] = copy_job(base_seq[j])
+            seq.push_back(copy_job(base_seq[j]))
         return seq
 
     cdef bool is_feasible(Permutation self):
@@ -228,7 +228,6 @@ cdef class Permutation:
         cdef:
             int k, min_r, min_q, sum_p, max_value, temp_value
             JobPtr jobptr
-            Job* job
 
         max_value = 0
 
@@ -238,12 +237,11 @@ cdef class Permutation:
             sum_p = 0
 
             for jobptr in self.free_jobs:
-                job = &deref(jobptr)
-                if job.r[k] < min_r:
-                    min_r = job.r[k]
-                if job.q[k] < min_q:
-                    min_q = job.q[k]
-                sum_p += deref(job.p)[k]
+                if deref(jobptr).r[k] < min_r:
+                    min_r = deref(jobptr).r[k]
+                if deref(jobptr).q[k] < min_q:
+                    min_q = deref(jobptr).q[k]
+                sum_p += deref(deref(jobptr).p)[k]
 
             temp_value = min_r + sum_p + min_q
             if temp_value > max_value:
@@ -277,15 +275,13 @@ cdef class Permutation:
             int j, m, min_rm
             vector[int] r
             JobPtr jobptr
-            Job* job
 
         r = vector[int](self.m, 0)
         for m in range(self.m):
             min_rm = LARGE_INT
             for jobptr in self.free_jobs:
-                job = &deref(jobptr)
-                if job.r[m] < min_rm:
-                    min_rm = job.r[m]
+                if deref(jobptr).r[m] < min_rm:
+                    min_rm = deref(jobptr).r[m]
             r[m] = min_rm
 
         return r
@@ -295,15 +291,13 @@ cdef class Permutation:
             int j, m, min_qm
             vector[int] q
             JobPtr jobptr
-            Job* job
 
         q = vector[int](self.m, 0)
         for m in range(self.m):
             min_qm = LARGE_INT
             for jobptr in self.free_jobs:
-                job = &deref(jobptr)
-                if job.q[m] < min_qm:
-                    min_qm = job.q[m]
+                if deref(jobptr).q[m] < min_qm:
+                    min_qm = deref(jobptr).q[m]
             q[m] = min_qm
 
         return q
@@ -320,9 +314,9 @@ cdef class Permutation:
         perm = Permutation.__new__(Permutation)
         perm.m = self.m
         perm.n = self.n
-        perm.free_jobs = vector[JobPtr](self.free_jobs.size())
+        perm.free_jobs = vector[JobPtr]()
         for j in range(self.free_jobs.size()):
-            perm.free_jobs[j] = copy_job(self.free_jobs[j])
+            perm.free_jobs.push_back(copy_job(self.free_jobs[j]))
         perm.sigma1 = self.sigma1
         perm.sigma2 = self.sigma2
         perm.level = self.level
@@ -357,11 +351,10 @@ cdef inline bool desc_t2(const JobParams& a, const JobParams& b):
     return b.t2 < a.t2  # Sort by t2 in descending order
 
 
-cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
+cdef int two_mach_problem(vector[JobPtr]& jobs, int& m1, int& m2):
     cdef:
         int J, j, t1, t2, res
         Job* job
-        JobParams jparam
         vector[JobParams] j1, j2
 
     J = jobs.size()
@@ -374,12 +367,14 @@ cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
         t1 = deref(job.p)[m1] + deref(job.lat)[m2][m1]
         t2 = deref(job.p)[m2] + deref(job.lat)[m2][m1]
 
-        jparam = JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
-
         if t1 <= t2:
-            j1.push_back(jparam)
+            j1.push_back(
+                JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
+            )
         else:
-            j2.push_back(jparam)
+            j2.push_back(
+                JobParams(t1, t2, &deref(job.p)[m1], &deref(job.p)[m2], &deref(job.lat)[m2][m1])
+            )
 
     # Sort set1 in ascending order of t1
     sort(j1.begin(), j1.end(), asc_t1)
@@ -397,8 +392,8 @@ cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2):
 
 cdef int two_mach_makespan(
     vector[JobParams]& job_times,
-    int m1,
-    int m2
+    int& m1,
+    int& m2
 ):
     cdef:
         int j, time_m1, time_m2

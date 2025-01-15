@@ -54,22 +54,15 @@ cdef JobPtr start_job(int& j, vector[int]& p) except *:
 
 
 cdef JobPtr copy_job(shared_ptr[Job]& jobptr):
-    cdef:
-        JobPtr otherptr
-        Job* job
-
-    job = &deref(jobptr)
-    otherptr = make_shared[Job](
-        job.j,
-        job.p,
-        job.r,
-        job.q,
-        job.lat,
-        job.slope,
-        job.T
+    return make_shared[Job](
+        deref(jobptr).j,
+        deref(jobptr).p,
+        deref(jobptr).r,
+        deref(jobptr).q,
+        deref(jobptr).lat,
+        deref(jobptr).slope,
+        deref(jobptr).T
     )
-
-    return otherptr
 
 
 cdef class PyJob:

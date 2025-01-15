@@ -37,6 +37,10 @@ cdef class FlowSolution:
 
     cpdef int lower_bound_2m(FlowSolution self)
 
-    cpdef void push_job(FlowSolution self, int j)
+    cpdef void push_job(FlowSolution self, int& j)
+
+    cdef void _push_job(FlowSolution self, int& j)
 
     cpdef FlowSolution copy(FlowSolution self)
+
+    cdef FlowSolution _copy(FlowSolution self)

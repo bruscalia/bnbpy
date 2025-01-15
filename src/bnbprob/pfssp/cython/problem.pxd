@@ -44,11 +44,13 @@ cdef class PermFlowShop:
 
     cpdef list[PermFlowShop] branch(PermFlowShop self)
 
-    cdef PermFlowShop _child_push(PermFlowShop self, int j)
+    cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
     cpdef void bound_upgrade(PermFlowShop self)
 
     cpdef PermFlowShop copy(PermFlowShop self)
+
+    cdef PermFlowShop _copy(PermFlowShop self)
 
 
 cdef class PermFlowShop2M(PermFlowShop):

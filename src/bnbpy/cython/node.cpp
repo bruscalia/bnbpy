@@ -3,6 +3,9 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "extra_compile_args": [
+            "/O2"
+        ],
         "language": "c++",
         "name": "bnbpy.cython.node",
         "sources": [

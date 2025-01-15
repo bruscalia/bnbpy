@@ -14,7 +14,6 @@ from bnbprob.pfssp.cython.sequence cimport (
 cdef class Permutation:
 
     cdef:
-        vector[JobPtr] own_jobs
         vector[JobPtr] free_jobs
         Sigma sigma1
         Sigma sigma2
@@ -80,7 +79,7 @@ cdef class Permutation:
 cdef Permutation start_perm(int m, vector[JobPtr]& jobs)
 
 
-cdef int two_mach_problem(vector[JobPtr]& jobs, int m1, int m2)
+cdef int two_mach_problem(vector[JobPtr]& jobs, int& m1, int& m2)
 
 
 ctypedef struct JobParams:
@@ -93,6 +92,6 @@ ctypedef struct JobParams:
 
 cdef int two_mach_makespan(
     vector[JobParams]& job_times,
-    int m1,
-    int m2
+    int& m1,
+    int& m2
 )

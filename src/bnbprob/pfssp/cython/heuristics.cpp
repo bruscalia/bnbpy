@@ -6,6 +6,9 @@
         "depends": [
             "src\\bnbprob\\pfssp\\cython\\job.h"
         ],
+        "extra_compile_args": [
+            "/O2"
+        ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cython"
         ],
@@ -1564,7 +1567,7 @@ struct __pyx_t_7bnbprob_5pfssp_6cython_8sequence_Sigma {
 struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
 typedef struct __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams __pyx_t_7bnbprob_5pfssp_6cython_11permutation_JobParams;
 
-/* "bnbprob/pfssp/cython/permutation.pxd":86
+/* "bnbprob/pfssp/cython/permutation.pxd":85
  * 
  * 
  * ctypedef struct JobParams:             # <<<<<<<<<<<<<<
@@ -1617,7 +1620,6 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma {
 struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation {
   PyObject_HEAD
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation *__pyx_vtab;
-  std::vector<__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr>  own_jobs;
   std::vector<__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr>  free_jobs;
   struct __pyx_t_7bnbprob_5pfssp_6cython_8sequence_Sigma sigma1;
   struct __pyx_t_7bnbprob_5pfssp_6cython_8sequence_Sigma sigma2;

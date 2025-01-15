@@ -6,6 +6,9 @@
         "depends": [
             "src\\bnbprob\\pfssp\\cython\\job.h"
         ],
+        "extra_compile_args": [
+            "/O2"
+        ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cython"
         ],
