@@ -2,10 +2,11 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp.vector cimport vector
+from libcpp.memory cimport make_shared
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cython.job cimport JobPtr, start_job
+from bnbprob.pfssp.cython.job cimport Job, JobPtr, start_job
 
 INIT_ERROR = 'C++ Job shared pointer not initialized'
 
@@ -44,11 +45,12 @@ cdef class PyJob:
     def from_p(int j, list[int] p):
         cdef:
             int N, i
-            int* _p
+            vector[int] p_
             PyJob out
 
         out = PyJob.__new__(PyJob)
-        out.job = start_job(j, p)
+        p_ = p
+        out.job = make_shared[Job](j, p_)
         return out
 
     cpdef int get_j(self) except *:

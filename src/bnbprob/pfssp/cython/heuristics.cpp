@@ -6,9 +6,6 @@
         "depends": [
             "src\\bnbprob\\pfssp\\cython\\job.h"
         ],
-        "extra_compile_args": [
-            "/O2"
-        ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cython",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython"
@@ -1525,7 +1522,6 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\heuristics.pyx",
-  "src\\\\bnbprob\\\\pfssp\\\\cython\\\\job.pxd",
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\pyjob.pxd",
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\sequence.pxd",
   "src\\\\bnbprob\\\\pfssp\\\\cython\\\\permutation.pxd",
@@ -1550,18 +1546,18 @@ struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation;
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
  * 
- * ctypedef Job* JobPTRl
+ * ctypedef Job* JobPoOo
  */
 typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr;
 
 /* "bnbprob/pfssp/cython/job.pxd":54
  * ctypedef shared_ptr[Job] JobPtr
  * 
- * ctypedef Job* JobPTRl             # <<<<<<<<<<<<<<
+ * ctypedef Job* JobPoOo             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef Job *__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPTRl;
+typedef Job *__pyx_t_7bnbprob_5pfssp_6cython_3job_JobPoOo;
 struct __pyx_t_7bnbprob_5pfssp_6cython_8sequence_Sigma;
 
 /* "bnbprob/pfssp/cython/sequence.pxd":9
@@ -2598,100 +2594,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple_ __pyx_mstate_global->__pyx_tuple_
 #define __pyx_codeobj__2 __pyx_mstate_global->__pyx_codeobj__2
 /* #### Code section: module_code ### */
-
-/* "bnbprob/pfssp/cython/job.pxd":58
- * 
- * # Function to start a job with a given job ID and processing times
- * cdef inline JobPtr start_job(int& j, vector[int]& p):             # <<<<<<<<<<<<<<
- *     return make_shared[Job](j, p)
- * 
- */
-
-static CYTHON_INLINE __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_f_7bnbprob_5pfssp_6cython_3job_start_job(int &__pyx_v_j, std::vector<int>  &__pyx_v_p) {
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_r;
-  std::shared_ptr<Job>  __pyx_t_1;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-
-  /* "bnbprob/pfssp/cython/job.pxd":59
- * # Function to start a job with a given job ID and processing times
- * cdef inline JobPtr start_job(int& j, vector[int]& p):
- *     return make_shared[Job](j, p)             # <<<<<<<<<<<<<<
- * 
- * # Function to copy a job
- */
-  try {
-    __pyx_t_1 = std::make_shared<Job>(__pyx_v_j, __pyx_v_p);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 59, __pyx_L1_error)
-  }
-  __pyx_r = __pyx_t_1;
-  goto __pyx_L0;
-
-  /* "bnbprob/pfssp/cython/job.pxd":58
- * 
- * # Function to start a job with a given job ID and processing times
- * cdef inline JobPtr start_job(int& j, vector[int]& p):             # <<<<<<<<<<<<<<
- *     return make_shared[Job](j, p)
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("bnbprob.pfssp.cython.job.start_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "bnbprob/pfssp/cython/job.pxd":62
- * 
- * # Function to copy a job
- * cdef inline JobPtr copy_job(shared_ptr[Job]& jobptr):             # <<<<<<<<<<<<<<
- *     return make_shared[Job](
- *         deref(jobptr).j,
- */
-
-static CYTHON_INLINE __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_f_7bnbprob_5pfssp_6cython_3job_copy_job(std::shared_ptr<Job>  &__pyx_v_jobptr) {
-  __pyx_t_7bnbprob_5pfssp_6cython_3job_JobPtr __pyx_r;
-  std::shared_ptr<Job>  __pyx_t_1;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-
-  /* "bnbprob/pfssp/cython/job.pxd":63
- * # Function to copy a job
- * cdef inline JobPtr copy_job(shared_ptr[Job]& jobptr):
- *     return make_shared[Job](             # <<<<<<<<<<<<<<
- *         deref(jobptr).j,
- *         deref(jobptr).p,
- */
-  try {
-    __pyx_t_1 = std::make_shared<Job>((*__pyx_v_jobptr).j, (*__pyx_v_jobptr).p, (*__pyx_v_jobptr).r, (*__pyx_v_jobptr).q, (*__pyx_v_jobptr).lat, (*__pyx_v_jobptr).slope, (*__pyx_v_jobptr).T);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 63, __pyx_L1_error)
-  }
-  __pyx_r = __pyx_t_1;
-  goto __pyx_L0;
-
-  /* "bnbprob/pfssp/cython/job.pxd":62
- * 
- * # Function to copy a job
- * cdef inline JobPtr copy_job(shared_ptr[Job]& jobptr):             # <<<<<<<<<<<<<<
- *     return make_shared[Job](
- *         deref(jobptr).j,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("bnbprob.pfssp.cython.job.copy_job", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_pretend_to_initialize(&__pyx_r);
-  __pyx_L0:;
-  return __pyx_r;
-}
 
 /* "bnbprob/pfssp/cython/heuristics.pyx":18
  * 
@@ -4134,20 +4036,20 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.pyjob"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 8, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.pyjob"); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.pyjob", "PyJob", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob) __PYX_ERR(2, 8, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_5pyjob_PyJob = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_5pyjob_PyJob*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_5pyjob_PyJob)) __PYX_ERR(2, 8, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.pyjob", "PyJob", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_5pyjob_PyJob = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_5pyjob_PyJob*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_5pyjob_PyJob); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_5pyjob_PyJob)) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 24, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.sequence"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.sequence", "PySigma", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma) __PYX_ERR(3, 24, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_PySigma = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_PySigma*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_PySigma)) __PYX_ERR(3, 24, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.sequence", "PySigma", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_8sequence_PySigma),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma) __PYX_ERR(2, 24, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_PySigma = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_8sequence_PySigma*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_8sequence_PySigma); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_8sequence_PySigma)) __PYX_ERR(2, 24, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.permutation"); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 15, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("bnbprob.pfssp.cython.permutation"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.permutation", "Permutation", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation) __PYX_ERR(4, 15, __pyx_L1_error)
-  __pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation)) __PYX_ERR(4, 15, __pyx_L1_error)
+  __pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation = __Pyx_ImportType_3_0_11(__pyx_t_1, "bnbprob.pfssp.cython.permutation", "Permutation", sizeof(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation), __PYX_GET_STRUCT_ALIGNMENT_3_0_11(struct __pyx_obj_7bnbprob_5pfssp_6cython_11permutation_Permutation),__Pyx_ImportType_CheckSize_Warn_3_0_11); if (!__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation) __PYX_ERR(3, 15, __pyx_L1_error)
+  __pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation = (struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_11permutation_Permutation*)__Pyx_GetVtable(__pyx_ptype_7bnbprob_5pfssp_6cython_11permutation_Permutation); if (unlikely(!__pyx_vtabptr_7bnbprob_5pfssp_6cython_11permutation_Permutation)) __PYX_ERR(3, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

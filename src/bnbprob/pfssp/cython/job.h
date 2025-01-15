@@ -34,10 +34,10 @@ class Job {
 };
 
 // Function to start a job with a given job ID and processing times
-std::shared_ptr<Job> start_job(int &j, std::vector<int> &p);
+inline std::shared_ptr<Job> start_job(int &j, std::vector<int> &p);
 
 // Function to copy a job
-std::shared_ptr<Job> copy_job(std::shared_ptr<Job> &jobptr);
+inline std::shared_ptr<Job> copy_job(std::shared_ptr<Job> &jobptr);
 
 // Function to copy a vector of jobs
 std::vector<std::shared_ptr<Job>> copy_jobs(std::vector<std::shared_ptr<Job>> &jobs);

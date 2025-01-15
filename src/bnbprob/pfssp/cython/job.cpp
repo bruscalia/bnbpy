@@ -59,12 +59,12 @@ void Job::initialize(std::shared_ptr<std::vector<int>> &p_) {
 }
 
 // Function to start a job with a given job ID and processing times
-std::shared_ptr<Job> start_job(int &j, std::vector<int> &p) {
+inline std::shared_ptr<Job> start_job(int &j, std::vector<int> &p) {
     return std::make_shared<Job>(j, p);
 }
 
 // Function to copy a job
-std::shared_ptr<Job> copy_job(std::shared_ptr<Job> &jobptr) {
+inline std::shared_ptr<Job> copy_job(std::shared_ptr<Job> &jobptr) {
     return std::make_shared<Job>(jobptr->j, jobptr->p, jobptr->r, jobptr->q,
                                  jobptr->lat, jobptr->slope, jobptr->T);
 }

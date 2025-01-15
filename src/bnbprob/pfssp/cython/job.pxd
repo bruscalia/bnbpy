@@ -40,32 +40,32 @@ cdef extern from "job.h":
         )
 
     # Function to start a job with a given job ID and processing times
-    # cdef shared_ptr[Job] start_job(int& j, vector[int]& p)
+    cdef inline shared_ptr[Job] start_job(int& j, vector[int]& p)
 
     # Function to copy a job
-    # cdef shared_ptr[Job] copy_job(shared_ptr[Job]& jobptr)
+    cdef inline shared_ptr[Job] copy_job(shared_ptr[Job]& jobptr)
 
     # Function to copy a vector of jobs
-    cdef vector[shared_ptr[Job]] copy_jobs(vector[shared_ptr[Job]]& jobs)
+    cdef vector[shared_ptr[Job]] copy_jobs(vector[shared_ptr[Job]]& jobs) nogil
 
 
 ctypedef shared_ptr[Job] JobPtr
 
-ctypedef Job* JobPTRl
+ctypedef Job* JobPoOo
 
 
 # Function to start a job with a given job ID and processing times
-cdef inline JobPtr start_job(int& j, vector[int]& p):
-    return make_shared[Job](j, p)
+# cdef inline JobPtr start_job(int& j, vector[int]& p):
+#     return make_shared[Job](j, p)
 
 # Function to copy a job
-cdef inline JobPtr copy_job(shared_ptr[Job]& jobptr):
-    return make_shared[Job](
-        deref(jobptr).j,
-        deref(jobptr).p,
-        deref(jobptr).r,
-        deref(jobptr).q,
-        deref(jobptr).lat,
-        deref(jobptr).slope,
-        deref(jobptr).T
-    )
+# cdef inline JobPtr copy_job(shared_ptr[Job]& jobptr):
+#     return make_shared[Job](
+#         deref(jobptr).j,
+#         deref(jobptr).p,
+#         deref(jobptr).r,
+#         deref(jobptr).q,
+#         deref(jobptr).lat,
+#         deref(jobptr).slope,
+#         deref(jobptr).T
+#     )

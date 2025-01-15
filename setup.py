@@ -165,7 +165,7 @@ else:
                 f'bnbprob.pfssp.cython.{f[:-4]}',
                 get_ext_pfssp(f),
                 include_dirs=get_ext_path_pfssp(f),
-                extra_compile_args=["/O2"],
+                # extra_compile_args=["/O2"],
             )
             for f in os.listdir(CY_PATH_PFSSP) if f.endswith('.pyx')
         ] + [
@@ -173,7 +173,7 @@ else:
                 'bnbprob.pfssp.cython.job',
                 [os.path.join(CY_PATH_PFSSP, 'job.cpp')],
                 include_dirs=[CY_PATH_PFSSP],
-                extra_compile_args=["/O2"],
+                # extra_compile_args=["/O2"],
             )
         ]
         ext_modules_ = ext_modules_base + ext_modules_pfssp
