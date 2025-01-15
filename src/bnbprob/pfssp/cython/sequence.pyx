@@ -5,7 +5,8 @@ from libcpp.vector cimport vector
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cython.job cimport JobPtr, PyJob
+from bnbprob.pfssp.cython.job cimport JobPtr
+from bnbprob.pfssp.cython.pyjob cimport PyJob
 
 
 cdef void job_to_bottom(Sigma& sigma, JobPtr& job):

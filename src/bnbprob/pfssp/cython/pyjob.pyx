@@ -1,68 +1,13 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-from libc.stdlib cimport malloc, free
-from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
 from cython.operator cimport dereference as deref
 
+from bnbprob.pfssp.cython.job cimport JobPtr, start_job
+
 INIT_ERROR = 'C++ Job shared pointer not initialized'
-
-
-cdef JobPtr start_job(int& j, vector[int]& p) except *:
-    cdef:
-        int i, m, m1, m2, sum_p, k, slope
-        vector[int] _l
-        shared_ptr[vector[int]] p_
-        JobPtr jobptr
-        Job* job
-
-    # Create the shared pointer and a regular pointer
-    # referencing it's memory location
-    p_ = make_shared[vector[int]](p)
-    jobptr = make_shared[Job](j, p_)
-    job = &deref(jobptr)
-
-    # Number of machines
-    m = <int> p.size()
-
-    # Assign attributes
-    job.r = vector[int](m, 0)
-    job.q = vector[int](m, 0)
-
-    # Compute sums
-    job.T = 0
-    job.lat = make_shared[vector[vector[int]]](m)
-    for m1 in range(m):
-        deref(job.lat)[m1] = vector[int](m, 0)
-        job.T += p[m1]
-        for m2 in range(m):
-            if m2 + 1 < m1:  # Ensure range is valid
-                sum_p = 0
-                for i in range(m2 + 1, m1):
-                    sum_p += p[i]
-                deref(job.lat)[m1][m2] = sum_p
-
-    # Slope
-    m += 1
-    job.slope = 0
-    for k in range(1, m):
-        job.slope += (k - (m + 1) / 2) * p[k - 1]
-
-    return jobptr
-
-
-cdef JobPtr copy_job(shared_ptr[Job]& jobptr):
-    return make_shared[Job](
-        deref(jobptr).j,
-        deref(jobptr).p,
-        deref(jobptr).r,
-        deref(jobptr).q,
-        deref(jobptr).lat,
-        deref(jobptr).slope,
-        deref(jobptr).T
-    )
 
 
 cdef class PyJob:

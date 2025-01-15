@@ -4,11 +4,12 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport JobPtr, PyJob
+from bnbprob.pfssp.cython.job cimport JobPtr
 from bnbprob.pfssp.cython.sequence cimport (
     PySigma,
     Sigma
 )
+from bnbprob.pfssp.cython.pyjob cimport PyJob
 
 
 cdef class Permutation:
@@ -35,7 +36,7 @@ cdef class Permutation:
 
     cdef vector[JobPtr] get_sequence(Permutation self)
 
-    cdef vector[JobPtr] get_sequence_copy(Permutation self)
+    cdef inline vector[JobPtr] get_sequence_copy(Permutation self)
 
     cdef bool is_feasible(Permutation self)
 
@@ -70,6 +71,8 @@ cdef class Permutation:
     cdef vector[int] get_r(Permutation self)
 
     cdef vector[int] get_q(Permutation self)
+
+    cpdef Permutation scopy(Permutation self)
 
     cpdef Permutation copy(Permutation self)
 

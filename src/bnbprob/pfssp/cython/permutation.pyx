@@ -3,11 +3,12 @@
 
 from libcpp cimport bool
 from libcpp.algorithm cimport sort
+from libcpp.memory cimport make_shared, shared_ptr
 from libcpp.vector cimport vector
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cython.job cimport Job, JobPtr, PyJob, copy_job, start_job
+from bnbprob.pfssp.cython.job cimport Job, JobPtr, copy_jobs
 from bnbprob.pfssp.cython.sequence cimport (
     PySigma,
     Sigma,
@@ -15,6 +16,7 @@ from bnbprob.pfssp.cython.sequence cimport (
     job_to_bottom,
     job_to_top
 )
+from bnbprob.pfssp.cython.pyjob cimport PyJob
 
 
 cdef:
@@ -46,7 +48,9 @@ cdef class Permutation:
         # Create jobs used in permutation solution
         for j in range(n):
             pj = p[j]
-            perm.free_jobs.push_back(start_job(j, pj))
+            perm.free_jobs.push_back(
+                make_shared[Job](j, pj)
+            )
 
         # Assign parameters
         perm.sigma1 = empty_sigma(m)
@@ -91,18 +95,8 @@ cdef class Permutation:
         seq.insert(seq.end(), self.sigma2.jobs.begin(), self.sigma2.jobs.end())
         return seq
 
-    cdef vector[JobPtr] get_sequence_copy(Permutation self):
-        cdef:
-            int j
-            JobPtr job
-            vector[JobPtr] base_seq
-            vector[JobPtr] seq
-
-        base_seq = self.get_sequence()
-        seq = vector[JobPtr]()
-        for j in range(base_seq.size()):
-            seq.push_back(copy_job(base_seq[j]))
-        return seq
+    cdef inline vector[JobPtr] get_sequence_copy(Permutation self):
+        return copy_jobs(self.get_sequence())
 
     cdef bool is_feasible(Permutation self):
         cdef:
@@ -305,6 +299,21 @@ cdef class Permutation:
     cpdef Permutation copy(Permutation self):
         return self._copy()
 
+    cpdef Permutation scopy(Permutation self):
+        cdef:
+            int j
+            Permutation perm
+            Sigma s1, s2
+
+        perm = Permutation.__new__(Permutation)
+        perm.m = self.m
+        perm.n = self.n
+        perm.free_jobs = self.free_jobs
+        perm.sigma1 = self.sigma1
+        perm.sigma2 = self.sigma2
+        perm.level = self.level
+        return perm
+
     cdef Permutation _copy(Permutation self):
         cdef:
             int j
@@ -314,17 +323,11 @@ cdef class Permutation:
         perm = Permutation.__new__(Permutation)
         perm.m = self.m
         perm.n = self.n
-        perm.free_jobs = vector[JobPtr]()
-        for j in range(self.free_jobs.size()):
-            perm.free_jobs.push_back(copy_job(self.free_jobs[j]))
+        perm.free_jobs = copy_jobs(self.free_jobs)
         perm.sigma1 = self.sigma1
         perm.sigma2 = self.sigma2
         perm.level = self.level
         return perm
-
-
-cdef inline bool desc_T(JobPtr a, JobPtr b):
-    return deref(a).T > deref(b).T  # Sort by T in descending order
 
 
 cdef Permutation start_perm(int m, vector[JobPtr]& jobs):

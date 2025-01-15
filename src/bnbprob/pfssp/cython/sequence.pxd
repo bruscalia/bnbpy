@@ -1,6 +1,10 @@
+# distutils: language = c++
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport JobPtr, PyJob
+from bnbprob.pfssp.cython.job cimport JobPtr
+from bnbprob.pfssp.cython.pyjob cimport PyJob
 
 cdef struct Sigma:
     vector[JobPtr] jobs

@@ -1,6 +1,6 @@
 import numpy as np
 
-class Job:
+class PyJob:
     j: int
     p: np.ndarray[int, int]
     r: np.ndarray[int, int]
