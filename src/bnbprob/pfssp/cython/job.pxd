@@ -51,7 +51,7 @@ cdef extern from "job.h":
 
 ctypedef shared_ptr[Job] JobPtr
 
-ctypedef Job* JobPoOo
+ctypedef Job* Joboip
 
 
 # Function to start a job with a given job ID and processing times

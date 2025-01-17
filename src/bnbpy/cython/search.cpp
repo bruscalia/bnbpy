@@ -5,7 +5,8 @@
     "distutils": {
         "depends": [],
         "extra_compile_args": [
-            "/O2"
+            "/O2",
+            "/GL"
         ],
         "language": "c++",
         "name": "bnbpy.cython.search",
