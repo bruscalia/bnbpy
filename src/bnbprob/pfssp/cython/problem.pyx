@@ -2,10 +2,13 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from libcpp.vector cimport vector
 
 import logging
 from typing import List, Literal, Optional
 
+from bnbprob.pfssp.cpp.job cimport JobPtr
+from bnbprob.pfssp.cpp.permutation cimport Permutation
 from bnbprob.pfssp.cython.heuristics cimport (
     local_search as ls,
 )
@@ -15,7 +18,6 @@ from bnbprob.pfssp.cython.heuristics cimport (
 from bnbprob.pfssp.cython.heuristics cimport (
     quick_constructive as qc,
 )
-from bnbprob.pfssp.cython.permutation cimport Permutation
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.status import OptStatus
 
@@ -68,8 +70,12 @@ cdef class PermFlowShop:
         p: List[List[int]],
         constructive: Literal['neh', 'quick'] = 'neh'
     ) -> 'PermFlowShop':
-        perm = Permutation.from_p(p)
-        solution = FlowSolution(perm)
+        cdef:
+            Permutation perm
+            FlowSolution solution
+        perm = Permutation(p)
+        solution = FlowSolution()
+        solution.perm = perm
         return cls(
             solution,
             constructive=constructive,
@@ -81,12 +87,28 @@ cdef class PermFlowShop:
         return self.quick_constructive()
 
     cpdef FlowSolution quick_constructive(PermFlowShop self):
-        perm = qc(self.solution.perm.get_sequence_copy())
-        return FlowSolution(perm)
+        cdef:
+            Permutation perm
+            FlowSolution solution
+            vector[JobPtr] jobs
+
+        jobs = self.solution.perm.get_sequence_copy()
+        perm = qc(jobs)
+        solution = FlowSolution()
+        solution.perm = perm
+        return solution
 
     cpdef FlowSolution neh_constructive(PermFlowShop self):
-        perm = neh(self.solution.perm.get_sequence_copy())
-        return FlowSolution(perm)
+        cdef:
+            Permutation perm
+            FlowSolution solution
+            vector[JobPtr] jobs
+
+        jobs = self.solution.perm.get_sequence_copy()
+        perm = neh(jobs)
+        solution = FlowSolution()
+        solution.perm = perm
+        return solution
 
     cpdef FlowSolution local_search(PermFlowShop self):
         cdef:
@@ -95,8 +117,9 @@ cdef class PermFlowShop:
             FlowSolution sol_alt
         lb = self.solution.lb
         perm = ls(self.solution.perm)
-        sol_alt = FlowSolution(perm)
-        new_cost = sol_alt.perm._calc_lb_full()
+        sol_alt = FlowSolution()
+        sol_alt.perm = perm
+        new_cost = perm.calc_lb_full()
         if new_cost < lb:
             return sol_alt
         return None
@@ -127,7 +150,7 @@ cdef class PermFlowShop:
             int lb5, lb
 
         if <int>self.solution.perm.free_jobs.size() == 0:
-            lb5 = self.solution.perm._calc_lb_full()
+            lb5 = self.solution.perm.calc_lb_full()
         else:
             lb5 = self.solution.perm.lower_bound_2m()
         lb = max(self.solution.lb, lb5)

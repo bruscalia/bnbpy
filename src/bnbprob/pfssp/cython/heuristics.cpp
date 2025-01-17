@@ -3,9 +3,24 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "depends": [
+            "src\\bnbprob\\pfssp\\cpp\\job.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\permutation.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\sigma.hpp"
+        ],
+        "include_dirs": [
+            "src\\bnbprob\\pfssp\\cpp",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython"
+        ],
+        "language": "c++",
         "name": "bnbprob.pfssp.cython.heuristics",
         "sources": [
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\heuristics.pyx"
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\heuristics.pyx",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\job.cpp",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\permutation.cpp",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\sigma.cpp",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\utils.cpp"
         ]
     },
     "module_name": "bnbprob.pfssp.cython.heuristics"
@@ -579,19 +594,35 @@ END: Cython Metadata */
 #endif
 #define __PYX_REINTERPRET_FUNCION(func_pointer, other_pointer) ((func_pointer)(void(*)(void))(other_pointer))
 
+#ifndef __cplusplus
+  #error "Cython files generated with the C++ option must be compiled with a C++ compiler."
+#endif
 #ifndef CYTHON_INLINE
   #if defined(__clang__)
     #define CYTHON_INLINE __inline__ __attribute__ ((__unused__))
-  #elif defined(__GNUC__)
-    #define CYTHON_INLINE __inline__
-  #elif defined(_MSC_VER)
-    #define CYTHON_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-    #define CYTHON_INLINE inline
   #else
-    #define CYTHON_INLINE
+    #define CYTHON_INLINE inline
   #endif
 #endif
+template<typename T>
+void __Pyx_call_destructor(T& x) {
+    x.~T();
+}
+template<typename T>
+class __Pyx_FakeReference {
+  public:
+    __Pyx_FakeReference() : ptr(NULL) { }
+    __Pyx_FakeReference(const T& ref) : ptr(const_cast<T*>(&ref)) { }
+    T *operator->() { return ptr; }
+    T *operator&() { return ptr; }
+    operator T&() { return *ptr; }
+    template<typename U> bool operator ==(const U& other) const { return *ptr == other; }
+    template<typename U> bool operator !=(const U& other) const { return *ptr != other; }
+    template<typename U> bool operator==(const __Pyx_FakeReference<U>& other) const { return *ptr == *other.ptr; }
+    template<typename U> bool operator!=(const __Pyx_FakeReference<U>& other) const { return *ptr != *other.ptr; }
+  private:
+    T *ptr;
+};
 
 #define __PYX_BUILD_PY_SSIZE_T "n"
 #define CYTHON_FORMAT_SSIZE_T "z"
@@ -1221,16 +1252,35 @@ static CYTHON_INLINE float __PYX_NAN() {
     #warning Please do not define the '__PYX_EXTERN_C' macro externally. Use 'CYTHON_EXTERN_C' instead.
     #endif
 #else
-  #ifdef __cplusplus
-    #define __PYX_EXTERN_C extern "C"
-  #else
-    #define __PYX_EXTERN_C extern
-  #endif
+    #define __PYX_EXTERN_C extern "C++"
 #endif
 
 #define __PYX_HAVE__bnbprob__pfssp__cython__heuristics
 #define __PYX_HAVE_API__bnbprob__pfssp__cython__heuristics
 /* Early includes */
+#include "ios"
+#include "new"
+#include "stdexcept"
+#include "typeinfo"
+#include <utility>
+
+    #if __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1600)
+    // move should be defined for these versions of MSVC, but __cplusplus isn't set usefully
+    #include <type_traits>
+
+    namespace cython_std {
+    template <typename T> typename std::remove_reference<T>::type&& move(T& t) noexcept { return std::move(t); }
+    template <typename T> typename std::remove_reference<T>::type&& move(T&& t) noexcept { return std::move(t); }
+    }
+
+    #endif
+    
+#include <algorithm>
+#include <vector>
+#include <memory>
+#include "job.hpp"
+#include "sigma.hpp"
+#include "permutation.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1487,6 +1537,36 @@ static const char *__pyx_f[] = {
 /* #### Code section: type_declarations ### */
 
 /*--- Type declarations ---*/
+
+/* "bnbprob/pfssp/cpp/job.pxd":52
+ * 
+ * 
+ * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
+ * 
+ * ctypedef shared_ptr[Job] JobPtrpy
+ */
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr;
+
+/* "bnbprob/pfssp/cpp/job.pxd":54
+ * ctypedef shared_ptr[Job] JobPtr
+ * 
+ * ctypedef shared_ptr[Job] JobPtrpy             # <<<<<<<<<<<<<<
+ */
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrpy;
+
+/* "bnbprob/pfssp/cpp/sigma.pxd":36
+ * 
+ * 
+ * ctypedef shared_ptr[Sigma] SigmaPtret             # <<<<<<<<<<<<<<
+ */
+typedef std::shared_ptr<Sigma>  __pyx_t_7bnbprob_5pfssp_3cpp_5sigma_SigmaPtret;
+
+/* "bnbprob/pfssp/cpp/permutation.pxd":87
+ * 
+ * 
+ * ctypedef Permutation* PermPtr             # <<<<<<<<<<<<<<
+ */
+typedef Permutation *__pyx_t_7bnbprob_5pfssp_3cpp_11permutation_PermPtr;
 /* #### Code section: utility_code_proto ### */
 
 /* --- Runtime support code (head) --- */
@@ -1569,32 +1649,6 @@ static const char *__pyx_f[] = {
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
 /* PyErrExceptionMatches.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
@@ -1656,6 +1710,43 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* PyObjectGetAttrStrNoError.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, PyObject* attr_name);
 
+/* GetBuiltinName.proto */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name);
+
+/* MoveIfSupported.proto */
+#if CYTHON_USE_CPP_STD_MOVE
+  #include <utility>
+  #define __PYX_STD_MOVE_IF_SUPPORTED(x) std::move(x)
+#else
+  #define __PYX_STD_MOVE_IF_SUPPORTED(x) x
+#endif
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -1684,6 +1775,62 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
+/* CppExceptionConversion.proto */
+#ifndef __Pyx_CppExn2PyErr
+#include <new>
+#include <typeinfo>
+#include <stdexcept>
+#include <ios>
+static void __Pyx_CppExn2PyErr() {
+  try {
+    if (PyErr_Occurred())
+      ; // let the latest Python exn pass through and ignore the current one
+    else
+      throw;
+  } catch (const std::bad_alloc& exn) {
+    PyErr_SetString(PyExc_MemoryError, exn.what());
+  } catch (const std::bad_cast& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::bad_typeid& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::domain_error& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::invalid_argument& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::ios_base::failure& exn) {
+    PyErr_SetString(PyExc_IOError, exn.what());
+  } catch (const std::out_of_range& exn) {
+    PyErr_SetString(PyExc_IndexError, exn.what());
+  } catch (const std::overflow_error& exn) {
+    PyErr_SetString(PyExc_OverflowError, exn.what());
+  } catch (const std::range_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::underflow_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::exception& exn) {
+    PyErr_SetString(PyExc_RuntimeError, exn.what());
+  }
+  catch (...)
+  {
+    PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
+  }
+}
+#endif
+
+/* GCCDiagnostics.proto */
+#if !defined(__INTEL_COMPILER) && defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#define __Pyx_HAS_GCC_DIAGNOSTIC
+#endif
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
 /* FormatTypeName.proto */
 #if CYTHON_COMPILING_IN_LIMITED_API
 typedef PyObject *__Pyx_TypeName;
@@ -1697,19 +1844,8 @@ typedef const char *__Pyx_TypeName;
 #define __Pyx_DECREF_TypeName(obj)
 #endif
 
-/* GCCDiagnostics.proto */
-#if !defined(__INTEL_COMPILER) && defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
-#define __Pyx_HAS_GCC_DIAGNOSTIC
-#endif
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1732,12 +1868,47 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 static unsigned long __Pyx_get_runtime_version(void);
 static int __Pyx_check_binary_version(unsigned long ct_version, unsigned long rt_version, int allow_newer);
 
+/* PyObjectSetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
+#else
+#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
+#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
+#endif
+
+/* VoidPtrExport.proto */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
+
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* #### Code section: module_declarations ### */
 
+/* Module declarations from "libcpp" */
+
+/* Module declarations from "libcpp.utility" */
+
+/* Module declarations from "libcpp.algorithm" */
+
+/* Module declarations from "libcpp.vector" */
+
+/* Module declarations from "libcpp.memory" */
+
+/* Module declarations from "bnbprob.pfssp.cpp.job" */
+
+/* Module declarations from "bnbprob.pfssp.cpp.sigma" */
+
+/* Module declarations from "bnbprob.pfssp.cpp.permutation" */
+
 /* Module declarations from "bnbprob.pfssp.cython.heuristics" */
+static int __pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT;
+static void __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &); /*proto*/
+static CYTHON_INLINE bool __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_T(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &); /*proto*/
+static CYTHON_INLINE bool __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_slope(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &); /*proto*/
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.heuristics"
@@ -1746,11 +1917,15 @@ int __pyx_module_is_main_bnbprob__pfssp__cython__heuristics = 0;
 
 /* Implementation of "bnbprob.pfssp.cython.heuristics" */
 /* #### Code section: global_var ### */
+static PyObject *__pyx_builtin_range;
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = "?";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_range[] = "range";
+static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_LARGE_INT[] = "LARGE_INT";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 /* #### Code section: decls ### */
 /* #### Code section: late_includes ### */
@@ -1782,10 +1957,29 @@ typedef struct {
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
   PyObject *__pyx_n_s_;
+  PyObject *__pyx_n_s_LARGE_INT;
   PyObject *__pyx_n_s_cline_in_traceback;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_name;
+  PyObject *__pyx_n_s_pyx_capi;
+  PyObject *__pyx_n_s_range;
   PyObject *__pyx_n_s_test;
 } __pyx_mstate;
 
@@ -1830,9 +2024,12 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_FusedFunctionType);
   #endif
   Py_CLEAR(clear_module_state->__pyx_n_s_);
+  Py_CLEAR(clear_module_state->__pyx_n_s_LARGE_INT);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
+  Py_CLEAR(clear_module_state->__pyx_n_s_pyx_capi);
+  Py_CLEAR(clear_module_state->__pyx_n_s_range);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
   return 0;
 }
@@ -1855,9 +2052,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_FusedFunctionType);
   #endif
   Py_VISIT(traverse_module_state->__pyx_n_s_);
+  Py_VISIT(traverse_module_state->__pyx_n_s_LARGE_INT);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
+  Py_VISIT(traverse_module_state->__pyx_n_s_pyx_capi);
+  Py_VISIT(traverse_module_state->__pyx_n_s_range);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
   return 0;
 }
@@ -1889,12 +2089,1131 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
 #define __pyx_n_s_ __pyx_mstate_global->__pyx_n_s_
+#define __pyx_n_s_LARGE_INT __pyx_mstate_global->__pyx_n_s_LARGE_INT
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
+#define __pyx_n_s_pyx_capi __pyx_mstate_global->__pyx_n_s_pyx_capi
+#define __pyx_n_s_range __pyx_mstate_global->__pyx_n_s_range
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
 /* #### Code section: module_code ### */
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":18
+ * 
+ * 
+ * cdef Permutation quick_constructive(vector[JobPtr]& jobs) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int i, M
+ */
+
+static Permutation __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive(std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &__pyx_v_jobs) {
+  CYTHON_UNUSED int __pyx_v_i;
+  int __pyx_v_M;
+  Permutation __pyx_v_sol;
+  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr __pyx_v_jobptr;
+  Permutation __pyx_r;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_1;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":24
+ *         JobPtr jobptr
+ * 
+ *     M = <int>jobs.size()             # <<<<<<<<<<<<<<
+ *     sort(jobs.begin(), jobs.end(), desc_slope)
+ *     sol = Permutation(M, jobs)
+ */
+  __pyx_v_M = ((int)__pyx_v_jobs.size());
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":25
+ * 
+ *     M = <int>jobs.size()
+ *     sort(jobs.begin(), jobs.end(), desc_slope)             # <<<<<<<<<<<<<<
+ *     sol = Permutation(M, jobs)
+ *     for i in range(sol.free_jobs.size()):
+ */
+  try {
+    std::sort<std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::iterator,bool (__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &)>(__pyx_v_jobs.begin(), __pyx_v_jobs.end(), __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_slope);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 25, __pyx_L1_error)
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":26
+ *     M = <int>jobs.size()
+ *     sort(jobs.begin(), jobs.end(), desc_slope)
+ *     sol = Permutation(M, jobs)             # <<<<<<<<<<<<<<
+ *     for i in range(sol.free_jobs.size()):
+ *         jobptr = sol.free_jobs[0]
+ */
+  __pyx_v_sol = Permutation(__pyx_v_M, __pyx_v_jobs);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":27
+ *     sort(jobs.begin(), jobs.end(), desc_slope)
+ *     sol = Permutation(M, jobs)
+ *     for i in range(sol.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *         jobptr = sol.free_jobs[0]
+ *         sol.sigma1.job_to_bottom(jobptr)
+ */
+  __pyx_t_1 = __pyx_v_sol.free_jobs.size();
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":28
+ *     sol = Permutation(M, jobs)
+ *     for i in range(sol.free_jobs.size()):
+ *         jobptr = sol.free_jobs[0]             # <<<<<<<<<<<<<<
+ *         sol.sigma1.job_to_bottom(jobptr)
+ *         sol.free_jobs.erase(sol.free_jobs.begin())
+ */
+    __pyx_v_jobptr = (__pyx_v_sol.free_jobs[0]);
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":29
+ *     for i in range(sol.free_jobs.size()):
+ *         jobptr = sol.free_jobs[0]
+ *         sol.sigma1.job_to_bottom(jobptr)             # <<<<<<<<<<<<<<
+ *         sol.free_jobs.erase(sol.free_jobs.begin())
+ *         sol.front_updates()
+ */
+    __pyx_v_sol.sigma1.job_to_bottom(__pyx_v_jobptr);
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":30
+ *         jobptr = sol.free_jobs[0]
+ *         sol.sigma1.job_to_bottom(jobptr)
+ *         sol.free_jobs.erase(sol.free_jobs.begin())             # <<<<<<<<<<<<<<
+ *         sol.front_updates()
+ *     return sol
+ */
+    (void)(__pyx_v_sol.free_jobs.erase(__pyx_v_sol.free_jobs.begin()));
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":31
+ *         sol.sigma1.job_to_bottom(jobptr)
+ *         sol.free_jobs.erase(sol.free_jobs.begin())
+ *         sol.front_updates()             # <<<<<<<<<<<<<<
+ *     return sol
+ * 
+ */
+    __pyx_v_sol.front_updates();
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":32
+ *         sol.free_jobs.erase(sol.free_jobs.begin())
+ *         sol.front_updates()
+ *     return sol             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_sol;
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":18
+ * 
+ * 
+ * cdef Permutation quick_constructive(vector[JobPtr]& jobs) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int i, M
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.heuristics.quick_constructive", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":35
+ * 
+ * 
+ * cdef Permutation neh_constructive(vector[JobPtr]& jobs) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int c1, c2, j, i, k, M, best_cost, seq_size, cost_alt
+ */
+
+static Permutation __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive(std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &__pyx_v_jobs) {
+  int __pyx_v_c1;
+  int __pyx_v_c2;
+  int __pyx_v_j;
+  int __pyx_v_i;
+  CYTHON_UNUSED int __pyx_v_k;
+  int __pyx_v_M;
+  int __pyx_v_best_cost;
+  int __pyx_v_seq_size;
+  int __pyx_v_cost_alt;
+  Permutation __pyx_v_s1;
+  Permutation __pyx_v_s2;
+  Permutation __pyx_v_sol;
+  Permutation __pyx_v_best_sol;
+  Permutation __pyx_v_s_alt;
+  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr __pyx_v_job;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  __pyx_v_vec;
+  Permutation __pyx_r;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  __pyx_t_1;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_2;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  long __pyx_t_6;
+  long __pyx_t_7;
+  int __pyx_t_8;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_9;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_10;
+  int __pyx_t_11;
+  __Pyx_FakeReference<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> __pyx_t_12;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":43
+ * 
+ *     # Find best order of two jobs with longest processing times
+ *     sort(jobs.begin(), jobs.end(), desc_T)             # <<<<<<<<<<<<<<
+ * 
+ *     M = <int>deref(jobs[0]).r.size()
+ */
+  try {
+    std::sort<std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::iterator,bool (__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &)>(__pyx_v_jobs.begin(), __pyx_v_jobs.end(), __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_T);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 43, __pyx_L1_error)
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":45
+ *     sort(jobs.begin(), jobs.end(), desc_T)
+ * 
+ *     M = <int>deref(jobs[0]).r.size()             # <<<<<<<<<<<<<<
+ * 
+ *     vec = vector[JobPtr](2)
+ */
+  __pyx_v_M = ((int)(*(__pyx_v_jobs[0])).r.size());
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":47
+ *     M = <int>deref(jobs[0]).r.size()
+ * 
+ *     vec = vector[JobPtr](2)             # <<<<<<<<<<<<<<
+ *     vec[0] = jobs[0]
+ *     vec[1] = jobs[1]
+ */
+  try {
+    __pyx_t_1 = std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> (2);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 47, __pyx_L1_error)
+  }
+  __pyx_v_vec = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":48
+ * 
+ *     vec = vector[JobPtr](2)
+ *     vec[0] = jobs[0]             # <<<<<<<<<<<<<<
+ *     vec[1] = jobs[1]
+ *     s1 = Permutation(M, vec)
+ */
+  (__pyx_v_vec[0]) = (__pyx_v_jobs[0]);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":49
+ *     vec = vector[JobPtr](2)
+ *     vec[0] = jobs[0]
+ *     vec[1] = jobs[1]             # <<<<<<<<<<<<<<
+ *     s1 = Permutation(M, vec)
+ *     for k in range(s1.free_jobs.size()):
+ */
+  (__pyx_v_vec[1]) = (__pyx_v_jobs[1]);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":50
+ *     vec[0] = jobs[0]
+ *     vec[1] = jobs[1]
+ *     s1 = Permutation(M, vec)             # <<<<<<<<<<<<<<
+ *     for k in range(s1.free_jobs.size()):
+ *         s1.sigma1.job_to_bottom(s2.free_jobs[0])
+ */
+  __pyx_v_s1 = Permutation(__pyx_v_M, __pyx_v_vec);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":51
+ *     vec[1] = jobs[1]
+ *     s1 = Permutation(M, vec)
+ *     for k in range(s1.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *         s1.sigma1.job_to_bottom(s2.free_jobs[0])
+ *         s1.free_jobs.erase(s1.free_jobs.begin())
+ */
+  __pyx_t_2 = __pyx_v_s1.free_jobs.size();
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_k = __pyx_t_4;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":52
+ *     s1 = Permutation(M, vec)
+ *     for k in range(s1.free_jobs.size()):
+ *         s1.sigma1.job_to_bottom(s2.free_jobs[0])             # <<<<<<<<<<<<<<
+ *         s1.free_jobs.erase(s1.free_jobs.begin())
+ * 
+ */
+    __pyx_v_s1.sigma1.job_to_bottom((__pyx_v_s2.free_jobs[0]));
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":53
+ *     for k in range(s1.free_jobs.size()):
+ *         s1.sigma1.job_to_bottom(s2.free_jobs[0])
+ *         s1.free_jobs.erase(s1.free_jobs.begin())             # <<<<<<<<<<<<<<
+ * 
+ *     vec = vector[JobPtr](2)
+ */
+    (void)(__pyx_v_s1.free_jobs.erase(__pyx_v_s1.free_jobs.begin()));
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":55
+ *         s1.free_jobs.erase(s1.free_jobs.begin())
+ * 
+ *     vec = vector[JobPtr](2)             # <<<<<<<<<<<<<<
+ *     vec[0] = jobs[1]
+ *     vec[1] = jobs[0]
+ */
+  try {
+    __pyx_t_1 = std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> (2);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 55, __pyx_L1_error)
+  }
+  __pyx_v_vec = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":56
+ * 
+ *     vec = vector[JobPtr](2)
+ *     vec[0] = jobs[1]             # <<<<<<<<<<<<<<
+ *     vec[1] = jobs[0]
+ *     s2 = Permutation(M, vec)
+ */
+  (__pyx_v_vec[0]) = (__pyx_v_jobs[1]);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":57
+ *     vec = vector[JobPtr](2)
+ *     vec[0] = jobs[1]
+ *     vec[1] = jobs[0]             # <<<<<<<<<<<<<<
+ *     s2 = Permutation(M, vec)
+ *     for k in range(s2.free_jobs.size()):
+ */
+  (__pyx_v_vec[1]) = (__pyx_v_jobs[0]);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":58
+ *     vec[0] = jobs[1]
+ *     vec[1] = jobs[0]
+ *     s2 = Permutation(M, vec)             # <<<<<<<<<<<<<<
+ *     for k in range(s2.free_jobs.size()):
+ *         s2.sigma1.job_to_bottom(s2.free_jobs[0])
+ */
+  __pyx_v_s2 = Permutation(__pyx_v_M, __pyx_v_vec);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":59
+ *     vec[1] = jobs[0]
+ *     s2 = Permutation(M, vec)
+ *     for k in range(s2.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *         s2.sigma1.job_to_bottom(s2.free_jobs[0])
+ *         s2.free_jobs.erase(s2.free_jobs.begin())
+ */
+  __pyx_t_2 = __pyx_v_s2.free_jobs.size();
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_k = __pyx_t_4;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":60
+ *     s2 = Permutation(M, vec)
+ *     for k in range(s2.free_jobs.size()):
+ *         s2.sigma1.job_to_bottom(s2.free_jobs[0])             # <<<<<<<<<<<<<<
+ *         s2.free_jobs.erase(s2.free_jobs.begin())
+ * 
+ */
+    __pyx_v_s2.sigma1.job_to_bottom((__pyx_v_s2.free_jobs[0]));
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":61
+ *     for k in range(s2.free_jobs.size()):
+ *         s2.sigma1.job_to_bottom(s2.free_jobs[0])
+ *         s2.free_jobs.erase(s2.free_jobs.begin())             # <<<<<<<<<<<<<<
+ * 
+ *     c1 = s1.calc_lb_full()
+ */
+    (void)(__pyx_v_s2.free_jobs.erase(__pyx_v_s2.free_jobs.begin()));
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":63
+ *         s2.free_jobs.erase(s2.free_jobs.begin())
+ * 
+ *     c1 = s1.calc_lb_full()             # <<<<<<<<<<<<<<
+ *     c2 = s2.calc_lb_full()
+ *     if c1 <= c2:
+ */
+  __pyx_v_c1 = __pyx_v_s1.calc_lb_full();
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":64
+ * 
+ *     c1 = s1.calc_lb_full()
+ *     c2 = s2.calc_lb_full()             # <<<<<<<<<<<<<<
+ *     if c1 <= c2:
+ *         sol = s1
+ */
+  __pyx_v_c2 = __pyx_v_s2.calc_lb_full();
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":65
+ *     c1 = s1.calc_lb_full()
+ *     c2 = s2.calc_lb_full()
+ *     if c1 <= c2:             # <<<<<<<<<<<<<<
+ *         sol = s1
+ *     else:
+ */
+  __pyx_t_5 = (__pyx_v_c1 <= __pyx_v_c2);
+  if (__pyx_t_5) {
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":66
+ *     c2 = s2.calc_lb_full()
+ *     if c1 <= c2:
+ *         sol = s1             # <<<<<<<<<<<<<<
+ *     else:
+ *         sol = s2
+ */
+    __pyx_v_sol = __pyx_v_s1;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":65
+ *     c1 = s1.calc_lb_full()
+ *     c2 = s2.calc_lb_full()
+ *     if c1 <= c2:             # <<<<<<<<<<<<<<
+ *         sol = s1
+ *     else:
+ */
+    goto __pyx_L7;
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":68
+ *         sol = s1
+ *     else:
+ *         sol = s2             # <<<<<<<<<<<<<<
+ * 
+ *     # Find best insert for every other job
+ */
+  /*else*/ {
+    __pyx_v_sol = __pyx_v_s2;
+  }
+  __pyx_L7:;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":71
+ * 
+ *     # Find best insert for every other job
+ *     seq_size = 2             # <<<<<<<<<<<<<<
+ *     for j in range(seq_size, jobs.size()):
+ *         best_cost = LARGE_INT
+ */
+  __pyx_v_seq_size = 2;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":72
+ *     # Find best insert for every other job
+ *     seq_size = 2
+ *     for j in range(seq_size, jobs.size()):             # <<<<<<<<<<<<<<
+ *         best_cost = LARGE_INT
+ *         best_sol = Permutation()
+ */
+  __pyx_t_2 = __pyx_v_jobs.size();
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = __pyx_v_seq_size; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_j = __pyx_t_4;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":73
+ *     seq_size = 2
+ *     for j in range(seq_size, jobs.size()):
+ *         best_cost = LARGE_INT             # <<<<<<<<<<<<<<
+ *         best_sol = Permutation()
+ *         # Positions in sequence
+ */
+    __pyx_v_best_cost = __pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":74
+ *     for j in range(seq_size, jobs.size()):
+ *         best_cost = LARGE_INT
+ *         best_sol = Permutation()             # <<<<<<<<<<<<<<
+ *         # Positions in sequence
+ *         for i in range(seq_size + 1):
+ */
+    __pyx_v_best_sol = Permutation();
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":76
+ *         best_sol = Permutation()
+ *         # Positions in sequence
+ *         for i in range(seq_size + 1):             # <<<<<<<<<<<<<<
+ *             job = jobs[j]
+ *             vec = sol.get_sequence_copy()
+ */
+    __pyx_t_6 = (__pyx_v_seq_size + 1);
+    __pyx_t_7 = __pyx_t_6;
+    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_v_i = __pyx_t_8;
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":77
+ *         # Positions in sequence
+ *         for i in range(seq_size + 1):
+ *             job = jobs[j]             # <<<<<<<<<<<<<<
+ *             vec = sol.get_sequence_copy()
+ *             vec.insert(vec.begin() + i, job)
+ */
+      __pyx_v_job = (__pyx_v_jobs[__pyx_v_j]);
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":78
+ *         for i in range(seq_size + 1):
+ *             job = jobs[j]
+ *             vec = sol.get_sequence_copy()             # <<<<<<<<<<<<<<
+ *             vec.insert(vec.begin() + i, job)
+ *             s_alt = Permutation(M, vec)
+ */
+      __pyx_v_vec = __pyx_v_sol.get_sequence_copy();
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":79
+ *             job = jobs[j]
+ *             vec = sol.get_sequence_copy()
+ *             vec.insert(vec.begin() + i, job)             # <<<<<<<<<<<<<<
+ *             s_alt = Permutation(M, vec)
+ *             # Fix all jobs
+ */
+      try {
+        __pyx_v_vec.insert((__pyx_v_vec.begin() + __pyx_v_i), __pyx_v_job);
+      } catch(...) {
+        __Pyx_CppExn2PyErr();
+        __PYX_ERR(0, 79, __pyx_L1_error)
+      }
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":80
+ *             vec = sol.get_sequence_copy()
+ *             vec.insert(vec.begin() + i, job)
+ *             s_alt = Permutation(M, vec)             # <<<<<<<<<<<<<<
+ *             # Fix all jobs
+ *             for k in range(s_alt.free_jobs.size()):
+ */
+      __pyx_v_s_alt = Permutation(__pyx_v_M, __pyx_v_vec);
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":82
+ *             s_alt = Permutation(M, vec)
+ *             # Fix all jobs
+ *             for k in range(s_alt.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *                 s_alt.sigma1.job_to_bottom(s_alt.free_jobs.at(0))
+ *                 s_alt.free_jobs.erase(s_alt.free_jobs.begin())
+ */
+      __pyx_t_9 = __pyx_v_s_alt.free_jobs.size();
+      __pyx_t_10 = __pyx_t_9;
+      for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+        __pyx_v_k = __pyx_t_11;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":83
+ *             # Fix all jobs
+ *             for k in range(s_alt.free_jobs.size()):
+ *                 s_alt.sigma1.job_to_bottom(s_alt.free_jobs.at(0))             # <<<<<<<<<<<<<<
+ *                 s_alt.free_jobs.erase(s_alt.free_jobs.begin())
+ *             cost_alt = s_alt.calc_lb_full()
+ */
+        try {
+          __pyx_t_12 = __pyx_v_s_alt.free_jobs.at(0);
+        } catch(...) {
+          __Pyx_CppExn2PyErr();
+          __PYX_ERR(0, 83, __pyx_L1_error)
+        }
+        __pyx_v_s_alt.sigma1.job_to_bottom(__pyx_t_12);
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":84
+ *             for k in range(s_alt.free_jobs.size()):
+ *                 s_alt.sigma1.job_to_bottom(s_alt.free_jobs.at(0))
+ *                 s_alt.free_jobs.erase(s_alt.free_jobs.begin())             # <<<<<<<<<<<<<<
+ *             cost_alt = s_alt.calc_lb_full()
+ *             # Update best of iteration
+ */
+        (void)(__pyx_v_s_alt.free_jobs.erase(__pyx_v_s_alt.free_jobs.begin()));
+      }
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":85
+ *                 s_alt.sigma1.job_to_bottom(s_alt.free_jobs.at(0))
+ *                 s_alt.free_jobs.erase(s_alt.free_jobs.begin())
+ *             cost_alt = s_alt.calc_lb_full()             # <<<<<<<<<<<<<<
+ *             # Update best of iteration
+ *             if cost_alt < best_cost:
+ */
+      __pyx_v_cost_alt = __pyx_v_s_alt.calc_lb_full();
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":87
+ *             cost_alt = s_alt.calc_lb_full()
+ *             # Update best of iteration
+ *             if cost_alt < best_cost:             # <<<<<<<<<<<<<<
+ *                 best_cost = cost_alt
+ *                 best_sol = s_alt
+ */
+      __pyx_t_5 = (__pyx_v_cost_alt < __pyx_v_best_cost);
+      if (__pyx_t_5) {
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":88
+ *             # Update best of iteration
+ *             if cost_alt < best_cost:
+ *                 best_cost = cost_alt             # <<<<<<<<<<<<<<
+ *                 best_sol = s_alt
+ *         seq_size += 1
+ */
+        __pyx_v_best_cost = __pyx_v_cost_alt;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":89
+ *             if cost_alt < best_cost:
+ *                 best_cost = cost_alt
+ *                 best_sol = s_alt             # <<<<<<<<<<<<<<
+ *         seq_size += 1
+ *         sol = best_sol
+ */
+        __pyx_v_best_sol = __pyx_v_s_alt;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":87
+ *             cost_alt = s_alt.calc_lb_full()
+ *             # Update best of iteration
+ *             if cost_alt < best_cost:             # <<<<<<<<<<<<<<
+ *                 best_cost = cost_alt
+ *                 best_sol = s_alt
+ */
+      }
+    }
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":90
+ *                 best_cost = cost_alt
+ *                 best_sol = s_alt
+ *         seq_size += 1             # <<<<<<<<<<<<<<
+ *         sol = best_sol
+ *     return sol
+ */
+    __pyx_v_seq_size = (__pyx_v_seq_size + 1);
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":91
+ *                 best_sol = s_alt
+ *         seq_size += 1
+ *         sol = best_sol             # <<<<<<<<<<<<<<
+ *     return sol
+ * 
+ */
+    __pyx_v_sol = __pyx_v_best_sol;
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":92
+ *         seq_size += 1
+ *         sol = best_sol
+ *     return sol             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_sol;
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":35
+ * 
+ * 
+ * cdef Permutation neh_constructive(vector[JobPtr]& jobs) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int c1, c2, j, i, k, M, best_cost, seq_size, cost_alt
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.heuristics.neh_constructive", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":95
+ * 
+ * 
+ * cdef Permutation local_search(Permutation perm) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         bool solved
+ */
+
+static Permutation __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search(Permutation __pyx_v_perm) {
+  CYTHON_UNUSED bool __pyx_v_solved;
+  int __pyx_v_i;
+  int __pyx_v_j;
+  CYTHON_UNUSED int __pyx_v_k;
+  int __pyx_v_best_cost;
+  int __pyx_v_new_cost;
+  Permutation __pyx_v_sol_base;
+  Permutation __pyx_v_best_move;
+  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr __pyx_v_job;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  __pyx_v_vec;
+  Permutation __pyx_v_sol_alt;
+  Permutation __pyx_r;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_1;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_2;
+  int __pyx_t_3;
+  __Pyx_FakeReference<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> __pyx_t_4;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_5;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_10;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_11;
+  int __pyx_t_12;
+  __Pyx_FakeReference<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> __pyx_t_13;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":104
+ * 
+ *     # Solved will only be updated in case a good solution is found
+ *     solved = False             # <<<<<<<<<<<<<<
+ * 
+ *     # A new base solution following the same sequence of the current
+ */
+  __pyx_v_solved = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":107
+ * 
+ *     # A new base solution following the same sequence of the current
+ *     vec = perm.get_sequence_copy()             # <<<<<<<<<<<<<<
+ *     sol_base = Permutation(perm.m, vec)
+ * 
+ */
+  __pyx_v_vec = __pyx_v_perm.get_sequence_copy();
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":108
+ *     # A new base solution following the same sequence of the current
+ *     vec = perm.get_sequence_copy()
+ *     sol_base = Permutation(perm.m, vec)             # <<<<<<<<<<<<<<
+ * 
+ *     # The release date in the first machine must be recomputed
+ */
+  __pyx_v_sol_base = Permutation(__pyx_v_perm.m, __pyx_v_vec);
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":112
+ *     # The release date in the first machine must be recomputed
+ *     # As positions might change
+ *     recompute_r0(sol_base.free_jobs)             # <<<<<<<<<<<<<<
+ *     best_move = Permutation(perm.m, perm.get_sequence_copy())
+ *     for i in range(best_move.free_jobs.size()):
+ */
+  __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(__pyx_v_sol_base.free_jobs); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 112, __pyx_L1_error)
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":113
+ *     # As positions might change
+ *     recompute_r0(sol_base.free_jobs)
+ *     best_move = Permutation(perm.m, perm.get_sequence_copy())             # <<<<<<<<<<<<<<
+ *     for i in range(best_move.free_jobs.size()):
+ *         best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))
+ */
+  __pyx_v_best_move = Permutation(__pyx_v_perm.m, __pyx_v_perm.get_sequence_copy());
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":114
+ *     recompute_r0(sol_base.free_jobs)
+ *     best_move = Permutation(perm.m, perm.get_sequence_copy())
+ *     for i in range(best_move.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *         best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))
+ *         best_move.free_jobs.erase(best_move.free_jobs.begin())
+ */
+  __pyx_t_1 = __pyx_v_best_move.free_jobs.size();
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":115
+ *     best_move = Permutation(perm.m, perm.get_sequence_copy())
+ *     for i in range(best_move.free_jobs.size()):
+ *         best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))             # <<<<<<<<<<<<<<
+ *         best_move.free_jobs.erase(best_move.free_jobs.begin())
+ *     best_cost = best_move.calc_lb_full()
+ */
+    try {
+      __pyx_t_4 = __pyx_v_best_move.free_jobs.at(0);
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(0, 115, __pyx_L1_error)
+    }
+    __pyx_v_best_move.sigma1.job_to_bottom(__pyx_t_4);
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":116
+ *     for i in range(best_move.free_jobs.size()):
+ *         best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))
+ *         best_move.free_jobs.erase(best_move.free_jobs.begin())             # <<<<<<<<<<<<<<
+ *     best_cost = best_move.calc_lb_full()
+ * 
+ */
+    (void)(__pyx_v_best_move.free_jobs.erase(__pyx_v_best_move.free_jobs.begin()));
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":117
+ *         best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))
+ *         best_move.free_jobs.erase(best_move.free_jobs.begin())
+ *     best_cost = best_move.calc_lb_full()             # <<<<<<<<<<<<<<
+ * 
+ *     # Try to remove every job
+ */
+  __pyx_v_best_cost = __pyx_v_best_move.calc_lb_full();
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":120
+ * 
+ *     # Try to remove every job
+ *     for i in range(sol_base.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *         # The current list decreases size in one unit after removal
+ *         for j in range(sol_base.free_jobs.size()):
+ */
+  __pyx_t_1 = __pyx_v_sol_base.free_jobs.size();
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":122
+ *     for i in range(sol_base.free_jobs.size()):
+ *         # The current list decreases size in one unit after removal
+ *         for j in range(sol_base.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *             # Job shouldn't be inserted in the same original position
+ *             # and avoids symmetric swaps
+ */
+    __pyx_t_5 = __pyx_v_sol_base.free_jobs.size();
+    __pyx_t_6 = __pyx_t_5;
+    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+      __pyx_v_j = __pyx_t_7;
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":125
+ *             # Job shouldn't be inserted in the same original position
+ *             # and avoids symmetric swaps
+ *             if j == i or j == i + 1:             # <<<<<<<<<<<<<<
+ *                 continue
+ * 
+ */
+      __pyx_t_9 = (__pyx_v_j == __pyx_v_i);
+      if (!__pyx_t_9) {
+      } else {
+        __pyx_t_8 = __pyx_t_9;
+        goto __pyx_L10_bool_binop_done;
+      }
+      __pyx_t_9 = (__pyx_v_j == (__pyx_v_i + 1));
+      __pyx_t_8 = __pyx_t_9;
+      __pyx_L10_bool_binop_done:;
+      if (__pyx_t_8) {
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":126
+ *             # and avoids symmetric swaps
+ *             if j == i or j == i + 1:
+ *                 continue             # <<<<<<<<<<<<<<
+ * 
+ *             # Here the swap is performed
+ */
+        goto __pyx_L7_continue;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":125
+ *             # Job shouldn't be inserted in the same original position
+ *             # and avoids symmetric swaps
+ *             if j == i or j == i + 1:             # <<<<<<<<<<<<<<
+ *                 continue
+ * 
+ */
+      }
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":129
+ * 
+ *             # Here the swap is performed
+ *             sol_alt = sol_base.copy()             # <<<<<<<<<<<<<<
+ *             job = sol_alt.free_jobs[i]
+ *             sol_alt.free_jobs.erase(sol_alt.free_jobs.begin() + i)
+ */
+      __pyx_v_sol_alt = __pyx_v_sol_base.copy();
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":130
+ *             # Here the swap is performed
+ *             sol_alt = sol_base.copy()
+ *             job = sol_alt.free_jobs[i]             # <<<<<<<<<<<<<<
+ *             sol_alt.free_jobs.erase(sol_alt.free_jobs.begin() + i)
+ *             sol_alt.free_jobs.insert(sol_alt.free_jobs.begin() + j, job)
+ */
+      __pyx_v_job = (__pyx_v_sol_alt.free_jobs[__pyx_v_i]);
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":131
+ *             sol_alt = sol_base.copy()
+ *             job = sol_alt.free_jobs[i]
+ *             sol_alt.free_jobs.erase(sol_alt.free_jobs.begin() + i)             # <<<<<<<<<<<<<<
+ *             sol_alt.free_jobs.insert(sol_alt.free_jobs.begin() + j, job)
+ *             # Careful recomputation althuogh it worked without it
+ */
+      (void)(__pyx_v_sol_alt.free_jobs.erase((__pyx_v_sol_alt.free_jobs.begin() + __pyx_v_i)));
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":132
+ *             job = sol_alt.free_jobs[i]
+ *             sol_alt.free_jobs.erase(sol_alt.free_jobs.begin() + i)
+ *             sol_alt.free_jobs.insert(sol_alt.free_jobs.begin() + j, job)             # <<<<<<<<<<<<<<
+ *             # Careful recomputation althuogh it worked without it
+ *             # probably because of memoryviews
+ */
+      try {
+        __pyx_v_sol_alt.free_jobs.insert((__pyx_v_sol_alt.free_jobs.begin() + __pyx_v_j), __pyx_v_job);
+      } catch(...) {
+        __Pyx_CppExn2PyErr();
+        __PYX_ERR(0, 132, __pyx_L1_error)
+      }
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":135
+ *             # Careful recomputation althuogh it worked without it
+ *             # probably because of memoryviews
+ *             recompute_r0(sol_alt.free_jobs)             # <<<<<<<<<<<<<<
+ * 
+ *             # In the new solution jobs are sequentially
+ */
+      __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(__pyx_v_sol_alt.free_jobs); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L1_error)
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":140
+ *             # inserted in the last position, so only sigma 1 is modified
+ *             # Updates to sigma C for each machine are automatic
+ *             for k in range(sol_alt.free_jobs.size()):             # <<<<<<<<<<<<<<
+ *                 sol_alt.sigma1.job_to_bottom(sol_alt.free_jobs.at(0))
+ *                 sol_alt.free_jobs.erase(sol_alt.free_jobs.begin())
+ */
+      __pyx_t_10 = __pyx_v_sol_alt.free_jobs.size();
+      __pyx_t_11 = __pyx_t_10;
+      for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+        __pyx_v_k = __pyx_t_12;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":141
+ *             # Updates to sigma C for each machine are automatic
+ *             for k in range(sol_alt.free_jobs.size()):
+ *                 sol_alt.sigma1.job_to_bottom(sol_alt.free_jobs.at(0))             # <<<<<<<<<<<<<<
+ *                 sol_alt.free_jobs.erase(sol_alt.free_jobs.begin())
+ * 
+ */
+        try {
+          __pyx_t_13 = __pyx_v_sol_alt.free_jobs.at(0);
+        } catch(...) {
+          __Pyx_CppExn2PyErr();
+          __PYX_ERR(0, 141, __pyx_L1_error)
+        }
+        __pyx_v_sol_alt.sigma1.job_to_bottom(__pyx_t_13);
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":142
+ *             for k in range(sol_alt.free_jobs.size()):
+ *                 sol_alt.sigma1.job_to_bottom(sol_alt.free_jobs.at(0))
+ *                 sol_alt.free_jobs.erase(sol_alt.free_jobs.begin())             # <<<<<<<<<<<<<<
+ * 
+ *             # New bound is computed considering sigma C
+ */
+        (void)(__pyx_v_sol_alt.free_jobs.erase(__pyx_v_sol_alt.free_jobs.begin()));
+      }
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":145
+ * 
+ *             # New bound is computed considering sigma C
+ *             new_cost = sol_alt.calc_lb_full()             # <<<<<<<<<<<<<<
+ *             if new_cost < best_cost:
+ *                 best_move = sol_alt
+ */
+      __pyx_v_new_cost = __pyx_v_sol_alt.calc_lb_full();
+
+      /* "bnbprob/pfssp/cython/heuristics.pyx":146
+ *             # New bound is computed considering sigma C
+ *             new_cost = sol_alt.calc_lb_full()
+ *             if new_cost < best_cost:             # <<<<<<<<<<<<<<
+ *                 best_move = sol_alt
+ *                 best_cost = new_cost
+ */
+      __pyx_t_8 = (__pyx_v_new_cost < __pyx_v_best_cost);
+      if (__pyx_t_8) {
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":147
+ *             new_cost = sol_alt.calc_lb_full()
+ *             if new_cost < best_cost:
+ *                 best_move = sol_alt             # <<<<<<<<<<<<<<
+ *                 best_cost = new_cost
+ *                 solved = True
+ */
+        __pyx_v_best_move = __pyx_v_sol_alt;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":148
+ *             if new_cost < best_cost:
+ *                 best_move = sol_alt
+ *                 best_cost = new_cost             # <<<<<<<<<<<<<<
+ *                 solved = True
+ * 
+ */
+        __pyx_v_best_cost = __pyx_v_new_cost;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":149
+ *                 best_move = sol_alt
+ *                 best_cost = new_cost
+ *                 solved = True             # <<<<<<<<<<<<<<
+ * 
+ *     return best_move
+ */
+        __pyx_v_solved = 1;
+
+        /* "bnbprob/pfssp/cython/heuristics.pyx":146
+ *             # New bound is computed considering sigma C
+ *             new_cost = sol_alt.calc_lb_full()
+ *             if new_cost < best_cost:             # <<<<<<<<<<<<<<
+ *                 best_move = sol_alt
+ *                 best_cost = new_cost
+ */
+      }
+      __pyx_L7_continue:;
+    }
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":151
+ *                 solved = True
+ * 
+ *     return best_move             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_best_move;
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":95
+ * 
+ * 
+ * cdef Permutation local_search(Permutation perm) except *:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         bool solved
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("bnbprob.pfssp.cython.heuristics.local_search", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":154
+ * 
+ * 
+ * cdef inline bool desc_T(JobPtr& a, JobPtr& b):             # <<<<<<<<<<<<<<
+ *     return deref(b).T < deref(a).T  # Sort by T in descending order
+ * 
+ */
+
+static CYTHON_INLINE bool __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_T(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &__pyx_v_a, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &__pyx_v_b) {
+  bool __pyx_r;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":155
+ * 
+ * cdef inline bool desc_T(JobPtr& a, JobPtr& b):
+ *     return deref(b).T < deref(a).T  # Sort by T in descending order             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = ((*__pyx_v_b).T < (*__pyx_v_a).T);
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":154
+ * 
+ * 
+ * cdef inline bool desc_T(JobPtr& a, JobPtr& b):             # <<<<<<<<<<<<<<
+ *     return deref(b).T < deref(a).T  # Sort by T in descending order
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":158
+ * 
+ * 
+ * cdef inline bool desc_slope(JobPtr& a, JobPtr& b):             # <<<<<<<<<<<<<<
+ *     return deref(b).slope < deref(a).slope  # Sort by slope in descending order
+ * 
+ */
+
+static CYTHON_INLINE bool __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_desc_slope(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &__pyx_v_a, __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &__pyx_v_b) {
+  bool __pyx_r;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":159
+ * 
+ * cdef inline bool desc_slope(JobPtr& a, JobPtr& b):
+ *     return deref(b).slope < deref(a).slope  # Sort by slope in descending order             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = ((*__pyx_v_b).slope < (*__pyx_v_a).slope);
+  goto __pyx_L0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":158
+ * 
+ * 
+ * cdef inline bool desc_slope(JobPtr& a, JobPtr& b):             # <<<<<<<<<<<<<<
+ *     return deref(b).slope < deref(a).slope  # Sort by slope in descending order
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "bnbprob/pfssp/cython/heuristics.pyx":162
+ * 
+ * 
+ * cdef void recompute_r0(vector[JobPtr]& jobs):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int j
+ */
+
+static void __pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0(std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &__pyx_v_jobs) {
+  int __pyx_v_j;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_1;
+  std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr> ::size_type __pyx_t_2;
+  int __pyx_t_3;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":165
+ *     cdef:
+ *         int j
+ *     deref(jobs[0]).r[0] = 0             # <<<<<<<<<<<<<<
+ *     for j in range(1, jobs.size()):
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]
+ */
+  ((*(__pyx_v_jobs[0])).r[0]) = 0;
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":166
+ *         int j
+ *     deref(jobs[0]).r[0] = 0
+ *     for j in range(1, jobs.size()):             # <<<<<<<<<<<<<<
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]
+ */
+  __pyx_t_1 = __pyx_v_jobs.size();
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 1; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_j = __pyx_t_3;
+
+    /* "bnbprob/pfssp/cython/heuristics.pyx":167
+ *     deref(jobs[0]).r[0] = 0
+ *     for j in range(1, jobs.size()):
+ *         deref(jobs[j]).r[0] = deref(jobs[j - 1]).r[0] + deref(deref(jobs[j - 1]).p)[0]             # <<<<<<<<<<<<<<
+ */
+    ((*(__pyx_v_jobs[__pyx_v_j])).r[0]) = (((*(__pyx_v_jobs[(__pyx_v_j - 1)])).r[0]) + ((*(*(__pyx_v_jobs[(__pyx_v_j - 1)])).p)[0]));
+  }
+
+  /* "bnbprob/pfssp/cython/heuristics.pyx":162
+ * 
+ * 
+ * cdef void recompute_r0(vector[JobPtr]& jobs):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         int j
+ */
+
+  /* function exit code */
+}
 
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
@@ -1913,9 +3232,12 @@ static PyMethodDef __pyx_methods[] = {
 static int __Pyx_CreateStringTabAndInitStrings(void) {
   __Pyx_StringTabEntry __pyx_string_tab[] = {
     {&__pyx_n_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 1},
+    {&__pyx_n_s_LARGE_INT, __pyx_k_LARGE_INT, sizeof(__pyx_k_LARGE_INT), 0, 0, 1, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+    {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
+    {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
     {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
     {0, 0, 0, 0, 0, 0, 0}
   };
@@ -1923,7 +3245,10 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 27, __pyx_L1_error)
   return 0;
+  __pyx_L1_error:;
+  return -1;
 }
 /* #### Code section: cached_constants ### */
 
@@ -1966,18 +3291,35 @@ static int __Pyx_modinit_global_init_code(void) {
 
 static int __Pyx_modinit_variable_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_export_code", 0);
   /*--- Variable export code ---*/
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_LARGE_INT, (void *)&__pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("quick_constructive", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_quick_constructive, "Permutation (std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("neh_constructive", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_neh_constructive, "Permutation (std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("local_search", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_local_search, "Permutation (Permutation)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("recompute_r0", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_10heuristics_recompute_r0, "void (std::vector<__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr>  &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(void) {
@@ -2279,8 +3621,8 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
-  (void)__Pyx_modinit_variable_export_code();
-  (void)__Pyx_modinit_function_export_code();
+  if (unlikely((__Pyx_modinit_variable_export_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (unlikely((__Pyx_modinit_function_export_code() < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
@@ -2290,10 +3632,19 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
+  /* "bnbprob/pfssp/cython/heuristics.pyx":15
+ * 
+ * cdef:
+ *     int LARGE_INT = 10000000             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_v_7bnbprob_5pfssp_6cython_10heuristics_LARGE_INT = 0x989680;
+
   /* "bnbprob/pfssp/cython/heuristics.pyx":1
- * # # distutils: language = c++             # <<<<<<<<<<<<<<
- * # # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
- *
+ * # distutils: language = c++             # <<<<<<<<<<<<<<
+ * # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+ * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2365,32 +3716,6 @@ end:
     Py_XDECREF(p);
     Py_XDECREF(m);
     return (__Pyx_RefNannyAPIStruct *)r;
-}
-#endif
-
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
 }
 #endif
 
@@ -2538,6 +3863,46 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, P
     return result;
 #endif
 }
+
+/* GetBuiltinName */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
+    PyObject* result = __Pyx_PyObject_GetAttrStrNoError(__pyx_b, name);
+    if (unlikely(!result) && !PyErr_Occurred()) {
+        PyErr_Format(PyExc_NameError,
+#if PY_MAJOR_VERSION >= 3
+            "name '%U' is not defined", name);
+#else
+            "name '%.200s' is not defined", PyString_AS_STRING(name));
+#endif
+    }
+    return result;
+}
+
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
 
 /* CLineInTraceback */
 #ifndef CYTHON_CLINE_IN_TRACEBACK
@@ -2856,93 +4221,6 @@ bad:
 }
 #endif
 
-/* FormatTypeName */
-#if CYTHON_COMPILING_IN_LIMITED_API
-static __Pyx_TypeName
-__Pyx_PyType_GetName(PyTypeObject* tp)
-{
-    PyObject *name = __Pyx_PyObject_GetAttrStr((PyObject *)tp,
-                                               __pyx_n_s_name);
-    if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
-        PyErr_Clear();
-        Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s_);
-    }
-    return name;
-}
-#endif
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        unsigned char *bytes = (unsigned char *)&value;
-#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
-        if (is_unsigned) {
-            return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
-        } else {
-            return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
-        }
-#elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-#else
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        PyObject *from_bytes, *result = NULL;
-        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
-        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
-        if (!from_bytes) return NULL;
-        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(long));
-        if (!py_bytes) goto limited_bad;
-        order_str = PyUnicode_FromString(little ? "little" : "big");
-        if (!order_str) goto limited_bad;
-        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
-        if (!arg_tuple) goto limited_bad;
-        if (!is_unsigned) {
-            kwds = PyDict_New();
-            if (!kwds) goto limited_bad;
-            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
-        }
-        result = PyObject_Call(from_bytes, arg_tuple, kwds);
-        limited_bad:
-        Py_XDECREF(kwds);
-        Py_XDECREF(arg_tuple);
-        Py_XDECREF(order_str);
-        Py_XDECREF(py_bytes);
-        Py_XDECREF(from_bytes);
-        return result;
-#endif
-    }
-}
-
 /* CIntFromPyVerify */
 #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
@@ -2964,273 +4242,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         }\
         return (target_type) value;\
     }
-
-/* CIntFromPy */
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if ((sizeof(long) < sizeof(long))) {
-            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (long) val;
-        }
-    }
-#endif
-    if (unlikely(!PyLong_Check(x))) {
-        long val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (long) -1;
-        val = __Pyx_PyInt_As_long(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-    if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-        if (unlikely(__Pyx_PyLong_IsNeg(x))) {
-            goto raise_neg_overflow;
-        } else if (__Pyx_PyLong_IsCompact(x)) {
-            __PYX_VERIFY_RETURN_INT(long, __Pyx_compact_upylong, __Pyx_PyLong_CompactValueUnsigned(x))
-        } else {
-            const digit* digits = __Pyx_PyLong_Digits(x);
-            assert(__Pyx_PyLong_DigitCount(x) > 1);
-            switch (__Pyx_PyLong_DigitCount(x)) {
-                case 2:
-                    if ((8 * sizeof(long) > 1 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) >= 2 * PyLong_SHIFT)) {
-                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if ((8 * sizeof(long) > 2 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) >= 3 * PyLong_SHIFT)) {
-                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if ((8 * sizeof(long) > 3 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) >= 4 * PyLong_SHIFT)) {
-                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
-                        }
-                    }
-                    break;
-            }
-        }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A7
-        if (unlikely(Py_SIZE(x) < 0)) {
-            goto raise_neg_overflow;
-        }
-#else
-        {
-            int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-            if (unlikely(result < 0))
-                return (long) -1;
-            if (unlikely(result == 1))
-                goto raise_neg_overflow;
-        }
-#endif
-        if ((sizeof(long) <= sizeof(unsigned long))) {
-            __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-        } else if ((sizeof(long) <= sizeof(unsigned PY_LONG_LONG))) {
-            __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-        }
-    } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-        if (__Pyx_PyLong_IsCompact(x)) {
-            __PYX_VERIFY_RETURN_INT(long, __Pyx_compact_pylong, __Pyx_PyLong_CompactValue(x))
-        } else {
-            const digit* digits = __Pyx_PyLong_Digits(x);
-            assert(__Pyx_PyLong_DigitCount(x) > 1);
-            switch (__Pyx_PyLong_SignedDigitCount(x)) {
-                case -2:
-                    if ((8 * sizeof(long) - 1 > 1 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
-                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if ((8 * sizeof(long) > 1 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
-                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
-                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if ((8 * sizeof(long) > 2 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
-                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 4 * PyLong_SHIFT)) {
-                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if ((8 * sizeof(long) > 3 * PyLong_SHIFT)) {
-                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if ((8 * sizeof(long) - 1 > 4 * PyLong_SHIFT)) {
-                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
-                        }
-                    }
-                    break;
-            }
-        }
-#endif
-        if ((sizeof(long) <= sizeof(long))) {
-            __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-        } else if ((sizeof(long) <= sizeof(PY_LONG_LONG))) {
-            __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-        }
-    }
-    {
-        long val;
-        int ret = -1;
-#if PY_VERSION_HEX >= 0x030d00A6 && !CYTHON_COMPILING_IN_LIMITED_API
-        Py_ssize_t bytes_copied = PyLong_AsNativeBytes(
-            x, &val, sizeof(val), Py_ASNATIVEBYTES_NATIVE_ENDIAN | (is_unsigned ? Py_ASNATIVEBYTES_UNSIGNED_BUFFER | Py_ASNATIVEBYTES_REJECT_NEGATIVE : 0));
-        if (unlikely(bytes_copied == -1)) {
-        } else if (unlikely(bytes_copied > (Py_ssize_t) sizeof(val))) {
-            goto raise_overflow;
-        } else {
-            ret = 0;
-        }
-#elif PY_VERSION_HEX < 0x030d0000 && !(CYTHON_COMPILING_IN_PYPY || CYTHON_COMPILING_IN_LIMITED_API) || defined(_PyLong_AsByteArray)
-        int one = 1; int is_little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&val;
-        ret = _PyLong_AsByteArray((PyLongObject *)x,
-                                    bytes, sizeof(val),
-                                    is_little, !is_unsigned);
-#else
-        PyObject *v;
-        PyObject *stepval = NULL, *mask = NULL, *shift = NULL;
-        int bits, remaining_bits, is_negative = 0;
-        int chunk_size = (sizeof(long) < 8) ? 30 : 62;
-        if (likely(PyLong_CheckExact(x))) {
-            v = __Pyx_NewRef(x);
-        } else {
-            v = PyNumber_Long(x);
-            if (unlikely(!v)) return (long) -1;
-            assert(PyLong_CheckExact(v));
-        }
-        {
-            int result = PyObject_RichCompareBool(v, Py_False, Py_LT);
-            if (unlikely(result < 0)) {
-                Py_DECREF(v);
-                return (long) -1;
-            }
-            is_negative = result == 1;
-        }
-        if (is_unsigned && unlikely(is_negative)) {
-            Py_DECREF(v);
-            goto raise_neg_overflow;
-        } else if (is_negative) {
-            stepval = PyNumber_Invert(v);
-            Py_DECREF(v);
-            if (unlikely(!stepval))
-                return (long) -1;
-        } else {
-            stepval = v;
-        }
-        v = NULL;
-        val = (long) 0;
-        mask = PyLong_FromLong((1L << chunk_size) - 1); if (unlikely(!mask)) goto done;
-        shift = PyLong_FromLong(chunk_size); if (unlikely(!shift)) goto done;
-        for (bits = 0; bits < (int) sizeof(long) * 8 - chunk_size; bits += chunk_size) {
-            PyObject *tmp, *digit;
-            long idigit;
-            digit = PyNumber_And(stepval, mask);
-            if (unlikely(!digit)) goto done;
-            idigit = PyLong_AsLong(digit);
-            Py_DECREF(digit);
-            if (unlikely(idigit < 0)) goto done;
-            val |= ((long) idigit) << bits;
-            tmp = PyNumber_Rshift(stepval, shift);
-            if (unlikely(!tmp)) goto done;
-            Py_DECREF(stepval); stepval = tmp;
-        }
-        Py_DECREF(shift); shift = NULL;
-        Py_DECREF(mask); mask = NULL;
-        {
-            long idigit = PyLong_AsLong(stepval);
-            if (unlikely(idigit < 0)) goto done;
-            remaining_bits = ((int) sizeof(long) * 8) - bits - (is_unsigned ? 0 : 1);
-            if (unlikely(idigit >= (1L << remaining_bits)))
-                goto raise_overflow;
-            val |= ((long) idigit) << bits;
-        }
-        if (!is_unsigned) {
-            if (unlikely(val & (((long) 1) << (sizeof(long) * 8 - 1))))
-                goto raise_overflow;
-            if (is_negative)
-                val = ~val;
-        }
-        ret = 0;
-    done:
-        Py_XDECREF(shift);
-        Py_XDECREF(mask);
-        Py_XDECREF(stepval);
-#endif
-        if (unlikely(ret))
-            return (long) -1;
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to long");
-    return (long) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to long");
-    return (long) -1;
-}
 
 /* CIntFromPy */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
@@ -3499,6 +4510,431 @@ raise_neg_overflow:
     return (int) -1;
 }
 
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const int neg_one = (int) -1, const_zero = (int) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        unsigned char *bytes = (unsigned char *)&value;
+#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+        if (is_unsigned) {
+            return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+        } else {
+            return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+        }
+#elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+#else
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        PyObject *from_bytes, *result = NULL;
+        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
+        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+        if (!from_bytes) return NULL;
+        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(int));
+        if (!py_bytes) goto limited_bad;
+        order_str = PyUnicode_FromString(little ? "little" : "big");
+        if (!order_str) goto limited_bad;
+        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
+        if (!arg_tuple) goto limited_bad;
+        if (!is_unsigned) {
+            kwds = PyDict_New();
+            if (!kwds) goto limited_bad;
+            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
+        }
+        result = PyObject_Call(from_bytes, arg_tuple, kwds);
+        limited_bad:
+        Py_XDECREF(kwds);
+        Py_XDECREF(arg_tuple);
+        Py_XDECREF(order_str);
+        Py_XDECREF(py_bytes);
+        Py_XDECREF(from_bytes);
+        return result;
+#endif
+    }
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        unsigned char *bytes = (unsigned char *)&value;
+#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+        if (is_unsigned) {
+            return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+        } else {
+            return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+        }
+#elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+#else
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        PyObject *from_bytes, *result = NULL;
+        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
+        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+        if (!from_bytes) return NULL;
+        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(long));
+        if (!py_bytes) goto limited_bad;
+        order_str = PyUnicode_FromString(little ? "little" : "big");
+        if (!order_str) goto limited_bad;
+        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
+        if (!arg_tuple) goto limited_bad;
+        if (!is_unsigned) {
+            kwds = PyDict_New();
+            if (!kwds) goto limited_bad;
+            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
+        }
+        result = PyObject_Call(from_bytes, arg_tuple, kwds);
+        limited_bad:
+        Py_XDECREF(kwds);
+        Py_XDECREF(arg_tuple);
+        Py_XDECREF(order_str);
+        Py_XDECREF(py_bytes);
+        Py_XDECREF(from_bytes);
+        return result;
+#endif
+    }
+}
+
+/* FormatTypeName */
+#if CYTHON_COMPILING_IN_LIMITED_API
+static __Pyx_TypeName
+__Pyx_PyType_GetName(PyTypeObject* tp)
+{
+    PyObject *name = __Pyx_PyObject_GetAttrStr((PyObject *)tp,
+                                               __pyx_n_s_name);
+    if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
+        PyErr_Clear();
+        Py_XDECREF(name);
+        name = __Pyx_NewRef(__pyx_n_s_);
+    }
+    return name;
+}
+#endif
+
+/* CIntFromPy */
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if ((sizeof(long) < sizeof(long))) {
+            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (long) val;
+        }
+    }
+#endif
+    if (unlikely(!PyLong_Check(x))) {
+        long val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (long) -1;
+        val = __Pyx_PyInt_As_long(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+    if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+        if (unlikely(__Pyx_PyLong_IsNeg(x))) {
+            goto raise_neg_overflow;
+        } else if (__Pyx_PyLong_IsCompact(x)) {
+            __PYX_VERIFY_RETURN_INT(long, __Pyx_compact_upylong, __Pyx_PyLong_CompactValueUnsigned(x))
+        } else {
+            const digit* digits = __Pyx_PyLong_Digits(x);
+            assert(__Pyx_PyLong_DigitCount(x) > 1);
+            switch (__Pyx_PyLong_DigitCount(x)) {
+                case 2:
+                    if ((8 * sizeof(long) > 1 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) >= 2 * PyLong_SHIFT)) {
+                            return (long) (((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if ((8 * sizeof(long) > 2 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) >= 3 * PyLong_SHIFT)) {
+                            return (long) (((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if ((8 * sizeof(long) > 3 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) >= 4 * PyLong_SHIFT)) {
+                            return (long) (((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0]));
+                        }
+                    }
+                    break;
+            }
+        }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A7
+        if (unlikely(Py_SIZE(x) < 0)) {
+            goto raise_neg_overflow;
+        }
+#else
+        {
+            int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+            if (unlikely(result < 0))
+                return (long) -1;
+            if (unlikely(result == 1))
+                goto raise_neg_overflow;
+        }
+#endif
+        if ((sizeof(long) <= sizeof(unsigned long))) {
+            __PYX_VERIFY_RETURN_INT_EXC(long, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+        } else if ((sizeof(long) <= sizeof(unsigned PY_LONG_LONG))) {
+            __PYX_VERIFY_RETURN_INT_EXC(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+        }
+    } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+        if (__Pyx_PyLong_IsCompact(x)) {
+            __PYX_VERIFY_RETURN_INT(long, __Pyx_compact_pylong, __Pyx_PyLong_CompactValue(x))
+        } else {
+            const digit* digits = __Pyx_PyLong_Digits(x);
+            assert(__Pyx_PyLong_DigitCount(x) > 1);
+            switch (__Pyx_PyLong_SignedDigitCount(x)) {
+                case -2:
+                    if ((8 * sizeof(long) - 1 > 1 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
+                            return (long) (((long)-1)*(((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if ((8 * sizeof(long) > 1 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
+                            return (long) ((((((long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if ((8 * sizeof(long) - 1 > 2 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
+                            return (long) (((long)-1)*(((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if ((8 * sizeof(long) > 2 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
+                            return (long) ((((((((long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if ((8 * sizeof(long) - 1 > 3 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 4 * PyLong_SHIFT)) {
+                            return (long) (((long)-1)*(((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if ((8 * sizeof(long) > 3 * PyLong_SHIFT)) {
+                        if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                            __PYX_VERIFY_RETURN_INT(long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if ((8 * sizeof(long) - 1 > 4 * PyLong_SHIFT)) {
+                            return (long) ((((((((((long)digits[3]) << PyLong_SHIFT) | (long)digits[2]) << PyLong_SHIFT) | (long)digits[1]) << PyLong_SHIFT) | (long)digits[0])));
+                        }
+                    }
+                    break;
+            }
+        }
+#endif
+        if ((sizeof(long) <= sizeof(long))) {
+            __PYX_VERIFY_RETURN_INT_EXC(long, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+        } else if ((sizeof(long) <= sizeof(PY_LONG_LONG))) {
+            __PYX_VERIFY_RETURN_INT_EXC(long, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+        }
+    }
+    {
+        long val;
+        int ret = -1;
+#if PY_VERSION_HEX >= 0x030d00A6 && !CYTHON_COMPILING_IN_LIMITED_API
+        Py_ssize_t bytes_copied = PyLong_AsNativeBytes(
+            x, &val, sizeof(val), Py_ASNATIVEBYTES_NATIVE_ENDIAN | (is_unsigned ? Py_ASNATIVEBYTES_UNSIGNED_BUFFER | Py_ASNATIVEBYTES_REJECT_NEGATIVE : 0));
+        if (unlikely(bytes_copied == -1)) {
+        } else if (unlikely(bytes_copied > (Py_ssize_t) sizeof(val))) {
+            goto raise_overflow;
+        } else {
+            ret = 0;
+        }
+#elif PY_VERSION_HEX < 0x030d0000 && !(CYTHON_COMPILING_IN_PYPY || CYTHON_COMPILING_IN_LIMITED_API) || defined(_PyLong_AsByteArray)
+        int one = 1; int is_little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&val;
+        ret = _PyLong_AsByteArray((PyLongObject *)x,
+                                    bytes, sizeof(val),
+                                    is_little, !is_unsigned);
+#else
+        PyObject *v;
+        PyObject *stepval = NULL, *mask = NULL, *shift = NULL;
+        int bits, remaining_bits, is_negative = 0;
+        int chunk_size = (sizeof(long) < 8) ? 30 : 62;
+        if (likely(PyLong_CheckExact(x))) {
+            v = __Pyx_NewRef(x);
+        } else {
+            v = PyNumber_Long(x);
+            if (unlikely(!v)) return (long) -1;
+            assert(PyLong_CheckExact(v));
+        }
+        {
+            int result = PyObject_RichCompareBool(v, Py_False, Py_LT);
+            if (unlikely(result < 0)) {
+                Py_DECREF(v);
+                return (long) -1;
+            }
+            is_negative = result == 1;
+        }
+        if (is_unsigned && unlikely(is_negative)) {
+            Py_DECREF(v);
+            goto raise_neg_overflow;
+        } else if (is_negative) {
+            stepval = PyNumber_Invert(v);
+            Py_DECREF(v);
+            if (unlikely(!stepval))
+                return (long) -1;
+        } else {
+            stepval = v;
+        }
+        v = NULL;
+        val = (long) 0;
+        mask = PyLong_FromLong((1L << chunk_size) - 1); if (unlikely(!mask)) goto done;
+        shift = PyLong_FromLong(chunk_size); if (unlikely(!shift)) goto done;
+        for (bits = 0; bits < (int) sizeof(long) * 8 - chunk_size; bits += chunk_size) {
+            PyObject *tmp, *digit;
+            long idigit;
+            digit = PyNumber_And(stepval, mask);
+            if (unlikely(!digit)) goto done;
+            idigit = PyLong_AsLong(digit);
+            Py_DECREF(digit);
+            if (unlikely(idigit < 0)) goto done;
+            val |= ((long) idigit) << bits;
+            tmp = PyNumber_Rshift(stepval, shift);
+            if (unlikely(!tmp)) goto done;
+            Py_DECREF(stepval); stepval = tmp;
+        }
+        Py_DECREF(shift); shift = NULL;
+        Py_DECREF(mask); mask = NULL;
+        {
+            long idigit = PyLong_AsLong(stepval);
+            if (unlikely(idigit < 0)) goto done;
+            remaining_bits = ((int) sizeof(long) * 8) - bits - (is_unsigned ? 0 : 1);
+            if (unlikely(idigit >= (1L << remaining_bits)))
+                goto raise_overflow;
+            val |= ((long) idigit) << bits;
+        }
+        if (!is_unsigned) {
+            if (unlikely(val & (((long) 1) << (sizeof(long) * 8 - 1))))
+                goto raise_overflow;
+            if (is_negative)
+                val = ~val;
+        }
+        ret = 0;
+    done:
+        Py_XDECREF(shift);
+        Py_XDECREF(mask);
+        Py_XDECREF(stepval);
+#endif
+        if (unlikely(ret))
+            return (long) -1;
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to long");
+    return (long) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to long");
+    return (long) -1;
+}
+
 /* FastTypeChecks */
 #if CYTHON_COMPILING_IN_CPYTHON
 static int __Pyx_InBases(PyTypeObject *a, PyTypeObject *b) {
@@ -3660,6 +5096,80 @@ static int __Pyx_check_binary_version(unsigned long ct_version, unsigned long rt
        );
         return PyErr_WarnEx(NULL, message, 1);
     }
+}
+
+/* PyObjectSetAttrStr */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_setattro))
+        return tp->tp_setattro(obj, attr_name, value);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_setattr))
+        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
+#endif
+    return PyObject_SetAttr(obj, attr_name, value);
+}
+#endif
+
+/* VoidPtrExport */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
+    PyObject *d;
+    PyObject *cobj = 0;
+    d = PyDict_GetItem(__pyx_d, __pyx_n_s_pyx_capi);
+    Py_XINCREF(d);
+    if (!d) {
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        if (__Pyx_PyObject_SetAttrStr(__pyx_m, __pyx_n_s_pyx_capi, d) < 0)
+            goto bad;
+    }
+    cobj = PyCapsule_New(p, sig, 0);
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItem(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
+}
+
+/* FunctionExport */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* InitStrings */

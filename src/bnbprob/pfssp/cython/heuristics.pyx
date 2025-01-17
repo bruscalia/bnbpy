@@ -7,9 +7,9 @@ from libcpp.vector cimport vector
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cython.job cimport JobPtr
-from bnbprob.pfssp.cython.permutation cimport Permutation, start_perm
-from bnbprob.pfssp.cython.sequence cimport Sigma, empty_sigma, job_to_bottom
+from bnbprob.pfssp.cpp.job cimport JobPtr
+from bnbprob.pfssp.cpp.permutation cimport Permutation
+from bnbprob.pfssp.cpp.sigma cimport Sigma
 
 cdef:
     int LARGE_INT = 10000000
@@ -19,12 +19,14 @@ cdef Permutation quick_constructive(vector[JobPtr]& jobs) except *:
     cdef:
         int i, M
         Permutation sol
+        JobPtr jobptr
 
     M = <int>jobs.size()
     sort(jobs.begin(), jobs.end(), desc_slope)
-    sol = start_perm(M, jobs)
+    sol = Permutation(M, jobs)
     for i in range(sol.free_jobs.size()):
-        job_to_bottom(sol.sigma1, sol.free_jobs[0])
+        jobptr = sol.free_jobs[0]
+        sol.sigma1.job_to_bottom(jobptr)
         sol.free_jobs.erase(sol.free_jobs.begin())
         sol.front_updates()
     return sol
@@ -45,17 +47,17 @@ cdef Permutation neh_constructive(vector[JobPtr]& jobs) except *:
     vec = vector[JobPtr](2)
     vec[0] = jobs[0]
     vec[1] = jobs[1]
-    s1 = start_perm(M, vec)
+    s1 = Permutation(M, vec)
     for k in range(s1.free_jobs.size()):
-        job_to_bottom(s1.sigma1, s1.free_jobs[0])
+        s1.sigma1.job_to_bottom(s2.free_jobs[0])
         s1.free_jobs.erase(s1.free_jobs.begin())
 
     vec = vector[JobPtr](2)
     vec[0] = jobs[1]
     vec[1] = jobs[0]
-    s2 = start_perm(M, vec)
+    s2 = Permutation(M, vec)
     for k in range(s2.free_jobs.size()):
-        job_to_bottom(s2.sigma1, s2.free_jobs[0])
+        s2.sigma1.job_to_bottom(s2.free_jobs[0])
         s2.free_jobs.erase(s2.free_jobs.begin())
 
     c1 = s1.calc_lb_full()
@@ -69,16 +71,16 @@ cdef Permutation neh_constructive(vector[JobPtr]& jobs) except *:
     seq_size = 2
     for j in range(seq_size, jobs.size()):
         best_cost = LARGE_INT
-        best_sol = Permutation.__new__(Permutation)
+        best_sol = Permutation()
         # Positions in sequence
         for i in range(seq_size + 1):
             job = jobs[j]
             vec = sol.get_sequence_copy()
             vec.insert(vec.begin() + i, job)
-            s_alt = start_perm(M, vec)
+            s_alt = Permutation(M, vec)
             # Fix all jobs
             for k in range(s_alt.free_jobs.size()):
-                job_to_bottom(s_alt.sigma1, s_alt.free_jobs.at(0))
+                s_alt.sigma1.job_to_bottom(s_alt.free_jobs.at(0))
                 s_alt.free_jobs.erase(s_alt.free_jobs.begin())
             cost_alt = s_alt.calc_lb_full()
             # Update best of iteration
@@ -90,7 +92,7 @@ cdef Permutation neh_constructive(vector[JobPtr]& jobs) except *:
     return sol
 
 
-cpdef Permutation local_search(Permutation perm) except *:
+cdef Permutation local_search(Permutation perm) except *:
     cdef:
         bool solved
         int i, j, k, best_cost, new_cost
@@ -103,14 +105,14 @@ cpdef Permutation local_search(Permutation perm) except *:
 
     # A new base solution following the same sequence of the current
     vec = perm.get_sequence_copy()
-    sol_base = start_perm(perm.m, vec)
+    sol_base = Permutation(perm.m, vec)
 
     # The release date in the first machine must be recomputed
     # As positions might change
     recompute_r0(sol_base.free_jobs)
-    best_move = start_perm(perm.m, perm.get_sequence_copy())
+    best_move = Permutation(perm.m, perm.get_sequence_copy())
     for i in range(best_move.free_jobs.size()):
-        job_to_bottom(best_move.sigma1, best_move.free_jobs.at(0))
+        best_move.sigma1.job_to_bottom(best_move.free_jobs.at(0))
         best_move.free_jobs.erase(best_move.free_jobs.begin())
     best_cost = best_move.calc_lb_full()
 
@@ -136,7 +138,7 @@ cpdef Permutation local_search(Permutation perm) except *:
             # inserted in the last position, so only sigma 1 is modified
             # Updates to sigma C for each machine are automatic
             for k in range(sol_alt.free_jobs.size()):
-                job_to_bottom(sol_alt.sigma1, sol_alt.free_jobs.at(0))
+                sol_alt.sigma1.job_to_bottom(sol_alt.free_jobs.at(0))
                 sol_alt.free_jobs.erase(sol_alt.free_jobs.begin())
 
             # New bound is computed considering sigma C

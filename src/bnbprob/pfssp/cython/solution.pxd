@@ -3,7 +3,7 @@
 
 from libcpp cimport bool
 
-from bnbprob.pfssp.cython.permutation cimport Permutation
+from bnbprob.pfssp.cpp.permutation cimport Permutation
 
 
 cdef:
@@ -14,8 +14,10 @@ cdef class FlowSolution:
 
     cdef public:
         int cost, lb
-        Permutation perm
         object status
+
+    cdef:
+        Permutation perm
 
     cpdef void set_optimal(FlowSolution self)
 

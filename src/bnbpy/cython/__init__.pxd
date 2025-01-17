@@ -4,5 +4,4 @@
 from libcpp cimport bool
 
 
-cpdef inline bool is_compiled():
-    return True
+cpdef bool is_compiled()

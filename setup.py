@@ -126,25 +126,16 @@ def construct_build_ext(build_ext):
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
 CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
+CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
+CPP_FILES_PFSSP = [
+    os.path.join(CPP_PATH_PFSSP, f)
+    for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
+]
+HPP_PATH_PFSSP = os.path.join(ROOT, 'include')
 
 
 def get_ext_pfssp(f: str):
-    if f == 'job.pyx':
-        return [
-            os.path.join(CY_PATH_PFSSP, f),
-            os.path.join(CY_PATH_PFSSP, f)[:-3] + 'cpp'
-        ]
-    return [
-        os.path.join(CY_PATH_PFSSP, f),
-        os.path.join(CY_PATH_PFSSP, 'job.cpp')
-    ]
-
-
-def get_ext_path_pfssp(f: str):
-    return [CY_PATH_PFSSP]
-    # if f == 'job.pyx':
-    #     return [CY_PATH_PFSSP]
-    # return []
+    return [os.path.join(CY_PATH_PFSSP, f)] + CPP_FILES_PFSSP
 
 
 if params.nopyx:
@@ -156,26 +147,29 @@ else:
             Extension(
                 f'bnbpy.cython.{f[:-4]}',
                 [os.path.join(CY_PATH, f)],
-                extra_compile_args=["/O2"],
+                # extra_compile_args=["/O2"],
             )
             for f in os.listdir(CY_PATH) if f.endswith('.pyx')
         ]
         ext_modules_pfssp = [
             Extension(
+                f'bnbprob.pfssp.cpp.{f[:-4]}',
+                # CPP_FILES_PFSSP,
+                [os.path.join(CPP_PATH_PFSSP, f)],
+                include_dirs=[CPP_PATH_PFSSP],
+                # extra_compile_args=["/O2"],
+            )
+            for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
+        ] + [
+            Extension(
                 f'bnbprob.pfssp.cython.{f[:-4]}',
                 get_ext_pfssp(f),
-                include_dirs=get_ext_path_pfssp(f),
+                include_dirs=[CPP_PATH_PFSSP, CY_PATH_PFSSP],
                 # extra_compile_args=["/O2"],
             )
             for f in os.listdir(CY_PATH_PFSSP) if f.endswith('.pyx')
-        ] + [
-            Extension(
-                'bnbprob.pfssp.cython.job',
-                [os.path.join(CY_PATH_PFSSP, 'job.cpp')],
-                include_dirs=[CY_PATH_PFSSP],
-                # extra_compile_args=["/O2"],
-            )
         ]
+
         ext_modules_ = ext_modules_base + ext_modules_pfssp
         if params.nocython:
             ext_modules = ext_modules_

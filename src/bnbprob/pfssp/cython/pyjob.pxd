@@ -3,7 +3,7 @@
 
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport JobPtr
+from bnbprob.pfssp.cpp.job cimport JobPtr
 
 cdef class PyJob:
 

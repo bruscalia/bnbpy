@@ -19,7 +19,7 @@ from bnbpy.status import OptStatus  # noqa: F401
 
 try:
     from bnbpy.cython import is_compiled
-except ModuleNotFoundError as e:
+except (ModuleNotFoundError, ImportError) as e:
     print("Cython modules not found")
     print(e)
 

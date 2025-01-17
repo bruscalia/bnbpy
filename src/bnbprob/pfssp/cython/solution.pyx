@@ -4,9 +4,9 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cython.job cimport JobPtr
+from bnbprob.pfssp.cpp.job cimport JobPtr
+from bnbprob.pfssp.cpp.permutation cimport Permutation
 from bnbprob.pfssp.cython.pyjob cimport PyJob, job_to_py
-from bnbprob.pfssp.cython.permutation cimport Permutation
 from bnbpy.status import OptStatus
 
 
@@ -16,14 +16,13 @@ cdef:
 
 cdef class FlowSolution:
 
-    def __init__(self, Permutation perm):
-        self.perm = perm
+    def __init__(self):
         self.cost = LARGE_INT
         self.lb = 0
         self.status = OptStatus.NO_SOLUTION
 
     def __del__(self):
-        self.perm = None
+        pass
 
     def __repr__(self) -> str:
         return self._signature
@@ -106,20 +105,20 @@ cdef class FlowSolution:
         return self.perm.lower_bound_1m()
 
     cpdef void push_job(FlowSolution self, int& j):
-        self.perm._push_job(j)
+        self.perm.push_job(j)
 
     cdef void _push_job(FlowSolution self, int& j):
-        self.perm._push_job(j)
+        self.perm.push_job(j)
 
     cpdef FlowSolution copy(FlowSolution self):
-        return self._copy()
+        return self.copy()
 
     cdef FlowSolution _copy(FlowSolution self):
         cdef:
             FlowSolution sol
 
         sol = FlowSolution.__new__(FlowSolution)
-        sol.perm = self.perm._copy()
+        sol.perm = self.perm.copy()
         sol.cost = LARGE_INT
         sol.lb = 0
         sol.status = OptStatus.NO_SOLUTION
