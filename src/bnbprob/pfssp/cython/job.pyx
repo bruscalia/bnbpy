@@ -24,11 +24,11 @@ cdef class Job:
 
     @property
     def slope(self):
-        return self.slope
+        return self.get_slope()
 
     @property
     def T(self):
-        return self.T
+        return self.get_T()
 
     cpdef Job pycopy(Job self):
         return self.copy()
