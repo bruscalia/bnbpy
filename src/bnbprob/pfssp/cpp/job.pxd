@@ -51,4 +51,4 @@ cdef extern from "job.hpp":
 
 ctypedef shared_ptr[Job] JobPtr
 
-ctypedef shared_ptr[Job] JobPtrpy
+ctypedef shared_ptr[Job] JobPtrpo

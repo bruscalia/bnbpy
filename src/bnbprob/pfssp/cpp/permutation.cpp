@@ -192,10 +192,10 @@ void Permutation::compute_starts()
     }
 
     for (int i = 1; i < this->m; ++i){
-        seq[0]->r[m] = seq[0]->r[m - 1] + seq[0]->p->at(m - 1);
+        seq[0]->r[i] = seq[0]->r[i - 1] + seq[0]->p->at(i - 1);
     }
 
-    for (int j = 0; j < seq.size(); ++j){
+    for (int j = 1; j < seq.size(); ++j){
         JobPtr job = seq[j];
         JobPtr prev = seq[j - 1];
         job->r[0] = prev->r[0] + prev->p->at(0);
@@ -208,14 +208,18 @@ void Permutation::compute_starts()
     }
 }
 
-// // Feasibility check
+// Feasibility check
 bool Permutation::is_feasible()
 {
     // Implementation here
-    return this->free_jobs.size() == 0;
+    bool valid = (this->free_jobs.size() == 0);
+    if (valid){
+        this->compute_starts();
+    }
+    return valid;
 }
 
-// // Lower bound calculations
+// Lower bound calculations
 int Permutation::calc_lb_1m()
 {
     // Implementation here

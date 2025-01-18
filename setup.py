@@ -147,7 +147,7 @@ else:
             Extension(
                 f'bnbpy.cython.{f[:-4]}',
                 [os.path.join(CY_PATH, f)],
-                # extra_compile_args=["/O2"],
+                # compile_options=['/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG', '/MD'],
             )
             for f in os.listdir(CY_PATH) if f.endswith('.pyx')
         ]
@@ -157,7 +157,7 @@ else:
                 # CPP_FILES_PFSSP,
                 [os.path.join(CPP_PATH_PFSSP, f)],
                 include_dirs=[CPP_PATH_PFSSP],
-                # extra_compile_args=["/O2"],
+                # compile_options=['/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG', '/MD'],
             )
             for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
         ] + [
@@ -165,7 +165,7 @@ else:
                 f'bnbprob.pfssp.cython.{f[:-4]}',
                 get_ext_pfssp(f),
                 include_dirs=[CPP_PATH_PFSSP, CY_PATH_PFSSP],
-                # extra_compile_args=["/O2"],
+                # compile_options=['/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG', '/MD'],
             )
             for f in os.listdir(CY_PATH_PFSSP) if f.endswith('.pyx')
         ]

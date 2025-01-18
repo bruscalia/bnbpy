@@ -6,11 +6,9 @@ from libcpp cimport bool
 from typing import Optional
 
 from bnbprob.pfssp.cpp.permutation cimport Permutation
-from bnbprob.pfssp.cython.heuristics cimport (
-    local_search as ls,
-    neh_constructive as neh,
-    quick_constructive as qc,
-)
+from bnbprob.pfssp.cpp.local_search cimport local_search
+from bnbprob.pfssp.cpp.neh cimport neh_constructive
+from bnbprob.pfssp.cpp.quick_constructive cimport quick_constructive
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 
 

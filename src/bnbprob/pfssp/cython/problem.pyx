@@ -9,15 +9,9 @@ from typing import List, Literal, Optional
 
 from bnbprob.pfssp.cpp.job cimport JobPtr
 from bnbprob.pfssp.cpp.permutation cimport Permutation
-from bnbprob.pfssp.cython.heuristics cimport (
-    local_search as ls,
-)
-from bnbprob.pfssp.cython.heuristics cimport (
-    neh_constructive as neh,
-)
-from bnbprob.pfssp.cython.heuristics cimport (
-    quick_constructive as qc,
-)
+from bnbprob.pfssp.cpp.local_search cimport local_search
+from bnbprob.pfssp.cpp.neh cimport neh_constructive
+from bnbprob.pfssp.cpp.quick_constructive cimport quick_constructive
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.status import OptStatus
 
@@ -93,7 +87,7 @@ cdef class PermFlowShop:
             vector[JobPtr] jobs
 
         jobs = self.solution.perm.get_sequence_copy()
-        perm = qc(jobs)
+        perm = quick_constructive(jobs)
         solution = FlowSolution()
         solution.perm = perm
         return solution
@@ -105,7 +99,7 @@ cdef class PermFlowShop:
             vector[JobPtr] jobs
 
         jobs = self.solution.perm.get_sequence_copy()
-        perm = neh(jobs)
+        perm = neh_constructive(jobs)
         solution = FlowSolution()
         solution.perm = perm
         return solution
@@ -116,7 +110,7 @@ cdef class PermFlowShop:
             Permutation perm
             FlowSolution sol_alt
         lb = self.solution.lb
-        perm = ls(self.solution.perm)
+        perm = local_search(self.solution.perm)
         sol_alt = FlowSolution()
         sol_alt.perm = perm
         new_cost = perm.calc_lb_full()
