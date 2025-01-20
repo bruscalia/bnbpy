@@ -153,12 +153,14 @@ else:
         ]
         ext_modules_pfssp = [
             Extension(
-                f'bnbprob.pfssp.cpp.{f[:-4]}',
-                CPP_FILES_PFSSP,
+                # f'bnbprob.pfssp.cpp.{f[:-4]}',
+                'bnbprob.pfssp.cpp.environ',
+                [os.path.join(CPP_PATH_PFSSP, 'environ.pyx')]
+                    + CPP_FILES_PFSSP,
                 include_dirs=[CPP_PATH_PFSSP],
                 language="c++",
             )
-            for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
+            # for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
         ] + [
             Extension(
                 f'bnbprob.pfssp.cython.{f[:-4]}',

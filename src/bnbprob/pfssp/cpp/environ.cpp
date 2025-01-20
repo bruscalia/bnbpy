@@ -3,13 +3,22 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "depends": [
+            "src\\bnbprob\\pfssp\\cpp\\job.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\local_search.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\neh.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\permutation.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\quick_constructive.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\sigma.hpp"
+        ],
         "include_dirs": [
+            "src\\bnbprob\\pfssp\\cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp"
         ],
         "language": "c++",
-        "name": "bnbprob.pfssp.cython.__init__",
+        "name": "bnbprob.pfssp.cpp.environ",
         "sources": [
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\__init__.pyx",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\environ.pyx",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\environ.cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\job.cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\local_search.cpp",
@@ -20,7 +29,7 @@
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\utils.cpp"
         ]
     },
-    "module_name": "bnbprob.pfssp.cython.__init__"
+    "module_name": "bnbprob.pfssp.cpp.environ"
 }
 END: Cython Metadata */
 
@@ -1252,9 +1261,21 @@ static CYTHON_INLINE float __PYX_NAN() {
     #define __PYX_EXTERN_C extern "C++"
 #endif
 
-#define __PYX_HAVE__bnbprob__pfssp__cython
-#define __PYX_HAVE_API__bnbprob__pfssp__cython
+#define __PYX_HAVE__bnbprob__pfssp__cpp__environ
+#define __PYX_HAVE_API__bnbprob__pfssp__cpp__environ
 /* Early includes */
+#include "ios"
+#include "new"
+#include "stdexcept"
+#include "typeinfo"
+#include <vector>
+#include <memory>
+#include "job.hpp"
+#include "sigma.hpp"
+#include "permutation.hpp"
+#include "local_search.hpp"
+#include "neh.hpp"
+#include "quick_constructive.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1503,7 +1524,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "src\\\\bnbprob\\\\pfssp\\\\cython\\\\__init__.pyx",
+  "src\\\\bnbprob\\\\pfssp\\\\cpp\\\\environ.pyx",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* #### Code section: numeric_typedefs ### */
@@ -1511,6 +1532,15 @@ static const char *__pyx_f[] = {
 /* #### Code section: type_declarations ### */
 
 /*--- Type declarations ---*/
+
+/* "bnbprob/pfssp/cpp/environ.pxd":51
+ * 
+ * 
+ * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr;
 /* #### Code section: utility_code_proto ### */
 
 /* --- Runtime support code (head) --- */
@@ -1592,13 +1622,6 @@ static const char *__pyx_f[] = {
     } while (0)
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
-
-/* SetPackagePathFromImportLib.proto */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_PEP489_MULTI_PHASE_INIT
-static int __Pyx_SetPackagePathFromImportLib(PyObject *module_name);
-#else
-#define __Pyx_SetPackagePathFromImportLib(a) 0
-#endif
 
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -1768,14 +1791,20 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* #### Code section: module_declarations ### */
 
-/* Module declarations from "bnbprob.pfssp.cython" */
+/* Module declarations from "libcpp" */
+
+/* Module declarations from "libcpp.vector" */
+
+/* Module declarations from "libcpp.memory" */
+
+/* Module declarations from "bnbprob.pfssp.cpp.environ" */
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "bnbprob.pfssp.cython.__init__"
-extern int __pyx_module_is_main_bnbprob__pfssp__cython____init__;
-int __pyx_module_is_main_bnbprob__pfssp__cython____init__ = 0;
+#define __Pyx_MODULE_NAME "bnbprob.pfssp.cpp.environ"
+extern int __pyx_module_is_main_bnbprob__pfssp__cpp__environ;
+int __pyx_module_is_main_bnbprob__pfssp__cpp__environ = 0;
 
-/* Implementation of "bnbprob.pfssp.cython" */
+/* Implementation of "bnbprob.pfssp.cpp.environ" */
 /* #### Code section: global_var ### */
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = "?";
@@ -1783,7 +1812,6 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_bnbprob_pfssp_cython___init[] = "bnbprob.pfssp.cython.__init__";
 /* #### Code section: decls ### */
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -1814,8 +1842,13 @@ typedef struct {
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
+  #if CYTHON_USE_MODULE_STATE
+  #endif
   PyObject *__pyx_n_s_;
-  PyObject *__pyx_kp_u_bnbprob_pfssp_cython___init;
   PyObject *__pyx_n_s_cline_in_traceback;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_name;
@@ -1863,7 +1896,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_FusedFunctionType);
   #endif
   Py_CLEAR(clear_module_state->__pyx_n_s_);
-  Py_CLEAR(clear_module_state->__pyx_kp_u_bnbprob_pfssp_cython___init);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
@@ -1889,7 +1921,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_FusedFunctionType);
   #endif
   Py_VISIT(traverse_module_state->__pyx_n_s_);
-  Py_VISIT(traverse_module_state->__pyx_kp_u_bnbprob_pfssp_cython___init);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
@@ -1924,8 +1955,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
+#if CYTHON_USE_MODULE_STATE
+#endif
 #define __pyx_n_s_ __pyx_mstate_global->__pyx_n_s_
-#define __pyx_kp_u_bnbprob_pfssp_cython___init __pyx_mstate_global->__pyx_kp_u_bnbprob_pfssp_cython___init
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
@@ -1949,7 +1985,6 @@ static PyMethodDef __pyx_methods[] = {
 static int __Pyx_CreateStringTabAndInitStrings(void) {
   __Pyx_StringTabEntry __pyx_string_tab[] = {
     {&__pyx_n_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 1},
-    {&__pyx_kp_u_bnbprob_pfssp_cython___init, __pyx_k_bnbprob_pfssp_cython___init, sizeof(__pyx_k_bnbprob_pfssp_cython___init), 0, 1, 0, 0},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -2053,10 +2088,10 @@ static int __Pyx_modinit_function_import_code(void) {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_cython(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_environ(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_cython},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_environ},
   {0, NULL}
 };
 #endif
@@ -2069,7 +2104,7 @@ namespace {
   #endif
   {
       PyModuleDef_HEAD_INIT,
-      "cython",
+      "environ",
       0, /* m_doc */
     #if CYTHON_PEP489_MULTI_PHASE_INIT
       0, /* m_size */
@@ -2117,17 +2152,11 @@ namespace {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initcython(void) CYTHON_SMALL_CODE; /*proto*/
-#if !defined(CYTHON_NO_PYINIT_EXPORT) && (defined(_WIN32) || defined(WIN32) || defined(MS_WINDOWS))
-__Pyx_PyMODINIT_FUNC init__init__(void) { initcython(); }
-#endif
-__Pyx_PyMODINIT_FUNC initcython(void)
+__Pyx_PyMODINIT_FUNC initenviron(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initenviron(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_cython(void) CYTHON_SMALL_CODE; /*proto*/
-#if !defined(CYTHON_NO_PYINIT_EXPORT) && (defined(_WIN32) || defined(WIN32) || defined(MS_WINDOWS))
-__Pyx_PyMODINIT_FUNC PyInit___init__(void) { return PyInit_cython(); }
-#endif
-__Pyx_PyMODINIT_FUNC PyInit_cython(void)
+__Pyx_PyMODINIT_FUNC PyInit_environ(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_environ(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -2208,7 +2237,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_cython(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_environ(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -2225,7 +2254,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_cython(PyObject *__pyx_pyinit_modu
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'cython' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'environ' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -2237,13 +2266,13 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_cython(PyObject *__pyx_pyinit_modu
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("cython", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("environ", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   if (unlikely(!__pyx_m)) __PYX_ERR(0, 1, __pyx_L1_error)
   #elif CYTHON_USE_MODULE_STATE
   __pyx_t_1 = PyModule_Create(&__pyx_moduledef); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   {
     int add_module_result = PyState_AddModule(__pyx_t_1, &__pyx_moduledef);
-    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "cython" pseudovariable */
+    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "environ" pseudovariable */
     if (unlikely((add_module_result < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     pystate_addmodule_run = 1;
   }
@@ -2267,7 +2296,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_cython(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_environ(void)", 0);
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -2305,17 +2334,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_bnbprob__pfssp__cython____init__) {
+  if (__pyx_module_is_main_bnbprob__pfssp__cpp__environ) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  }
-  if (!CYTHON_PEP489_MULTI_PHASE_INIT) {
-    if (unlikely((__Pyx_SetPackagePathFromImportLib(__pyx_kp_u_bnbprob_pfssp_cython___init) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "bnbprob.pfssp.cython")) {
-      if (unlikely((PyDict_SetItemString(modules, "bnbprob.pfssp.cython", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "bnbprob.pfssp.cpp.environ")) {
+      if (unlikely((PyDict_SetItemString(modules, "bnbprob.pfssp.cpp.environ", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2336,9 +2362,9 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "bnbprob/pfssp/cython/__init__.pyx":1
+  /* "bnbprob/pfssp/cpp/environ.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
- * # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True
+ * # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2352,7 +2378,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init bnbprob.pfssp.cython", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init bnbprob.pfssp.cpp.environ", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -2366,7 +2392,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init bnbprob.pfssp.cython");
+    PyErr_SetString(PyExc_ImportError, "init bnbprob.pfssp.cpp.environ");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2410,57 +2436,6 @@ end:
     Py_XDECREF(p);
     Py_XDECREF(m);
     return (__Pyx_RefNannyAPIStruct *)r;
-}
-#endif
-
-/* SetPackagePathFromImportLib */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_PEP489_MULTI_PHASE_INIT
-static int __Pyx_SetPackagePathFromImportLib(PyObject *module_name) {
-    PyObject *importlib, *osmod, *ossep, *parts, *package_path;
-    PyObject *file_path = NULL;
-    int result;
-    PyObject *spec;
-    importlib = PyImport_ImportModule("importlib.util");
-    if (unlikely(!importlib))
-        goto bad;
-    spec = PyObject_CallMethod(importlib, "find_spec", "(O)", module_name);
-    Py_DECREF(importlib);
-    if (unlikely(!spec))
-        goto bad;
-    file_path = PyObject_GetAttrString(spec, "origin");
-    Py_DECREF(spec);
-    if (unlikely(!file_path))
-        goto bad;
-    if (unlikely(PyObject_SetAttrString(__pyx_m, "__file__", file_path) < 0))
-        goto bad;
-    osmod = PyImport_ImportModule("os");
-    if (unlikely(!osmod))
-        goto bad;
-    ossep = PyObject_GetAttrString(osmod, "sep");
-    Py_DECREF(osmod);
-    if (unlikely(!ossep))
-        goto bad;
-    parts = PyObject_CallMethod(file_path, "rsplit", "(Oi)", ossep, 1);
-    Py_DECREF(file_path); file_path = NULL;
-    Py_DECREF(ossep);
-    if (unlikely(!parts))
-        goto bad;
-    package_path = Py_BuildValue("[O]", PyList_GET_ITEM(parts, 0));
-    Py_DECREF(parts);
-    if (unlikely(!package_path))
-        goto bad;
-    goto set_path;
-bad:
-    PyErr_WriteUnraisable(module_name);
-    Py_XDECREF(file_path);
-    PyErr_Clear();
-    package_path = PyList_New(0);
-    if (unlikely(!package_path))
-        return -1;
-set_path:
-    result = PyObject_SetAttrString(__pyx_m, "__path__", package_path);
-    Py_DECREF(package_path);
-    return result;
 }
 #endif
 

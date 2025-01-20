@@ -3,7 +3,7 @@
 
 from libcpp cimport bool
 
-from bnbprob.pfssp.cpp.permutation cimport Permutation
+from bnbprob.pfssp.cpp.environ cimport Permutation
 
 
 cdef:

@@ -4,8 +4,7 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from bnbprob.pfssp.cpp.job cimport JobPtr
-from bnbprob.pfssp.cpp.permutation cimport Permutation
+from bnbprob.pfssp.cpp.environ cimport JobPtr, Permutation
 from bnbprob.pfssp.cython.pyjob cimport PyJob, job_to_py
 from bnbpy.status import OptStatus
 

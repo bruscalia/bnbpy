@@ -6,7 +6,7 @@ from libcpp.memory cimport make_shared
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pfssp.cpp.job cimport Job, JobPtr
+from bnbprob.pfssp.cpp.environ cimport Job, JobPtr
 
 INIT_ERROR = 'C++ Job shared pointer not initialized'
 

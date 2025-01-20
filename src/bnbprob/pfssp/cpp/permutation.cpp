@@ -95,7 +95,7 @@ std::vector<int> Permutation::get_q()
 // Modification methods
 void Permutation::push_job(const int &j)
 {
-    JobPtr jobptr = this->free_jobs[j];
+    JobPtr &jobptr = this->free_jobs[j];
     // Implementation here
     if (this->level % 2 == 0)
     {
@@ -124,7 +124,7 @@ void Permutation::front_updates()
     // Implementation here
     for (int j = 0; j < this->free_jobs.size(); ++j)
     {
-        JobPtr job = this->free_jobs[j];
+        JobPtr &job = this->free_jobs[j];
         job->r[0] = this->sigma1.C[0];
         for (int k = 1; k < this->m; ++k)
         {
@@ -139,7 +139,7 @@ void Permutation::back_updates()
     // Implementation here
     for (int j = 0; j < this->free_jobs.size(); ++j)
     {
-        JobPtr job = this->free_jobs[j];
+        JobPtr &job = this->free_jobs[j];
         job->q[this->m - 1] = this->sigma2.C[this->m - 1];
         for (int k = this->m - 2; k >= 0; --k)
         {
@@ -168,8 +168,8 @@ void Permutation::compute_starts()
 
     for (int j = 1; j < seq.size(); ++j)
     {
-        JobPtr job = seq[j];
-        JobPtr prev = seq[j - 1];
+        JobPtr &job = seq[j];
+        JobPtr &prev = seq[j - 1];
         job->r[0] = prev->r[0] + prev->p->at(0);
         for (int i = 1; i < this->m; ++i)
         {
@@ -203,7 +203,7 @@ int Permutation::lower_bound_1m()
 
         for (int j = 0; j < this->free_jobs.size(); ++j)
         {
-            JobPtr jobptr = this->free_jobs[j];
+            JobPtr &jobptr = this->free_jobs[j];
             if (jobptr->r[k] < min_r)
             {
                 min_r = jobptr->r[k];

@@ -4,7 +4,12 @@
 {
     "distutils": {
         "depends": [
-            "src\\bnbprob\\pfssp\\cpp\\job.hpp"
+            "src\\bnbprob\\pfssp\\cpp\\job.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\local_search.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\neh.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\permutation.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\quick_constructive.hpp",
+            "src\\bnbprob\\pfssp\\cpp\\sigma.hpp"
         ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cpp",
@@ -14,6 +19,7 @@
         "name": "bnbprob.pfssp.cython.pyjob",
         "sources": [
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython\\pyjob.pyx",
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\environ.cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\job.cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\local_search.cpp",
             "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp\\neh.cpp",
@@ -1265,6 +1271,11 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <vector>
 #include <memory>
 #include "job.hpp"
+#include "sigma.hpp"
+#include "permutation.hpp"
+#include "local_search.hpp"
+#include "neh.hpp"
+#include "quick_constructive.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1529,24 +1540,17 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob;
 
-/* "bnbprob/pfssp/cpp/job.pxd":51
+/* "bnbprob/pfssp/cpp/environ.pxd":51
  * 
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
  * 
- * ctypedef shared_ptr[Job] JobPtrAlter
- */
-typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr;
-
-/* "bnbprob/pfssp/cpp/job.pxd":53
- * ctypedef shared_ptr[Job] JobPtr
  * 
- * ctypedef shared_ptr[Job] JobPtrAlter             # <<<<<<<<<<<<<<
  */
-typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrAlter;
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr;
 
 /* "bnbprob/pfssp/cython/pyjob.pxd":8
- * from bnbprob.pfssp.cpp.job cimport JobPtr
+ * from bnbprob.pfssp.cpp.environ cimport JobPtr
  * 
  * cdef class PyJob:             # <<<<<<<<<<<<<<
  * 
@@ -1555,7 +1559,7 @@ typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrAlter;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob {
   PyObject_HEAD
   struct __pyx_vtabstruct_7bnbprob_5pfssp_6cython_5pyjob_PyJob *__pyx_vtab;
-  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr job;
+  __pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr job;
 };
 
 
@@ -2299,7 +2303,7 @@ static int __pyx_f_7bnbprob_5pfssp_6cython_5pyjob_5PyJob_get_T(struct __pyx_obj_
 
 /* Module declarations from "libcpp.memory" */
 
-/* Module declarations from "bnbprob.pfssp.cpp.job" */
+/* Module declarations from "bnbprob.pfssp.cpp.environ" */
 
 /* Module declarations from "bnbprob.pfssp.cython.pyjob" */
 static std::vector<int>  __pyx_convert_vector_from_py_int(PyObject *); /*proto*/
@@ -5623,7 +5627,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_5pyjob_5PyJob_18__setstate_cyt
  *         PyJob out
  */
 
-static struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *__pyx_f_7bnbprob_5pfssp_6cython_5pyjob_job_to_py(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &__pyx_v_jobptr) {
+static struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *__pyx_f_7bnbprob_5pfssp_6cython_5pyjob_job_to_py(__pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr &__pyx_v_jobptr) {
   struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *__pyx_v_out = 0;
   struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -5738,7 +5742,7 @@ static PyObject *__pyx_tp_new_7bnbprob_5pfssp_6cython_5pyjob_PyJob(PyTypeObject 
   #endif
   p = ((struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *)o);
   p->__pyx_vtab = __pyx_vtabptr_7bnbprob_5pfssp_6cython_5pyjob_PyJob;
-  new((void*)&(p->job)) __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr();
+  new((void*)&(p->job)) __pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr();
   return o;
 }
 
@@ -6149,7 +6153,7 @@ static int __Pyx_modinit_function_export_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("job_to_py", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_5pyjob_job_to_py, "struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *(__pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("job_to_py", (void (*)(void))__pyx_f_7bnbprob_5pfssp_6cython_5pyjob_job_to_py, "struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob *(__pyx_t_7bnbprob_5pfssp_3cpp_7environ_JobPtr &)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6510,7 +6514,7 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "bnbprob/pfssp/cython/pyjob.pyx":11
- * from bnbprob.pfssp.cpp.job cimport Job, JobPtr
+ * from bnbprob.pfssp.cpp.environ cimport Job, JobPtr
  * 
  * INIT_ERROR = 'C++ Job shared pointer not initialized'             # <<<<<<<<<<<<<<
  * 
