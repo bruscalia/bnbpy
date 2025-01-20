@@ -6,53 +6,6 @@
 
 using namespace std;
 
-// Constructor with shared_ptr to vector
-Job::Job()
-    : j(0),
-      p(nullptr),
-      r(),
-      q(),
-      lat(nullptr),
-      T(0)
-{
-}
-
-// Constructor with shared_ptr to vector
-Job::Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_)
-    : j(j_),
-      p(p_),
-      r(p_->size(), 0),
-      q(p_->size(), 0),
-      lat(std::make_shared<std::vector<std::vector<int>>>(p_->size()))
-{
-    initialize(p_);
-}
-
-// Constructor with vector (creates shared_ptr internally)
-Job::Job(const int &j_, const std::vector<int> &p_)
-    : j(j_),
-      p(std::make_shared<std::vector<int>>(p_)),
-      r(p_.size(), 0),
-      q(p_.size(), 0),
-      lat(std::make_shared<std::vector<std::vector<int>>>(p_.size()))
-{
-    initialize(p);
-}
-
-Job::Job(
-    const int &j_,
-    const std::shared_ptr<std::vector<int>> &p_,
-    const vector<int> &r_,
-    const vector<int> &q_,
-    const std::shared_ptr<std::vector<std::vector<int>>> &lat_,
-    const int &slope_,
-    const int &T_)
-    : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_)
-{}
-
-// Destructor
-Job::~Job()
-{}
 
 // Private helper function to initialize common operations
 void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)

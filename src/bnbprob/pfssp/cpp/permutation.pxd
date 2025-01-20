@@ -20,16 +20,16 @@ cdef extern from "permutation.hpp":
         Sigma sigma2
 
         # Default constructor
-        Permutation()
+        inline Permutation()
 
         # Constructor from processing times
         Permutation(const vector[vector[int]]& p_)
 
         # Constructor from free jobs
-        Permutation(const int &m_, const vector[shared_ptr[Job]] &jobs_)
+        inline Permutation(const int &m_, const vector[shared_ptr[Job]] &jobs_)
 
         # Constructor given all desired attributes
-        Permutation(
+        inline Permutation(
             const int &m_, const int &n_, const int &level_,
             const Sigma &sigma1_, const vector[shared_ptr[Job]] &free_jobs_,
             const Sigma &sigma2_
@@ -52,17 +52,17 @@ cdef extern from "permutation.hpp":
         void compute_starts()
 
         # Feasibility check
-        bool is_feasible()
+        inline bool is_feasible()
 
         # Lower bound calculations
-        int calc_lb_1m()
-        int calc_lb_2m()
+        inline int calc_lb_1m()
+        inline int calc_lb_2m()
         int calc_lb_full()
         int lower_bound_1m()
         int lower_bound_2m()
 
         # Copy method
-        Permutation copy() const
+        inline Permutation copy() const
 
     cdef cppclass JobParams:
         int t1
@@ -72,8 +72,8 @@ cdef extern from "permutation.hpp":
         const int* lat
 
         # Constructors
-        JobParams(const int &t1_, const int &t2_, const int* &p1_, const int* &p2_, const int* &lat_)
-        JobParams(const int &t1_, const int &t2_, const int &p1_, const int &p2_, const int &lat_)
+        inline JobParams(const int &t1_, const int &t2_, const int* &p1_, const int* &p2_, const int* &lat_)
+        inline JobParams(const int &t1_, const int &t2_, const int &p1_, const int &p2_, const int &lat_)
 
     # Two machine problem definition
     int two_mach_problem(const vector[shared_ptr[Job]] &jobs, const int &m1, const int &m2)

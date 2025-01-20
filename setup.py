@@ -129,7 +129,8 @@ CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
 CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
 CPP_FILES_PFSSP = [
     os.path.join(CPP_PATH_PFSSP, f)
-    for f in os.listdir(CPP_PATH_PFSSP) if f.endswith('.cpp')
+    for f in os.listdir(CPP_PATH_PFSSP)
+    if f.endswith('.cpp')
 ]
 HPP_PATH_PFSSP = os.path.join(ROOT, 'include')
 

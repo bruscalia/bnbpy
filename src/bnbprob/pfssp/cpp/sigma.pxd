@@ -16,16 +16,16 @@ cdef extern from "sigma.hpp":
         vector[int] C
 
         # Default constructor
-        Sigma()
+        inline Sigma()
 
         # Constructor with empty instance
-        Sigma(const int &m_)
+        inline Sigma(const int &m_)
 
         # Constructor with only jobs
-        Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_)
+        inline Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_)
 
         # Full constructor
-        Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_, const vector[int] &C_)
+        inline Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_, const vector[int] &C_)
 
         # Push job to the bottom of the sequence
         void job_to_bottom(const shared_ptr[Job] &job)

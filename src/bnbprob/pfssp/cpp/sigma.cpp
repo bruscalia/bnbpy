@@ -10,23 +10,6 @@
 
 using namespace std;
 
-// Deafult constructor
-Sigma::Sigma() : m(0), jobs(), C() {}
-
-// Constructor with empty instance
-Sigma::Sigma(const int &m_) : m(m_), jobs(), C(m_, 0) {}
-
-// Constructor only jobs
-Sigma::Sigma(const int &m_, const std::vector<JobPtr> &jobs_)
-    : m(m_), jobs(jobs_), C(m_, 0) {}
-
-// Full constructor (deepcopy of C)
-Sigma::Sigma(const int &m_, const std::vector<JobPtr> &jobs_,
-             const std::vector<int> &C_)
-    : m(m_), jobs(jobs_), C(C_) {}
-
-// Destructor
-Sigma::~Sigma() {}
 
 // Push job to bottom sequence
 void Sigma::job_to_bottom(const JobPtr &job) {

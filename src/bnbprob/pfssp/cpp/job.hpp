@@ -6,8 +6,9 @@
 
 using namespace std;
 
-class Job {
-   public:
+class Job
+{
+public:
     // Attributes
     int j;
     std::shared_ptr<std::vector<int>> p;
@@ -18,14 +19,38 @@ class Job {
     int T;
 
     // Default constructor
-    Job();
+    Job()
+        : j(0),
+          p(nullptr),
+          r(),
+          q(),
+          lat(nullptr),
+          T(0)
+    {
+    }
 
     // Constructor with job ID and shared pointer to processing times
-    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_);
+    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_)
+        : j(j_),
+          p(p_),
+          r(p_->size(), 0),
+          q(p_->size(), 0),
+          lat(std::make_shared<std::vector<std::vector<int>>>(p_->size()))
+    {
+        initialize(p_);
+    }
 
     // Constructor with job ID and vector for processing times (creates
     // shared_ptr internally)
-    Job(const int &j_, const std::vector<int> &p_);
+    Job(const int &j_, const std::vector<int> &p_)
+        : j(j_),
+          p(std::make_shared<std::vector<int>>(p_)),
+          r(p_.size(), 0),
+          q(p_.size(), 0),
+          lat(std::make_shared<std::vector<std::vector<int>>>(p_.size()))
+    {
+        initialize(p);
+    }
 
     // Parameterized constructor -> deepcopy of arrays
     Job(
@@ -33,15 +58,17 @@ class Job {
         const std::shared_ptr<std::vector<int>> &p_,
         const vector<int> &r_,
         const vector<int> &q_,
-        const shared_ptr<vector<vector<int>>> &lat_,
+        const std::shared_ptr<std::vector<std::vector<int>>> &lat_,
         const int &slope_,
-        const int &T_
-    );
+        const int &T_)
+        : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_)
+    {
+    }
 
     // Destructor
-    ~Job();
+    ~Job() {}
 
-   private:
+private:
     void initialize(const std::shared_ptr<std::vector<int>> &p_);
 };
 
@@ -54,4 +81,4 @@ std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Jo
 // Type definition for shared pointer
 typedef std::shared_ptr<Job> JobPtr;
 
-#endif  // JOB_H
+#endif // JOB_H

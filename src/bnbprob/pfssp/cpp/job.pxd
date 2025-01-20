@@ -19,19 +19,19 @@ cdef extern from "job.hpp":
 
         # Declare the constructors
         # Default constructor
-        Job()
+        inline Job()
 
         # Constructor with job ID and shared_ptr for processing times
-        Job(
+        inline Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_
         )
 
         # Constructor with job ID and vector for processing times (creates shared_ptr internally)
-        Job(const int &j_, const vector[int] &p_)
+        inline Job(const int &j_, const vector[int] &p_)
 
         # Parameterized constructor
-        Job(
+        inline Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_,
             const vector[int] &r_,
