@@ -1,10 +1,10 @@
-#include <iostream>
-#include <fstream>
 #include <vector>
-#include <job.hpp>
-#include <sigma.hpp>
-#include <permutation.hpp>
-#include <utils.hpp>
+
+#include "job.hpp"
+#include "sigma.hpp"
+#include "permutation.hpp"
+#include "utils.hpp"
+#include "local_search.hpp"
 
 
 // A new base solution following the same sequence of the current
@@ -26,7 +26,7 @@ Permutation local_search(Permutation &perm){
     // Try to remove every job
     for (int i = 0; i < sol_base.free_jobs.size(); ++i){
         for (int j = 0; j < sol_base.free_jobs.size(); ++j){
-            if (j == i | j == i + 1){
+            if (j == i || j == i + 1){
                 continue;
             }
             // Here the swap is performed
@@ -48,7 +48,6 @@ Permutation local_search(Permutation &perm){
             if (new_cost < best_cost){
                 best_move = std::move(sol_alt);
                 best_cost = new_cost;
-                std::cout << "\nLS Solution: " << best_cost << "\n";
             }
         }
     }

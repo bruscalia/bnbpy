@@ -1,19 +1,16 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <algorithm>
-#include <job.hpp>
-#include <sigma.hpp>
-#include <permutation.hpp>
-#include <utils.hpp>
+#include <vector>
+
+#include "job.hpp"
+#include "permutation.hpp"
+#include "sigma.hpp"
+#include "utils.hpp"
+#include "neh.hpp"
 
 
-inline bool desc_T(JobPtr& a, JobPtr& b) {
-    return b->T < a->T;
-}
+inline bool desc_T(const JobPtr& a, const JobPtr& b) { return b->T < a->T; }
 
-
-Permutation neh_constructive(std::vector<JobPtr> &jobs){
+Permutation neh_constructive(std::vector<JobPtr>& jobs) {
     int j, i, k, M, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
@@ -21,7 +18,7 @@ Permutation neh_constructive(std::vector<JobPtr> &jobs){
 
     // Find best order of two jobs with longest processing times
     std::sort(jobs.begin(), jobs.end(), desc_T);
-    M = jobs[0]->p->size(); // Assume r is the same size for all jobs
+    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs
     vec.resize(2);
@@ -51,7 +48,7 @@ Permutation neh_constructive(std::vector<JobPtr> &jobs){
     // Find best insert for every other job
     seq_size = 2;
     for (j = 2; j < jobs.size(); ++j) {
-        best_cost = INT_MAX; // Replace with LARGE_INT constant
+        best_cost = INT_MAX;  // Replace with LARGE_INT constant
         Sigma best_sol;
         for (i = 0; i <= seq_size; ++i) {
             job = jobs[j];
@@ -71,14 +68,7 @@ Permutation neh_constructive(std::vector<JobPtr> &jobs){
         seq_size += 1;
         sol = std::move(best_sol);
     }
-    std::cout << "NEH:" << best_cost;
-    Permutation perm = Permutation(
-        sol.m,
-        jobs.size(),
-        jobs.size(),
-        sol,
-        std::vector<JobPtr> {},
-        Sigma(sol.m)
-    );
+    Permutation perm = Permutation(sol.m, jobs.size(), jobs.size(), sol,
+                                   std::vector<JobPtr>{}, Sigma(sol.m));
     return perm;
 }

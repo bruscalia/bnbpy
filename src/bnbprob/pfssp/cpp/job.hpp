@@ -21,28 +21,28 @@ class Job {
     Job();
 
     // Constructor with job ID and shared pointer to processing times
-    Job(int j_, std::shared_ptr<std::vector<int>> &p_);
+    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_);
 
     // Constructor with job ID and vector for processing times (creates
     // shared_ptr internally)
-    Job(int j_, std::vector<int> &p_);
+    Job(const int &j_, const std::vector<int> &p_);
 
     // Parameterized constructor -> deepcopy of arrays
     Job(
-        int j_,
-        std::shared_ptr<std::vector<int>> &p_,
-        vector<int> &r_,
-        vector<int> &q_,
-        shared_ptr<vector<vector<int>>> &lat_,
-        int slope_,
-        int T_
+        const int &j_,
+        const std::shared_ptr<std::vector<int>> &p_,
+        const vector<int> &r_,
+        const vector<int> &q_,
+        const shared_ptr<vector<vector<int>>> &lat_,
+        const int &slope_,
+        const int &T_
     );
 
     // Destructor
     ~Job();
 
    private:
-    void initialize(std::shared_ptr<std::vector<int>> &p_);
+    void initialize(const std::shared_ptr<std::vector<int>> &p_);
 };
 
 // Function to copy a job

@@ -2,6 +2,7 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from libcpp.string cimport string
 
 from typing import Optional
 
@@ -16,7 +17,7 @@ cdef class PermFlowShop:
 
     cdef public:
         FlowSolution solution
-        str constructive
+        string constructive
 
     cpdef void cleanup(PermFlowShop self)
 

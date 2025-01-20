@@ -2,9 +2,11 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include <job.hpp>
-#include <sigma.hpp>
-#include <permutation.hpp>
+
+#include "job.hpp"
+#include "sigma.hpp"
+#include "permutation.hpp"
+#include "quick_constructive.hpp"
 
 
 inline bool desc_slope(const JobPtr& a, const JobPtr& b){

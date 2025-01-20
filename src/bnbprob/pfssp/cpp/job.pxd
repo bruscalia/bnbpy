@@ -1,10 +1,9 @@
+# distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
-from libcpp.memory cimport make_shared, shared_ptr
-
-from cython.operator cimport dereference as deref
+from libcpp.memory cimport shared_ptr
 
 
 cdef extern from "job.hpp":
@@ -24,26 +23,26 @@ cdef extern from "job.hpp":
 
         # Constructor with job ID and shared_ptr for processing times
         Job(
-            int j_,
-            shared_ptr[vector[int]]& p_
+            const int &j_,
+            const shared_ptr[vector[int]] &p_
         )
 
         # Constructor with job ID and vector for processing times (creates shared_ptr internally)
-        Job(int j_, vector[int]& p_)
+        Job(const int &j_, const vector[int] &p_)
 
         # Parameterized constructor
         Job(
-            int j_,
-            shared_ptr[vector[int]]& p_,
-            vector[int] r_,
-            vector[int] q_,
-            shared_ptr[vector[vector[int]]]& lat_,
-            int slope_,
-            int T_
+            const int &j_,
+            const shared_ptr[vector[int]] &p_,
+            const vector[int] &r_,
+            const vector[int] &q_,
+            const shared_ptr[vector[vector[int]]] &lat_,
+            const int &slope_,
+            const int &T_
         )
 
     # Function to copy a job
-    cdef shared_ptr[Job] copy_job(const shared_ptr[Job]& jobptr)
+    cdef inline shared_ptr[Job] copy_job(const shared_ptr[Job]& jobptr)
 
     # Function to copy a vector of jobs
     cdef vector[shared_ptr[Job]] copy_jobs(const vector[shared_ptr[Job]]& jobs)
@@ -51,4 +50,4 @@ cdef extern from "job.hpp":
 
 ctypedef shared_ptr[Job] JobPtr
 
-ctypedef shared_ptr[Job] JobPtrpo
+ctypedef shared_ptr[Job] JobPtrAlter

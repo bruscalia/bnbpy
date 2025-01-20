@@ -3,6 +3,7 @@
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
+from libcpp.string cimport string
 
 import logging
 from typing import List, Literal, Optional
@@ -26,7 +27,7 @@ cdef class PermFlowShop:
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
         self.solution = solution
-        self.constructive = constructive
+        self.constructive = <string> constructive.encode("utf-8")
 
     def __del__(self):
         self.ccleanup()

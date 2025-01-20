@@ -3,10 +3,6 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "include_dirs": [
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp",
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython"
-        ],
         "language": "c++",
         "name": "bnbprob.pfssp.cython.__init__",
         "sources": [

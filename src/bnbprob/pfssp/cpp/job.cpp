@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdlib>
 
-#include <job.hpp>
+#include "job.hpp"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ Job::Job()
 }
 
 // Constructor with shared_ptr to vector
-Job::Job(int j_, std::shared_ptr<std::vector<int>> &p_)
+Job::Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_)
     : j(j_),
       p(p_),
       r(p_->size(), 0),
@@ -29,7 +29,7 @@ Job::Job(int j_, std::shared_ptr<std::vector<int>> &p_)
 }
 
 // Constructor with vector (creates shared_ptr internally)
-Job::Job(int j_, std::vector<int> &p_)
+Job::Job(const int &j_, const std::vector<int> &p_)
     : j(j_),
       p(std::make_shared<std::vector<int>>(p_)),
       r(p_.size(), 0),
@@ -40,13 +40,13 @@ Job::Job(int j_, std::vector<int> &p_)
 }
 
 Job::Job(
-    int j_,
-    std::shared_ptr<std::vector<int>> &p_,
-    vector<int> &r_,
-    vector<int> &q_,
-    std::shared_ptr<std::vector<std::vector<int>>> &lat_,
-    int slope_,
-    int T_)
+    const int &j_,
+    const std::shared_ptr<std::vector<int>> &p_,
+    const vector<int> &r_,
+    const vector<int> &q_,
+    const std::shared_ptr<std::vector<std::vector<int>>> &lat_,
+    const int &slope_,
+    const int &T_)
     : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_)
 {}
 
@@ -55,7 +55,7 @@ Job::~Job()
 {}
 
 // Private helper function to initialize common operations
-void Job::initialize(std::shared_ptr<std::vector<int>> &p_)
+void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
 {
     int m = p_->size();
     T = 0;

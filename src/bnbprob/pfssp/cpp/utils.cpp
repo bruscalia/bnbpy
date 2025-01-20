@@ -1,8 +1,9 @@
-#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <job.hpp>
+
+#include "job.hpp"
+#include "utils.hpp"
 
 int SMALL = -1000000;
 
@@ -15,10 +16,9 @@ void recompute_r0(std::vector<JobPtr> &jobs){
 }
 
 
-int get_max_value(int* ptr, int m) {
+int get_max_value(const int* &ptr, int &m) {
     // Check if the pointer is null or the size is zero
     if (!ptr || m <= 0) {
-        std::cerr << "Invalid input: null pointer or size <= 0." << std::endl;
         return SMALL; // Return the smallest integer as an error value
     }
 
@@ -31,7 +31,7 @@ int get_max_value(int* ptr, int m) {
     return max_val;
 }
 
-int get_max_value(std::vector<int> &vec) {
+int get_max_value(const std::vector<int> &vec) {
     // Check if the pointer is null or the size is zero
     int max_val = *std::max_element(vec.begin(), vec.end());
     return max_val;

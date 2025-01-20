@@ -25,8 +25,8 @@ def main():
     cpp_folders = [CPP_PATH_PFSSP]
 
     # Define extensions to delete
-    cython_extensions = ['cpp', 'pyd', 'so']
-    cpp_extensions = ['pyd', 'so']
+    cython_extensions = ['cpp', 'pyd', 'so', 'html']
+    cpp_extensions = ['pyd', 'so', 'html']
 
     # Delete files in "cython"
     for cy in cython_folders:

@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <memory>
-#include <job.hpp>
-#include <sigma.hpp>
+
+#include "job.hpp"
+#include "sigma.hpp"
+
 
 class Permutation {
 public:
@@ -20,28 +22,32 @@ public:
     Permutation();
 
     // Constructor from processing times
-    Permutation(std::vector<std::vector<int>>& p_);
+    Permutation(const std::vector<std::vector<int>> &p_);
 
     // Constructor from free jobs
-    Permutation(int m_, std::vector<JobPtr> &jobs_);
+    Permutation(const int &m_, const std::vector<JobPtr> &jobs_);
 
     // Constructor given all desired attributes
     Permutation(
-        int m_, int n_, int level_,
-        Sigma sigma1_, std::vector<JobPtr> free_jobs_, Sigma sigma2_
+        const int &m_,
+        const int &n_,
+        const int &level_,
+        const Sigma &sigma1_,
+        const std::vector<JobPtr> &free_jobs_,
+        const Sigma &sigma2_
     );
 
     // Accessor methods
-    std::vector<JobPtr>& get_free_jobs();
-    Sigma* get_sigma1();
-    Sigma* get_sigma2();
+    std::vector<JobPtr> *get_free_jobs();
+    Sigma *get_sigma1();
+    Sigma *get_sigma2();
     std::vector<JobPtr> get_sequence();
     std::vector<JobPtr> get_sequence_copy();
     std::vector<int> get_r();
     std::vector<int> get_q();
 
     // Modification methods
-    void push_job(int& j);
+    void push_job(const int &j);
     void update_params();
     void front_updates();
     void back_updates();
@@ -70,26 +76,36 @@ public:
 struct JobParams {
     int t1;
     int t2;
-    int* p1;
-    int* p2;
-    int* lat;
+    const int* p1;
+    const int* p2;
+    const int* lat;
 
     // Constructor
-    JobParams(int t1_, int t2_, int* p1_, int* p2_, int* lat_)
+    JobParams(
+        const int &t1_,
+        const int &t2_,
+        const int* &p1_,
+        const int* &p2_,
+        const int* &lat_)
         : t1(t1_), t2(t2_), p1(p1_), p2(p2_), lat(lat_) {}
 
-    JobParams(int t1_, int t2_, int &p1_, int &p2_, int &lat_)
+    JobParams(
+        const int &t1_,
+        const int &t2_,
+        const int &p1_,
+        const int &p2_,
+        const int &lat_)
         : t1(t1_), t2(t2_), p1(&p1_), p2(&p2_), lat(&lat_) {}
 };
 
 // // Two machine problem definition
-int two_mach_problem(std::vector<JobPtr>& jobs, int& m1, int& m2);
+int two_mach_problem(const std::vector<JobPtr>& jobs, const int& m1, const int& m2);
 
 // Makespan given ordered operations
 int two_mach_makespan(
-    std::vector<JobParams>& job_times,
-    int& m1,
-    int& m2
+    const std::vector<JobParams>& job_times,
+    const int& m1,
+    const int& m2
 );
 
 #endif // PERMUTATION_H

@@ -10,8 +10,7 @@
         ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cpp",
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp",
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython"
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp"
         ],
         "language": "c++",
         "name": "bnbprob.pfssp.cython.solution",
@@ -1537,30 +1536,30 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob;
 struct __pyx_obj_7bnbprob_5pfssp_6cython_8solution_FlowSolution;
 
-/* "bnbprob/pfssp/cpp/job.pxd":52
+/* "bnbprob/pfssp/cpp/job.pxd":51
  * 
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
  * 
- * ctypedef shared_ptr[Job] JobPtrpo
+ * ctypedef shared_ptr[Job] JobPtrAlter
  */
 typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr;
 
-/* "bnbprob/pfssp/cpp/job.pxd":54
+/* "bnbprob/pfssp/cpp/job.pxd":53
  * ctypedef shared_ptr[Job] JobPtr
  * 
- * ctypedef shared_ptr[Job] JobPtrpo             # <<<<<<<<<<<<<<
+ * ctypedef shared_ptr[Job] JobPtrAlter             # <<<<<<<<<<<<<<
  */
-typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrpo;
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrAlter;
 
-/* "bnbprob/pfssp/cpp/sigma.pxd":36
+/* "bnbprob/pfssp/cpp/sigma.pxd":37
  * 
  * 
- * ctypedef shared_ptr[Sigma] SigmaPtret             # <<<<<<<<<<<<<<
+ * ctypedef shared_ptr[Sigma] SigmaPtr             # <<<<<<<<<<<<<<
  */
-typedef std::shared_ptr<Sigma>  __pyx_t_7bnbprob_5pfssp_3cpp_5sigma_SigmaPtret;
+typedef std::shared_ptr<Sigma>  __pyx_t_7bnbprob_5pfssp_3cpp_5sigma_SigmaPtr;
 
-/* "bnbprob/pfssp/cpp/permutation.pxd":87
+/* "bnbprob/pfssp/cpp/permutation.pxd":89
  * 
  * 
  * ctypedef Permutation* PermPtr             # <<<<<<<<<<<<<<
@@ -3919,7 +3918,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free
  *             vector[JobPtr] seq
  *             PyJob job
  *         out = []             # <<<<<<<<<<<<<<
- *         seq = self.perm.get_free_jobs()
+ *         seq = self.perm.get_free_jobs()[0]
  *         for i in range(seq.size()):
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
@@ -3930,15 +3929,15 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free
   /* "bnbprob/pfssp/cython/solution.pyx":66
  *             PyJob job
  *         out = []
- *         seq = self.perm.get_free_jobs()             # <<<<<<<<<<<<<<
+ *         seq = self.perm.get_free_jobs()[0]             # <<<<<<<<<<<<<<
  *         for i in range(seq.size()):
  *             job = job_to_py(seq[i])
  */
-  __pyx_v_seq = __pyx_v_self->perm.get_free_jobs();
+  __pyx_v_seq = (__pyx_v_self->perm.get_free_jobs()[0]);
 
   /* "bnbprob/pfssp/cython/solution.pyx":67
  *         out = []
- *         seq = self.perm.get_free_jobs()
+ *         seq = self.perm.get_free_jobs()[0]
  *         for i in range(seq.size()):             # <<<<<<<<<<<<<<
  *             job = job_to_py(seq[i])
  *             out.append(job)
@@ -3949,7 +3948,7 @@ static PyObject *__pyx_pf_7bnbprob_5pfssp_6cython_8solution_12FlowSolution_9free
     __pyx_v_i = __pyx_t_4;
 
     /* "bnbprob/pfssp/cython/solution.pyx":68
- *         seq = self.perm.get_free_jobs()
+ *         seq = self.perm.get_free_jobs()[0]
  *         for i in range(seq.size()):
  *             job = job_to_py(seq[i])             # <<<<<<<<<<<<<<
  *             out.append(job)

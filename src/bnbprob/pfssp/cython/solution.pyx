@@ -63,7 +63,7 @@ cdef class FlowSolution:
             vector[JobPtr] seq
             PyJob job
         out = []
-        seq = self.perm.get_free_jobs()
+        seq = self.perm.get_free_jobs()[0]
         for i in range(seq.size()):
             job = job_to_py(seq[i])
             out.append(job)

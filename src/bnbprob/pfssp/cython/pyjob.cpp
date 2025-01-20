@@ -8,8 +8,7 @@
         ],
         "include_dirs": [
             "src\\bnbprob\\pfssp\\cpp",
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp",
-            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cython"
+            "C:\\Users\\Bruno\\Desktop\\Python Packages\\bnbpy\\src\\bnbprob\\pfssp\\cpp"
         ],
         "language": "c++",
         "name": "bnbprob.pfssp.cython.pyjob",
@@ -1530,21 +1529,21 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_7bnbprob_5pfssp_6cython_5pyjob_PyJob;
 
-/* "bnbprob/pfssp/cpp/job.pxd":52
+/* "bnbprob/pfssp/cpp/job.pxd":51
  * 
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<
  * 
- * ctypedef shared_ptr[Job] JobPtrpo
+ * ctypedef shared_ptr[Job] JobPtrAlter
  */
 typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtr;
 
-/* "bnbprob/pfssp/cpp/job.pxd":54
+/* "bnbprob/pfssp/cpp/job.pxd":53
  * ctypedef shared_ptr[Job] JobPtr
  * 
- * ctypedef shared_ptr[Job] JobPtrpo             # <<<<<<<<<<<<<<
+ * ctypedef shared_ptr[Job] JobPtrAlter             # <<<<<<<<<<<<<<
  */
-typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrpo;
+typedef std::shared_ptr<Job>  __pyx_t_7bnbprob_5pfssp_3cpp_3job_JobPtrAlter;
 
 /* "bnbprob/pfssp/cython/pyjob.pxd":8
  * from bnbprob.pfssp.cpp.job cimport JobPtr
