@@ -56,14 +56,13 @@ inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr)
 }
 
 // Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(
-    const std::vector<std::shared_ptr<Job>> &jobs)
+std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Job>> &jobs)
 {
     std::vector<std::shared_ptr<Job>> out;
     out.reserve(jobs.size()); // Reserve space for better performance
-    for (int i = 0; i < jobs.size(); ++i)
+    for (const auto &job : jobs)
     {
-        out.push_back(copy_job(jobs[i]));
+        out.emplace_back(copy_job(job));
     }
     return out; // Return the copied vector
 }

@@ -11,7 +11,7 @@ using namespace std;
 
 // Push job to bottom sequence
 void Sigma::job_to_bottom(const JobPtr &job) {
-    this->jobs.push_back(job);
+    this->jobs.emplace_back(job);
     // Update
     this->C[0] = std::max(this->C[0], job->r[0]) + job->p->at(0);
     for (int k = 1; k < this->m; ++k) {
@@ -21,7 +21,7 @@ void Sigma::job_to_bottom(const JobPtr &job) {
 
 // Push job to top sequence
 void Sigma::job_to_top(const JobPtr &job) {
-    this->jobs.insert(this->jobs.begin(), job);
+    this->jobs.emplace(this->jobs.begin(), job);
     // Update
     int M = this->m - 1;
     if (M == -1) {

@@ -22,7 +22,7 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_)
     for (int j = 0; j < n; ++j)
     {
         const std::vector<int> &pj = p_[j];
-        this->free_jobs.push_back(std::make_shared<Job>(j, pj));
+        this->free_jobs.emplace_back(std::make_shared<Job>(j, pj));
     }
 
     // Assign parameters
@@ -128,8 +128,9 @@ void Permutation::front_updates()
         job->r[0] = this->sigma1.C[0];
         for (int k = 1; k < this->m; ++k)
         {
-            job->r[k] =
-                std::max(this->sigma1.C[k], job->r[k - 1] + job->p->at(k - 1));
+            job->r[k] = std::max(
+                this->sigma1.C[k],
+                job->r[k - 1] + job->p->at(k - 1));
         }
     }
 }
@@ -264,20 +265,17 @@ int two_mach_problem(
     std::vector<JobParams> j1 = {};
     std::vector<JobParams> j2 = {};
 
-    for (int j = 0; j < jobs.size(); ++j)
+    for (const auto &job : jobs)
     {
-        int t1 = jobs[j]->p->at(m1) + jobs[j]->lat->at(m2)[m1];
-        int t2 = jobs[j]->p->at(m2) + jobs[j]->lat->at(m2)[m1];
-        JobParams jparam =
-            JobParams(t1, t2, jobs[j]->p->at(m1), jobs[j]->p->at(m2),
-                      jobs[j]->lat->at(m2)[m1]);
+        int t1 = job->p->at(m1) + job->lat->at(m2)[m1];
+        int t2 = job->p->at(m2) + job->lat->at(m2)[m1];
         if (t1 <= t2)
         {
-            j1.push_back(jparam);
+            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), job->lat->at(m2)[m1]);
         }
         else
         {
-            j2.push_back(jparam);
+            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), job->lat->at(m2)[m1]);
         }
     }
 
