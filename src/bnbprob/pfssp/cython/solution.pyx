@@ -117,7 +117,7 @@ cdef class FlowSolution:
             FlowSolution sol
 
         sol = FlowSolution.__new__(FlowSolution)
-        sol.perm = self.perm.copy()
+        sol.perm = self.perm._copy()
         sol.cost = LARGE_INT
         sol.lb = 0
         sol.status = OptStatus.NO_SOLUTION

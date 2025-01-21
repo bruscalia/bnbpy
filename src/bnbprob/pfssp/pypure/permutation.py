@@ -52,7 +52,7 @@ class Permutation:  # noqa: PLR0904
     @property
     def n_jobs(self):
         return (
-            len(self.free_jobs) + len(self.sigma1.jobs) + len(self.sigma2.jobs)
+            len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
         )
 
     @property
@@ -60,7 +60,7 @@ class Permutation:  # noqa: PLR0904
         return len(self.free_jobs)
 
     def get_sequence(self) -> list[Job]:
-        return self.free_jobs + self.sigma1.jobs + self.sigma2.jobs
+        return self.sigma1.jobs + self.free_jobs + self.sigma2.jobs
 
     def get_sequence_copy(self) -> list[Job]:
         seq = self.get_sequence()

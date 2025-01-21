@@ -1,10 +1,13 @@
-from bnbpy.cython.node import Node
-from bnbpy.search import BranchAndBound
+from bnbpy.pypure.node import Node
+from bnbpy.pypure.search import BranchAndBound
 
 RESTART = 10_000
 
 
 class LazyBnB(BranchAndBound):
+    """Subclass derived from `BranchAndBound` with `post_eval_callback`
+    that solves a 2M lower bound (`problem.bound_upgrade`)."""
+
     def __init__(
         self, rtol=0.0001, atol=0.0001, eval_node='in', save_tree=False
     ):
@@ -17,6 +20,11 @@ class LazyBnB(BranchAndBound):
 
 
 class CallbackBnB(LazyBnB):
+    """Subclass derived from `BranchAndBound` with `post_eval_callback`
+    that solves a 2M lower bound (`problem.bound_upgrade`).
+
+    Additionally there's local search as a `solution_callback` and
+    a best bound guided search restart at each `restart_freq` nodes."""
 
     restart_freq: int
     """Frequency in which restarts from best bound are called"""
@@ -33,6 +41,8 @@ class CallbackBnB(LazyBnB):
         self.restart_freq = restart_freq
 
     def solution_callback(self, node: Node):
+        """Applies local search with best improvement making
+        remove-insertion moves."""
         new_sol = node.problem.local_search()
         if new_sol is not None:
             # General procedure in case is valid
@@ -49,10 +59,14 @@ class CallbackBnB(LazyBnB):
         return super().dequeue()
 
 
-class CallbackBnBAge(LazyBnB):
+class CallbackBnBAge(CallbackBnB):
+    """Subclass derived from `BranchAndBound` with `post_eval_callback`
+    that solves a 2M lower bound (`problem.bound_upgrade`).
 
-    restart_freq: int
-    """Number of nodes dequeued since last improvement"""
+    Additionally there's local search as a `solution_callback` and
+    a best bound guided search restart at each `restart_freq` nodes
+    since last solution."""
+
     sol_age: int
     """Frequency in which restarts from best bound are called"""
 
@@ -64,19 +78,8 @@ class CallbackBnBAge(LazyBnB):
         save_tree=False,
         restart_freq=RESTART,
     ):
-        super().__init__(rtol, atol, eval_node, save_tree)
-        self.restart_freq = restart_freq
+        super().__init__(rtol, atol, eval_node, save_tree, restart_freq)
         self.sol_age = 0
-
-    def solution_callback(self, node: Node):
-        self.sol_age = 0
-        new_sol = node.problem.local_search()
-        if new_sol is not None:
-            # General procedure in case is valid
-            if new_sol.is_feasible() and new_sol.lb < node.solution.lb:
-                node.set_solution(new_sol)
-                node.check_feasible()
-                self.set_solution(node)
 
     def dequeue(self) -> Node:
         self.sol_age += 1

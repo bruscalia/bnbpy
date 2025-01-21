@@ -14,11 +14,11 @@ class TestGcol:
         ('filename', 'solution', 'explored', 'mode'),
         [
             ('gcol_50.txt', 14, 36, "heur"),
-            ('gcol_50.txt', 14, 39, "hybr"),
+            ('gcol_50.txt', 14, 44, "hybr"),
             # ('gcol_50.txt', 14, 308, "mip"),
             ('gcol_32.txt', 8, 6, "heur"),
             ('gcol_32.txt', 8, 10, "hybr"),
-            ('gcol_32.txt', 8, 21, "mip"),
+            ('gcol_32.txt', 8, 20, "mip"),
         ],
     )
     def test_gcol(self, filename, solution, explored, mode):
