@@ -31,9 +31,9 @@ Permutation local_search(Permutation &perm){
             }
             // Here the swap is performed
             Permutation sol_alt = sol_base.copy();
-            JobPtr job = sol_alt.free_jobs[i];
+            JobPtr job = std::move(sol_alt.free_jobs[i]);
             sol_alt.free_jobs.erase(sol_alt.free_jobs.begin() + i);
-            sol_alt.free_jobs.insert(sol_alt.free_jobs.begin() + j, job);
+            sol_alt.free_jobs.insert(sol_alt.free_jobs.begin() + j, std::move(job));
             // Careful recomputation althuogh it worked without it
             // probably because of memoryviews
             recompute_r0(sol_alt.free_jobs);
@@ -43,7 +43,7 @@ Permutation local_search(Permutation &perm){
             for (int k = 0; k < sol_alt.free_jobs.size(); ++k){
                 sol_alt.sigma1.job_to_bottom(sol_alt.free_jobs.at(k));
             }
-            sol_alt.free_jobs = {};
+            sol_alt.free_jobs.clear();
             int new_cost = sol_alt.calc_lb_full();
             if (new_cost < best_cost){
                 best_move = std::move(sol_alt);

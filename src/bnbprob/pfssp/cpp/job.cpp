@@ -44,25 +44,16 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
 // Function to copy a job
 inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr)
 {
-    return std::make_shared<Job>(
-        jobptr->j,
-        jobptr->p,
-        jobptr->r,
-        jobptr->q,
-        jobptr->lat,
-        jobptr->slope,
-        jobptr->T
-    );
+    return std::make_shared<Job>(*jobptr);
 }
 
 // Function to copy a vector of jobs
 std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Job>> &jobs)
 {
-    std::vector<std::shared_ptr<Job>> out;
-    out.reserve(jobs.size()); // Reserve space for better performance
-    for (const auto &job : jobs)
+    std::vector<std::shared_ptr<Job>> out (jobs.size());
+    for (int i = 0; i < jobs.size(); ++i)
     {
-        out.emplace_back(make_shared<Job>(*job));
+        out[i] = make_shared<Job>(*jobs[i]);
     }
     return out; // Return the copied vector
 }

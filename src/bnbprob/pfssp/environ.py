@@ -1,5 +1,5 @@
 try:
-    from bnbprob.pfssp.bnb import (  # noqa: F401
+    from bnbprob.pfssp.cython.bnb import (  # noqa: F401
         CallbackBnB,
         CallbackBnBAge,
         LazyBnB,

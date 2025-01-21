@@ -10,24 +10,15 @@ int LARGE = 10000000;
 
 // Constructor from processing times
 Permutation::Permutation(const std::vector<std::vector<int>> &p_)
-    : m(p_[0].size()), n(p_.size()), level(0)
+    : m(p_[0].size()), n(p_.size()), level(0), sigma1(m), free_jobs(n), sigma2(m)
 {
     // Constructor implementation here
-
-    // Initialize free_jobs as an empty vector of JobPtr
-    this->free_jobs = std::vector<JobPtr>();
-    this->free_jobs.reserve(n);
-
     // Create jobs used in permutation solution
     for (int j = 0; j < n; ++j)
     {
         const std::vector<int> &pj = p_[j];
-        this->free_jobs.emplace_back(std::make_shared<Job>(j, pj));
+        this->free_jobs[j] = std::make_shared<Job>(j, pj);
     }
-
-    // Assign parameters
-    this->sigma1 = Sigma(m);
-    this->sigma2 = Sigma(m);
 
     // Update parameters
     update_params();
@@ -260,15 +251,18 @@ int two_mach_problem(
     const int &m2)
 {
     // Implementation here
+    int t1, t2;
     int J = jobs.size();
 
-    std::vector<JobParams> j1 = {};
-    std::vector<JobParams> j2 = {};
+    std::vector<JobParams> j1;
+    std::vector<JobParams> j2;
+    j1.reserve(J);
+    j2.reserve(J);
 
     for (const auto &job : jobs)
     {
-        int t1 = job->p->at(m1) + job->lat->at(m2)[m1];
-        int t2 = job->p->at(m2) + job->lat->at(m2)[m1];
+        t1 = job->p->at(m1) + job->lat->at(m2)[m1];
+        t2 = job->p->at(m2) + job->lat->at(m2)[m1];
         if (t1 <= t2)
         {
             j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), job->lat->at(m2)[m1]);
