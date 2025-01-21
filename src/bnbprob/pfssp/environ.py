@@ -1,4 +1,9 @@
 try:
+    from bnbprob.pfssp.bnb import (  # noqa: F401
+        CallbackBnB,
+        CallbackBnBAge,
+        LazyBnB,
+    )
     from bnbprob.pfssp.cython.problem import (  # noqa: F401
         PermFlowShop,
         PermFlowShop2M,
@@ -7,6 +12,11 @@ try:
 except (ModuleNotFoundError, ImportError) as e:
     print("Cython imports failed")
     print(e)
+    from bnbprob.pfssp.pypure import (  # noqa: F401
+        CallbackBnB,
+        CallbackBnBAge,
+        LazyBnB,
+    )
     from bnbprob.pfssp.pypure.problem import (  # noqa: F401
         PermFlowShop,
         PermFlowShop2M,

@@ -132,6 +132,16 @@ cdef extern from "permutation.hpp":
         # Copy method
         inline Permutation copy() const
 
+        # Private constructor for copy method
+        Permutation(
+            int m_,
+            int n_,
+            int level_,
+            const Sigma &sigma1_,
+            vector[shared_ptr[Job]] &&free_jobs_,
+            const Sigma &sigma2_
+        )
+
     cdef cppclass JobParams:
         int t1
         int t2

@@ -62,7 +62,7 @@ std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Jo
     out.reserve(jobs.size()); // Reserve space for better performance
     for (const auto &job : jobs)
     {
-        out.emplace_back(copy_job(job));
+        out.emplace_back(make_shared<Job>(*job));
     }
     return out; // Return the copied vector
 }
