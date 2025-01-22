@@ -1533,7 +1533,7 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 
-/* "bnbprob/pfssp/cpp/environ.pxd":51
+/* "bnbprob/pfssp/cpp/environ.pxd":57
  * 
  * 
  * ctypedef shared_ptr[Job] JobPtr             # <<<<<<<<<<<<<<

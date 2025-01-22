@@ -10,13 +10,11 @@ using namespace std;
 void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
 {
     int m = p_->size();
-    T = 0;
 
     // Initialize lat matrix and calculate T
     for (int m1 = 0; m1 < m; ++m1)
     {
         (*lat)[m1] = std::vector<int>(m, 0);
-        T += (*p_)[m1];
         for (int m2 = 0; m2 < m; ++m2)
         {
             if (m2 + 1 < m1)
@@ -30,14 +28,30 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
             }
         }
     }
+}
 
-    // Calculate slope
-    slope = 0;
-    m += 1;
+// Get total time
+int Job::get_T() const
+{
+    int m = p->size();
+    int T = 0;
+    for (int i = 0; i < m; ++i)
+    {
+        T += r[i] + (*p)[i] + q[i];
+    }
+    return T;
+}
+
+// Get slope
+int Job::get_slope() const
+{
+    int slope = 0;
+    int m = this->p->size() + 1;
     for (int k = 1; k < m; ++k)
     {
-        slope += (k - (m + 1) / 2) * (*p_)[k - 1];
+        slope += (k - (m + 1) / 2) * (*this->p)[k - 1];
     }
+    return slope;
 }
 
 // Function to copy a job

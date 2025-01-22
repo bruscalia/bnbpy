@@ -41,6 +41,12 @@ cdef extern from "job.hpp":
             const int &T_
         )
 
+        # Get glope
+        int get_slope() const
+
+        # Get T
+        int get_T() const
+
     # Function to copy a job
     cdef inline shared_ptr[Job] copy_job(const shared_ptr[Job]& jobptr)
 

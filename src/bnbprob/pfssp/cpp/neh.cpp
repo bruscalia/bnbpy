@@ -10,7 +10,7 @@
 
 inline bool desc_T(const JobPtr& a, const JobPtr& b)
 {
-    return b->T < a->T;
+    return b->get_T() < a->get_T();
 }
 
 Permutation neh_constructive(std::vector<JobPtr>& jobs)

@@ -53,12 +53,12 @@ cdef class PyJob:
         out.job = make_shared[Job](j, p_)
         return out
 
-    cpdef int get_j(self) except *:
+    cpdef int get_j(self):
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
         return deref(self.job).j
 
-    cpdef list[int] get_p(self) except *:
+    cpdef list[int] get_p(self):
         cdef:
             int i, pi
             list[int] out
@@ -70,7 +70,7 @@ cdef class PyJob:
             out.append(pi)
         return out
 
-    cpdef list[int] get_r(self) except *:
+    cpdef list[int] get_r(self):
         cdef:
             int i, ri
             list[int] out
@@ -82,7 +82,7 @@ cdef class PyJob:
             out.append(ri)
         return out
 
-    cpdef list[int] get_q(self) except *:
+    cpdef list[int] get_q(self):
         cdef:
             int i, qi
             list[int] out
@@ -94,7 +94,7 @@ cdef class PyJob:
             out.append(qi)
         return out
 
-    cpdef list[int] get_lat(self) except *:
+    cpdef list[int] get_lat(self):
         cdef:
             int i, j, li
             list[int] lati
@@ -109,18 +109,18 @@ cdef class PyJob:
                 out[i].append(li)
         return out
 
-    cpdef int get_slope(self) except *:
+    cpdef int get_slope(self):
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
-        return deref(self.job).slope
+        return deref(self.job).get_slope()
 
-    cpdef int get_T(self) except *:
+    cpdef int get_T(self):
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
-        return deref(self.job).T
+        return deref(self.job).get_T()
 
 
-cdef PyJob job_to_py(JobPtr& jobptr) except *:
+cdef PyJob job_to_py(JobPtr& jobptr):
     cdef:
         PyJob out
     if jobptr == NULL:

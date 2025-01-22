@@ -77,9 +77,7 @@ def start_job(j: int, p: list[int]) -> Job:
     lat = np.zeros((m, m), dtype='i')
 
     # Compute sums
-    T = 0
     for m1 in range(m):
-        T += p[m1]
         for m2 in range(m):
             if m2 + 1 < m1:  # Ensure range is valid
                 sum_p = 0

@@ -9,7 +9,7 @@
 
 inline bool desc_slope(const JobPtr& a, const JobPtr& b)
 {
-    return b->slope < a->slope;
+    return b->get_slope() < a->get_slope();
 }
 
 Permutation quick_constructive(std::vector<JobPtr>& jobs)

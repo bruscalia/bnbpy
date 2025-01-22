@@ -15,11 +15,9 @@ public:
     std::vector<int> r;
     std::vector<int> q;
     shared_ptr<vector<vector<int>>> lat;
-    int slope;
-    int T;
 
     // Default constructor
-    Job() : j(0), p(nullptr), r(), q(), lat(nullptr), T(0) {}
+    Job() : j(0), p(nullptr), r(), q(), lat(nullptr) {}
 
     // Constructor with job ID and shared pointer to processing times
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_)
@@ -47,14 +45,19 @@ public:
     // Parameterized constructor -> deepcopy of arrays
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
         const vector<int> &r_, const vector<int> &q_,
-        const std::shared_ptr<std::vector<std::vector<int>>> &lat_,
-        const int &slope_, const int &T_)
-        : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_)
+        const std::shared_ptr<std::vector<std::vector<int>>> &lat_)
+        : j(j_), p(p_), r(r_), q(q_), lat(lat_)
     {
     }
 
     // Destructor
     ~Job() {}
+
+    // Get total time
+    int get_T() const;
+
+    // Get slope
+    int get_slope() const;
 
 private:
     void initialize(const std::shared_ptr<std::vector<int>> &p_);
