@@ -1,5 +1,5 @@
-#ifndef PERMUTATION_H
-#define PERMUTATION_H
+#ifndef PERMUTATION_HPP
+#define PERMUTATION_HPP
 
 #include <memory>
 #include <vector>
@@ -153,4 +153,4 @@ int two_mach_problem(const std::vector<JobPtr> &jobs, const int &m1,
 int two_mach_makespan(const std::vector<JobParams> &job_times, const int &m1,
                       const int &m2);
 
-#endif  // PERMUTATION_H
+#endif  // PERMUTATION_HPP

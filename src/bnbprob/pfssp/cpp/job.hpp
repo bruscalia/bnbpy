@@ -1,5 +1,5 @@
-#ifndef JOB_H
-#define JOB_H
+#ifndef JOB_HPP
+#define JOB_HPP
 
 #include <memory>
 #include <vector>
@@ -81,4 +81,4 @@ std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Jo
 // Type definition for shared pointer
 typedef std::shared_ptr<Job> JobPtr;
 
-#endif // JOB_H
+#endif // JOB_HPP

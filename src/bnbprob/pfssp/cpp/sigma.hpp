@@ -1,5 +1,5 @@
-#ifndef SIGMA_H
-#define SIGMA_H
+#ifndef SIGMA_HPP
+#define SIGMA_HPP
 
 #include <memory>
 #include <vector>
@@ -43,4 +43,4 @@ public:
     void job_to_top(const JobPtr &job);
 };
 
-#endif // SIGMA_H
+#endif // SIGMA_HPP

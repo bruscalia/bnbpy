@@ -16,6 +16,16 @@ void recompute_r0(std::vector<JobPtr> &jobs){
 }
 
 
+void recompute_r0(std::vector<JobPtr> &jobs, int k){
+    if (k == 0){
+        return recompute_r0(jobs);
+    }
+    for (int j = k; j < jobs.size(); ++j){
+        jobs[j]->r[0] = jobs[j - 1]->r[0] + jobs[j - 1]->p->at(0);
+    }
+}
+
+
 int get_max_value(const int* &ptr, int &m) {
     // Check if the pointer is null or the size is zero
     if (!ptr || m <= 0) {

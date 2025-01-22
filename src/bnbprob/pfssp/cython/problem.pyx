@@ -112,8 +112,10 @@ cdef class PermFlowShop:
             int lb, new_cost
             Permutation perm
             FlowSolution sol_alt
+            vector[JobPtr] jobs
         lb = self.solution.lb
-        perm = local_search(self.solution.perm)
+        jobs = self.solution.perm.get_sequence_copy()
+        perm = local_search(jobs)
         sol_alt = FlowSolution()
         sol_alt.perm = perm
         new_cost = perm.calc_lb_full()

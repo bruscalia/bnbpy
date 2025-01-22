@@ -1,5 +1,5 @@
-#ifndef NEH_H
-#define NEH_H
+#ifndef NEH_HPP
+#define NEH_HPP
 
 #include <vector>
 #include <algorithm>
@@ -14,4 +14,4 @@ inline bool desc_T(const JobPtr &a, const JobPtr &b);
 
 Permutation neh_constructive(std::vector<JobPtr> &jobs);
 
-#endif  // NEH_H
+#endif  // NEH_HPP

@@ -166,7 +166,7 @@ cdef extern from "permutation.hpp":
 
 cdef extern from "local_search.hpp":
 
-    cdef Permutation local_search(Permutation &perm)
+    cdef Permutation local_search(vector[JobPtr] &perm)
 
 
 cdef extern from "neh.hpp":

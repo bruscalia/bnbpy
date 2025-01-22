@@ -11,10 +11,11 @@
 inline bool desc_T(const JobPtr& a, const JobPtr& b) { return b->T < a->T; }
 
 Permutation neh_constructive(std::vector<JobPtr>& jobs) {
-    int j, i, k, M, best_cost, seq_size, cost_alt;
+    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec;
+    Sigma s1, s2, sol, best_sol;
 
     // Find best order of two jobs with longest processing times
     std::sort(jobs.begin(), jobs.end(), desc_T);
@@ -24,21 +25,22 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs) {
     vec.resize(2);
     vec[0] = jobs[0];
     vec[1] = jobs[1];
-    Sigma s1 = Sigma(M);
+    s1 = (M);
+    s1.jobs.reserve(2);
     for (int k = 0; k < vec.size(); ++k) {
         s1.job_to_bottom(vec[k]);
     }
 
     vec[0] = jobs[1];
     vec[1] = jobs[0];
-    Sigma s2 = Sigma(M);
+    s2 = (M);
+    s2.jobs.reserve(2);
     for (int k = 0; k < vec.size(); ++k) {
         s2.job_to_bottom(vec[k]);
     }
 
-    int c1 = get_max_value(s1.C);
-    int c2 = get_max_value(s2.C);
-    Sigma sol;
+    c1 = get_max_value(s1.C);
+    c2 = get_max_value(s2.C);
     if (c1 <= c2) {
         sol = std::move(s1);
     } else {
@@ -49,13 +51,13 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs) {
     seq_size = 2;
     for (j = 2; j < jobs.size(); ++j) {
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
-        Sigma best_sol;
         for (i = 0; i <= seq_size; ++i) {
             job = jobs[j];
             vec = copy_jobs(sol.jobs);
             vec.insert(vec.begin() + i, job);
             recompute_r0(vec);
-            Sigma s_alt = Sigma(M);
+            Sigma s_alt {M};
+            s_alt.jobs.reserve(vec.size());
             for (k = 0; k < vec.size(); ++k) {
                 s_alt.job_to_bottom(vec[k]);
             }
