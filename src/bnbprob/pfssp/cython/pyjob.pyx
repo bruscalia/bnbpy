@@ -13,6 +13,16 @@ INIT_ERROR = 'C++ Job shared pointer not initialized'
 
 cdef class PyJob:
 
+    def __repr__(self) -> str:
+        return self._signature
+
+    def __str__(self) -> str:
+        return self._signature
+
+    @property
+    def _signature(self):
+        return f'Job {self.j}'
+
     @property
     def j(self):
         return self.get_j()
