@@ -161,7 +161,7 @@ print(f"Sol: {sol} | x: {sol.x}")
 ### Flow Shop
 
 In this example, I used an instance from the literature with 20 jobs on 10 machines.
-It takes slightly more than 1s to be solved, which
+It takes less than 1s to be solved, which
 is an incredible performance even compared to the best commercial MILP solvers.
 
 ```python
@@ -173,7 +173,7 @@ with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
 
 problem = PermFlowShop.from_p(p, constructive='neh')
 bnb = CallbackBnB(
-    eval_node='in', rtol=0.0001, restart_freq=200, save_tree=False
+    eval_node='in', rtol=0.0001, save_tree=False
 )
 
 # The commercial solver Gurobi took 600s (timeout) to find the near optimal

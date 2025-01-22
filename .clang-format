@@ -1,3 +1,29 @@
 BasedOnStyle: Google
 IndentWidth: 4
 UseTab: Never
+AccessModifierOffset: -4  # Align access modifiers with the class declaration
+AlignAfterOpenBracket: Align  # Align parameters after open bracket
+AlignConsecutiveAssignments: false  # Align consecutive assignments
+AlignConsecutiveDeclarations: false  # Align consecutive declarations
+AlignEscapedNewlines: Left  # Align escaped newlines to the left
+AlignOperands: true  # Align operands of binary and ternary expressions
+AlignTrailingComments: false  # Align trailing comments
+AllowShortFunctionsOnASingleLine: Inline  # Allow short functions on a single line
+BreakBeforeBraces: Allman  # Place braces on a new line
+ColumnLimit: 80  # Set maximum column width
+ContinuationIndentWidth: 4  # Indent width for line continuations
+IndentCaseLabels: true  # Indent case labels in switch statements
+IndentPPDirectives: AfterHash  # Indent preprocessor directives after the hash
+KeepEmptyLinesAtTheStartOfBlocks: false  # Remove empty lines at the start of blocks
+MaxEmptyLinesToKeep: 1  # Maximum number of consecutive empty lines to keep
+NamespaceIndentation: All  # Indent namespaces
+PointerAlignment: Left  # Align pointers to the left
+ReflowComments: true  # Reflow long comments
+SortIncludes: true  # Sort includes
+SpaceAfterCStyleCast: true  # Add space after C-style cast
+SpaceBeforeParens: ControlStatements  # Add space before parentheses in control statements
+SpacesInAngles: false  # No spaces inside angle brackets
+SpacesInContainerLiterals: false  # No spaces inside container literals
+SpacesInCStyleCastParentheses: false  # No spaces inside C-style cast parentheses
+SpacesInParentheses: false  # No spaces inside parentheses
+SpacesInSquareBrackets: false  # No spaces inside square brackets

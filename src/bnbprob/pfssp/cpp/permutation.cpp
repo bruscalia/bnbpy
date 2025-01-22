@@ -1,16 +1,22 @@
+#include "permutation.hpp"
+
 #include <algorithm>
 #include <memory>
 #include <vector>
 
 #include "job.hpp"
 #include "sigma.hpp"
-#include "permutation.hpp"
 
 int LARGE = 10000000;
 
 // Constructor from processing times
 Permutation::Permutation(const std::vector<std::vector<int>> &p_)
-    : m(p_[0].size()), n(p_.size()), level(0), sigma1(m), free_jobs(n), sigma2(m)
+    : m(p_[0].size()),
+      n(p_.size()),
+      level(0),
+      sigma1(m),
+      free_jobs(n),
+      sigma2(m)
 {
     // Constructor implementation here
     // Create jobs used in permutation solution
@@ -25,11 +31,20 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_)
 }
 
 // Accessor methods
-std::vector<JobPtr> *Permutation::get_free_jobs() { return &free_jobs; }
+std::vector<JobPtr> *Permutation::get_free_jobs()
+{
+    return &free_jobs;
+}
 
-Sigma *Permutation::get_sigma1() { return &sigma1; }
+Sigma *Permutation::get_sigma1()
+{
+    return &sigma1;
+}
 
-Sigma *Permutation::get_sigma2() { return &sigma2; }
+Sigma *Permutation::get_sigma2()
+{
+    return &sigma2;
+}
 
 std::vector<JobPtr> Permutation::get_sequence()
 {
@@ -119,9 +134,8 @@ void Permutation::front_updates()
         job->r[0] = this->sigma1.C[0];
         for (int k = 1; k < this->m; ++k)
         {
-            job->r[k] = std::max(
-                this->sigma1.C[k],
-                job->r[k - 1] + job->p->at(k - 1));
+            job->r[k] =
+                std::max(this->sigma1.C[k], job->r[k - 1] + job->p->at(k - 1));
         }
     }
 }
@@ -149,7 +163,7 @@ void Permutation::compute_starts()
     {
         for (int i = 0; i < this->m; ++i)
         {
-            seq[j]->r[i] = 0; // Set each element to 0
+            seq[j]->r[i] = 0;  // Set each element to 0
         }
     }
 
@@ -236,19 +250,17 @@ int Permutation::lower_bound_2m()
 
 inline bool asc_t1(const JobParams &a, const JobParams &b)
 {
-    return a.t1 < b.t1; // Sort by t1 in ascending order
+    return a.t1 < b.t1;  // Sort by t1 in ascending order
 }
 
 inline bool desc_t2(const JobParams &a, const JobParams &b)
 {
-    return b.t2 < a.t2; // Sort by t2 in descending order
+    return b.t2 < a.t2;  // Sort by t2 in descending order
 }
 
 // Two machine problem definition
-int two_mach_problem(
-    const std::vector<JobPtr> &jobs,
-    const int &m1,
-    const int &m2)
+int two_mach_problem(const std::vector<JobPtr> &jobs, const int &m1,
+                     const int &m2)
 {
     // Implementation here
     int t1, t2;
@@ -265,11 +277,13 @@ int two_mach_problem(
         t2 = job->p->at(m2) + job->lat->at(m2)[m1];
         if (t1 <= t2)
         {
-            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), job->lat->at(m2)[m1]);
+            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2),
+                            job->lat->at(m2)[m1]);
         }
         else
         {
-            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), job->lat->at(m2)[m1]);
+            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2),
+                            job->lat->at(m2)[m1]);
         }
     }
 
@@ -288,10 +302,8 @@ int two_mach_problem(
 }
 
 // Makespan given ordered operations
-int two_mach_makespan(
-    const std::vector<JobParams> &job_times,
-    const int &m1,
-    const int &m2)
+int two_mach_makespan(const std::vector<JobParams> &job_times, const int &m1,
+                      const int &m2)
 {
     // Implementation here
     int time_m1 = 0;

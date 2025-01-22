@@ -1,11 +1,10 @@
-#include <memory>
-#include <vector>
-#include <cstdlib>
-
 #include "job.hpp"
 
-using namespace std;
+#include <cstdlib>
+#include <memory>
+#include <vector>
 
+using namespace std;
 
 // Private helper function to initialize common operations
 void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
@@ -21,7 +20,7 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_)
         for (int m2 = 0; m2 < m; ++m2)
         {
             if (m2 + 1 < m1)
-            { // Ensure range is valid
+            {  // Ensure range is valid
                 int sum_p = 0;
                 for (int i = m2 + 1; i < m1; ++i)
                 {
@@ -48,12 +47,13 @@ inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr)
 }
 
 // Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Job>> &jobs)
+std::vector<std::shared_ptr<Job>> copy_jobs(
+    const std::vector<std::shared_ptr<Job>> &jobs)
 {
-    std::vector<std::shared_ptr<Job>> out (jobs.size());
+    std::vector<std::shared_ptr<Job>> out(jobs.size());
     for (int i = 0; i < jobs.size(); ++i)
     {
         out[i] = make_shared<Job>(*jobs[i]);
     }
-    return out; // Return the copied vector
+    return out;  // Return the copied vector
 }

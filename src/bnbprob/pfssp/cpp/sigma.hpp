@@ -24,14 +24,16 @@ public:
 
     // Constructor only jobs
     Sigma(const int &m_, const std::vector<JobPtr> &jobs_)
-    : m(m_), jobs(jobs_), C(m_, 0) {}
+        : m(m_), jobs(jobs_), C(m_, 0)
+    {
+    }
 
     // Full constructor
-    Sigma(
-        const int &m_,
-        const std::vector<JobPtr> &jobs_,
-        const std::vector<int> &C_)
-    : m(m_), jobs(jobs_), C(C_) {}
+    Sigma(const int &m_, const std::vector<JobPtr> &jobs_,
+          const std::vector<int> &C_)
+        : m(m_), jobs(jobs_), C(C_)
+    {
+    }
 
     // Destructor
     ~Sigma() {}
@@ -43,4 +45,4 @@ public:
     void job_to_top(const JobPtr &job);
 };
 
-#endif // SIGMA_HPP
+#endif  // SIGMA_HPP

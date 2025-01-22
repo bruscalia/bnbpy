@@ -19,15 +19,7 @@ public:
     int T;
 
     // Default constructor
-    Job()
-        : j(0),
-          p(nullptr),
-          r(),
-          q(),
-          lat(nullptr),
-          T(0)
-    {
-    }
+    Job() : j(0), p(nullptr), r(), q(), lat(nullptr), T(0) {}
 
     // Constructor with job ID and shared pointer to processing times
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_)
@@ -53,14 +45,10 @@ public:
     }
 
     // Parameterized constructor -> deepcopy of arrays
-    Job(
-        const int &j_,
-        const std::shared_ptr<std::vector<int>> &p_,
-        const vector<int> &r_,
-        const vector<int> &q_,
+    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
+        const vector<int> &r_, const vector<int> &q_,
         const std::shared_ptr<std::vector<std::vector<int>>> &lat_,
-        const int &slope_,
-        const int &T_)
+        const int &slope_, const int &T_)
         : j(j_), p(p_), r(r_), q(q_), lat(lat_), slope(slope_), T(T_)
     {
     }
@@ -76,9 +64,10 @@ private:
 inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr);
 
 // Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(const std::vector<std::shared_ptr<Job>> &jobs);
+std::vector<std::shared_ptr<Job>> copy_jobs(
+    const std::vector<std::shared_ptr<Job>> &jobs);
 
 // Type definition for shared pointer
 typedef std::shared_ptr<Job> JobPtr;
 
-#endif // JOB_HPP
+#endif  // JOB_HPP

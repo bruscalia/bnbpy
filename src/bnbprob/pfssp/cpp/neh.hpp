@@ -1,14 +1,13 @@
 #ifndef NEH_HPP
 #define NEH_HPP
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "job.hpp"
-#include "sigma.hpp"
 #include "permutation.hpp"
+#include "sigma.hpp"
 #include "utils.hpp"
-
 
 inline bool desc_T(const JobPtr &a, const JobPtr &b);
 

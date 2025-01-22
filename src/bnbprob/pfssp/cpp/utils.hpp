@@ -1,9 +1,9 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <vector>
 #include <algorithm>
 #include <limits>
+#include <vector>
 
 #include "job.hpp"
 
@@ -14,10 +14,9 @@ void recompute_r0(std::vector<JobPtr> &jobs);
 void recompute_r0(std::vector<JobPtr> &jobs, int k);
 
 // Get the maximum value of an array of integer by a pointer
-int get_max_value(const int* &ptr, int &m);
+int get_max_value(const int *&ptr, int &m);
 
 // The the maximum value of a vector of integers by a pointer
 int get_max_value(const std::vector<int> &vec);
 
-
-#endif // UTILS_HPP
+#endif  // UTILS_HPP

@@ -7,7 +7,8 @@
 #include "job.hpp"
 #include "sigma.hpp"
 
-class Permutation {
+class Permutation
+{
 public:
     // Attributes
     int m;  // Number of machines
@@ -80,16 +81,20 @@ public:
     }
 
     // // Lower bound calculations
-    int calc_lb_1m() {
+    int calc_lb_1m()
+    {
         // Implementation here
-        if (this->free_jobs.size() == 0) {
+        if (this->free_jobs.size() == 0)
+        {
             return this->calc_lb_full();
         }
         return this->lower_bound_1m();
     }
-    int calc_lb_2m() {
+    int calc_lb_2m()
+    {
         // Implementation here
-        if (this->free_jobs.size() == 0) {
+        if (this->free_jobs.size() == 0)
+        {
             return this->calc_lb_full();
         }
         return this->lower_bound_2m();
@@ -99,36 +104,28 @@ public:
     int lower_bound_2m();
 
     // Deepcopy
-    Permutation copy() const {
+    Permutation copy() const
+    {
         // std:: vector<JobPtr> new_jobs = copy_jobs(this->free_jobs);
-        return Permutation(
-            this->m,
-            this->n,
-            this->level,
-            this->sigma1,
-            copy_jobs(this->free_jobs),
-            this->sigma2
-        );
+        return Permutation(this->m, this->n, this->level, this->sigma1,
+                           copy_jobs(this->free_jobs), this->sigma2);
     }
 
     // Constructor for copy
-    Permutation(
-        int m_,
-        int n_,
-        int level_,
-        const Sigma &sigma1_,
-        vector<shared_ptr<Job>> &&free_jobs_,
-        const Sigma &sigma2_
-    )
+    Permutation(int m_, int n_, int level_, const Sigma &sigma1_,
+                vector<shared_ptr<Job>> &&free_jobs_, const Sigma &sigma2_)
         : m(m_),
           n(n_),
           level(level_),
           sigma1(sigma1_),
           free_jobs(std::move(free_jobs_)),
-          sigma2(sigma2_) {}
+          sigma2(sigma2_)
+    {
+    }
 };
 
-struct JobParams {
+struct JobParams
+{
     int t1;
     int t2;
     const int *p1;
@@ -138,11 +135,15 @@ struct JobParams {
     // Constructor
     JobParams(const int &t1_, const int &t2_, const int *&p1_, const int *&p2_,
               const int *&lat_)
-        : t1(t1_), t2(t2_), p1(p1_), p2(p2_), lat(lat_) {}
+        : t1(t1_), t2(t2_), p1(p1_), p2(p2_), lat(lat_)
+    {
+    }
 
     JobParams(const int &t1_, const int &t2_, const int &p1_, const int &p2_,
               const int &lat_)
-        : t1(t1_), t2(t2_), p1(&p1_), p2(&p2_), lat(&lat_) {}
+        : t1(t1_), t2(t2_), p1(&p1_), p2(&p2_), lat(&lat_)
+    {
+    }
 };
 
 // // Two machine problem definition

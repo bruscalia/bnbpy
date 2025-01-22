@@ -1,3 +1,5 @@
+#include "neh.hpp"
+
 #include <algorithm>
 #include <vector>
 
@@ -5,12 +7,14 @@
 #include "permutation.hpp"
 #include "sigma.hpp"
 #include "utils.hpp"
-#include "neh.hpp"
 
+inline bool desc_T(const JobPtr& a, const JobPtr& b)
+{
+    return b->T < a->T;
+}
 
-inline bool desc_T(const JobPtr& a, const JobPtr& b) { return b->T < a->T; }
-
-Permutation neh_constructive(std::vector<JobPtr>& jobs) {
+Permutation neh_constructive(std::vector<JobPtr>& jobs)
+{
     int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
@@ -25,44 +29,67 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs) {
     vec.resize(2);
     vec[0] = jobs[0];
     vec[1] = jobs[1];
+    recompute_r0(vec, 0);
     s1 = (M);
     s1.jobs.reserve(2);
-    for (int k = 0; k < vec.size(); ++k) {
+    for (int k = 0; k < vec.size(); ++k)
+    {
         s1.job_to_bottom(vec[k]);
     }
 
     vec[0] = jobs[1];
     vec[1] = jobs[0];
+    recompute_r0(vec, 0);
     s2 = (M);
     s2.jobs.reserve(2);
-    for (int k = 0; k < vec.size(); ++k) {
+    for (int k = 0; k < vec.size(); ++k)
+    {
         s2.job_to_bottom(vec[k]);
     }
 
     c1 = get_max_value(s1.C);
     c2 = get_max_value(s2.C);
-    if (c1 <= c2) {
+    if (c1 <= c2)
+    {
         sol = std::move(s1);
-    } else {
+    }
+    else
+    {
         sol = std::move(s2);
     }
 
     // Find best insert for every other job
     seq_size = 2;
-    for (j = 2; j < jobs.size(); ++j) {
+    for (j = 2; j < jobs.size(); ++j)
+    {
+        Sigma base_sig(M);
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
-        for (i = 0; i <= seq_size; ++i) {
+        for (i = 0; i <= seq_size; ++i)
+        {
+            // Insert job in position i
             job = jobs[j];
             vec = copy_jobs(sol.jobs);
-            vec.insert(vec.begin() + i, job);
+            vec.insert(vec.begin() + i, std::move(job));
             recompute_r0(vec);
-            Sigma s_alt {M};
+
+            // Recompute release dates only of necessary jobs
+            if (i > 0)
+            {
+                base_sig.job_to_bottom(vec[i - 1]);
+            }
+
+            // Here the insertion is performed
+            Sigma s_alt = (base_sig);  // Shallow copy
             s_alt.jobs.reserve(vec.size());
-            for (k = 0; k < vec.size(); ++k) {
+            for (int k = i; k < vec.size(); ++k)
+            {
                 s_alt.job_to_bottom(vec[k]);
             }
+
+            // New cost is the greatest completion time
             cost_alt = get_max_value(s_alt.C);
-            if (cost_alt < best_cost) {
+            if (cost_alt < best_cost)
+            {
                 best_cost = cost_alt;
                 best_sol = std::move(s_alt);
             }
