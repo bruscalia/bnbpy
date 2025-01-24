@@ -50,7 +50,7 @@ cdef class BranchAndBound:
     cdef inline void _restart_search(BranchAndBound self):
         self.incumbent = None
         self.bound_node = None
-        self.gap = LARGE_POS
+        self.gap = INFINITY
         self.queue = []
 
     cdef void _do_iter(BranchAndBound self, Node node)

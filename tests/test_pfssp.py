@@ -2,8 +2,8 @@ import random
 
 import pytest
 
-from bnbprob.pfssp.bnb import LazyBnB
 from bnbprob.pfssp.cython.problem import PermFlowShop, PermFlowShop2M
+from bnbprob.pfssp.environ import LazyBnB
 from bnbprob.pfssp.pypure.problem import PermFlowShop as PyPermFlowShop
 from bnbpy import BestFirstBnB, BranchAndBound, DepthFirstBnB
 
@@ -130,8 +130,8 @@ class TestPFSSPBounds:
 
     def test_root(self):
         problem = PermFlowShop.from_p(self.p)
-        lb1 = problem.solution.perm.lower_bound_1m()
-        lb5 = problem.solution.perm.lower_bound_2m()
+        lb1 = problem.solution.lower_bound_1m()
+        lb5 = problem.solution.lower_bound_2m()
         assert (
             (
                 lb1,
@@ -146,9 +146,9 @@ class TestPFSSPBounds:
     @pytest.mark.parametrize('j', [0, 1, 2, 3])
     def test_first_level(self, j):
         problem = PermFlowShop.from_p(self.p)
-        problem.solution.perm.push_job(j)
-        lb1 = problem.solution.perm.lower_bound_1m()
-        lb5 = problem.solution.perm.lower_bound_2m()
+        problem.solution.push_job(j)
+        lb1 = problem.solution.lower_bound_1m()
+        lb5 = problem.solution.lower_bound_2m()
         res = self.res_first[j]
         assert (
             (
