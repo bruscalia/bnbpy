@@ -12,24 +12,12 @@ cdef extern from "math.h":
     double HUGE_VAL
 
 
-STATUS_MAP = {
-    0: 'NO_SOLUTION',
-    1: 'RELAXATION',
-    2: 'OPTIMAL',
-    3: 'FEASIBLE',
-    4: 'INFEASIBLE',
-    5: 'FATHOM',
-    6: 'ERROR',
-    7: 'OTHER',
-}
-
-
 cdef class Solution:
 
     def __init__(self):
         self.cost = HUGE_VAL
         self.lb = -HUGE_VAL
-        self._status = OptStatus.NO_SOLUTION
+        self.status = OptStatus.NO_SOLUTION
 
     def __del__(self):
         pass
@@ -41,33 +29,30 @@ cdef class Solution:
         return self._signature
 
     @property
-    def status(self):
-        return STATUS_MAP[<int>self._status]
-
-    @property
     def _signature(self):
+        cdef object status_ = self.status
         return (
-            f'Status: {self.status} | Cost: {self.cost} | LB: {self.lb}'
+            f'Status: {status_.name} | Cost: {self.cost} | LB: {self.lb}'
         )
 
     cpdef void set_optimal(Solution self):
-        self._status = OptStatus.OPTIMAL
+        self.status = OptStatus.OPTIMAL
 
     cpdef void set_lb(Solution self, double lb):
         self.lb = lb
-        if self._status == OptStatus.NO_SOLUTION:
-            self._status = OptStatus.RELAXATION
+        if self.status == OptStatus.NO_SOLUTION:
+            self.status = OptStatus.RELAXATION
 
     cpdef void set_feasible(Solution self):
-        self._status = OptStatus.FEASIBLE
+        self.status = OptStatus.FEASIBLE
         self.cost = self.lb
 
     cpdef void set_infeasible(Solution self):
-        self._status = OptStatus.INFEASIBLE
+        self.status = OptStatus.INFEASIBLE
         self.cost = HUGE_VAL
 
     cpdef void fathom(Solution self):
-        self._status = OptStatus.FATHOM
+        self.status = OptStatus.FATHOM
         self.cost = HUGE_VAL
 
     cpdef Solution copy(Solution self, bool deep=True):
@@ -81,5 +66,5 @@ cdef class Solution:
         sol = Solution.__new__(Solution)
         sol.cost = self.cost
         sol.lb = self.lb
-        sol._status = OptStatus.NO_SOLUTION
+        sol.status = self.status
         return sol

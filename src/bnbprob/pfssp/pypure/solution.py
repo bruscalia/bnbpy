@@ -1,7 +1,8 @@
 import copy
 
 from bnbprob.pfssp.pypure.permutation import Permutation
-from bnbpy import OptStatus, Solution
+from bnbpy.pypure.solution import Solution
+from bnbpy.pypure.status import OptStatus
 
 LARGE_INT = 10000000
 

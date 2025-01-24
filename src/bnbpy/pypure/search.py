@@ -4,9 +4,9 @@ import time
 from typing import Any, List, Literal, Optional, Tuple, Union
 
 from bnbpy.logger import SearchLogger
-from bnbpy.problem import Problem
 from bnbpy.pypure.node import Node
-from bnbpy.solution import Solution
+from bnbpy.pypure.problem import Problem
+from bnbpy.pypure.solution import Solution
 
 log = logging.getLogger(__name__)
 

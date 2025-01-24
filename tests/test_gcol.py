@@ -3,7 +3,8 @@ import os
 import pytest
 
 from bnbprob import gcol
-from bnbpy import BranchAndBound, OptStatus
+from bnbpy import BranchAndBound
+from bnbpy.status import OptStatus
 
 HERE = os.path.dirname(__file__)
 

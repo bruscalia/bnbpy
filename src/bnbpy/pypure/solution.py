@@ -9,12 +9,12 @@ LOW_NEG = -float('inf')
 class Solution:
     """Abstraction for a solution representation"""
 
-    cost: Optional[Union[int, float]]
+    cost: Union[int, float]
     lb: Union[int, float]
     status: OptStatus
 
     def __init__(self, lb=LOW_NEG):
-        self.cost = None
+        self.cost = float('inf')
         self.lb = lb
         self.status = OptStatus.NO_SOLUTION
 
@@ -51,11 +51,11 @@ class Solution:
 
     def set_infeasible(self):
         self.status = OptStatus.INFEASIBLE
-        self.cost = None
+        self.cost = float('inf')
 
     def fathom(self):
         self.status = OptStatus.FATHOM
-        self.cost = None
+        self.cost = float('inf')
 
     def copy(self, deep=True):
         if deep:

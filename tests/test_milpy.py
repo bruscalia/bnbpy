@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 
 from bnbprob.milpy.problem import MILP
-from bnbpy import BestFirstBnB, BreadthFirstBnB, DepthFirstBnB, OptStatus
+from bnbpy import BestFirstBnB, BreadthFirstBnB, DepthFirstBnB
+from bnbpy.status import OptStatus
 
 np.random.seed(42)
 

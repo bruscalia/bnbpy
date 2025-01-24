@@ -10,9 +10,7 @@ cdef class Solution:
 
     cdef public:
         double cost, lb
-
-    cdef:
-        OptStatus _status
+        OptStatus status
 
     cpdef void set_optimal(Solution self)
 

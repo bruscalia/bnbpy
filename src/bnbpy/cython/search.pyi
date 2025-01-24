@@ -28,7 +28,11 @@ class BranchAndBound:
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False
     ) -> None:
-        """Instantiate algoritm to solve problems via Branch & Bound
+        """Instantiate algoritm to solve problems via Branch & Bound.
+
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
 
         Parameters
         ----------
@@ -48,15 +52,15 @@ class BranchAndBound:
         ...
 
     @property
-    def ub(self):
+    def ub(self) -> float:
         ...
 
     @property
-    def lb(self):
+    def lb(self) -> float:
         ...
 
     @property
-    def solution(self):
+    def solution(self) -> Solution:
         ...
 
     def solve(
@@ -65,7 +69,11 @@ class BranchAndBound:
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
     ) -> Optional[Solution]:
-        """Solves optimization problem using Branch & Bound
+        """Solves optimization problem using Branch & Bound.
+
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
 
         Parameters
         ----------

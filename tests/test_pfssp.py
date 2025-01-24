@@ -2,10 +2,14 @@ import random
 
 import pytest
 
+from bnbprob.pfssp.cython.bnb import LazyBnB
 from bnbprob.pfssp.cython.problem import PermFlowShop, PermFlowShop2M
-from bnbprob.pfssp.environ import LazyBnB
+from bnbprob.pfssp.pypure.bnb import LazyBnB as PyLazyBnB
 from bnbprob.pfssp.pypure.problem import PermFlowShop as PyPermFlowShop
-from bnbpy import BestFirstBnB, BranchAndBound, DepthFirstBnB
+from bnbpy.cython.search import BestFirstBnB, BranchAndBound, DepthFirstBnB
+from bnbpy.pypure.search import BestFirstBnB as PyBFS
+from bnbpy.pypure.search import BranchAndBound as PyBnB
+from bnbpy.pypure.search import DepthFirstBnB as PyDFS
 
 
 @pytest.mark.pfssp
@@ -34,20 +38,21 @@ class TestPFSSP:
             (BestFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (DepthFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),
             (BestFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),
-            (DepthFirstBnB, PyPermFlowShop, 'in', 182, 11, 'quick'),
-            (BestFirstBnB, PyPermFlowShop, 'in', 182, 11, 'quick'),
-            (DepthFirstBnB, PyPermFlowShop, 'out', 182, 27, 'quick'),
-            (BestFirstBnB, PyPermFlowShop, 'out', 182, 17, 'quick'),
-            (DepthFirstBnB, PyPermFlowShop, 'in', 182, 0, 'neh'),
-            (BestFirstBnB, PyPermFlowShop, 'in', 182, 0, 'neh'),
-            (DepthFirstBnB, PyPermFlowShop, 'out', 182, 0, 'neh'),
-            (BestFirstBnB, PyPermFlowShop, 'out', 182, 0, 'neh'),
+            (PyDFS, PyPermFlowShop, 'in', 182, 11, 'quick'),
+            (PyBFS, PyPermFlowShop, 'in', 182, 11, 'quick'),
+            (PyDFS, PyPermFlowShop, 'out', 182, 27, 'quick'),
+            (PyBFS, PyPermFlowShop, 'out', 182, 17, 'quick'),
+            (PyDFS, PyPermFlowShop, 'in', 182, 0, 'neh'),
+            (PyBFS, PyPermFlowShop, 'in', 182, 0, 'neh'),
+            (PyDFS, PyPermFlowShop, 'out', 182, 0, 'neh'),
+            (PyBFS, PyPermFlowShop, 'out', 182, 0, 'neh'),
         ],
     )
     def test_res_pfssp(  # noqa: PLR0913, PLR0917
         self, bnb_cls, prob_cls, eval_node, cost, explored, constructive
     ):
         problem = self.start_problem(prob_cls, constructive=constructive)
+        print(problem)
         bnb = bnb_cls(eval_node=eval_node)
         bnb.solve(problem)
         cost_sol = bnb.solution.cost
@@ -81,12 +86,18 @@ class TestPFSSP:
             f' expected {self.nodes}'
         )
 
-    @pytest.mark.parametrize('cls', [PermFlowShop, PyPermFlowShop])
-    def test_lazy(self, cls):
+    @pytest.mark.parametrize(
+        ('cls', 'bnb_cls', 'bnblazy_cls'),
+        [
+            (PermFlowShop, BranchAndBound, LazyBnB),
+            (PyPermFlowShop, PyBnB, PyLazyBnB),
+        ],
+    )
+    def test_lazy(self, cls, bnb_cls, bnblazy_cls):
         problem = self.start_problem(cls, constructive='quick')
-        bnb = BranchAndBound(eval_node='in')
+        bnb = bnblazy_cls(eval_node='in')
         bnb.solve(problem)
-        bnblazy = LazyBnB(eval_node='in')
+        bnblazy = bnb_cls(eval_node='in')
         problem_lazy = self.start_problem(cls)
         bnblazy.solve(problem_lazy)
         base_cost = bnb.solution.cost
@@ -133,12 +144,9 @@ class TestPFSSPBounds:
         lb1 = problem.solution.lower_bound_1m()
         lb5 = problem.solution.lower_bound_2m()
         assert (
-            (
-                lb1,
-                lb5,
-            )
-            == self.res_root
-        ), (
+            lb1,
+            lb5,
+        ) == self.res_root, (
             f'Wrong root lower bounds for toy problem: {(lb1, lb5)};'
             f' expected {self.res_root}'
         )
@@ -151,12 +159,9 @@ class TestPFSSPBounds:
         lb5 = problem.solution.lower_bound_2m()
         res = self.res_first[j]
         assert (
-            (
-                lb1,
-                lb5,
-            )
-            == res
-        ), (
+            lb1,
+            lb5,
+        ) == res, (
             f'Wrong root lower bounds for toy problem: {(lb1, lb5)};'
             f' expected {res}'
         )

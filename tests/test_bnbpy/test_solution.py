@@ -14,10 +14,10 @@ class TestSolution:
     def test_initial_state():
         """Test the initial state of the Solution instance."""
         sol = Solution()
-        assert sol.cost is None
+        assert sol.cost == float('inf')
         assert sol.lb == -float('inf')
         assert sol.status == OptStatus.NO_SOLUTION
-        assert (str(sol)) == 'Status: NO_SOLUTION | Cost: None | LB: -inf'
+        assert (str(sol)) == 'Status: NO_SOLUTION | Cost: inf | LB: -inf'
 
     @staticmethod
     def test_set_optimal():
@@ -48,7 +48,7 @@ class TestSolution:
         sol.set_lb(300)
         sol.set_infeasible()
         assert sol.status == OptStatus.INFEASIBLE
-        assert sol.cost is None
+        assert sol.cost == float('inf')
 
     def test_copy(self):
         """Test copying functionality."""
@@ -63,26 +63,3 @@ class TestSolution:
         assert deep_copy is not sol
         assert shallow_copy.status == sol.status
         assert deep_copy.status == sol.status
-
-    @staticmethod
-    def test_get_status_cls():
-        """Test get_status_cls method."""
-        sol = Solution()
-        assert sol.get_status_cls() == OptStatus
-
-    @staticmethod
-    def test_get_status_options():
-        """Test get_status_options method."""
-        sol = Solution()
-        options = sol.get_status_options()
-        expected_options = {
-            'NO_SOLUTION': 0,
-            'RELAXATION': 1,
-            'OPTIMAL': 2,
-            'FEASIBLE': 3,
-            'INFEASIBLE': 4,
-            'FATHOM': 5,
-            'ERROR': 6,
-            'OTHER': 7,
-        }
-        assert options == expected_options

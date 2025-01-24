@@ -74,5 +74,5 @@ cdef class FlowSolution(Solution):
         sol.perm = self.perm.copy()
         sol.cost = HUGE_VAL
         sol.lb = 0
-        sol._status = OptStatus.NO_SOLUTION
+        sol.status = OptStatus.NO_SOLUTION
         return sol

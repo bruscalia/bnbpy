@@ -34,15 +34,25 @@ cdef class Problem:
     cpdef list[Problem] branch(Problem self):
         raise NotImplementedError("Must implement `branch` method")
 
+    cpdef bool check_feasible(Problem self):
+        cdef:
+            bool feas
+        feas = self.is_feasible()
+        if feas:
+            self.solution.set_feasible()
+        else:
+            self.solution.set_infeasible()
+        return feas
+
     cpdef void set_solution(Problem self, Solution solution):
         self.solution = solution
-        if self.solution._status == OptStatus.NO_SOLUTION:
+        if self.solution.status == OptStatus.NO_SOLUTION:
             self.compute_bound()
 
     cpdef Solution warmstart(Problem self):
         return None
 
-    cpdef copy(self, bool deep=True):
+    cpdef Problem copy(self, bool deep=True):
         if deep:
             return self.deep_copy()
         return self.shallow_copy()

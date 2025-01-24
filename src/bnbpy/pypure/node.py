@@ -2,8 +2,8 @@ import copy
 import itertools
 from typing import List, Optional, Union
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbpy.pypure.problem import Problem
+from bnbpy.pypure.solution import Solution
 
 
 class Node:

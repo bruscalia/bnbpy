@@ -1,7 +1,7 @@
 
 from bnbprob.pfssp.cython.job import Job
 from bnbprob.pfssp.cython.permutation import Permutation
-from bnbpy.status import OptStatus
+from bnbpy.cython.status import OptStatus
 
 class FlowSolution:
     """

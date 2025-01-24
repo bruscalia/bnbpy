@@ -12,7 +12,7 @@ from bnbprob.pfssp.pypure.heuristics import (
 )
 from bnbprob.pfssp.pypure.permutation import Permutation
 from bnbprob.pfssp.pypure.solution import FlowSolution
-from bnbpy import Problem
+from bnbpy.pypure.problem import Problem
 
 log = logging.getLogger(__name__)
 

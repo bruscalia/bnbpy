@@ -23,21 +23,13 @@ cdef class Problem:
 
     cpdef void compute_bound(Problem self)
 
-    cdef inline bool check_feasible(Problem self):
-        cdef:
-            bool feas
-        feas = self.is_feasible()
-        if feas:
-            self.solution.set_feasible()
-        else:
-            self.solution.set_infeasible()
-        return feas
+    cpdef bool check_feasible(Problem self)
 
     cpdef void set_solution(Problem self, Solution solution)
 
     cpdef Solution warmstart(Problem self)
 
-    cpdef copy(self, bool deep=*)
+    cpdef Problem copy(self, bool deep=*)
 
     cdef inline Problem deep_copy(Problem self):
         return copy.deepcopy(self)
