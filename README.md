@@ -220,6 +220,7 @@ problem = gcol.ColGenColor(
     pricing=pricing,
     max_iter_price=1000,
 )
+sol = bnb.solve(problem, maxiter=1000)
 print(sol)
 # >>> Status: OPTIMAL | Cost: 17 | LB: 17
 ```

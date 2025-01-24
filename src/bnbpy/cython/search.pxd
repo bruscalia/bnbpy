@@ -3,6 +3,7 @@
 
 from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp.string cimport string
 
 from bnbpy.cython.node cimport Node
 
@@ -28,7 +29,7 @@ cdef class BranchAndBound:
         double rtol
         double atol
         int explored
-        object eval_node
+        string eval_node
         bool eval_in
         bool eval_out
         bool save_tree
@@ -42,9 +43,13 @@ cdef class BranchAndBound:
 
     cdef object get_solution(BranchAndBound self)
 
-    cpdef void _set_problem(BranchAndBound self, problem: Problem)
+    cpdef void _set_problem(BranchAndBound self, object problem)
 
-    cpdef void _restart_search(BranchAndBound self)
+    cdef inline void _restart_search(BranchAndBound self):
+        self.incumbent = None
+        self.bound_node = None
+        self.gap = INFINITY
+        self.queue = []
 
     cdef void _do_iter(BranchAndBound self, Node node)
 
@@ -52,7 +57,7 @@ cdef class BranchAndBound:
 
     cpdef Node dequeue(BranchAndBound self)
 
-    cpdef void _warmstart(BranchAndBound self, solution: Optional[Solution])
+    cpdef void _warmstart(BranchAndBound self, object solution)
 
     cpdef void branch(BranchAndBound self, Node node)
 

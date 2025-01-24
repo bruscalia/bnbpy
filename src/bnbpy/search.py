@@ -6,7 +6,7 @@ try:
         DepthFirstBnB,
         configure_logfile,
     )
-except ModuleNotFoundError as e:
+except (ModuleNotFoundError, ImportError) as e:
     print('Cython Node not found, using Python version')
     print(e)
     from bnbpy.pypure.search import (

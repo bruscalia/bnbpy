@@ -15,7 +15,7 @@ class MachDeadlineProb(Problem):
     cost: Optional[int]
 
     def __init__(self, jobs: Optional[List[Job]]) -> None:
-        super().__init__()
+        self.solution = MachSolution([])
         self.jobs = {
             job.id: job
             for job in jobs
