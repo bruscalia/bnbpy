@@ -1523,6 +1523,7 @@ struct __pyx_obj_5bnbpy_6cython_7problem_Problem;
 struct __pyx_obj_5bnbpy_6cython_4node_Node;
 struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound;
 struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB;
+struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB;
 struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB;
 
 /* "bnbpy/cython/status.pxd":4
@@ -1659,7 +1660,7 @@ struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound {
 };
 
 
-/* "bnbpy/cython/search.pyx":295
+/* "bnbpy/cython/search.pyx":301
  * 
  * 
  * cdef class BreadthFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
@@ -1671,7 +1672,19 @@ struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB {
 };
 
 
-/* "bnbpy/cython/search.pyx":306
+/* "bnbpy/cython/search.pyx":307
+ * 
+ * 
+ * cdef class DepthFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
+ *     # Just an alias
+ *     pass
+ */
+struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB {
+  struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound __pyx_base;
+};
+
+
+/* "bnbpy/cython/search.pyx":312
  * 
  * 
  * cdef class BestFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
@@ -1803,7 +1816,7 @@ static CYTHON_INLINE void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__set_p
 static CYTHON_INLINE void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__restart_search(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *);
 
 
-/* "bnbpy/cython/search.pyx":295
+/* "bnbpy/cython/search.pyx":301
  * 
  * 
  * cdef class BreadthFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
@@ -1817,7 +1830,21 @@ struct __pyx_vtabstruct_5bnbpy_6cython_6search_BreadthFirstBnB {
 static struct __pyx_vtabstruct_5bnbpy_6cython_6search_BreadthFirstBnB *__pyx_vtabptr_5bnbpy_6cython_6search_BreadthFirstBnB;
 
 
-/* "bnbpy/cython/search.pyx":306
+/* "bnbpy/cython/search.pyx":307
+ * 
+ * 
+ * cdef class DepthFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
+ *     # Just an alias
+ *     pass
+ */
+
+struct __pyx_vtabstruct_5bnbpy_6cython_6search_DepthFirstBnB {
+  struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound __pyx_base;
+};
+static struct __pyx_vtabstruct_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_vtabptr_5bnbpy_6cython_6search_DepthFirstBnB;
+
+
+/* "bnbpy/cython/search.pyx":312
  * 
  * 
  * cdef class BestFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
@@ -2506,31 +2533,6 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
                                       PyObject *module, PyObject *globals,
                                       PyObject* code);
 
-/* Py3UpdateBases.proto */
-static PyObject* __Pyx_PEP560_update_bases(PyObject *bases);
-
-/* CalculateMetaclass.proto */
-static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases);
-
-/* PyObjectCall2Args.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectLookupSpecial.proto */
-#if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-#define __Pyx_PyObject_LookupSpecialNoError(obj, attr_name)  __Pyx__PyObject_LookupSpecial(obj, attr_name, 0)
-#define __Pyx_PyObject_LookupSpecial(obj, attr_name)  __Pyx__PyObject_LookupSpecial(obj, attr_name, 1)
-static CYTHON_INLINE PyObject* __Pyx__PyObject_LookupSpecial(PyObject* obj, PyObject* attr_name, int with_error);
-#else
-#define __Pyx_PyObject_LookupSpecialNoError(o,n) __Pyx_PyObject_GetAttrStrNoError(o,n)
-#define __Pyx_PyObject_LookupSpecial(o,n) __Pyx_PyObject_GetAttrStr(o,n)
-#endif
-
-/* Py3ClassCreate.proto */
-static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name, PyObject *qualname,
-                                           PyObject *mkw, PyObject *modname, PyObject *doc);
-static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObject *bases, PyObject *dict,
-                                      PyObject *mkw, int calculate_metaclass, int allow_py2_metaclass);
-
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -2732,6 +2734,7 @@ static int __pyx_v_5bnbpy_6cython_6search_LARGE_INT;
 static PyObject *__pyx_f_5bnbpy_6cython_6search__first_element_lb(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_BranchAndBound__set_state(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *, PyObject *); /*proto*/
 static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_BreadthFirstBnB__set_state(struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB *, PyObject *); /*proto*/
+static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_DepthFirstBnB__set_state(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *, PyObject *); /*proto*/
 static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_BestFirstBnB__set_state(struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *, PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_6libcpp_6string_std__in_string(std::string const &); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_6libcpp_6string_std__in_string(std::string const &); /*proto*/
@@ -2761,13 +2764,13 @@ static const char __pyx_k_in[] = "in";
 static const char __pyx_k_lb[] = "lb";
 static const char __pyx_k_6_4[] = "^6.4";
 static const char __pyx_k_Any[] = "Any";
-static const char __pyx_k__46[] = "?";
-static const char __pyx_k_doc[] = "__doc__";
+static const char __pyx_k__49[] = "?";
 static const char __pyx_k_key[] = "key";
 static const char __pyx_k_log[] = "log";
 static const char __pyx_k_min[] = "min";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_out[] = "out";
+static const char __pyx_k_sol[] = "sol";
 static const char __pyx_k_str[] = "str";
 static const char __pyx_k_INFO[] = "INFO";
 static const char __pyx_k_List[] = "List";
@@ -2804,13 +2807,11 @@ static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_fathom[] = "fathom";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_kwargs[] = "kwargs";
-static const char __pyx_k_module[] = "__module__";
 static const char __pyx_k_mxiter[] = "_mxiter";
 static const char __pyx_k_parent[] = "parent";
 static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_return[] = "return";
-static const char __pyx_k_set_lb[] = "set_lb";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_update[] = "update";
 static const char __pyx_k_LOW_NEG[] = "LOW_NEG";
@@ -2825,7 +2826,6 @@ static const char __pyx_k_log_row[] = "log_row";
 static const char __pyx_k_logging[] = "logging";
 static const char __pyx_k_maxiter[] = "maxiter";
 static const char __pyx_k_message[] = "message";
-static const char __pyx_k_prepare[] = "__prepare__";
 static const char __pyx_k_problem[] = "problem";
 static const char __pyx_k_Optional[] = "Optional";
 static const char __pyx_k_Solution[] = "Solution";
@@ -2836,9 +2836,7 @@ static const char __pyx_k_heappush[] = "heappush";
 static const char __pyx_k_log_form[] = "log_form";
 static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
-static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_setLevel[] = "setLevel";
-static const char __pyx_k_set_name[] = "__set_name__";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_solution[] = "solution";
 static const char __pyx_k_Formatter[] = "Formatter";
@@ -2850,7 +2848,6 @@ static const char __pyx_k_eval_node[] = "eval_node";
 static const char __pyx_k_formatter[] = "formatter";
 static const char __pyx_k_getLogger[] = "getLogger";
 static const char __pyx_k_isenabled[] = "isenabled";
-static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_node_eval[] = "_node_eval";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
@@ -2867,8 +2864,6 @@ static const char __pyx_k_FileHandler[] = "FileHandler";
 static const char __pyx_k_PickleError[] = "PickleError";
 static const char __pyx_k_hasHandlers[] = "hasHandlers";
 static const char __pyx_k_log_headers[] = "_log_headers";
-static const char __pyx_k_mro_entries[] = "__mro_entries__";
-static const char __pyx_k_set_optimal[] = "set_optimal";
 static const char __pyx_k_BestFirstBnB[] = "BestFirstBnB";
 static const char __pyx_k_Optional_int[] = "Optional[int]";
 static const char __pyx_k_SearchLogger[] = "SearchLogger";
@@ -2884,7 +2879,6 @@ static const char __pyx_k_stringsource[] = "<stringsource>";
 static const char __pyx_k_use_setstate[] = "use_setstate";
 static const char __pyx_k_DepthFirstBnB[] = "DepthFirstBnB";
 static const char __pyx_k_New_incumbent[] = "New incumbent";
-static const char __pyx_k_init_subclass[] = "__init_subclass__";
 static const char __pyx_k_log_headers_2[] = "log_headers";
 static const char __pyx_k_only_messages[] = "only_messages";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
@@ -2917,17 +2911,20 @@ static const char __pyx_k_BranchAndBound__node_eval[] = "BranchAndBound._node_ev
 static const char __pyx_k_BranchAndBound__warmstart[] = "BranchAndBound._warmstart";
 static const char __pyx_k_pyx_unpickle_BestFirstBnB[] = "__pyx_unpickle_BestFirstBnB";
 static const char __pyx_k_BranchAndBound__solve_root[] = "BranchAndBound._solve_root";
+static const char __pyx_k_pyx_unpickle_DepthFirstBnB[] = "__pyx_unpickle_DepthFirstBnB";
 static const char __pyx_k_BranchAndBound__log_headers[] = "BranchAndBound._log_headers";
 static const char __pyx_k_BranchAndBound_set_solution[] = "BranchAndBound.set_solution";
 static const char __pyx_k_pyx_unpickle_BranchAndBound[] = "__pyx_unpickle_BranchAndBound";
 static const char __pyx_k_src_bnbpy_cython_search_pyx[] = "src\\bnbpy\\cython\\search.pyx";
 static const char __pyx_k_BestFirstBnB___reduce_cython[] = "BestFirstBnB.__reduce_cython__";
 static const char __pyx_k_pyx_unpickle_BreadthFirstBnB[] = "__pyx_unpickle_BreadthFirstBnB";
+static const char __pyx_k_DepthFirstBnB___reduce_cython[] = "DepthFirstBnB.__reduce_cython__";
 static const char __pyx_k_BestFirstBnB___setstate_cython[] = "BestFirstBnB.__setstate_cython__";
 static const char __pyx_k_BranchAndBound___reduce_cython[] = "BranchAndBound.__reduce_cython__";
 static const char __pyx_k_BranchAndBound_dequeue_callback[] = "BranchAndBound.dequeue_callback";
 static const char __pyx_k_BranchAndBound_enqueue_callback[] = "BranchAndBound.enqueue_callback";
 static const char __pyx_k_BreadthFirstBnB___reduce_cython[] = "BreadthFirstBnB.__reduce_cython__";
+static const char __pyx_k_DepthFirstBnB___setstate_cython[] = "DepthFirstBnB.__setstate_cython__";
 static const char __pyx_k_asctime_s_name_s_levelname_s_me[] = "%(asctime)s - %(name)s - %(levelname)s - %(message)s";
 static const char __pyx_k_BranchAndBound___setstate_cython[] = "BranchAndBound.__setstate_cython__";
 static const char __pyx_k_BranchAndBound__feasibility_chec[] = "BranchAndBound._feasibility_check";
@@ -2999,6 +2996,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search__first_element_lb(CYTHON_UNUSED
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB *__pyx_v_self, struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_v_node); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_2__reduce_cython__(struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_4__setstate_cython__(struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB___reduce_cython__(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB_2__setstate_cython__(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB___init__(struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *__pyx_v_self, double __pyx_v_rtol, double __pyx_v_atol, PyObject *__pyx_v_eval_node, bool __pyx_v_save_tree); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_2enqueue(struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *__pyx_v_self, struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_v_node); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_4__reduce_cython__(struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *__pyx_v_self); /* proto */
@@ -3006,9 +3005,11 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_6__setstate_cyth
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_filename, bool __pyx_v_only_messages, PyObject *__pyx_v_mode, PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_4__pyx_unpickle_BranchAndBound(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_5bnbpy_6cython_6search_6__pyx_unpickle_BreadthFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_BestFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_DepthFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_10__pyx_unpickle_BestFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_BranchAndBound(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_BreadthFirstBnB(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_DepthFirstBnB(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_BestFirstBnB(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -3059,10 +3060,12 @@ typedef struct {
   #if CYTHON_USE_MODULE_STATE
   PyObject *__pyx_type_5bnbpy_6cython_6search_BranchAndBound;
   PyObject *__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB;
+  PyObject *__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB;
   PyObject *__pyx_type_5bnbpy_6cython_6search_BestFirstBnB;
   #endif
   PyTypeObject *__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound;
   PyTypeObject *__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB;
+  PyTypeObject *__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB;
   PyTypeObject *__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB;
   PyObject *__pyx_kp_u_;
   PyObject *__pyx_kp_u_2f;
@@ -3099,6 +3102,8 @@ typedef struct {
   PyObject *__pyx_n_s_Cutoff;
   PyObject *__pyx_n_s_DEBUG;
   PyObject *__pyx_n_s_DepthFirstBnB;
+  PyObject *__pyx_n_s_DepthFirstBnB___reduce_cython;
+  PyObject *__pyx_n_s_DepthFirstBnB___setstate_cython;
   PyObject *__pyx_n_s_FileHandler;
   PyObject *__pyx_n_s_Formatter;
   PyObject *__pyx_n_s_INFO;
@@ -3125,7 +3130,7 @@ typedef struct {
   PyObject *__pyx_n_s_Warmstart;
   PyObject *__pyx_kp_u__3;
   PyObject *__pyx_n_s__4;
-  PyObject *__pyx_n_s__46;
+  PyObject *__pyx_n_s__49;
   PyObject *__pyx_n_s_a;
   PyObject *__pyx_n_s_addHandler;
   PyObject *__pyx_kp_s_asctime_s_message_s;
@@ -3146,7 +3151,6 @@ typedef struct {
   PyObject *__pyx_n_s_dict;
   PyObject *__pyx_n_s_dict_2;
   PyObject *__pyx_kp_u_disable;
-  PyObject *__pyx_n_s_doc;
   PyObject *__pyx_kp_u_enable;
   PyObject *__pyx_n_s_encode;
   PyObject *__pyx_n_s_enqueue;
@@ -3169,7 +3173,6 @@ typedef struct {
   PyObject *__pyx_n_s_in;
   PyObject *__pyx_n_s_info;
   PyObject *__pyx_n_s_init;
-  PyObject *__pyx_n_s_init_subclass;
   PyObject *__pyx_n_s_initializing;
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_kp_u_isenabled;
@@ -3186,11 +3189,8 @@ typedef struct {
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_maxiter;
   PyObject *__pyx_n_s_message;
-  PyObject *__pyx_n_s_metaclass;
   PyObject *__pyx_n_s_min;
   PyObject *__pyx_n_s_mode;
-  PyObject *__pyx_n_s_module;
-  PyObject *__pyx_n_s_mro_entries;
   PyObject *__pyx_n_s_mxiter;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_new;
@@ -3202,7 +3202,6 @@ typedef struct {
   PyObject *__pyx_n_s_pickle;
   PyObject *__pyx_n_s_post_eval_callback;
   PyObject *__pyx_n_s_pre_eval_callback;
-  PyObject *__pyx_n_s_prepare;
   PyObject *__pyx_n_s_problem;
   PyObject *__pyx_n_s_pyx_PickleError;
   PyObject *__pyx_n_s_pyx_capi;
@@ -3213,8 +3212,8 @@ typedef struct {
   PyObject *__pyx_n_s_pyx_unpickle_BestFirstBnB;
   PyObject *__pyx_n_s_pyx_unpickle_BranchAndBound;
   PyObject *__pyx_n_s_pyx_unpickle_BreadthFirstBnB;
+  PyObject *__pyx_n_s_pyx_unpickle_DepthFirstBnB;
   PyObject *__pyx_n_s_pyx_vtable;
-  PyObject *__pyx_n_s_qualname;
   PyObject *__pyx_n_s_reduce;
   PyObject *__pyx_n_s_reduce_cython;
   PyObject *__pyx_n_s_reduce_ex;
@@ -3224,12 +3223,10 @@ typedef struct {
   PyObject *__pyx_n_s_self;
   PyObject *__pyx_n_s_setFormatter;
   PyObject *__pyx_n_s_setLevel;
-  PyObject *__pyx_n_s_set_lb;
-  PyObject *__pyx_n_s_set_name;
-  PyObject *__pyx_n_s_set_optimal;
   PyObject *__pyx_n_s_set_solution;
   PyObject *__pyx_n_s_setstate;
   PyObject *__pyx_n_s_setstate_cython;
+  PyObject *__pyx_n_s_sol;
   PyObject *__pyx_n_s_solution;
   PyObject *__pyx_n_s_solution_callback;
   PyObject *__pyx_n_s_solve;
@@ -3264,8 +3261,8 @@ typedef struct {
   PyObject *__pyx_tuple__28;
   PyObject *__pyx_tuple__30;
   PyObject *__pyx_tuple__32;
-  PyObject *__pyx_tuple__40;
   PyObject *__pyx_tuple__42;
+  PyObject *__pyx_tuple__44;
   PyObject *__pyx_codeobj__6;
   PyObject *__pyx_codeobj__9;
   PyObject *__pyx_codeobj__11;
@@ -3292,10 +3289,13 @@ typedef struct {
   PyObject *__pyx_codeobj__37;
   PyObject *__pyx_codeobj__38;
   PyObject *__pyx_codeobj__39;
+  PyObject *__pyx_codeobj__40;
   PyObject *__pyx_codeobj__41;
   PyObject *__pyx_codeobj__43;
-  PyObject *__pyx_codeobj__44;
   PyObject *__pyx_codeobj__45;
+  PyObject *__pyx_codeobj__46;
+  PyObject *__pyx_codeobj__47;
+  PyObject *__pyx_codeobj__48;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -3345,6 +3345,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_type_5bnbpy_6cython_6search_BranchAndBound);
   Py_CLEAR(clear_module_state->__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB);
+  Py_CLEAR(clear_module_state->__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_type_5bnbpy_6cython_6search_BestFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_kp_u_);
@@ -3382,6 +3384,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_Cutoff);
   Py_CLEAR(clear_module_state->__pyx_n_s_DEBUG);
   Py_CLEAR(clear_module_state->__pyx_n_s_DepthFirstBnB);
+  Py_CLEAR(clear_module_state->__pyx_n_s_DepthFirstBnB___reduce_cython);
+  Py_CLEAR(clear_module_state->__pyx_n_s_DepthFirstBnB___setstate_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_FileHandler);
   Py_CLEAR(clear_module_state->__pyx_n_s_Formatter);
   Py_CLEAR(clear_module_state->__pyx_n_s_INFO);
@@ -3408,7 +3412,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_Warmstart);
   Py_CLEAR(clear_module_state->__pyx_kp_u__3);
   Py_CLEAR(clear_module_state->__pyx_n_s__4);
-  Py_CLEAR(clear_module_state->__pyx_n_s__46);
+  Py_CLEAR(clear_module_state->__pyx_n_s__49);
   Py_CLEAR(clear_module_state->__pyx_n_s_a);
   Py_CLEAR(clear_module_state->__pyx_n_s_addHandler);
   Py_CLEAR(clear_module_state->__pyx_kp_s_asctime_s_message_s);
@@ -3429,7 +3433,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_dict);
   Py_CLEAR(clear_module_state->__pyx_n_s_dict_2);
   Py_CLEAR(clear_module_state->__pyx_kp_u_disable);
-  Py_CLEAR(clear_module_state->__pyx_n_s_doc);
   Py_CLEAR(clear_module_state->__pyx_kp_u_enable);
   Py_CLEAR(clear_module_state->__pyx_n_s_encode);
   Py_CLEAR(clear_module_state->__pyx_n_s_enqueue);
@@ -3452,7 +3455,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_in);
   Py_CLEAR(clear_module_state->__pyx_n_s_info);
   Py_CLEAR(clear_module_state->__pyx_n_s_init);
-  Py_CLEAR(clear_module_state->__pyx_n_s_init_subclass);
   Py_CLEAR(clear_module_state->__pyx_n_s_initializing);
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
@@ -3469,11 +3471,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_maxiter);
   Py_CLEAR(clear_module_state->__pyx_n_s_message);
-  Py_CLEAR(clear_module_state->__pyx_n_s_metaclass);
   Py_CLEAR(clear_module_state->__pyx_n_s_min);
   Py_CLEAR(clear_module_state->__pyx_n_s_mode);
-  Py_CLEAR(clear_module_state->__pyx_n_s_module);
-  Py_CLEAR(clear_module_state->__pyx_n_s_mro_entries);
   Py_CLEAR(clear_module_state->__pyx_n_s_mxiter);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_new);
@@ -3485,7 +3484,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_pickle);
   Py_CLEAR(clear_module_state->__pyx_n_s_post_eval_callback);
   Py_CLEAR(clear_module_state->__pyx_n_s_pre_eval_callback);
-  Py_CLEAR(clear_module_state->__pyx_n_s_prepare);
   Py_CLEAR(clear_module_state->__pyx_n_s_problem);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_PickleError);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_capi);
@@ -3496,8 +3494,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_unpickle_BestFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_unpickle_BranchAndBound);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_unpickle_BreadthFirstBnB);
+  Py_CLEAR(clear_module_state->__pyx_n_s_pyx_unpickle_DepthFirstBnB);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_vtable);
-  Py_CLEAR(clear_module_state->__pyx_n_s_qualname);
   Py_CLEAR(clear_module_state->__pyx_n_s_reduce);
   Py_CLEAR(clear_module_state->__pyx_n_s_reduce_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_reduce_ex);
@@ -3507,12 +3505,10 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_self);
   Py_CLEAR(clear_module_state->__pyx_n_s_setFormatter);
   Py_CLEAR(clear_module_state->__pyx_n_s_setLevel);
-  Py_CLEAR(clear_module_state->__pyx_n_s_set_lb);
-  Py_CLEAR(clear_module_state->__pyx_n_s_set_name);
-  Py_CLEAR(clear_module_state->__pyx_n_s_set_optimal);
   Py_CLEAR(clear_module_state->__pyx_n_s_set_solution);
   Py_CLEAR(clear_module_state->__pyx_n_s_setstate);
   Py_CLEAR(clear_module_state->__pyx_n_s_setstate_cython);
+  Py_CLEAR(clear_module_state->__pyx_n_s_sol);
   Py_CLEAR(clear_module_state->__pyx_n_s_solution);
   Py_CLEAR(clear_module_state->__pyx_n_s_solution_callback);
   Py_CLEAR(clear_module_state->__pyx_n_s_solve);
@@ -3547,8 +3543,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__28);
   Py_CLEAR(clear_module_state->__pyx_tuple__30);
   Py_CLEAR(clear_module_state->__pyx_tuple__32);
-  Py_CLEAR(clear_module_state->__pyx_tuple__40);
   Py_CLEAR(clear_module_state->__pyx_tuple__42);
+  Py_CLEAR(clear_module_state->__pyx_tuple__44);
   Py_CLEAR(clear_module_state->__pyx_codeobj__6);
   Py_CLEAR(clear_module_state->__pyx_codeobj__9);
   Py_CLEAR(clear_module_state->__pyx_codeobj__11);
@@ -3575,10 +3571,13 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_codeobj__37);
   Py_CLEAR(clear_module_state->__pyx_codeobj__38);
   Py_CLEAR(clear_module_state->__pyx_codeobj__39);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__40);
   Py_CLEAR(clear_module_state->__pyx_codeobj__41);
   Py_CLEAR(clear_module_state->__pyx_codeobj__43);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__44);
   Py_CLEAR(clear_module_state->__pyx_codeobj__45);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__46);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__47);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__48);
   return 0;
 }
 #endif
@@ -3606,6 +3605,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_type_5bnbpy_6cython_6search_BranchAndBound);
   Py_VISIT(traverse_module_state->__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB);
+  Py_VISIT(traverse_module_state->__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_type_5bnbpy_6cython_6search_BestFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_kp_u_);
@@ -3643,6 +3644,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_Cutoff);
   Py_VISIT(traverse_module_state->__pyx_n_s_DEBUG);
   Py_VISIT(traverse_module_state->__pyx_n_s_DepthFirstBnB);
+  Py_VISIT(traverse_module_state->__pyx_n_s_DepthFirstBnB___reduce_cython);
+  Py_VISIT(traverse_module_state->__pyx_n_s_DepthFirstBnB___setstate_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_FileHandler);
   Py_VISIT(traverse_module_state->__pyx_n_s_Formatter);
   Py_VISIT(traverse_module_state->__pyx_n_s_INFO);
@@ -3669,7 +3672,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_Warmstart);
   Py_VISIT(traverse_module_state->__pyx_kp_u__3);
   Py_VISIT(traverse_module_state->__pyx_n_s__4);
-  Py_VISIT(traverse_module_state->__pyx_n_s__46);
+  Py_VISIT(traverse_module_state->__pyx_n_s__49);
   Py_VISIT(traverse_module_state->__pyx_n_s_a);
   Py_VISIT(traverse_module_state->__pyx_n_s_addHandler);
   Py_VISIT(traverse_module_state->__pyx_kp_s_asctime_s_message_s);
@@ -3690,7 +3693,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_dict);
   Py_VISIT(traverse_module_state->__pyx_n_s_dict_2);
   Py_VISIT(traverse_module_state->__pyx_kp_u_disable);
-  Py_VISIT(traverse_module_state->__pyx_n_s_doc);
   Py_VISIT(traverse_module_state->__pyx_kp_u_enable);
   Py_VISIT(traverse_module_state->__pyx_n_s_encode);
   Py_VISIT(traverse_module_state->__pyx_n_s_enqueue);
@@ -3713,7 +3715,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_in);
   Py_VISIT(traverse_module_state->__pyx_n_s_info);
   Py_VISIT(traverse_module_state->__pyx_n_s_init);
-  Py_VISIT(traverse_module_state->__pyx_n_s_init_subclass);
   Py_VISIT(traverse_module_state->__pyx_n_s_initializing);
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
@@ -3730,11 +3731,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_maxiter);
   Py_VISIT(traverse_module_state->__pyx_n_s_message);
-  Py_VISIT(traverse_module_state->__pyx_n_s_metaclass);
   Py_VISIT(traverse_module_state->__pyx_n_s_min);
   Py_VISIT(traverse_module_state->__pyx_n_s_mode);
-  Py_VISIT(traverse_module_state->__pyx_n_s_module);
-  Py_VISIT(traverse_module_state->__pyx_n_s_mro_entries);
   Py_VISIT(traverse_module_state->__pyx_n_s_mxiter);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_new);
@@ -3746,7 +3744,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_pickle);
   Py_VISIT(traverse_module_state->__pyx_n_s_post_eval_callback);
   Py_VISIT(traverse_module_state->__pyx_n_s_pre_eval_callback);
-  Py_VISIT(traverse_module_state->__pyx_n_s_prepare);
   Py_VISIT(traverse_module_state->__pyx_n_s_problem);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_PickleError);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_capi);
@@ -3757,8 +3754,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_unpickle_BestFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_unpickle_BranchAndBound);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_unpickle_BreadthFirstBnB);
+  Py_VISIT(traverse_module_state->__pyx_n_s_pyx_unpickle_DepthFirstBnB);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_vtable);
-  Py_VISIT(traverse_module_state->__pyx_n_s_qualname);
   Py_VISIT(traverse_module_state->__pyx_n_s_reduce);
   Py_VISIT(traverse_module_state->__pyx_n_s_reduce_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_reduce_ex);
@@ -3768,12 +3765,10 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_self);
   Py_VISIT(traverse_module_state->__pyx_n_s_setFormatter);
   Py_VISIT(traverse_module_state->__pyx_n_s_setLevel);
-  Py_VISIT(traverse_module_state->__pyx_n_s_set_lb);
-  Py_VISIT(traverse_module_state->__pyx_n_s_set_name);
-  Py_VISIT(traverse_module_state->__pyx_n_s_set_optimal);
   Py_VISIT(traverse_module_state->__pyx_n_s_set_solution);
   Py_VISIT(traverse_module_state->__pyx_n_s_setstate);
   Py_VISIT(traverse_module_state->__pyx_n_s_setstate_cython);
+  Py_VISIT(traverse_module_state->__pyx_n_s_sol);
   Py_VISIT(traverse_module_state->__pyx_n_s_solution);
   Py_VISIT(traverse_module_state->__pyx_n_s_solution_callback);
   Py_VISIT(traverse_module_state->__pyx_n_s_solve);
@@ -3808,8 +3803,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__28);
   Py_VISIT(traverse_module_state->__pyx_tuple__30);
   Py_VISIT(traverse_module_state->__pyx_tuple__32);
-  Py_VISIT(traverse_module_state->__pyx_tuple__40);
   Py_VISIT(traverse_module_state->__pyx_tuple__42);
+  Py_VISIT(traverse_module_state->__pyx_tuple__44);
   Py_VISIT(traverse_module_state->__pyx_codeobj__6);
   Py_VISIT(traverse_module_state->__pyx_codeobj__9);
   Py_VISIT(traverse_module_state->__pyx_codeobj__11);
@@ -3836,10 +3831,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_codeobj__37);
   Py_VISIT(traverse_module_state->__pyx_codeobj__38);
   Py_VISIT(traverse_module_state->__pyx_codeobj__39);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__40);
   Py_VISIT(traverse_module_state->__pyx_codeobj__41);
   Py_VISIT(traverse_module_state->__pyx_codeobj__43);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__44);
   Py_VISIT(traverse_module_state->__pyx_codeobj__45);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__46);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__47);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__48);
   return 0;
 }
 #endif
@@ -3890,10 +3888,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #if CYTHON_USE_MODULE_STATE
 #define __pyx_type_5bnbpy_6cython_6search_BranchAndBound __pyx_mstate_global->__pyx_type_5bnbpy_6cython_6search_BranchAndBound
 #define __pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB __pyx_mstate_global->__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB
+#define __pyx_type_5bnbpy_6cython_6search_DepthFirstBnB __pyx_mstate_global->__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB
 #define __pyx_type_5bnbpy_6cython_6search_BestFirstBnB __pyx_mstate_global->__pyx_type_5bnbpy_6cython_6search_BestFirstBnB
 #endif
 #define __pyx_ptype_5bnbpy_6cython_6search_BranchAndBound __pyx_mstate_global->__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound
 #define __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB __pyx_mstate_global->__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB
+#define __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB __pyx_mstate_global->__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB
 #define __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB __pyx_mstate_global->__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB
 #define __pyx_kp_u_ __pyx_mstate_global->__pyx_kp_u_
 #define __pyx_kp_u_2f __pyx_mstate_global->__pyx_kp_u_2f
@@ -3930,6 +3930,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_Cutoff __pyx_mstate_global->__pyx_n_s_Cutoff
 #define __pyx_n_s_DEBUG __pyx_mstate_global->__pyx_n_s_DEBUG
 #define __pyx_n_s_DepthFirstBnB __pyx_mstate_global->__pyx_n_s_DepthFirstBnB
+#define __pyx_n_s_DepthFirstBnB___reduce_cython __pyx_mstate_global->__pyx_n_s_DepthFirstBnB___reduce_cython
+#define __pyx_n_s_DepthFirstBnB___setstate_cython __pyx_mstate_global->__pyx_n_s_DepthFirstBnB___setstate_cython
 #define __pyx_n_s_FileHandler __pyx_mstate_global->__pyx_n_s_FileHandler
 #define __pyx_n_s_Formatter __pyx_mstate_global->__pyx_n_s_Formatter
 #define __pyx_n_s_INFO __pyx_mstate_global->__pyx_n_s_INFO
@@ -3956,7 +3958,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_Warmstart __pyx_mstate_global->__pyx_n_s_Warmstart
 #define __pyx_kp_u__3 __pyx_mstate_global->__pyx_kp_u__3
 #define __pyx_n_s__4 __pyx_mstate_global->__pyx_n_s__4
-#define __pyx_n_s__46 __pyx_mstate_global->__pyx_n_s__46
+#define __pyx_n_s__49 __pyx_mstate_global->__pyx_n_s__49
 #define __pyx_n_s_a __pyx_mstate_global->__pyx_n_s_a
 #define __pyx_n_s_addHandler __pyx_mstate_global->__pyx_n_s_addHandler
 #define __pyx_kp_s_asctime_s_message_s __pyx_mstate_global->__pyx_kp_s_asctime_s_message_s
@@ -3977,7 +3979,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_dict __pyx_mstate_global->__pyx_n_s_dict
 #define __pyx_n_s_dict_2 __pyx_mstate_global->__pyx_n_s_dict_2
 #define __pyx_kp_u_disable __pyx_mstate_global->__pyx_kp_u_disable
-#define __pyx_n_s_doc __pyx_mstate_global->__pyx_n_s_doc
 #define __pyx_kp_u_enable __pyx_mstate_global->__pyx_kp_u_enable
 #define __pyx_n_s_encode __pyx_mstate_global->__pyx_n_s_encode
 #define __pyx_n_s_enqueue __pyx_mstate_global->__pyx_n_s_enqueue
@@ -4000,7 +4001,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_in __pyx_mstate_global->__pyx_n_s_in
 #define __pyx_n_s_info __pyx_mstate_global->__pyx_n_s_info
 #define __pyx_n_s_init __pyx_mstate_global->__pyx_n_s_init
-#define __pyx_n_s_init_subclass __pyx_mstate_global->__pyx_n_s_init_subclass
 #define __pyx_n_s_initializing __pyx_mstate_global->__pyx_n_s_initializing
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
@@ -4017,11 +4017,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_maxiter __pyx_mstate_global->__pyx_n_s_maxiter
 #define __pyx_n_s_message __pyx_mstate_global->__pyx_n_s_message
-#define __pyx_n_s_metaclass __pyx_mstate_global->__pyx_n_s_metaclass
 #define __pyx_n_s_min __pyx_mstate_global->__pyx_n_s_min
 #define __pyx_n_s_mode __pyx_mstate_global->__pyx_n_s_mode
-#define __pyx_n_s_module __pyx_mstate_global->__pyx_n_s_module
-#define __pyx_n_s_mro_entries __pyx_mstate_global->__pyx_n_s_mro_entries
 #define __pyx_n_s_mxiter __pyx_mstate_global->__pyx_n_s_mxiter
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_new __pyx_mstate_global->__pyx_n_s_new
@@ -4033,7 +4030,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_pickle __pyx_mstate_global->__pyx_n_s_pickle
 #define __pyx_n_s_post_eval_callback __pyx_mstate_global->__pyx_n_s_post_eval_callback
 #define __pyx_n_s_pre_eval_callback __pyx_mstate_global->__pyx_n_s_pre_eval_callback
-#define __pyx_n_s_prepare __pyx_mstate_global->__pyx_n_s_prepare
 #define __pyx_n_s_problem __pyx_mstate_global->__pyx_n_s_problem
 #define __pyx_n_s_pyx_PickleError __pyx_mstate_global->__pyx_n_s_pyx_PickleError
 #define __pyx_n_s_pyx_capi __pyx_mstate_global->__pyx_n_s_pyx_capi
@@ -4044,8 +4040,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_pyx_unpickle_BestFirstBnB __pyx_mstate_global->__pyx_n_s_pyx_unpickle_BestFirstBnB
 #define __pyx_n_s_pyx_unpickle_BranchAndBound __pyx_mstate_global->__pyx_n_s_pyx_unpickle_BranchAndBound
 #define __pyx_n_s_pyx_unpickle_BreadthFirstBnB __pyx_mstate_global->__pyx_n_s_pyx_unpickle_BreadthFirstBnB
+#define __pyx_n_s_pyx_unpickle_DepthFirstBnB __pyx_mstate_global->__pyx_n_s_pyx_unpickle_DepthFirstBnB
 #define __pyx_n_s_pyx_vtable __pyx_mstate_global->__pyx_n_s_pyx_vtable
-#define __pyx_n_s_qualname __pyx_mstate_global->__pyx_n_s_qualname
 #define __pyx_n_s_reduce __pyx_mstate_global->__pyx_n_s_reduce
 #define __pyx_n_s_reduce_cython __pyx_mstate_global->__pyx_n_s_reduce_cython
 #define __pyx_n_s_reduce_ex __pyx_mstate_global->__pyx_n_s_reduce_ex
@@ -4055,12 +4051,10 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_self __pyx_mstate_global->__pyx_n_s_self
 #define __pyx_n_s_setFormatter __pyx_mstate_global->__pyx_n_s_setFormatter
 #define __pyx_n_s_setLevel __pyx_mstate_global->__pyx_n_s_setLevel
-#define __pyx_n_s_set_lb __pyx_mstate_global->__pyx_n_s_set_lb
-#define __pyx_n_s_set_name __pyx_mstate_global->__pyx_n_s_set_name
-#define __pyx_n_s_set_optimal __pyx_mstate_global->__pyx_n_s_set_optimal
 #define __pyx_n_s_set_solution __pyx_mstate_global->__pyx_n_s_set_solution
 #define __pyx_n_s_setstate __pyx_mstate_global->__pyx_n_s_setstate
 #define __pyx_n_s_setstate_cython __pyx_mstate_global->__pyx_n_s_setstate_cython
+#define __pyx_n_s_sol __pyx_mstate_global->__pyx_n_s_sol
 #define __pyx_n_s_solution __pyx_mstate_global->__pyx_n_s_solution
 #define __pyx_n_s_solution_callback __pyx_mstate_global->__pyx_n_s_solution_callback
 #define __pyx_n_s_solve __pyx_mstate_global->__pyx_n_s_solve
@@ -4095,8 +4089,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__28 __pyx_mstate_global->__pyx_tuple__28
 #define __pyx_tuple__30 __pyx_mstate_global->__pyx_tuple__30
 #define __pyx_tuple__32 __pyx_mstate_global->__pyx_tuple__32
-#define __pyx_tuple__40 __pyx_mstate_global->__pyx_tuple__40
 #define __pyx_tuple__42 __pyx_mstate_global->__pyx_tuple__42
+#define __pyx_tuple__44 __pyx_mstate_global->__pyx_tuple__44
 #define __pyx_codeobj__6 __pyx_mstate_global->__pyx_codeobj__6
 #define __pyx_codeobj__9 __pyx_mstate_global->__pyx_codeobj__9
 #define __pyx_codeobj__11 __pyx_mstate_global->__pyx_codeobj__11
@@ -4123,10 +4117,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_codeobj__37 __pyx_mstate_global->__pyx_codeobj__37
 #define __pyx_codeobj__38 __pyx_mstate_global->__pyx_codeobj__38
 #define __pyx_codeobj__39 __pyx_mstate_global->__pyx_codeobj__39
+#define __pyx_codeobj__40 __pyx_mstate_global->__pyx_codeobj__40
 #define __pyx_codeobj__41 __pyx_mstate_global->__pyx_codeobj__41
 #define __pyx_codeobj__43 __pyx_mstate_global->__pyx_codeobj__43
-#define __pyx_codeobj__44 __pyx_mstate_global->__pyx_codeobj__44
 #define __pyx_codeobj__45 __pyx_mstate_global->__pyx_codeobj__45
+#define __pyx_codeobj__46 __pyx_mstate_global->__pyx_codeobj__46
+#define __pyx_codeobj__47 __pyx_mstate_global->__pyx_codeobj__47
+#define __pyx_codeobj__48 __pyx_mstate_global->__pyx_codeobj__48
 /* #### Code section: module_code ### */
 
 /* "string.to_py":31
@@ -5803,7 +5800,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_8solution___ge
  * 
  *     cdef Solution get_solution(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         if self.incumbent is not None:
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  */
 
 static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_f_5bnbpy_6cython_6search_14BranchAndBound_get_solution(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *__pyx_v_self) {
@@ -5820,7 +5817,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_f_5bnbpy_6cytho
  * 
  *     cdef Solution get_solution(BranchAndBound self):
  *         if self.incumbent is not None:             # <<<<<<<<<<<<<<
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  *         elif self.bound_node is not None:
  */
   __pyx_t_1 = (((PyObject *)__pyx_v_self->incumbent) != Py_None);
@@ -5829,14 +5826,13 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_f_5bnbpy_6cytho
     /* "bnbpy/cython/search.pyx":75
  *     cdef Solution get_solution(BranchAndBound self):
  *         if self.incumbent is not None:
- *             return self.incumbent.solution             # <<<<<<<<<<<<<<
+ *             return self.incumbent.get_solution()             # <<<<<<<<<<<<<<
  *         elif self.bound_node is not None:
- *             return self.bound_node.solution
+ *             return self.bound_node.get_solution()
  */
     __Pyx_XDECREF((PyObject *)__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->incumbent), __pyx_n_s_solution); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_2 = ((PyObject *)__pyx_f_5bnbpy_6cython_4node_4Node_get_solution(__pyx_v_self->incumbent)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_8solution_Solution))))) __PYX_ERR(0, 75, __pyx_L1_error)
     __pyx_r = ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
@@ -5845,48 +5841,47 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_f_5bnbpy_6cytho
  * 
  *     cdef Solution get_solution(BranchAndBound self):
  *         if self.incumbent is not None:             # <<<<<<<<<<<<<<
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  *         elif self.bound_node is not None:
  */
   }
 
   /* "bnbpy/cython/search.pyx":76
  *         if self.incumbent is not None:
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  *         elif self.bound_node is not None:             # <<<<<<<<<<<<<<
- *             return self.bound_node.solution
+ *             return self.bound_node.get_solution()
  *         return Solution()
  */
   __pyx_t_1 = (((PyObject *)__pyx_v_self->bound_node) != Py_None);
   if (__pyx_t_1) {
 
     /* "bnbpy/cython/search.pyx":77
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  *         elif self.bound_node is not None:
- *             return self.bound_node.solution             # <<<<<<<<<<<<<<
+ *             return self.bound_node.get_solution()             # <<<<<<<<<<<<<<
  *         return Solution()
  * 
  */
     __Pyx_XDECREF((PyObject *)__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->bound_node), __pyx_n_s_solution); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_2 = ((PyObject *)__pyx_f_5bnbpy_6cython_4node_4Node_get_solution(__pyx_v_self->bound_node)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_8solution_Solution))))) __PYX_ERR(0, 77, __pyx_L1_error)
     __pyx_r = ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
     /* "bnbpy/cython/search.pyx":76
  *         if self.incumbent is not None:
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  *         elif self.bound_node is not None:             # <<<<<<<<<<<<<<
- *             return self.bound_node.solution
+ *             return self.bound_node.get_solution()
  *         return Solution()
  */
   }
 
   /* "bnbpy/cython/search.pyx":78
  *         elif self.bound_node is not None:
- *             return self.bound_node.solution
+ *             return self.bound_node.get_solution()
  *         return Solution()             # <<<<<<<<<<<<<<
  * 
  *     def solve(
@@ -5903,7 +5898,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_f_5bnbpy_6cytho
  * 
  *     cdef Solution get_solution(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         if self.incumbent is not None:
- *             return self.incumbent.solution
+ *             return self.incumbent.get_solution()
  */
 
   /* function exit code */
@@ -6086,6 +6081,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
   double __pyx_v__tlim;
   int __pyx_v__mxiter;
   struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_v_node = 0;
+  struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_v_sol = 0;
   struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -6096,7 +6092,6 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
   PyObject *__pyx_t_6 = NULL;
   unsigned int __pyx_t_7;
   bool __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -6116,29 +6111,29 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  *             double _tlim = LARGE_POS
  *             int _mxiter = LARGE_INT             # <<<<<<<<<<<<<<
  *             Node node
- * 
+ *             Solution sol
  */
   __pyx_v__mxiter = __pyx_v_5bnbpy_6cython_6search_LARGE_INT;
 
-  /* "bnbpy/cython/search.pyx":92
- *             Node node
+  /* "bnbpy/cython/search.pyx":93
+ *             Solution sol
  * 
  *         self._set_problem(problem)             # <<<<<<<<<<<<<<
  *         self._restart_search()
  *         if maxiter is not None:
  */
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__set_problem(__pyx_v_self, __pyx_v_problem); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__set_problem(__pyx_v_self, __pyx_v_problem); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":93
+  /* "bnbpy/cython/search.pyx":94
  * 
  *         self._set_problem(problem)
  *         self._restart_search()             # <<<<<<<<<<<<<<
  *         if maxiter is not None:
  *             _mxiter = maxiter
  */
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__restart_search(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__restart_search(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":94
+  /* "bnbpy/cython/search.pyx":95
  *         self._set_problem(problem)
  *         self._restart_search()
  *         if maxiter is not None:             # <<<<<<<<<<<<<<
@@ -6148,17 +6143,17 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
   __pyx_t_1 = (__pyx_v_maxiter != Py_None);
   if (__pyx_t_1) {
 
-    /* "bnbpy/cython/search.pyx":95
+    /* "bnbpy/cython/search.pyx":96
  *         self._restart_search()
  *         if maxiter is not None:
  *             _mxiter = maxiter             # <<<<<<<<<<<<<<
  *         if timelimit is not None:
  *             _tlim = timelimit
  */
-    __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_maxiter); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_maxiter); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
     __pyx_v__mxiter = __pyx_t_2;
 
-    /* "bnbpy/cython/search.pyx":94
+    /* "bnbpy/cython/search.pyx":95
  *         self._set_problem(problem)
  *         self._restart_search()
  *         if maxiter is not None:             # <<<<<<<<<<<<<<
@@ -6167,7 +6162,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
   }
 
-  /* "bnbpy/cython/search.pyx":96
+  /* "bnbpy/cython/search.pyx":97
  *         if maxiter is not None:
  *             _mxiter = maxiter
  *         if timelimit is not None:             # <<<<<<<<<<<<<<
@@ -6177,26 +6172,26 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
   __pyx_t_1 = (__pyx_v_timelimit != Py_None);
   if (__pyx_t_1) {
 
-    /* "bnbpy/cython/search.pyx":97
+    /* "bnbpy/cython/search.pyx":98
  *             _mxiter = maxiter
  *         if timelimit is not None:
  *             _tlim = timelimit             # <<<<<<<<<<<<<<
  *             start_time = time.time()
  *         log.info('Starting exploration of search tree')
  */
-    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_timelimit); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_timelimit); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
     __pyx_v__tlim = __pyx_t_3;
 
-    /* "bnbpy/cython/search.pyx":98
+    /* "bnbpy/cython/search.pyx":99
  *         if timelimit is not None:
  *             _tlim = timelimit
  *             start_time = time.time()             # <<<<<<<<<<<<<<
  *         log.info('Starting exploration of search tree')
  *         self._log_headers()
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_5 = NULL;
@@ -6217,15 +6212,15 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
       PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
       __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_7, 0+__pyx_t_7);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
-    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_start_time = __pyx_t_3;
 
-    /* "bnbpy/cython/search.pyx":96
+    /* "bnbpy/cython/search.pyx":97
  *         if maxiter is not None:
  *             _mxiter = maxiter
  *         if timelimit is not None:             # <<<<<<<<<<<<<<
@@ -6234,16 +6229,16 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
   }
 
-  /* "bnbpy/cython/search.pyx":99
+  /* "bnbpy/cython/search.pyx":100
  *             _tlim = timelimit
  *             start_time = time.time()
  *         log.info('Starting exploration of search tree')             # <<<<<<<<<<<<<<
  *         self._log_headers()
  *         self._warmstart(solution=problem.warmstart())
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_log); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_log); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_info); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_info); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -6264,43 +6259,43 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
     PyObject *__pyx_callargs[2] = {__pyx_t_6, __pyx_kp_s_Starting_exploration_of_search_t};
     __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "bnbpy/cython/search.pyx":100
+  /* "bnbpy/cython/search.pyx":101
  *             start_time = time.time()
  *         log.info('Starting exploration of search tree')
  *         self._log_headers()             # <<<<<<<<<<<<<<
  *         self._warmstart(solution=problem.warmstart())
  *         self._solve_root()
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_log_headers(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_log_headers(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":101
+  /* "bnbpy/cython/search.pyx":102
  *         log.info('Starting exploration of search tree')
  *         self._log_headers()
  *         self._warmstart(solution=problem.warmstart())             # <<<<<<<<<<<<<<
  *         self._solve_root()
  *         while self.queue:
  */
-  __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_7problem_Problem *)__pyx_v_problem->__pyx_vtab)->warmstart(__pyx_v_problem, 0)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_7problem_Problem *)__pyx_v_problem->__pyx_vtab)->warmstart(__pyx_v_problem, 0)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_warmstart(__pyx_v_self, ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_4), 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_warmstart(__pyx_v_self, ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_4), 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "bnbpy/cython/search.pyx":102
+  /* "bnbpy/cython/search.pyx":103
  *         self._log_headers()
  *         self._warmstart(solution=problem.warmstart())
  *         self._solve_root()             # <<<<<<<<<<<<<<
  *         while self.queue:
  *             # Check for time termination
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_solve_root(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_solve_root(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":103
+  /* "bnbpy/cython/search.pyx":104
  *         self._warmstart(solution=problem.warmstart())
  *         self._solve_root()
  *         while self.queue:             # <<<<<<<<<<<<<<
@@ -6308,10 +6303,10 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  *             if timelimit is not None:
  */
   while (1) {
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->queue); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->queue); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 104, __pyx_L1_error)
     if (!__pyx_t_1) break;
 
-    /* "bnbpy/cython/search.pyx":105
+    /* "bnbpy/cython/search.pyx":106
  *         while self.queue:
  *             # Check for time termination
  *             if timelimit is not None:             # <<<<<<<<<<<<<<
@@ -6321,16 +6316,16 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
     __pyx_t_1 = (__pyx_v_timelimit != Py_None);
     if (__pyx_t_1) {
 
-      /* "bnbpy/cython/search.pyx":106
+      /* "bnbpy/cython/search.pyx":107
  *             # Check for time termination
  *             if timelimit is not None:
  *                 current_time = time.time()             # <<<<<<<<<<<<<<
  *                 if current_time - start_time >= _tlim:
  *                     break
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -6351,15 +6346,15 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
         PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
         __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_7, 0+__pyx_t_7);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
-      __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
+      __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_current_time = __pyx_t_3;
 
-      /* "bnbpy/cython/search.pyx":107
+      /* "bnbpy/cython/search.pyx":108
  *             if timelimit is not None:
  *                 current_time = time.time()
  *                 if current_time - start_time >= _tlim:             # <<<<<<<<<<<<<<
@@ -6369,7 +6364,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
       __pyx_t_1 = ((__pyx_v_current_time - __pyx_v_start_time) >= __pyx_v__tlim);
       if (__pyx_t_1) {
 
-        /* "bnbpy/cython/search.pyx":108
+        /* "bnbpy/cython/search.pyx":109
  *                 current_time = time.time()
  *                 if current_time - start_time >= _tlim:
  *                     break             # <<<<<<<<<<<<<<
@@ -6378,7 +6373,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
         goto __pyx_L6_break;
 
-        /* "bnbpy/cython/search.pyx":107
+        /* "bnbpy/cython/search.pyx":108
  *             if timelimit is not None:
  *                 current_time = time.time()
  *                 if current_time - start_time >= _tlim:             # <<<<<<<<<<<<<<
@@ -6387,7 +6382,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
       }
 
-      /* "bnbpy/cython/search.pyx":105
+      /* "bnbpy/cython/search.pyx":106
  *         while self.queue:
  *             # Check for time termination
  *             if timelimit is not None:             # <<<<<<<<<<<<<<
@@ -6396,19 +6391,19 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
     }
 
-    /* "bnbpy/cython/search.pyx":109
+    /* "bnbpy/cython/search.pyx":110
  *                 if current_time - start_time >= _tlim:
  *                     break
  *             node = self._dequeue_core()             # <<<<<<<<<<<<<<
  *             # Avoid node with poor parents in case ub was updated meanwhile
  *             if node is not None:
  */
-    __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_dequeue_core(__pyx_v_self)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_dequeue_core(__pyx_v_self)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_node, ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_4));
     __pyx_t_4 = 0;
 
-    /* "bnbpy/cython/search.pyx":111
+    /* "bnbpy/cython/search.pyx":112
  *             node = self._dequeue_core()
  *             # Avoid node with poor parents in case ub was updated meanwhile
  *             if node is not None:             # <<<<<<<<<<<<<<
@@ -6418,16 +6413,16 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
     __pyx_t_1 = (((PyObject *)__pyx_v_node) != Py_None);
     if (__pyx_t_1) {
 
-      /* "bnbpy/cython/search.pyx":113
+      /* "bnbpy/cython/search.pyx":114
  *             if node is not None:
  *                 # Perform iteration (feasibility, bound check, and branching)
  *                 self._do_iter(node)             # <<<<<<<<<<<<<<
  *             # Update LB is node is the one
  *             if node is self.bound_node:
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_do_iter(__pyx_v_self, __pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_do_iter(__pyx_v_self, __pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":111
+      /* "bnbpy/cython/search.pyx":112
  *             node = self._dequeue_core()
  *             # Avoid node with poor parents in case ub was updated meanwhile
  *             if node is not None:             # <<<<<<<<<<<<<<
@@ -6436,7 +6431,7 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
     }
 
-    /* "bnbpy/cython/search.pyx":115
+    /* "bnbpy/cython/search.pyx":116
  *                 self._do_iter(node)
  *             # Update LB is node is the one
  *             if node is self.bound_node:             # <<<<<<<<<<<<<<
@@ -6446,16 +6441,16 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
     __pyx_t_1 = (__pyx_v_node == __pyx_v_self->bound_node);
     if (__pyx_t_1) {
 
-      /* "bnbpy/cython/search.pyx":116
+      /* "bnbpy/cython/search.pyx":117
  *             # Update LB is node is the one
  *             if node is self.bound_node:
  *                 self._update_bound()             # <<<<<<<<<<<<<<
  *             # Termination by optimality
  *             if self._check_termination(_mxiter):
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 116, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":115
+      /* "bnbpy/cython/search.pyx":116
  *                 self._do_iter(node)
  *             # Update LB is node is the one
  *             if node is self.bound_node:             # <<<<<<<<<<<<<<
@@ -6464,90 +6459,69 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
  */
     }
 
-    /* "bnbpy/cython/search.pyx":118
+    /* "bnbpy/cython/search.pyx":119
  *                 self._update_bound()
  *             # Termination by optimality
  *             if self._check_termination(_mxiter):             # <<<<<<<<<<<<<<
  *                 break
- *         self.solution.set_lb(self.get_lb())
+ * 
  */
-    __pyx_t_8 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_check_termination(__pyx_v_self, __pyx_v__mxiter); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L1_error)
+    __pyx_t_8 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_check_termination(__pyx_v_self, __pyx_v__mxiter); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
     __pyx_t_1 = (__pyx_t_8 != 0);
     if (__pyx_t_1) {
 
-      /* "bnbpy/cython/search.pyx":119
+      /* "bnbpy/cython/search.pyx":120
  *             # Termination by optimality
  *             if self._check_termination(_mxiter):
  *                 break             # <<<<<<<<<<<<<<
- *         self.solution.set_lb(self.get_lb())
- *         return self.solution
+ * 
+ *         sol = self.get_solution()
  */
       goto __pyx_L6_break;
 
-      /* "bnbpy/cython/search.pyx":118
+      /* "bnbpy/cython/search.pyx":119
  *                 self._update_bound()
  *             # Termination by optimality
  *             if self._check_termination(_mxiter):             # <<<<<<<<<<<<<<
  *                 break
- *         self.solution.set_lb(self.get_lb())
+ * 
  */
     }
   }
   __pyx_L6_break:;
 
-  /* "bnbpy/cython/search.pyx":120
- *             if self._check_termination(_mxiter):
+  /* "bnbpy/cython/search.pyx":122
  *                 break
- *         self.solution.set_lb(self.get_lb())             # <<<<<<<<<<<<<<
- *         return self.solution
+ * 
+ *         sol = self.get_solution()             # <<<<<<<<<<<<<<
+ *         sol.set_lb(self.get_lb())
+ *         return sol
+ */
+  __pyx_t_4 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_solution(__pyx_v_self)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_v_sol = ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_4);
+  __pyx_t_4 = 0;
+
+  /* "bnbpy/cython/search.pyx":123
+ * 
+ *         sol = self.get_solution()
+ *         sol.set_lb(self.get_lb())             # <<<<<<<<<<<<<<
+ *         return sol
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 120, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_set_lb); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L1_error)
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 120, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = NULL;
-  __pyx_t_7 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_9)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_9);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-      __pyx_t_7 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_9, __pyx_t_6};
-    __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_8solution_Solution *)__pyx_v_sol->__pyx_vtab)->set_lb(__pyx_v_sol, __pyx_t_3, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":121
- *                 break
- *         self.solution.set_lb(self.get_lb())
- *         return self.solution             # <<<<<<<<<<<<<<
+  /* "bnbpy/cython/search.pyx":124
+ *         sol = self.get_solution()
+ *         sol.set_lb(self.get_lb())
+ *         return sol             # <<<<<<<<<<<<<<
  * 
  *     cdef void _do_iter(BranchAndBound self, Node node):
  */
   __Pyx_XDECREF((PyObject *)__pyx_r);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solution); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5bnbpy_6cython_8solution_Solution))))) __PYX_ERR(0, 121, __pyx_L1_error)
-  __pyx_r = ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_4);
-  __pyx_t_4 = 0;
+  __Pyx_INCREF((PyObject *)__pyx_v_sol);
+  __pyx_r = __pyx_v_sol;
   goto __pyx_L0;
 
   /* "bnbpy/cython/search.pyx":80
@@ -6563,18 +6537,18 @@ static struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_pf_5bnbpy_6cyth
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("bnbpy.cython.search.BranchAndBound.solve", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_node);
+  __Pyx_XDECREF((PyObject *)__pyx_v_sol);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":123
- *         return self.solution
+/* "bnbpy/cython/search.pyx":126
+ *         return sol
  * 
  *     cdef void _do_iter(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         # Node is valid for evaluation
@@ -6588,7 +6562,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__do_iter(struct __py
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbpy/cython/search.pyx":125
+  /* "bnbpy/cython/search.pyx":128
  *     cdef void _do_iter(BranchAndBound self, Node node):
  *         # Node is valid for evaluation
  *         self.explored += 1             # <<<<<<<<<<<<<<
@@ -6597,27 +6571,27 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__do_iter(struct __py
  */
   __pyx_v_self->explored = (__pyx_v_self->explored + 1);
 
-  /* "bnbpy/cython/search.pyx":127
+  /* "bnbpy/cython/search.pyx":130
  *         self.explored += 1
  *         # Lower bound is accepted
  *         if node.lb < self.get_ub():             # <<<<<<<<<<<<<<
  *             # Node satisfies all constraints
  *             self._feasibility_check(node)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L1_error)
   __pyx_t_2 = (__pyx_v_node->lb < __pyx_t_1);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":129
+    /* "bnbpy/cython/search.pyx":132
  *         if node.lb < self.get_ub():
  *             # Node satisfies all constraints
  *             self._feasibility_check(node)             # <<<<<<<<<<<<<<
  *         else:
  *             self.fathom(node)
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_feasibility_check(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_feasibility_check(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":127
+    /* "bnbpy/cython/search.pyx":130
  *         self.explored += 1
  *         # Lower bound is accepted
  *         if node.lb < self.get_ub():             # <<<<<<<<<<<<<<
@@ -6627,7 +6601,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__do_iter(struct __py
     goto __pyx_L3;
   }
 
-  /* "bnbpy/cython/search.pyx":131
+  /* "bnbpy/cython/search.pyx":134
  *             self._feasibility_check(node)
  *         else:
  *             self.fathom(node)             # <<<<<<<<<<<<<<
@@ -6635,12 +6609,12 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__do_iter(struct __py
  *     cpdef void enqueue(BranchAndBound self, Node node):
  */
   /*else*/ {
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->fathom(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->fathom(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "bnbpy/cython/search.pyx":123
- *         return self.solution
+  /* "bnbpy/cython/search.pyx":126
+ *         return sol
  * 
  *     cdef void _do_iter(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         # Node is valid for evaluation
@@ -6654,7 +6628,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__do_iter(struct __py
   __pyx_L0:;
 }
 
-/* "bnbpy/cython/search.pyx":133
+/* "bnbpy/cython/search.pyx":136
  *             self.fathom(node)
  * 
  *     cpdef void enqueue(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -6690,7 +6664,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(struct __pyx
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_5enqueue)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -6712,7 +6686,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(struct __pyx
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -6733,37 +6707,37 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(struct __pyx
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":134
+  /* "bnbpy/cython/search.pyx":137
  * 
  *     cpdef void enqueue(BranchAndBound self, Node node):
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))             # <<<<<<<<<<<<<<
  * 
  *     cpdef Node dequeue(BranchAndBound self):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int((-__pyx_v_node->level)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int((-__pyx_v_node->level)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error);
   __pyx_t_2 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 134, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error);
   __Pyx_INCREF((PyObject *)__pyx_v_node);
   __Pyx_GIVEREF((PyObject *)__pyx_v_node);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 134, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 137, __pyx_L1_error);
   __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
   __pyx_t_5 = 0;
@@ -6784,13 +6758,13 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(struct __pyx
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":133
+  /* "bnbpy/cython/search.pyx":136
  *             self.fathom(node)
  * 
  *     cpdef void enqueue(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -6864,12 +6838,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 136, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -6880,7 +6854,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 133, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 136, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6894,7 +6868,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 136, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_4enqueue(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -6921,8 +6895,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_4enqueue(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("enqueue", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6939,7 +6913,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_4enqueue(struc
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":136
+/* "bnbpy/cython/search.pyx":139
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  *     cpdef Node dequeue(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -6977,7 +6951,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_dequeue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_dequeue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_7dequeue)) {
         __Pyx_XDECREF((PyObject *)__pyx_r);
@@ -7000,11 +6974,11 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 136, __pyx_L1_error)
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 139, __pyx_L1_error)
         __pyx_r = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7023,16 +6997,16 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":141
+  /* "bnbpy/cython/search.pyx":144
  *             tuple[object, Node] next_item
  * 
  *         next_item = heapq.heappop(self.queue)             # <<<<<<<<<<<<<<
  *         node = next_item[1]
  *         return node
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -7053,15 +7027,15 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
     PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_v_self->queue};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  if (!(likely(PyTuple_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_t_1))) __PYX_ERR(0, 141, __pyx_L1_error)
+  if (!(likely(PyTuple_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_t_1))) __PYX_ERR(0, 144, __pyx_L1_error)
   __pyx_v_next_item = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":142
+  /* "bnbpy/cython/search.pyx":145
  * 
  *         next_item = heapq.heappop(self.queue)
  *         node = next_item[1]             # <<<<<<<<<<<<<<
@@ -7070,15 +7044,15 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
  */
   if (unlikely(__pyx_v_next_item == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 142, __pyx_L1_error)
+    __PYX_ERR(0, 145, __pyx_L1_error)
   }
-  if (!(likely(((PyTuple_GET_ITEM(__pyx_v_next_item, 1)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v_next_item, 1), __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 142, __pyx_L1_error)
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v_next_item, 1)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v_next_item, 1), __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 145, __pyx_L1_error)
   __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v_next_item, 1);
   __Pyx_INCREF(__pyx_t_1);
   __pyx_v_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":143
+  /* "bnbpy/cython/search.pyx":146
  *         next_item = heapq.heappop(self.queue)
  *         node = next_item[1]
  *         return node             # <<<<<<<<<<<<<<
@@ -7090,7 +7064,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
   __pyx_r = __pyx_v_node;
   goto __pyx_L0;
 
-  /* "bnbpy/cython/search.pyx":136
+  /* "bnbpy/cython/search.pyx":139
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  *     cpdef Node dequeue(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -7164,7 +7138,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_6dequeue(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("dequeue", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7181,7 +7155,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_6dequeue(struc
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":145
+/* "bnbpy/cython/search.pyx":148
  *         return node
  * 
  *     cpdef void _warmstart(             # <<<<<<<<<<<<<<
@@ -7219,7 +7193,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warmstart); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_warmstart); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_9_warmstart)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -7241,7 +7215,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_solution)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -7262,7 +7236,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":152
+  /* "bnbpy/cython/search.pyx":155
  *             Node node
  * 
  *         if solution is not None:             # <<<<<<<<<<<<<<
@@ -7272,60 +7246,60 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
   __pyx_t_6 = (((PyObject *)__pyx_v_solution) != Py_None);
   if (__pyx_t_6) {
 
-    /* "bnbpy/cython/search.pyx":153
+    /* "bnbpy/cython/search.pyx":156
  * 
  *         if solution is not None:
  *             node = Node(self.problem.copy())             # <<<<<<<<<<<<<<
  *             node.set_solution(solution)
  *             if node.lb < self.get_ub():
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_7problem_Problem *)__pyx_v_self->problem->__pyx_vtab)->copy(__pyx_v_self->problem, 0, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_7problem_Problem *)__pyx_v_self->problem->__pyx_vtab)->copy(__pyx_v_self->problem, 0, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5bnbpy_6cython_4node_Node), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5bnbpy_6cython_4node_Node), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "bnbpy/cython/search.pyx":154
+    /* "bnbpy/cython/search.pyx":157
  *         if solution is not None:
  *             node = Node(self.problem.copy())
  *             node.set_solution(solution)             # <<<<<<<<<<<<<<
  *             if node.lb < self.get_ub():
  *                 self._feasibility_check(node)
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->set_solution(__pyx_v_node, __pyx_v_solution, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->set_solution(__pyx_v_node, __pyx_v_solution, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":155
+    /* "bnbpy/cython/search.pyx":158
  *             node = Node(self.problem.copy())
  *             node.set_solution(solution)
  *             if node.lb < self.get_ub():             # <<<<<<<<<<<<<<
  *                 self._feasibility_check(node)
  *                 self.log_row('Warmstart')
  */
-    __pyx_t_7 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_7 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
     __pyx_t_6 = (__pyx_v_node->lb < __pyx_t_7);
     if (__pyx_t_6) {
 
-      /* "bnbpy/cython/search.pyx":156
+      /* "bnbpy/cython/search.pyx":159
  *             node.set_solution(solution)
  *             if node.lb < self.get_ub():
  *                 self._feasibility_check(node)             # <<<<<<<<<<<<<<
  *                 self.log_row('Warmstart')
  * 
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_feasibility_check(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_feasibility_check(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":157
+      /* "bnbpy/cython/search.pyx":160
  *             if node.lb < self.get_ub():
  *                 self._feasibility_check(node)
  *                 self.log_row('Warmstart')             # <<<<<<<<<<<<<<
  * 
  *     cpdef void branch(BranchAndBound self, Node node):
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Warmstart, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Warmstart, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":155
+      /* "bnbpy/cython/search.pyx":158
  *             node = Node(self.problem.copy())
  *             node.set_solution(solution)
  *             if node.lb < self.get_ub():             # <<<<<<<<<<<<<<
@@ -7334,7 +7308,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
  */
     }
 
-    /* "bnbpy/cython/search.pyx":152
+    /* "bnbpy/cython/search.pyx":155
  *             Node node
  * 
  *         if solution is not None:             # <<<<<<<<<<<<<<
@@ -7343,7 +7317,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(struct __
  */
   }
 
-  /* "bnbpy/cython/search.pyx":145
+  /* "bnbpy/cython/search.pyx":148
  *         return node
  * 
  *     cpdef void _warmstart(             # <<<<<<<<<<<<<<
@@ -7417,12 +7391,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_warmstart") < 0)) __PYX_ERR(0, 145, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_warmstart") < 0)) __PYX_ERR(0, 148, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -7433,7 +7407,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_warmstart", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 145, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_warmstart", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 148, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7447,7 +7421,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_solution), __pyx_ptype_5bnbpy_6cython_8solution_Solution, 1, "solution", 0))) __PYX_ERR(0, 147, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_solution), __pyx_ptype_5bnbpy_6cython_8solution_Solution, 1, "solution", 0))) __PYX_ERR(0, 150, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_8_warmstart(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_solution);
 
   /* function exit code */
@@ -7474,8 +7448,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_8_warmstart(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_warmstart", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(__pyx_v_self, __pyx_v_solution, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__warmstart(__pyx_v_self, __pyx_v_solution, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7492,7 +7466,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_8_warmstart(st
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":159
+/* "bnbpy/cython/search.pyx":162
  *                 self.log_row('Warmstart')
  * 
  *     cpdef void branch(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -7533,7 +7507,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_11branch)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -7555,7 +7529,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -7576,19 +7550,19 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":164
+  /* "bnbpy/cython/search.pyx":167
  *             Node child
  * 
  *         children = node.branch()             # <<<<<<<<<<<<<<
  *         if children:
  *             for child in children:
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->branch(__pyx_v_node, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->branch(__pyx_v_node, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_children = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":165
+  /* "bnbpy/cython/search.pyx":168
  * 
  *         children = node.branch()
  *         if children:             # <<<<<<<<<<<<<<
@@ -7598,7 +7572,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
   __pyx_t_6 = (__pyx_v_children != Py_None)&&(PyList_GET_SIZE(__pyx_v_children) != 0);
   if (__pyx_t_6) {
 
-    /* "bnbpy/cython/search.pyx":166
+    /* "bnbpy/cython/search.pyx":169
  *         children = node.branch()
  *         if children:
  *             for child in children:             # <<<<<<<<<<<<<<
@@ -7607,7 +7581,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
  */
     if (unlikely(__pyx_v_children == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 166, __pyx_L1_error)
+      __PYX_ERR(0, 169, __pyx_L1_error)
     }
     __pyx_t_1 = __pyx_v_children; __Pyx_INCREF(__pyx_t_1);
     __pyx_t_7 = 0;
@@ -7615,30 +7589,30 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
       {
         Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
         #if !CYTHON_ASSUME_SAFE_MACROS
-        if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 166, __pyx_L1_error)
+        if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 169, __pyx_L1_error)
         #endif
         if (__pyx_t_7 >= __pyx_temp) break;
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 166, __pyx_L1_error)
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 169, __pyx_L1_error)
       #else
-      __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 169, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
-      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 166, __pyx_L1_error)
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 169, __pyx_L1_error)
       __Pyx_XDECREF_SET(__pyx_v_child, ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "bnbpy/cython/search.pyx":167
+      /* "bnbpy/cython/search.pyx":170
  *         if children:
  *             for child in children:
  *                 self._enqueue_core(child)             # <<<<<<<<<<<<<<
  *         else:
  *             self.log_row('Cutoff')
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_enqueue_core(__pyx_v_self, __pyx_v_child); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_enqueue_core(__pyx_v_self, __pyx_v_child); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":166
+      /* "bnbpy/cython/search.pyx":169
  *         children = node.branch()
  *         if children:
  *             for child in children:             # <<<<<<<<<<<<<<
@@ -7648,7 +7622,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "bnbpy/cython/search.pyx":165
+    /* "bnbpy/cython/search.pyx":168
  * 
  *         children = node.branch()
  *         if children:             # <<<<<<<<<<<<<<
@@ -7658,7 +7632,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
     goto __pyx_L3;
   }
 
-  /* "bnbpy/cython/search.pyx":169
+  /* "bnbpy/cython/search.pyx":172
  *                 self._enqueue_core(child)
  *         else:
  *             self.log_row('Cutoff')             # <<<<<<<<<<<<<<
@@ -7666,11 +7640,11 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
  *             node.cleanup()
  */
   /*else*/ {
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Cutoff, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Cutoff, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "bnbpy/cython/search.pyx":170
+  /* "bnbpy/cython/search.pyx":173
  *         else:
  *             self.log_row('Cutoff')
  *         if not self.save_tree and node is not self.root:             # <<<<<<<<<<<<<<
@@ -7688,16 +7662,16 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
   __pyx_L8_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "bnbpy/cython/search.pyx":171
+    /* "bnbpy/cython/search.pyx":174
  *             self.log_row('Cutoff')
  *         if not self.save_tree and node is not self.root:
  *             node.cleanup()             # <<<<<<<<<<<<<<
  *             del node
  * 
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":172
+    /* "bnbpy/cython/search.pyx":175
  *         if not self.save_tree and node is not self.root:
  *             node.cleanup()
  *             del node             # <<<<<<<<<<<<<<
@@ -7706,7 +7680,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
  */
     __Pyx_DECREF((PyObject *)__pyx_v_node); __pyx_v_node = 0;
 
-    /* "bnbpy/cython/search.pyx":170
+    /* "bnbpy/cython/search.pyx":173
  *         else:
  *             self.log_row('Cutoff')
  *         if not self.save_tree and node is not self.root:             # <<<<<<<<<<<<<<
@@ -7715,7 +7689,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(struct __pyx_
  */
   }
 
-  /* "bnbpy/cython/search.pyx":159
+  /* "bnbpy/cython/search.pyx":162
  *                 self.log_row('Warmstart')
  * 
  *     cpdef void branch(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -7791,12 +7765,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "branch") < 0)) __PYX_ERR(0, 159, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "branch") < 0)) __PYX_ERR(0, 162, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -7807,7 +7781,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("branch", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 159, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("branch", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 162, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7821,7 +7795,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 162, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_10branch(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -7848,8 +7822,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_10branch(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("branch", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_branch(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7866,7 +7840,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_10branch(struc
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":174
+/* "bnbpy/cython/search.pyx":177
  *             del node
  * 
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301             # <<<<<<<<<<<<<<
@@ -7904,7 +7878,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_fathom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_fathom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_13fathom)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -7926,7 +7900,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -7947,16 +7921,16 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":175
+  /* "bnbpy/cython/search.pyx":178
  * 
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301
  *         node.fathom()             # <<<<<<<<<<<<<<
  *         if not self.save_tree and node is not self.root:
  *             node.cleanup()
  */
-  __pyx_f_5bnbpy_6cython_4node_4Node_fathom(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_4node_4Node_fathom(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":176
+  /* "bnbpy/cython/search.pyx":179
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301
  *         node.fathom()
  *         if not self.save_tree and node is not self.root:             # <<<<<<<<<<<<<<
@@ -7974,16 +7948,16 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "bnbpy/cython/search.pyx":177
+    /* "bnbpy/cython/search.pyx":180
  *         node.fathom()
  *         if not self.save_tree and node is not self.root:
  *             node.cleanup()             # <<<<<<<<<<<<<<
  *             del node
  * 
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->cleanup(__pyx_v_node); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":178
+    /* "bnbpy/cython/search.pyx":181
  *         if not self.save_tree and node is not self.root:
  *             node.cleanup()
  *             del node             # <<<<<<<<<<<<<<
@@ -7992,7 +7966,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
  */
     __Pyx_DECREF((PyObject *)__pyx_v_node); __pyx_v_node = 0;
 
-    /* "bnbpy/cython/search.pyx":176
+    /* "bnbpy/cython/search.pyx":179
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301
  *         node.fathom()
  *         if not self.save_tree and node is not self.root:             # <<<<<<<<<<<<<<
@@ -8001,7 +7975,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(struct __pyx_
  */
   }
 
-  /* "bnbpy/cython/search.pyx":174
+  /* "bnbpy/cython/search.pyx":177
  *             del node
  * 
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301             # <<<<<<<<<<<<<<
@@ -8075,12 +8049,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "fathom") < 0)) __PYX_ERR(0, 174, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "fathom") < 0)) __PYX_ERR(0, 177, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -8091,7 +8065,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("fathom", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 174, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("fathom", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 177, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8105,7 +8079,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 174, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 177, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_12fathom(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -8132,8 +8106,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_12fathom(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fathom", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_fathom(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8150,7 +8124,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_12fathom(struc
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":180
+/* "bnbpy/cython/search.pyx":183
  *             del node
  * 
  *     cpdef void pre_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8185,7 +8159,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(CY
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pre_eval_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pre_eval_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_15pre_eval_callback)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -8207,7 +8181,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(CY
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -8228,7 +8202,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(CY
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":181
+  /* "bnbpy/cython/search.pyx":184
  * 
  *     cpdef void pre_eval_callback(BranchAndBound self, Node node):
  *         """Abstraction for callbacks before node bound evaluation"""             # <<<<<<<<<<<<<<
@@ -8248,7 +8222,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(CY
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":180
+/* "bnbpy/cython/search.pyx":183
  *             del node
  * 
  *     cpdef void pre_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8310,12 +8284,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "pre_eval_callback") < 0)) __PYX_ERR(0, 180, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "pre_eval_callback") < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -8326,7 +8300,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("pre_eval_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 180, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("pre_eval_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 183, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8340,7 +8314,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 180, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 183, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_14pre_eval_callback(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -8367,8 +8341,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_14pre_eval_cal
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("pre_eval_callback", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_pre_eval_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8385,7 +8359,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_14pre_eval_cal
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":184
+/* "bnbpy/cython/search.pyx":187
  *         pass
  * 
  *     cpdef void post_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8420,7 +8394,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(C
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_post_eval_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_post_eval_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_17post_eval_callback)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -8442,7 +8416,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(C
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 184, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -8463,7 +8437,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(C
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":185
+  /* "bnbpy/cython/search.pyx":188
  * 
  *     cpdef void post_eval_callback(BranchAndBound self, Node node):
  *         """Abstraction for callbacks after node bound evaluation"""             # <<<<<<<<<<<<<<
@@ -8483,7 +8457,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(C
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":184
+/* "bnbpy/cython/search.pyx":187
  *         pass
  * 
  *     cpdef void post_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8545,12 +8519,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 184, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "post_eval_callback") < 0)) __PYX_ERR(0, 184, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "post_eval_callback") < 0)) __PYX_ERR(0, 187, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -8561,7 +8535,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("post_eval_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 184, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("post_eval_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 187, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8575,7 +8549,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 184, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 187, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_16post_eval_callback(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -8602,8 +8576,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_16post_eval_ca
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("post_eval_callback", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 184, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_post_eval_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8620,7 +8594,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_16post_eval_ca
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":188
+/* "bnbpy/cython/search.pyx":191
  *         pass
  * 
  *     cpdef void enqueue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8655,7 +8629,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(CYT
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_19enqueue_callback)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -8677,7 +8651,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(CYT
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -8698,7 +8672,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(CYT
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":189
+  /* "bnbpy/cython/search.pyx":192
  * 
  *     cpdef void enqueue_callback(BranchAndBound self, Node node):
  *         """Abstraction for callbacks after node is enqueued"""             # <<<<<<<<<<<<<<
@@ -8718,7 +8692,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(CYT
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":188
+/* "bnbpy/cython/search.pyx":191
  *         pass
  * 
  *     cpdef void enqueue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8780,12 +8754,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 188, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 191, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue_callback") < 0)) __PYX_ERR(0, 188, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue_callback") < 0)) __PYX_ERR(0, 191, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -8796,7 +8770,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("enqueue_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 188, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("enqueue_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 191, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8810,7 +8784,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 191, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_18enqueue_callback(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -8837,8 +8811,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_18enqueue_call
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("enqueue_callback", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 188, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_enqueue_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8855,7 +8829,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_18enqueue_call
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":192
+/* "bnbpy/cython/search.pyx":195
  *         pass
  * 
  *     cpdef void dequeue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -8890,7 +8864,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(CYT
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_dequeue_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_dequeue_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_21dequeue_callback)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -8912,7 +8886,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(CYT
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -8933,7 +8907,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(CYT
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":193
+  /* "bnbpy/cython/search.pyx":196
  * 
  *     cpdef void dequeue_callback(BranchAndBound self, Node node):
  *         """Abstraction for callbacks after node is dequeued"""             # <<<<<<<<<<<<<<
@@ -8953,7 +8927,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(CYT
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":192
+/* "bnbpy/cython/search.pyx":195
  *         pass
  * 
  *     cpdef void dequeue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9015,12 +8989,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 192, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 195, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "dequeue_callback") < 0)) __PYX_ERR(0, 192, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "dequeue_callback") < 0)) __PYX_ERR(0, 195, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -9031,7 +9005,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("dequeue_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 192, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("dequeue_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 195, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9045,7 +9019,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 192, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 195, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_20dequeue_callback(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -9072,8 +9046,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_20dequeue_call
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("dequeue_callback", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 192, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_dequeue_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9090,7 +9064,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_20dequeue_call
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":196
+/* "bnbpy/cython/search.pyx":199
  *         pass
  * 
  *     cpdef void solution_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9125,7 +9099,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(CY
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solution_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solution_callback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_23solution_callback)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -9147,7 +9121,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(CY
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -9168,7 +9142,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(CY
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":197
+  /* "bnbpy/cython/search.pyx":200
  * 
  *     cpdef void solution_callback(BranchAndBound self, Node node):
  *         """             # <<<<<<<<<<<<<<
@@ -9188,7 +9162,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(CY
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":196
+/* "bnbpy/cython/search.pyx":199
  *         pass
  * 
  *     cpdef void solution_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9250,12 +9224,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "solution_callback") < 0)) __PYX_ERR(0, 196, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "solution_callback") < 0)) __PYX_ERR(0, 199, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -9266,7 +9240,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("solution_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 196, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("solution_callback", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 199, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9280,7 +9254,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 196, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 199, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_22solution_callback(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -9307,8 +9281,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_22solution_cal
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("solution_callback", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_solution_callback(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9325,7 +9299,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_22solution_cal
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":203
+/* "bnbpy/cython/search.pyx":206
  *         pass
  * 
  *     cpdef void _solve_root(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -9360,7 +9334,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solve_root); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solve_root); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_25_solve_root)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -9382,7 +9356,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -9403,22 +9377,22 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":204
+  /* "bnbpy/cython/search.pyx":207
  * 
  *     cpdef void _solve_root(BranchAndBound self):
  *         self.root = Node(self.problem, parent=None)             # <<<<<<<<<<<<<<
  *         self._enqueue_core(self.root)
  *         self._update_bound()
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF((PyObject *)__pyx_v_self->problem);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self->problem);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_self->problem))) __PYX_ERR(0, 204, __pyx_L1_error);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 204, __pyx_L1_error)
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_self->problem))) __PYX_ERR(0, 207, __pyx_L1_error);
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_parent, Py_None) < 0) __PYX_ERR(0, 204, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5bnbpy_6cython_4node_Node), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 204, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_parent, Py_None) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5bnbpy_6cython_4node_Node), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9428,7 +9402,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
   __pyx_v_self->root = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "bnbpy/cython/search.pyx":205
+  /* "bnbpy/cython/search.pyx":208
  *     cpdef void _solve_root(BranchAndBound self):
  *         self.root = Node(self.problem, parent=None)
  *         self._enqueue_core(self.root)             # <<<<<<<<<<<<<<
@@ -9437,19 +9411,19 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
  */
   __pyx_t_3 = ((PyObject *)__pyx_v_self->root);
   __Pyx_INCREF(__pyx_t_3);
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_enqueue_core(__pyx_v_self, ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_3)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_enqueue_core(__pyx_v_self, ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_3)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "bnbpy/cython/search.pyx":206
+  /* "bnbpy/cython/search.pyx":209
  *         self.root = Node(self.problem, parent=None)
  *         self._enqueue_core(self.root)
  *         self._update_bound()             # <<<<<<<<<<<<<<
  *         self.explored = 0
  * 
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 206, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":207
+  /* "bnbpy/cython/search.pyx":210
  *         self._enqueue_core(self.root)
  *         self._update_bound()
  *         self.explored = 0             # <<<<<<<<<<<<<<
@@ -9458,7 +9432,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(struct _
  */
   __pyx_v_self->explored = 0;
 
-  /* "bnbpy/cython/search.pyx":203
+  /* "bnbpy/cython/search.pyx":206
  *         pass
  * 
  *     cpdef void _solve_root(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -9528,8 +9502,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_24_solve_root(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_solve_root", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__solve_root(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9546,7 +9520,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_24_solve_root(
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":209
+/* "bnbpy/cython/search.pyx":212
  *         self.explored = 0
  * 
  *     cpdef void _node_eval(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9581,7 +9555,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__node_eval(struct __
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_node_eval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_node_eval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_27_node_eval)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -9603,7 +9577,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__node_eval(struct __
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -9624,34 +9598,34 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__node_eval(struct __
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":210
+  /* "bnbpy/cython/search.pyx":213
  * 
  *     cpdef void _node_eval(BranchAndBound self, Node node):
  *         self.pre_eval_callback(node)             # <<<<<<<<<<<<<<
  *         node.compute_bound()
  *         self.post_eval_callback(node)
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->pre_eval_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->pre_eval_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":211
+  /* "bnbpy/cython/search.pyx":214
  *     cpdef void _node_eval(BranchAndBound self, Node node):
  *         self.pre_eval_callback(node)
  *         node.compute_bound()             # <<<<<<<<<<<<<<
  *         self.post_eval_callback(node)
  * 
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->compute_bound(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->compute_bound(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":212
+  /* "bnbpy/cython/search.pyx":215
  *         self.pre_eval_callback(node)
  *         node.compute_bound()
  *         self.post_eval_callback(node)             # <<<<<<<<<<<<<<
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->post_eval_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->post_eval_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 215, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":209
+  /* "bnbpy/cython/search.pyx":212
  *         self.explored = 0
  * 
  *     cpdef void _node_eval(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9724,12 +9698,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_node_eval") < 0)) __PYX_ERR(0, 209, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_node_eval") < 0)) __PYX_ERR(0, 212, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -9740,7 +9714,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_node_eval", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 209, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_node_eval", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 212, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9754,7 +9728,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 209, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 212, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_26_node_eval(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -9781,8 +9755,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_26_node_eval(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_node_eval", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__node_eval(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__node_eval(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9799,7 +9773,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_26_node_eval(s
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":214
+/* "bnbpy/cython/search.pyx":217
  *         self.post_eval_callback(node)
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9836,7 +9810,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_feasibility_check); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_feasibility_check); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_29_feasibility_check)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -9858,7 +9832,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(s
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -9879,27 +9853,27 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(s
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":215
+  /* "bnbpy/cython/search.pyx":218
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):
  *         if node.check_feasible():             # <<<<<<<<<<<<<<
  *             self.set_solution(node)
  *         # Node might lead to a better solution
  */
-  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->check_feasible(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_4node_Node *)__pyx_v_node->__pyx_vtab)->check_feasible(__pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
   __pyx_t_7 = (__pyx_t_6 != 0);
   if (__pyx_t_7) {
 
-    /* "bnbpy/cython/search.pyx":216
+    /* "bnbpy/cython/search.pyx":219
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):
  *         if node.check_feasible():
  *             self.set_solution(node)             # <<<<<<<<<<<<<<
  *         # Node might lead to a better solution
  *         else:
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->set_solution(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 216, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->set_solution(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":215
+    /* "bnbpy/cython/search.pyx":218
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):
  *         if node.check_feasible():             # <<<<<<<<<<<<<<
@@ -9909,7 +9883,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(s
     goto __pyx_L3;
   }
 
-  /* "bnbpy/cython/search.pyx":219
+  /* "bnbpy/cython/search.pyx":222
  *         # Node might lead to a better solution
  *         else:
  *             self.branch(node)             # <<<<<<<<<<<<<<
@@ -9917,11 +9891,11 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(s
  *     cpdef void set_solution(BranchAndBound self, Node node):
  */
   /*else*/ {
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->branch(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->branch(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 222, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "bnbpy/cython/search.pyx":214
+  /* "bnbpy/cython/search.pyx":217
  *         self.post_eval_callback(node)
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -9994,12 +9968,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_feasibility_check") < 0)) __PYX_ERR(0, 214, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_feasibility_check") < 0)) __PYX_ERR(0, 217, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -10010,7 +9984,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_feasibility_check", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 214, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_feasibility_check", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 217, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -10024,7 +9998,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 217, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_28_feasibility_check(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -10051,8 +10025,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_28_feasibility
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_feasibility_check", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__feasibility_check(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10069,7 +10043,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_28_feasibility
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":221
+/* "bnbpy/cython/search.pyx":224
  *             self.branch(node)
  * 
  *     cpdef void set_solution(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -10104,7 +10078,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(struct 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_solution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_solution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_31set_solution)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -10126,7 +10100,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(struct 
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -10147,7 +10121,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(struct 
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":222
+  /* "bnbpy/cython/search.pyx":225
  * 
  *     cpdef void set_solution(BranchAndBound self, Node node):
  *         self.incumbent = node             # <<<<<<<<<<<<<<
@@ -10160,34 +10134,34 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(struct 
   __Pyx_DECREF((PyObject *)__pyx_v_self->incumbent);
   __pyx_v_self->incumbent = __pyx_v_node;
 
-  /* "bnbpy/cython/search.pyx":223
+  /* "bnbpy/cython/search.pyx":226
  *     cpdef void set_solution(BranchAndBound self, Node node):
  *         self.incumbent = node
  *         self._update_gap()             # <<<<<<<<<<<<<<
  *         self.log_row('New incumbent')
  *         self.solution_callback(node)
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 223, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":224
+  /* "bnbpy/cython/search.pyx":227
  *         self.incumbent = node
  *         self._update_gap()
  *         self.log_row('New incumbent')             # <<<<<<<<<<<<<<
  *         self.solution_callback(node)
  * 
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_New_incumbent, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_New_incumbent, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":225
+  /* "bnbpy/cython/search.pyx":228
  *         self._update_gap()
  *         self.log_row('New incumbent')
  *         self.solution_callback(node)             # <<<<<<<<<<<<<<
  * 
  *     cdef void _enqueue_core(BranchAndBound self, Node node):
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->solution_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->solution_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 228, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":221
+  /* "bnbpy/cython/search.pyx":224
  *             self.branch(node)
  * 
  *     cpdef void set_solution(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -10260,12 +10234,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 221, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "set_solution") < 0)) __PYX_ERR(0, 221, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "set_solution") < 0)) __PYX_ERR(0, 224, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -10276,7 +10250,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("set_solution", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 221, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("set_solution", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 224, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -10290,7 +10264,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 221, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 224, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_30set_solution(((struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -10317,8 +10291,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_30set_solution
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("set_solution", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 221, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_set_solution(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10335,7 +10309,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_30set_solution
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":227
+/* "bnbpy/cython/search.pyx":230
  *         self.solution_callback(node)
  * 
  *     cdef void _enqueue_core(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -10349,7 +10323,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__enqueue_core(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbpy/cython/search.pyx":228
+  /* "bnbpy/cython/search.pyx":231
  * 
  *     cdef void _enqueue_core(BranchAndBound self, Node node):
  *         if self.eval_in:             # <<<<<<<<<<<<<<
@@ -10359,16 +10333,16 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__enqueue_core(struct
   __pyx_t_1 = (__pyx_v_self->eval_in != 0);
   if (__pyx_t_1) {
 
-    /* "bnbpy/cython/search.pyx":229
+    /* "bnbpy/cython/search.pyx":232
  *     cdef void _enqueue_core(BranchAndBound self, Node node):
  *         if self.eval_in:
  *             self._node_eval(node)             # <<<<<<<<<<<<<<
  *         self.enqueue_callback(node)
  *         self.enqueue(node)
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_node_eval(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 229, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_node_eval(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":228
+    /* "bnbpy/cython/search.pyx":231
  * 
  *     cdef void _enqueue_core(BranchAndBound self, Node node):
  *         if self.eval_in:             # <<<<<<<<<<<<<<
@@ -10377,25 +10351,25 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__enqueue_core(struct
  */
   }
 
-  /* "bnbpy/cython/search.pyx":230
+  /* "bnbpy/cython/search.pyx":233
  *         if self.eval_in:
  *             self._node_eval(node)
  *         self.enqueue_callback(node)             # <<<<<<<<<<<<<<
  *         self.enqueue(node)
  * 
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->enqueue_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->enqueue_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 233, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":231
+  /* "bnbpy/cython/search.pyx":234
  *             self._node_eval(node)
  *         self.enqueue_callback(node)
  *         self.enqueue(node)             # <<<<<<<<<<<<<<
  * 
  *     cdef Node _dequeue_core(BranchAndBound self):
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->enqueue(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->enqueue(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":227
+  /* "bnbpy/cython/search.pyx":230
  *         self.solution_callback(node)
  * 
  *     cdef void _enqueue_core(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
@@ -10410,7 +10384,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__enqueue_core(struct
   __pyx_L0:;
 }
 
-/* "bnbpy/cython/search.pyx":233
+/* "bnbpy/cython/search.pyx":236
  *         self.enqueue(node)
  * 
  *     cdef Node _dequeue_core(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -10430,19 +10404,19 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dequeue_core", 1);
 
-  /* "bnbpy/cython/search.pyx":234
+  /* "bnbpy/cython/search.pyx":237
  * 
  *     cdef Node _dequeue_core(BranchAndBound self):
  *         node = self.dequeue()             # <<<<<<<<<<<<<<
  *         if self.eval_out:
  *             self._node_eval(node)
  */
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->dequeue(__pyx_v_self, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->dequeue(__pyx_v_self, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":235
+  /* "bnbpy/cython/search.pyx":238
  *     cdef Node _dequeue_core(BranchAndBound self):
  *         node = self.dequeue()
  *         if self.eval_out:             # <<<<<<<<<<<<<<
@@ -10452,16 +10426,16 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
   __pyx_t_2 = (__pyx_v_self->eval_out != 0);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":236
+    /* "bnbpy/cython/search.pyx":239
  *         node = self.dequeue()
  *         if self.eval_out:
  *             self._node_eval(node)             # <<<<<<<<<<<<<<
  *         self.dequeue_callback(node)
  *         if node.lb >= self.get_ub():
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_node_eval(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_node_eval(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 239, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":235
+    /* "bnbpy/cython/search.pyx":238
  *     cdef Node _dequeue_core(BranchAndBound self):
  *         node = self.dequeue()
  *         if self.eval_out:             # <<<<<<<<<<<<<<
@@ -10470,27 +10444,27 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
  */
   }
 
-  /* "bnbpy/cython/search.pyx":237
+  /* "bnbpy/cython/search.pyx":240
  *         if self.eval_out:
  *             self._node_eval(node)
  *         self.dequeue_callback(node)             # <<<<<<<<<<<<<<
  *         if node.lb >= self.get_ub():
  *             if node is self.bound_node:
  */
-  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->dequeue_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->dequeue_callback(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":238
+  /* "bnbpy/cython/search.pyx":241
  *             self._node_eval(node)
  *         self.dequeue_callback(node)
  *         if node.lb >= self.get_ub():             # <<<<<<<<<<<<<<
  *             if node is self.bound_node:
  *                 self._update_bound()
  */
-  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
   __pyx_t_2 = (__pyx_v_node->lb >= __pyx_t_3);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":239
+    /* "bnbpy/cython/search.pyx":242
  *         self.dequeue_callback(node)
  *         if node.lb >= self.get_ub():
  *             if node is self.bound_node:             # <<<<<<<<<<<<<<
@@ -10500,16 +10474,16 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
     __pyx_t_2 = (__pyx_v_node == __pyx_v_self->bound_node);
     if (__pyx_t_2) {
 
-      /* "bnbpy/cython/search.pyx":240
+      /* "bnbpy/cython/search.pyx":243
  *         if node.lb >= self.get_ub():
  *             if node is self.bound_node:
  *                 self._update_bound()             # <<<<<<<<<<<<<<
  *             self.fathom(node)
  *             return None
  */
-      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_bound(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
 
-      /* "bnbpy/cython/search.pyx":239
+      /* "bnbpy/cython/search.pyx":242
  *         self.dequeue_callback(node)
  *         if node.lb >= self.get_ub():
  *             if node is self.bound_node:             # <<<<<<<<<<<<<<
@@ -10518,16 +10492,16 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
  */
     }
 
-    /* "bnbpy/cython/search.pyx":241
+    /* "bnbpy/cython/search.pyx":244
  *             if node is self.bound_node:
  *                 self._update_bound()
  *             self.fathom(node)             # <<<<<<<<<<<<<<
  *             return None
  *         return node
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->fathom(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->fathom(__pyx_v_self, __pyx_v_node, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":242
+    /* "bnbpy/cython/search.pyx":245
  *                 self._update_bound()
  *             self.fathom(node)
  *             return None             # <<<<<<<<<<<<<<
@@ -10538,7 +10512,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
     __pyx_r = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)Py_None); __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "bnbpy/cython/search.pyx":238
+    /* "bnbpy/cython/search.pyx":241
  *             self._node_eval(node)
  *         self.dequeue_callback(node)
  *         if node.lb >= self.get_ub():             # <<<<<<<<<<<<<<
@@ -10547,7 +10521,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
  */
   }
 
-  /* "bnbpy/cython/search.pyx":243
+  /* "bnbpy/cython/search.pyx":246
  *             self.fathom(node)
  *             return None
  *         return node             # <<<<<<<<<<<<<<
@@ -10559,7 +10533,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
   __pyx_r = __pyx_v_node;
   goto __pyx_L0;
 
-  /* "bnbpy/cython/search.pyx":233
+  /* "bnbpy/cython/search.pyx":236
  *         self.enqueue(node)
  * 
  *     cdef Node _dequeue_core(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -10579,87 +10553,70 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_6searc
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":245
+/* "bnbpy/cython/search.pyx":248
  *         return node
  * 
  *     cdef bool _check_termination(BranchAndBound self, int maxiter):             # <<<<<<<<<<<<<<
- *         if self._optimality_check():
- *             self.log_row('Optimal')
+ *         cdef:
+ *             Solution sol
  */
 
 static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *__pyx_v_self, int __pyx_v_maxiter) {
+  struct __pyx_obj_5bnbpy_6cython_8solution_Solution *__pyx_v_sol = 0;
   bool __pyx_r;
   __Pyx_RefNannyDeclarations
   bool __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  unsigned int __pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_check_termination", 1);
 
-  /* "bnbpy/cython/search.pyx":246
- * 
- *     cdef bool _check_termination(BranchAndBound self, int maxiter):
+  /* "bnbpy/cython/search.pyx":251
+ *         cdef:
+ *             Solution sol
  *         if self._optimality_check():             # <<<<<<<<<<<<<<
  *             self.log_row('Optimal')
- *             self.solution.set_optimal()
+ *             sol = self.get_solution()
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_optimality_check(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_optimality_check(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":247
- *     cdef bool _check_termination(BranchAndBound self, int maxiter):
+    /* "bnbpy/cython/search.pyx":252
+ *             Solution sol
  *         if self._optimality_check():
  *             self.log_row('Optimal')             # <<<<<<<<<<<<<<
- *             self.solution.set_optimal()
- *             return True
+ *             sol = self.get_solution()
+ *             sol.set_optimal()
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Optimal, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_n_s_Optimal, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":248
+    /* "bnbpy/cython/search.pyx":253
  *         if self._optimality_check():
  *             self.log_row('Optimal')
- *             self.solution.set_optimal()             # <<<<<<<<<<<<<<
+ *             sol = self.get_solution()             # <<<<<<<<<<<<<<
+ *             sol.set_optimal()
+ *             return True
+ */
+    __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_solution(__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_v_sol = ((struct __pyx_obj_5bnbpy_6cython_8solution_Solution *)__pyx_t_3);
+    __pyx_t_3 = 0;
+
+    /* "bnbpy/cython/search.pyx":254
+ *             self.log_row('Optimal')
+ *             sol = self.get_solution()
+ *             sol.set_optimal()             # <<<<<<<<<<<<<<
  *             return True
  *         # Termination by iteration limit
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_solution); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 248, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_set_optimal); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 248, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = NULL;
-    __pyx_t_6 = 0;
-    #if CYTHON_UNPACK_METHODS
-    if (likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-        __pyx_t_6 = 1;
-      }
-    }
-    #endif
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
-      __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_8solution_Solution *)__pyx_v_sol->__pyx_vtab)->set_optimal(__pyx_v_sol, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 254, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":249
- *             self.log_row('Optimal')
- *             self.solution.set_optimal()
+    /* "bnbpy/cython/search.pyx":255
+ *             sol = self.get_solution()
+ *             sol.set_optimal()
  *             return True             # <<<<<<<<<<<<<<
  *         # Termination by iteration limit
  *         elif self.explored >= maxiter:
@@ -10667,16 +10624,16 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(s
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "bnbpy/cython/search.pyx":246
- * 
- *     cdef bool _check_termination(BranchAndBound self, int maxiter):
+    /* "bnbpy/cython/search.pyx":251
+ *         cdef:
+ *             Solution sol
  *         if self._optimality_check():             # <<<<<<<<<<<<<<
  *             self.log_row('Optimal')
- *             self.solution.set_optimal()
+ *             sol = self.get_solution()
  */
   }
 
-  /* "bnbpy/cython/search.pyx":251
+  /* "bnbpy/cython/search.pyx":257
  *             return True
  *         # Termination by iteration limit
  *         elif self.explored >= maxiter:             # <<<<<<<<<<<<<<
@@ -10686,16 +10643,16 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(s
   __pyx_t_2 = (__pyx_v_self->explored >= __pyx_v_maxiter);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":252
+    /* "bnbpy/cython/search.pyx":258
  *         # Termination by iteration limit
  *         elif self.explored >= maxiter:
  *             self.log_row('Iter Limit')             # <<<<<<<<<<<<<<
  *             return True
  *         return False
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_Iter_Limit, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_Iter_Limit, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":253
+    /* "bnbpy/cython/search.pyx":259
  *         elif self.explored >= maxiter:
  *             self.log_row('Iter Limit')
  *             return True             # <<<<<<<<<<<<<<
@@ -10705,7 +10662,7 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(s
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "bnbpy/cython/search.pyx":251
+    /* "bnbpy/cython/search.pyx":257
  *             return True
  *         # Termination by iteration limit
  *         elif self.explored >= maxiter:             # <<<<<<<<<<<<<<
@@ -10714,7 +10671,7 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(s
  */
   }
 
-  /* "bnbpy/cython/search.pyx":254
+  /* "bnbpy/cython/search.pyx":260
  *             self.log_row('Iter Limit')
  *             return True
  *         return False             # <<<<<<<<<<<<<<
@@ -10724,27 +10681,26 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__check_termination(s
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "bnbpy/cython/search.pyx":245
+  /* "bnbpy/cython/search.pyx":248
  *         return node
  * 
  *     cdef bool _check_termination(BranchAndBound self, int maxiter):             # <<<<<<<<<<<<<<
- *         if self._optimality_check():
- *             self.log_row('Optimal')
+ *         cdef:
+ *             Solution sol
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("bnbpy.cython.search.BranchAndBound._check_termination", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_sol);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":256
+/* "bnbpy/cython/search.pyx":262
  *         return False
  * 
  *     cdef void _update_bound(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -10766,7 +10722,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_update_bound", 1);
 
-  /* "bnbpy/cython/search.pyx":257
+  /* "bnbpy/cython/search.pyx":263
  * 
  *     cdef void _update_bound(BranchAndBound self):
  *         if len(self.queue) == 0:             # <<<<<<<<<<<<<<
@@ -10775,22 +10731,22 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
   __pyx_t_1 = __pyx_v_self->queue;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 == 0);
   if (__pyx_t_3) {
 
-    /* "bnbpy/cython/search.pyx":258
+    /* "bnbpy/cython/search.pyx":264
  *     cdef void _update_bound(BranchAndBound self):
  *         if len(self.queue) == 0:
  *             if self.incumbent:             # <<<<<<<<<<<<<<
  *                 self.bound_node = self.incumbent
  *             self._update_gap()
  */
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_self->incumbent)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 258, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_self->incumbent)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 264, __pyx_L1_error)
     if (__pyx_t_3) {
 
-      /* "bnbpy/cython/search.pyx":259
+      /* "bnbpy/cython/search.pyx":265
  *         if len(self.queue) == 0:
  *             if self.incumbent:
  *                 self.bound_node = self.incumbent             # <<<<<<<<<<<<<<
@@ -10805,7 +10761,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
       __pyx_v_self->bound_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "bnbpy/cython/search.pyx":258
+      /* "bnbpy/cython/search.pyx":264
  *     cdef void _update_bound(BranchAndBound self):
  *         if len(self.queue) == 0:
  *             if self.incumbent:             # <<<<<<<<<<<<<<
@@ -10814,16 +10770,16 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
     }
 
-    /* "bnbpy/cython/search.pyx":260
+    /* "bnbpy/cython/search.pyx":266
  *             if self.incumbent:
  *                 self.bound_node = self.incumbent
  *             self._update_gap()             # <<<<<<<<<<<<<<
  *             return
  *         cdef Node old_bound = self.bound_node
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":261
+    /* "bnbpy/cython/search.pyx":267
  *                 self.bound_node = self.incumbent
  *             self._update_gap()
  *             return             # <<<<<<<<<<<<<<
@@ -10832,7 +10788,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
     goto __pyx_L0;
 
-    /* "bnbpy/cython/search.pyx":257
+    /* "bnbpy/cython/search.pyx":263
  * 
  *     cdef void _update_bound(BranchAndBound self):
  *         if len(self.queue) == 0:             # <<<<<<<<<<<<<<
@@ -10841,7 +10797,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
   }
 
-  /* "bnbpy/cython/search.pyx":262
+  /* "bnbpy/cython/search.pyx":268
  *             self._update_gap()
  *             return
  *         cdef Node old_bound = self.bound_node             # <<<<<<<<<<<<<<
@@ -10853,39 +10809,39 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
   __pyx_v_old_bound = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":263
+  /* "bnbpy/cython/search.pyx":269
  *             return
  *         cdef Node old_bound = self.bound_node
  *         self.bound_node = min(self.queue, key=_first_element_lb)[1]             # <<<<<<<<<<<<<<
  *         if (
  *             old_bound is None
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_self->queue);
   __Pyx_GIVEREF(__pyx_v_self->queue);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_self->queue)) __PYX_ERR(0, 263, __pyx_L1_error);
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_self->queue)) __PYX_ERR(0, 269, __pyx_L1_error);
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_first_element_lb); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_first_element_lb); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_min, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_min, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 263, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(0, 269, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->bound_node);
   __Pyx_DECREF((PyObject *)__pyx_v_self->bound_node);
   __pyx_v_self->bound_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "bnbpy/cython/search.pyx":265
+  /* "bnbpy/cython/search.pyx":271
  *         self.bound_node = min(self.queue, key=_first_element_lb)[1]
  *         if (
  *             old_bound is None             # <<<<<<<<<<<<<<
@@ -10899,7 +10855,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "bnbpy/cython/search.pyx":266
+  /* "bnbpy/cython/search.pyx":272
  *         if (
  *             old_bound is None
  *             or old_bound is self.root             # <<<<<<<<<<<<<<
@@ -10913,7 +10869,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "bnbpy/cython/search.pyx":267
+  /* "bnbpy/cython/search.pyx":273
  *             old_bound is None
  *             or old_bound is self.root
  *             or self.bound_node.lb > old_bound.lb             # <<<<<<<<<<<<<<
@@ -10924,7 +10880,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
   __pyx_t_3 = __pyx_t_6;
   __pyx_L6_bool_binop_done:;
 
-  /* "bnbpy/cython/search.pyx":264
+  /* "bnbpy/cython/search.pyx":270
  *         cdef Node old_bound = self.bound_node
  *         self.bound_node = min(self.queue, key=_first_element_lb)[1]
  *         if (             # <<<<<<<<<<<<<<
@@ -10933,25 +10889,25 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
   if (__pyx_t_3) {
 
-    /* "bnbpy/cython/search.pyx":269
+    /* "bnbpy/cython/search.pyx":275
  *             or self.bound_node.lb > old_bound.lb
  *         ):
  *             self._update_gap()             # <<<<<<<<<<<<<<
  *             self.log_row('LB update')
  * 
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 269, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->_update_gap(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 275, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":270
+    /* "bnbpy/cython/search.pyx":276
  *         ):
  *             self._update_gap()
  *             self.log_row('LB update')             # <<<<<<<<<<<<<<
  * 
  *     cpdef void _log_headers(BranchAndBound self):
  */
-    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_LB_update, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 270, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->log_row(__pyx_v_self, __pyx_kp_s_LB_update, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 276, __pyx_L1_error)
 
-    /* "bnbpy/cython/search.pyx":264
+    /* "bnbpy/cython/search.pyx":270
  *         cdef Node old_bound = self.bound_node
  *         self.bound_node = min(self.queue, key=_first_element_lb)[1]
  *         if (             # <<<<<<<<<<<<<<
@@ -10960,7 +10916,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
  */
   }
 
-  /* "bnbpy/cython/search.pyx":256
+  /* "bnbpy/cython/search.pyx":262
  *         return False
  * 
  *     cdef void _update_bound(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -10980,7 +10936,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_bound(struct
   __Pyx_RefNannyFinishContext();
 }
 
-/* "bnbpy/cython/search.pyx":272
+/* "bnbpy/cython/search.pyx":278
  *             self.log_row('LB update')
  * 
  *     cpdef void _log_headers(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -11015,7 +10971,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(struct 
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_headers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_headers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_33_log_headers)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -11037,7 +10993,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(struct 
           PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -11058,14 +11014,14 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(struct 
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":273
+  /* "bnbpy/cython/search.pyx":279
  * 
  *     cpdef void _log_headers(BranchAndBound self):
  *         self.__logger.log_headers()             # <<<<<<<<<<<<<<
  * 
  *     cpdef void log_row(BranchAndBound self, object message):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_BranchAndBound__logger, __pyx_n_s_log_headers_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_BranchAndBound__logger, __pyx_n_s_log_headers_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_5 = 0;
@@ -11085,13 +11041,13 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(struct 
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":272
+  /* "bnbpy/cython/search.pyx":278
  *             self.log_row('LB update')
  * 
  *     cpdef void _log_headers(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -11161,8 +11117,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_32_log_headers
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_log_headers", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__log_headers(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11179,7 +11135,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_32_log_headers
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":275
+/* "bnbpy/cython/search.pyx":281
  *         self.__logger.log_headers()
  * 
  *     cpdef void log_row(BranchAndBound self, object message):             # <<<<<<<<<<<<<<
@@ -11218,7 +11174,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(struct __pyx
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_row); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_row); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_35log_row)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -11240,7 +11196,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(struct __pyx
           PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_message};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 281, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -11261,66 +11217,66 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(struct __pyx
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":276
+  /* "bnbpy/cython/search.pyx":282
  * 
  *     cpdef void log_row(BranchAndBound self, object message):
  *         gap = f'{(100 * self.gap):.2f}%'             # <<<<<<<<<<<<<<
  *         ub = f'{float(self.get_ub()):^6.4}'
  *         lb = f'{float(self.get_lb()):^6.4}'
  */
-  __pyx_t_1 = PyFloat_FromDouble((100.0 * __pyx_v_self->gap)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((100.0 * __pyx_v_self->gap)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_Format(__pyx_t_1, __pyx_kp_u_2f); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Format(__pyx_t_1, __pyx_kp_u_2f); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyUnicode_ConcatInPlace(__pyx_t_2, __pyx_kp_u_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_ConcatInPlace(__pyx_t_2, __pyx_kp_u_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_gap = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":277
+  /* "bnbpy/cython/search.pyx":283
  *     cpdef void log_row(BranchAndBound self, object message):
  *         gap = f'{(100 * self.gap):.2f}%'
  *         ub = f'{float(self.get_ub()):^6.4}'             # <<<<<<<<<<<<<<
  *         lb = f'{float(self.get_lb()):^6.4}'
  *         self.__logger.log_row(self.explored, ub, lb, gap, message)
  */
-  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 277, __pyx_L1_error)
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_Format(__pyx_t_1, __pyx_kp_u_6_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Format(__pyx_t_1, __pyx_kp_u_6_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_ub = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":278
+  /* "bnbpy/cython/search.pyx":284
  *         gap = f'{(100 * self.gap):.2f}%'
  *         ub = f'{float(self.get_ub()):^6.4}'
  *         lb = f'{float(self.get_lb()):^6.4}'             # <<<<<<<<<<<<<<
  *         self.__logger.log_row(self.explored, ub, lb, gap, message)
  * 
  */
-  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 278, __pyx_L1_error)
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_6 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_Format(__pyx_t_2, __pyx_kp_u_6_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Format(__pyx_t_2, __pyx_kp_u_6_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_lb = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":279
+  /* "bnbpy/cython/search.pyx":285
  *         ub = f'{float(self.get_ub()):^6.4}'
  *         lb = f'{float(self.get_lb()):^6.4}'
  *         self.__logger.log_row(self.explored, ub, lb, gap, message)             # <<<<<<<<<<<<<<
  * 
  *     cdef void _update_gap(BranchAndBound self):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_BranchAndBound__logger, __pyx_n_s_log_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_BranchAndBound__logger, __pyx_n_s_log_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->explored); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->explored); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -11341,13 +11297,13 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(struct __pyx
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 5+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 285, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":275
+  /* "bnbpy/cython/search.pyx":281
  *         self.__logger.log_headers()
  * 
  *     cpdef void log_row(BranchAndBound self, object message):             # <<<<<<<<<<<<<<
@@ -11423,12 +11379,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 275, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 281, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "log_row") < 0)) __PYX_ERR(0, 275, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "log_row") < 0)) __PYX_ERR(0, 281, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -11439,7 +11395,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("log_row", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 275, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("log_row", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 281, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -11475,8 +11431,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_34log_row(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("log_row", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(__pyx_v_self, __pyx_v_message, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 275, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_14BranchAndBound_log_row(__pyx_v_self, __pyx_v_message, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11493,7 +11449,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_34log_row(stru
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":281
+/* "bnbpy/cython/search.pyx":287
  *         self.__logger.log_row(self.explored, ub, lb, gap, message)
  * 
  *     cdef void _update_gap(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -11510,30 +11466,30 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_gap(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbpy/cython/search.pyx":282
+  /* "bnbpy/cython/search.pyx":288
  * 
  *     cdef void _update_gap(BranchAndBound self):
  *         if self.get_ub() != LARGE_POS:             # <<<<<<<<<<<<<<
  *             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 282, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 288, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != __pyx_v_5bnbpy_6cython_6search_LARGE_POS);
   if (__pyx_t_2) {
 
-    /* "bnbpy/cython/search.pyx":283
+    /* "bnbpy/cython/search.pyx":289
  *     cdef void _update_gap(BranchAndBound self):
  *         if self.get_ub() != LARGE_POS:
  *             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())             # <<<<<<<<<<<<<<
  * 
  *     cdef bool _optimality_check(BranchAndBound self):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
-    __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
-    __pyx_t_4 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 289, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 289, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 289, __pyx_L1_error)
     __pyx_v_self->gap = (fabs((__pyx_t_1 - __pyx_t_3)) / fabs(__pyx_t_4));
 
-    /* "bnbpy/cython/search.pyx":282
+    /* "bnbpy/cython/search.pyx":288
  * 
  *     cdef void _update_gap(BranchAndBound self):
  *         if self.get_ub() != LARGE_POS:             # <<<<<<<<<<<<<<
@@ -11542,7 +11498,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_gap(struct _
  */
   }
 
-  /* "bnbpy/cython/search.pyx":281
+  /* "bnbpy/cython/search.pyx":287
  *         self.__logger.log_row(self.explored, ub, lb, gap, message)
  * 
  *     cdef void _update_gap(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -11557,7 +11513,7 @@ static void __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__update_gap(struct _
   __pyx_L0:;
 }
 
-/* "bnbpy/cython/search.pyx":285
+/* "bnbpy/cython/search.pyx":291
  *             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
  * 
  *     cdef bool _optimality_check(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -11575,15 +11531,15 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__optimality_check(st
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "bnbpy/cython/search.pyx":287
+  /* "bnbpy/cython/search.pyx":293
  *     cdef bool _optimality_check(BranchAndBound self):
  *         return (
  *             self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_2 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 287, __pyx_L1_error)
-  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_ub(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 293, __pyx_L1_error)
+  __pyx_t_3 = ((struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound *)__pyx_v_self->__pyx_vtab)->get_lb(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 293, __pyx_L1_error)
   __pyx_t_4 = (__pyx_t_2 <= (__pyx_t_3 + __pyx_v_self->atol));
   if (!__pyx_t_4) {
   } else {
@@ -11596,7 +11552,7 @@ static bool __pyx_f_5bnbpy_6cython_6search_14BranchAndBound__optimality_check(st
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "bnbpy/cython/search.pyx":285
+  /* "bnbpy/cython/search.pyx":291
  *             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
  * 
  *     cdef bool _optimality_check(BranchAndBound self):             # <<<<<<<<<<<<<<
@@ -13435,7 +13391,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_14BranchAndBound_38__setstate_c
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":291
+/* "bnbpy/cython/search.pyx":297
  * 
  * 
  * cpdef _first_element_lb(tuple[object, Node] x):             # <<<<<<<<<<<<<<
@@ -13459,7 +13415,7 @@ static PyObject *__pyx_f_5bnbpy_6cython_6search__first_element_lb(PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_first_element_lb", 1);
 
-  /* "bnbpy/cython/search.pyx":292
+  /* "bnbpy/cython/search.pyx":298
  * 
  * cpdef _first_element_lb(tuple[object, Node] x):
  *     return x[1].lb             # <<<<<<<<<<<<<<
@@ -13469,15 +13425,15 @@ static PyObject *__pyx_f_5bnbpy_6cython_6search__first_element_lb(PyObject *__py
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_x == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 292, __pyx_L1_error)
+    __PYX_ERR(0, 298, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyTuple_GET_ITEM(__pyx_v_x, 1), __pyx_n_s_lb); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(PyTuple_GET_ITEM(__pyx_v_x, 1), __pyx_n_s_lb); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "bnbpy/cython/search.pyx":291
+  /* "bnbpy/cython/search.pyx":297
  * 
  * 
  * cpdef _first_element_lb(tuple[object, Node] x):             # <<<<<<<<<<<<<<
@@ -13549,12 +13505,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_first_element_lb") < 0)) __PYX_ERR(0, 291, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_first_element_lb") < 0)) __PYX_ERR(0, 297, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -13565,7 +13521,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_first_element_lb", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 291, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_first_element_lb", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 297, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -13579,7 +13535,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), (&PyTuple_Type), 1, "x", 1))) __PYX_ERR(0, 291, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), (&PyTuple_Type), 1, "x", 1))) __PYX_ERR(0, 297, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search__first_element_lb(__pyx_self, __pyx_v_x);
 
   /* function exit code */
@@ -13606,7 +13562,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search__first_element_lb(CYTHON_UNUSED
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_first_element_lb", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5bnbpy_6cython_6search__first_element_lb(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5bnbpy_6cython_6search__first_element_lb(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13623,7 +13579,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search__first_element_lb(CYTHON_UNUSED
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":297
+/* "bnbpy/cython/search.pyx":303
  * cdef class BreadthFirstBnB(BranchAndBound):
  * 
  *     cpdef void enqueue(self, Node node):             # <<<<<<<<<<<<<<
@@ -13659,7 +13615,7 @@ static void __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struct __py
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_15BreadthFirstBnB_1enqueue)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -13681,7 +13637,7 @@ static void __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struct __py
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -13702,37 +13658,37 @@ static void __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struct __py
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":298
+  /* "bnbpy/cython/search.pyx":304
  * 
  *     cpdef void enqueue(self, Node node):
  *         heapq.heappush(self.queue, ((node.level, node.lb), node))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_node->level); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_node->level); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 304, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 298, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 304, __pyx_L1_error);
   __pyx_t_2 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 298, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 304, __pyx_L1_error);
   __Pyx_INCREF((PyObject *)__pyx_v_node);
   __Pyx_GIVEREF((PyObject *)__pyx_v_node);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 298, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 304, __pyx_L1_error);
   __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
   __pyx_t_5 = 0;
@@ -13753,13 +13709,13 @@ static void __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struct __py
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 304, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":297
+  /* "bnbpy/cython/search.pyx":303
  * cdef class BreadthFirstBnB(BranchAndBound):
  * 
  *     cpdef void enqueue(self, Node node):             # <<<<<<<<<<<<<<
@@ -13833,12 +13789,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 303, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 297, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 303, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -13849,7 +13805,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 297, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 303, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -13863,7 +13819,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 297, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 303, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(((struct __pyx_obj_5bnbpy_6cython_6search_BreadthFirstBnB *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -13890,8 +13846,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("enqueue", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 303, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14409,7 +14365,508 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_15BreadthFirstBnB_4__setstate_c
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":308
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     cdef tuple state
+ *     cdef object _dict
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
+  __pyx_r = __pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB___reduce_cython__(((struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB___reduce_cython__(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_v_self) {
+  PyObject *__pyx_v_state = 0;
+  PyObject *__pyx_v__dict = 0;
+  int __pyx_v_use_setstate;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  int __pyx_t_10;
+  int __pyx_t_11;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 1);
+
+  /* "(tree fragment)":5
+ *     cdef object _dict
+ *     cdef bint use_setstate
+ *     state = (self._BranchAndBound__logger, self.atol, self.bound_node, self.eval_in, self.eval_node, self.eval_out, self.explored, self.gap, self.incumbent, self.problem, self.queue, self.root, self.rtol, self.save_tree)             # <<<<<<<<<<<<<<
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:
+ */
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.atol); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx_base.eval_in); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_6libcpp_6string_std__in_string(__pyx_v_self->__pyx_base.eval_node); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx_base.eval_out); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.explored); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.gap); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.rtol); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_8 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx_base.save_tree); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_9 = PyTuple_New(14); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_INCREF(__pyx_v_self->__pyx_base._BranchAndBound__logger);
+  __Pyx_GIVEREF(__pyx_v_self->__pyx_base._BranchAndBound__logger);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_v_self->__pyx_base._BranchAndBound__logger)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_1);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_INCREF((PyObject *)__pyx_v_self->__pyx_base.bound_node);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_self->__pyx_base.bound_node);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 2, ((PyObject *)__pyx_v_self->__pyx_base.bound_node))) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_2);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 3, __pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_3);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 4, __pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_4);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 5, __pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_5);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 6, __pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_6);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 7, __pyx_t_6)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_INCREF((PyObject *)__pyx_v_self->__pyx_base.incumbent);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_self->__pyx_base.incumbent);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 8, ((PyObject *)__pyx_v_self->__pyx_base.incumbent))) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_INCREF((PyObject *)__pyx_v_self->__pyx_base.problem);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_self->__pyx_base.problem);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 9, ((PyObject *)__pyx_v_self->__pyx_base.problem))) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_INCREF(__pyx_v_self->__pyx_base.queue);
+  __Pyx_GIVEREF(__pyx_v_self->__pyx_base.queue);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 10, __pyx_v_self->__pyx_base.queue)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_INCREF((PyObject *)__pyx_v_self->__pyx_base.root);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_self->__pyx_base.root);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 11, ((PyObject *)__pyx_v_self->__pyx_base.root))) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_7);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 12, __pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_8);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 13, __pyx_t_8)) __PYX_ERR(1, 5, __pyx_L1_error);
+  __pyx_t_1 = 0;
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_5 = 0;
+  __pyx_t_6 = 0;
+  __pyx_t_7 = 0;
+  __pyx_t_8 = 0;
+  __pyx_v_state = ((PyObject*)__pyx_t_9);
+  __pyx_t_9 = 0;
+
+  /* "(tree fragment)":6
+ *     cdef bint use_setstate
+ *     state = (self._BranchAndBound__logger, self.atol, self.bound_node, self.eval_in, self.eval_node, self.eval_out, self.explored, self.gap, self.incumbent, self.problem, self.queue, self.root, self.rtol, self.save_tree)
+ *     _dict = getattr(self, '__dict__', None)             # <<<<<<<<<<<<<<
+ *     if _dict is not None:
+ *         state += (_dict,)
+ */
+  __pyx_t_9 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_dict, Py_None); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 6, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_v__dict = __pyx_t_9;
+  __pyx_t_9 = 0;
+
+  /* "(tree fragment)":7
+ *     state = (self._BranchAndBound__logger, self.atol, self.bound_node, self.eval_in, self.eval_node, self.eval_out, self.explored, self.gap, self.incumbent, self.problem, self.queue, self.root, self.rtol, self.save_tree)
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:             # <<<<<<<<<<<<<<
+ *         state += (_dict,)
+ *         use_setstate = True
+ */
+  __pyx_t_10 = (__pyx_v__dict != Py_None);
+  if (__pyx_t_10) {
+
+    /* "(tree fragment)":8
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:
+ *         state += (_dict,)             # <<<<<<<<<<<<<<
+ *         use_setstate = True
+ *     else:
+ */
+    __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_INCREF(__pyx_v__dict);
+    __Pyx_GIVEREF(__pyx_v__dict);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_v__dict)) __PYX_ERR(1, 8, __pyx_L1_error);
+    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_8));
+    __pyx_t_8 = 0;
+
+    /* "(tree fragment)":9
+ *     if _dict is not None:
+ *         state += (_dict,)
+ *         use_setstate = True             # <<<<<<<<<<<<<<
+ *     else:
+ *         use_setstate = self._BranchAndBound__logger is not None or self.bound_node is not None or self.incumbent is not None or self.problem is not None or self.queue is not None or self.root is not None
+ */
+    __pyx_v_use_setstate = 1;
+
+    /* "(tree fragment)":7
+ *     state = (self._BranchAndBound__logger, self.atol, self.bound_node, self.eval_in, self.eval_node, self.eval_out, self.explored, self.gap, self.incumbent, self.problem, self.queue, self.root, self.rtol, self.save_tree)
+ *     _dict = getattr(self, '__dict__', None)
+ *     if _dict is not None:             # <<<<<<<<<<<<<<
+ *         state += (_dict,)
+ *         use_setstate = True
+ */
+    goto __pyx_L3;
+  }
+
+  /* "(tree fragment)":11
+ *         use_setstate = True
+ *     else:
+ *         use_setstate = self._BranchAndBound__logger is not None or self.bound_node is not None or self.incumbent is not None or self.problem is not None or self.queue is not None or self.root is not None             # <<<<<<<<<<<<<<
+ *     if use_setstate:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, None), state
+ */
+  /*else*/ {
+    __pyx_t_11 = (__pyx_v_self->__pyx_base._BranchAndBound__logger != Py_None);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_10 = __pyx_t_11;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_t_11 = (((PyObject *)__pyx_v_self->__pyx_base.bound_node) != Py_None);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_10 = __pyx_t_11;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_t_11 = (((PyObject *)__pyx_v_self->__pyx_base.incumbent) != Py_None);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_10 = __pyx_t_11;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_t_11 = (((PyObject *)__pyx_v_self->__pyx_base.problem) != Py_None);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_10 = __pyx_t_11;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_t_11 = (__pyx_v_self->__pyx_base.queue != Py_None);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_10 = __pyx_t_11;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_t_11 = (((PyObject *)__pyx_v_self->__pyx_base.root) != Py_None);
+    __pyx_t_10 = __pyx_t_11;
+    __pyx_L4_bool_binop_done:;
+    __pyx_v_use_setstate = __pyx_t_10;
+  }
+  __pyx_L3:;
+
+  /* "(tree fragment)":12
+ *     else:
+ *         use_setstate = self._BranchAndBound__logger is not None or self.bound_node is not None or self.incumbent is not None or self.problem is not None or self.queue is not None or self.root is not None
+ *     if use_setstate:             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, None), state
+ *     else:
+ */
+  if (__pyx_v_use_setstate) {
+
+    /* "(tree fragment)":13
+ *         use_setstate = self._BranchAndBound__logger is not None or self.bound_node is not None or self.incumbent is not None or self.problem is not None or self.queue is not None or self.root is not None
+ *     if use_setstate:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, None), state             # <<<<<<<<<<<<<<
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_pyx_unpickle_DepthFirstBnB); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))))) __PYX_ERR(1, 13, __pyx_L1_error);
+    __Pyx_INCREF(__pyx_int_53621826);
+    __Pyx_GIVEREF(__pyx_int_53621826);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_int_53621826)) __PYX_ERR(1, 13, __pyx_L1_error);
+    __Pyx_INCREF(Py_None);
+    __Pyx_GIVEREF(Py_None);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 2, Py_None)) __PYX_ERR(1, 13, __pyx_L1_error);
+    __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_8);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8)) __PYX_ERR(1, 13, __pyx_L1_error);
+    __Pyx_GIVEREF(__pyx_t_9);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_9)) __PYX_ERR(1, 13, __pyx_L1_error);
+    __Pyx_INCREF(__pyx_v_state);
+    __Pyx_GIVEREF(__pyx_v_state);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_v_state)) __PYX_ERR(1, 13, __pyx_L1_error);
+    __pyx_t_8 = 0;
+    __pyx_t_9 = 0;
+    __pyx_r = __pyx_t_7;
+    __pyx_t_7 = 0;
+    goto __pyx_L0;
+
+    /* "(tree fragment)":12
+ *     else:
+ *         use_setstate = self._BranchAndBound__logger is not None or self.bound_node is not None or self.incumbent is not None or self.problem is not None or self.queue is not None or self.root is not None
+ *     if use_setstate:             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, None), state
+ *     else:
+ */
+  }
+
+  /* "(tree fragment)":15
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, None), state
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)
+ */
+  /*else*/ {
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_pyx_unpickle_DepthFirstBnB); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))))) __PYX_ERR(1, 15, __pyx_L1_error);
+    __Pyx_INCREF(__pyx_int_53621826);
+    __Pyx_GIVEREF(__pyx_int_53621826);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_int_53621826)) __PYX_ERR(1, 15, __pyx_L1_error);
+    __Pyx_INCREF(__pyx_v_state);
+    __Pyx_GIVEREF(__pyx_v_state);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_9, 2, __pyx_v_state)) __PYX_ERR(1, 15, __pyx_L1_error);
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_GIVEREF(__pyx_t_7);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7)) __PYX_ERR(1, 15, __pyx_L1_error);
+    __Pyx_GIVEREF(__pyx_t_9);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_9)) __PYX_ERR(1, 15, __pyx_L1_error);
+    __pyx_t_7 = 0;
+    __pyx_t_9 = 0;
+    __pyx_r = __pyx_t_8;
+    __pyx_t_8 = 0;
+    goto __pyx_L0;
+  }
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     cdef tuple state
+ *     cdef object _dict
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("bnbpy.cython.search.DepthFirstBnB.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_state);
+  __Pyx_XDECREF(__pyx_v__dict);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  PyObject *__pyx_v___pyx_state = 0;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pyx_state,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_pyx_state)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__setstate_cython__") < 0)) __PYX_ERR(1, 16, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+    }
+    __pyx_v___pyx_state = values[0];
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__setstate_cython__", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 16, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("bnbpy.cython.search.DepthFirstBnB.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB_2__setstate_cython__(((struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *)__pyx_v_self), __pyx_v___pyx_state);
+
+  /* function exit code */
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_13DepthFirstBnB_2__setstate_cython__(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 1);
+
+  /* "(tree fragment)":17
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ * def __setstate_cython__(self, __pyx_state):
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
+ */
+  if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5bnbpy_6cython_6search___pyx_unpickle_DepthFirstBnB__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("bnbpy.cython.search.DepthFirstBnB.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bnbpy/cython/search.pyx":314
  * cdef class BestFirstBnB(BranchAndBound):
  * 
  *     def __init__(             # <<<<<<<<<<<<<<
@@ -14462,33 +14919,33 @@ static int __pyx_pw_5bnbpy_6cython_6search_12BestFirstBnB_1__init__(PyObject *__
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_rtol);
           if (value) { values[0] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_atol);
           if (value) { values[1] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_eval_node);
           if (value) { values[2] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_save_tree);
           if (value) { values[3] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 308, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 314, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -14505,21 +14962,21 @@ static int __pyx_pw_5bnbpy_6cython_6search_12BestFirstBnB_1__init__(PyObject *__
       }
     }
     if (values[0]) {
-      __pyx_v_rtol = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_rtol == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 310, __pyx_L3_error)
+      __pyx_v_rtol = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_rtol == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 316, __pyx_L3_error)
     } else {
       __pyx_v_rtol = ((double)0.0001);
     }
     if (values[1]) {
-      __pyx_v_atol = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_atol == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 311, __pyx_L3_error)
+      __pyx_v_atol = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_atol == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 317, __pyx_L3_error)
     } else {
       __pyx_v_atol = ((double)0.0001);
     }
     __pyx_v_eval_node = values[2];
     if (values[3]) {
-      __pyx_v_save_tree = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_save_tree == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 313, __pyx_L3_error)
+      __pyx_v_save_tree = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_save_tree == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 319, __pyx_L3_error)
     } else {
 
-      /* "bnbpy/cython/search.pyx":313
+      /* "bnbpy/cython/search.pyx":319
  *         atol: float = 0.0001,
  *         eval_node: Literal['in', 'out', 'both'] = 'in',
  *         save_tree: bool = False,             # <<<<<<<<<<<<<<
@@ -14531,7 +14988,7 @@ static int __pyx_pw_5bnbpy_6cython_6search_12BestFirstBnB_1__init__(PyObject *__
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, __pyx_nargs); __PYX_ERR(0, 308, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, __pyx_nargs); __PYX_ERR(0, 314, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -14547,7 +15004,7 @@ static int __pyx_pw_5bnbpy_6cython_6search_12BestFirstBnB_1__init__(PyObject *__
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB___init__(((struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *)__pyx_v_self), __pyx_v_rtol, __pyx_v_atol, __pyx_v_eval_node, __pyx_v_save_tree);
 
-  /* "bnbpy/cython/search.pyx":308
+  /* "bnbpy/cython/search.pyx":314
  * cdef class BestFirstBnB(BranchAndBound):
  * 
  *     def __init__(             # <<<<<<<<<<<<<<
@@ -14581,32 +15038,32 @@ static int __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB___init__(struct __pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 1);
 
-  /* "bnbpy/cython/search.pyx":315
+  /* "bnbpy/cython/search.pyx":321
  *         save_tree: bool = False,
  *     ) -> None:
  *         super().__init__(rtol, atol, eval_node, save_tree)             # <<<<<<<<<<<<<<
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):
  */
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
   __Pyx_GIVEREF((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB))) __PYX_ERR(0, 315, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB))) __PYX_ERR(0, 321, __pyx_L1_error);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 315, __pyx_L1_error);
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L1_error)
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 321, __pyx_L1_error);
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_rtol); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_rtol); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_atol); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_atol); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_save_tree); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_save_tree); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   __pyx_t_7 = 0;
@@ -14629,13 +15086,13 @@ static int __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB___init__(struct __pyx_
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":308
+  /* "bnbpy/cython/search.pyx":314
  * cdef class BestFirstBnB(BranchAndBound):
  * 
  *     def __init__(             # <<<<<<<<<<<<<<
@@ -14660,7 +15117,7 @@ static int __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB___init__(struct __pyx_
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":317
+/* "bnbpy/cython/search.pyx":323
  *         super().__init__(rtol, atol, eval_node, save_tree)
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):             # <<<<<<<<<<<<<<
@@ -14696,7 +15153,7 @@ static void __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(struct __pyx_o
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_enqueue); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5bnbpy_6cython_6search_12BestFirstBnB_3enqueue)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -14718,7 +15175,7 @@ static void __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(struct __pyx_o
           PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_node)};
           __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 323, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
@@ -14739,37 +15196,37 @@ static void __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(struct __pyx_o
     #endif
   }
 
-  /* "bnbpy/cython/search.pyx":318
+  /* "bnbpy/cython/search.pyx":324
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):
  *         heapq.heappush(self.queue, ((node.lb, -node.level), node))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_heapq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_heappush); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_node->lb); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyInt_From_int((-__pyx_v_node->level)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int((-__pyx_v_node->level)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 318, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4)) __PYX_ERR(0, 324, __pyx_L1_error);
   __pyx_t_2 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 324, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 318, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6)) __PYX_ERR(0, 324, __pyx_L1_error);
   __Pyx_INCREF((PyObject *)__pyx_v_node);
   __Pyx_GIVEREF((PyObject *)__pyx_v_node);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 318, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_node))) __PYX_ERR(0, 324, __pyx_L1_error);
   __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
   __pyx_t_5 = 0;
@@ -14790,13 +15247,13 @@ static void __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(struct __pyx_o
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":317
+  /* "bnbpy/cython/search.pyx":323
  *         super().__init__(rtol, atol, eval_node, save_tree)
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):             # <<<<<<<<<<<<<<
@@ -14870,12 +15327,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 317, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 323, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 317, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "enqueue") < 0)) __PYX_ERR(0, 323, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -14886,7 +15343,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 317, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("enqueue", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 323, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -14900,7 +15357,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 317, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_5bnbpy_6cython_4node_Node, 1, "node", 0))) __PYX_ERR(0, 323, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_2enqueue(((struct __pyx_obj_5bnbpy_6cython_6search_BestFirstBnB *)__pyx_v_self), __pyx_v_node);
 
   /* function exit code */
@@ -14927,8 +15384,8 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_2enqueue(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("enqueue", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 317, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue(__pyx_v_self, __pyx_v_node, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 323, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15446,7 +15903,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_12BestFirstBnB_6__setstate_cyth
   return __pyx_r;
 }
 
-/* "bnbpy/cython/search.pyx":321
+/* "bnbpy/cython/search.pyx":327
  * 
  * 
  * def configure_logfile(             # <<<<<<<<<<<<<<
@@ -15518,26 +15975,26 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 321, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_only_messages);
           if (value) { values[1] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 321, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_mode);
           if (value) { values[2] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 321, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, __pyx_v_kwargs, values + 0, kwd_pos_args, "configure_logfile") < 0)) __PYX_ERR(0, 321, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, __pyx_v_kwargs, values + 0, kwd_pos_args, "configure_logfile") < 0)) __PYX_ERR(0, 327, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -15552,10 +16009,10 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
     __pyx_v_filename = ((PyObject*)values[0]);
     if (values[1]) {
-      __pyx_v_only_messages = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_only_messages == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 322, __pyx_L3_error)
+      __pyx_v_only_messages = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_only_messages == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 328, __pyx_L3_error)
     } else {
 
-      /* "bnbpy/cython/search.pyx":322
+      /* "bnbpy/cython/search.pyx":328
  * 
  * def configure_logfile(
  *     filename: str, only_messages: bool = True, mode='a', **kwargs             # <<<<<<<<<<<<<<
@@ -15568,7 +16025,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("configure_logfile", 0, 1, 3, __pyx_nargs); __PYX_ERR(0, 321, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("configure_logfile", 0, 1, 3, __pyx_nargs); __PYX_ERR(0, 327, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -15583,10 +16040,10 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_filename), (&PyString_Type), 0, "filename", 1))) __PYX_ERR(0, 322, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_filename), (&PyString_Type), 0, "filename", 1))) __PYX_ERR(0, 328, __pyx_L1_error)
   __pyx_r = __pyx_pf_5bnbpy_6cython_6search_2configure_logfile(__pyx_self, __pyx_v_filename, __pyx_v_only_messages, __pyx_v_mode, __pyx_v_kwargs);
 
-  /* "bnbpy/cython/search.pyx":321
+  /* "bnbpy/cython/search.pyx":327
  * 
  * 
  * def configure_logfile(             # <<<<<<<<<<<<<<
@@ -15628,21 +16085,21 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("configure_logfile", 1);
 
-  /* "bnbpy/cython/search.pyx":335
+  /* "bnbpy/cython/search.pyx":341
  *     """
  *     # Set the logging level (for example, DEBUG)
  *     log.setLevel(logging.INFO)             # <<<<<<<<<<<<<<
  * 
  *     # Create a file handler to write log messages to a file
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_log); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_log); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_setLevel); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_setLevel); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_logging); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_logging); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -15664,36 +16121,36 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "bnbpy/cython/search.pyx":338
+  /* "bnbpy/cython/search.pyx":344
  * 
  *     # Create a file handler to write log messages to a file
  *     file_handler = logging.FileHandler(filename, mode=mode, **kwargs)             # <<<<<<<<<<<<<<
  * 
  *     # Set the file handler's logging level (if needed)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 338, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_FileHandler); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 338, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_FileHandler); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 338, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_filename);
   __Pyx_GIVEREF(__pyx_v_filename);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_filename)) __PYX_ERR(0, 338, __pyx_L1_error);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 338, __pyx_L1_error)
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_filename)) __PYX_ERR(0, 344, __pyx_L1_error);
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_mode, __pyx_v_mode) < 0) __PYX_ERR(0, 338, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_mode, __pyx_v_mode) < 0) __PYX_ERR(0, 344, __pyx_L1_error)
   __pyx_t_4 = __pyx_t_2;
   __pyx_t_2 = 0;
-  if (__Pyx_MergeKeywords(__pyx_t_4, __pyx_v_kwargs) < 0) __PYX_ERR(0, 338, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 338, __pyx_L1_error)
+  if (__Pyx_MergeKeywords(__pyx_t_4, __pyx_v_kwargs) < 0) __PYX_ERR(0, 344, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -15701,18 +16158,18 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
   __pyx_v_file_handler = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":341
+  /* "bnbpy/cython/search.pyx":347
  * 
  *     # Set the file handler's logging level (if needed)
  *     file_handler.setLevel(logging.DEBUG)             # <<<<<<<<<<<<<<
  * 
  *     # Create a formatter for the log messages
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_handler, __pyx_n_s_setLevel); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 341, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_handler, __pyx_n_s_setLevel); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 347, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 341, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 347, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEBUG); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 341, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEBUG); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 347, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -15734,13 +16191,13 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 341, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 347, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":344
+  /* "bnbpy/cython/search.pyx":350
  * 
  *     # Create a formatter for the log messages
  *     log_form = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'             # <<<<<<<<<<<<<<
@@ -15750,7 +16207,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
   __Pyx_INCREF(__pyx_kp_s_asctime_s_name_s_levelname_s_me);
   __pyx_v_log_form = __pyx_kp_s_asctime_s_name_s_levelname_s_me;
 
-  /* "bnbpy/cython/search.pyx":345
+  /* "bnbpy/cython/search.pyx":351
  *     # Create a formatter for the log messages
  *     log_form = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
  *     if only_messages:             # <<<<<<<<<<<<<<
@@ -15760,7 +16217,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
   __pyx_t_6 = (__pyx_v_only_messages != 0);
   if (__pyx_t_6) {
 
-    /* "bnbpy/cython/search.pyx":346
+    /* "bnbpy/cython/search.pyx":352
  *     log_form = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
  *     if only_messages:
  *         log_form = '%(asctime)s - %(message)s'             # <<<<<<<<<<<<<<
@@ -15770,7 +16227,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     __Pyx_INCREF(__pyx_kp_s_asctime_s_message_s);
     __Pyx_DECREF_SET(__pyx_v_log_form, __pyx_kp_s_asctime_s_message_s);
 
-    /* "bnbpy/cython/search.pyx":345
+    /* "bnbpy/cython/search.pyx":351
  *     # Create a formatter for the log messages
  *     log_form = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
  *     if only_messages:             # <<<<<<<<<<<<<<
@@ -15779,16 +16236,16 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
  */
   }
 
-  /* "bnbpy/cython/search.pyx":347
+  /* "bnbpy/cython/search.pyx":353
  *     if only_messages:
  *         log_form = '%(asctime)s - %(message)s'
  *     formatter = logging.Formatter(log_form)             # <<<<<<<<<<<<<<
  * 
  *     # Attach the formatter to the file handler
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 347, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 353, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Formatter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 347, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Formatter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -15809,21 +16266,21 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_log_form};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 347, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_formatter = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":350
+  /* "bnbpy/cython/search.pyx":356
  * 
  *     # Attach the formatter to the file handler
  *     file_handler.setFormatter(formatter)             # <<<<<<<<<<<<<<
  * 
  *     # Add the file handler to the logger
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_handler, __pyx_n_s_setFormatter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_handler, __pyx_n_s_setFormatter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -15843,21 +16300,21 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_formatter};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 350, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":353
+  /* "bnbpy/cython/search.pyx":359
  * 
  *     # Add the file handler to the logger
  *     if not log.hasHandlers():             # <<<<<<<<<<<<<<
  *         log.addHandler(file_handler)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_log); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_log); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_hasHandlers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 353, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_hasHandlers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -15878,23 +16335,23 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 353, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_7 = (!__pyx_t_6);
   if (__pyx_t_7) {
 
-    /* "bnbpy/cython/search.pyx":354
+    /* "bnbpy/cython/search.pyx":360
  *     # Add the file handler to the logger
  *     if not log.hasHandlers():
  *         log.addHandler(file_handler)             # <<<<<<<<<<<<<<
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_log); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 354, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_log); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 360, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_addHandler); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 354, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_addHandler); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 360, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -15915,13 +16372,13 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
       PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_file_handler};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 354, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 360, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "bnbpy/cython/search.pyx":353
+    /* "bnbpy/cython/search.pyx":359
  * 
  *     # Add the file handler to the logger
  *     if not log.hasHandlers():             # <<<<<<<<<<<<<<
@@ -15929,7 +16386,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_6search_2configure_logfile(CYTHON_UNUSE
  */
   }
 
-  /* "bnbpy/cython/search.pyx":321
+  /* "bnbpy/cython/search.pyx":327
  * 
  * 
  * def configure_logfile(             # <<<<<<<<<<<<<<
@@ -17055,21 +17512,570 @@ static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_BreadthFirstBnB__
 }
 
 /* "(tree fragment)":1
- * def __pyx_unpickle_BestFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_DepthFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_BestFirstBnB(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_DepthFirstBnB(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5bnbpy_6cython_6search_9__pyx_unpickle_BestFirstBnB = {"__pyx_unpickle_BestFirstBnB", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_BestFirstBnB, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_BestFirstBnB(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5bnbpy_6cython_6search_9__pyx_unpickle_DepthFirstBnB = {"__pyx_unpickle_DepthFirstBnB", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_DepthFirstBnB, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_9__pyx_unpickle_DepthFirstBnB(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  PyObject *__pyx_v___pyx_type = 0;
+  long __pyx_v___pyx_checksum;
+  PyObject *__pyx_v___pyx_state = 0;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[3] = {0,0,0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__pyx_unpickle_DepthFirstBnB (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pyx_type,&__pyx_n_s_pyx_checksum,&__pyx_n_s_pyx_state,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  3: values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_pyx_type)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 1, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_pyx_checksum)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 1, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_DepthFirstBnB", 1, 3, 3, 1); __PYX_ERR(1, 1, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_pyx_state)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 1, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_DepthFirstBnB", 1, 3, 3, 2); __PYX_ERR(1, 1, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__pyx_unpickle_DepthFirstBnB") < 0)) __PYX_ERR(1, 1, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 3)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+      values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+      values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
+    }
+    __pyx_v___pyx_type = values[0];
+    __pyx_v___pyx_checksum = __Pyx_PyInt_As_long(values[1]); if (unlikely((__pyx_v___pyx_checksum == (long)-1) && PyErr_Occurred())) __PYX_ERR(1, 1, __pyx_L3_error)
+    __pyx_v___pyx_state = values[2];
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_DepthFirstBnB", 1, 3, 3, __pyx_nargs); __PYX_ERR(1, 1, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("bnbpy.cython.search.__pyx_unpickle_DepthFirstBnB", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_DepthFirstBnB(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+
+  /* function exit code */
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_DepthFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_v___pyx_PickleError = 0;
+  PyObject *__pyx_v___pyx_result = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  unsigned int __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_unpickle_DepthFirstBnB", 1);
+
+  /* "(tree fragment)":4
+ *     cdef object __pyx_PickleError
+ *     cdef object __pyx_result
+ *     if __pyx_checksum not in (0x3323442, 0x1632c72, 0x0766243):             # <<<<<<<<<<<<<<
+ *         from pickle import PickleError as __pyx_PickleError
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v___pyx_checksum); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_tuple__2, Py_NE)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_2) {
+
+    /* "(tree fragment)":5
+ *     cdef object __pyx_result
+ *     if __pyx_checksum not in (0x3323442, 0x1632c72, 0x0766243):
+ *         from pickle import PickleError as __pyx_PickleError             # <<<<<<<<<<<<<<
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)
+ */
+    __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_INCREF(__pyx_n_s_PickleError);
+    __Pyx_GIVEREF(__pyx_n_s_PickleError);
+    if (__Pyx_PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_PickleError)) __PYX_ERR(1, 5, __pyx_L1_error);
+    __pyx_t_3 = __Pyx_Import(__pyx_n_s_pickle, __pyx_t_1, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_PickleError); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_INCREF(__pyx_t_1);
+    __pyx_v___pyx_PickleError = __pyx_t_1;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+    /* "(tree fragment)":6
+ *     if __pyx_checksum not in (0x3323442, 0x1632c72, 0x0766243):
+ *         from pickle import PickleError as __pyx_PickleError
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum             # <<<<<<<<<<<<<<
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)
+ *     if __pyx_state is not None:
+ */
+    __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v___pyx_checksum); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 6, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Incompatible_checksums_0x_x_vs_0, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 6, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_v___pyx_PickleError, __pyx_t_1, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(1, 6, __pyx_L1_error)
+
+    /* "(tree fragment)":4
+ *     cdef object __pyx_PickleError
+ *     cdef object __pyx_result
+ *     if __pyx_checksum not in (0x3323442, 0x1632c72, 0x0766243):             # <<<<<<<<<<<<<<
+ *         from pickle import PickleError as __pyx_PickleError
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ */
+  }
+
+  /* "(tree fragment)":7
+ *         from pickle import PickleError as __pyx_PickleError
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)             # <<<<<<<<<<<<<<
+ *     if __pyx_state is not None:
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  __pyx_t_5 = 0;
+  #if CYTHON_UNPACK_METHODS
+  if (likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __pyx_t_5 = 1;
+    }
+  }
+  #endif
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v___pyx_type};
+    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  }
+  __pyx_v___pyx_result = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "(tree fragment)":8
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)
+ *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result
+ */
+  __pyx_t_2 = (__pyx_v___pyx_state != Py_None);
+  if (__pyx_t_2) {
+
+    /* "(tree fragment)":9
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)
+ *     if __pyx_state is not None:
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)             # <<<<<<<<<<<<<<
+ *     return __pyx_result
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):
+ */
+    if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_5bnbpy_6cython_6search___pyx_unpickle_DepthFirstBnB__set_state(((struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "(tree fragment)":8
+ *         raise __pyx_PickleError, "Incompatible checksums (0x%x vs (0x3323442, 0x1632c72, 0x0766243) = (_BranchAndBound__logger, atol, bound_node, eval_in, eval_node, eval_out, explored, gap, incumbent, problem, queue, root, rtol, save_tree))" % __pyx_checksum
+ *     __pyx_result = DepthFirstBnB.__new__(__pyx_type)
+ *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result
+ */
+  }
+
+  /* "(tree fragment)":10
+ *     if __pyx_state is not None:
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result             # <<<<<<<<<<<<<<
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v___pyx_result);
+  __pyx_r = __pyx_v___pyx_result;
+  goto __pyx_L0;
+
+  /* "(tree fragment)":1
+ * def __pyx_unpickle_DepthFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ *     cdef object __pyx_PickleError
+ *     cdef object __pyx_result
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("bnbpy.cython.search.__pyx_unpickle_DepthFirstBnB", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v___pyx_PickleError);
+  __Pyx_XDECREF(__pyx_v___pyx_result);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":11
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
+ */
+
+static PyObject *__pyx_f_5bnbpy_6cython_6search___pyx_unpickle_DepthFirstBnB__set_state(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  double __pyx_t_2;
+  bool __pyx_t_3;
+  std::string __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  unsigned int __pyx_t_11;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_unpickle_DepthFirstBnB__set_state", 1);
+
+  /* "(tree fragment)":12
+ *     return __pyx_result
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]             # <<<<<<<<<<<<<<
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[14])
+ */
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 0);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v___pyx_result->__pyx_base._BranchAndBound__logger);
+  __Pyx_DECREF(__pyx_v___pyx_result->__pyx_base._BranchAndBound__logger);
+  __pyx_v___pyx_result->__pyx_base._BranchAndBound__logger = __pyx_t_1;
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v___pyx_state, 1)); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.atol = __pyx_t_2;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 2)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 2);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->__pyx_base.bound_node);
+  __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->__pyx_base.bound_node);
+  __pyx_v___pyx_result->__pyx_base.bound_node = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(PyTuple_GET_ITEM(__pyx_v___pyx_state, 3)); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.eval_in = __pyx_t_3;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_4 = __pyx_convert_string_from_py_6libcpp_6string_std__in_string(PyTuple_GET_ITEM(__pyx_v___pyx_state, 4)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.eval_node = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_4);
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(PyTuple_GET_ITEM(__pyx_v___pyx_state, 5)); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.eval_out = __pyx_t_3;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_5 = __Pyx_PyInt_As_int(PyTuple_GET_ITEM(__pyx_v___pyx_state, 6)); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.explored = __pyx_t_5;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v___pyx_state, 7)); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.gap = __pyx_t_2;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 8)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 8), __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 8);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->__pyx_base.incumbent);
+  __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->__pyx_base.incumbent);
+  __pyx_v___pyx_result->__pyx_base.incumbent = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 9)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 9), __pyx_ptype_5bnbpy_6cython_7problem_Problem))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 9);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->__pyx_base.problem);
+  __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->__pyx_base.problem);
+  __pyx_v___pyx_result->__pyx_base.problem = ((struct __pyx_obj_5bnbpy_6cython_7problem_Problem *)__pyx_t_1);
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 10);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF(__pyx_v___pyx_result->__pyx_base.queue);
+  __Pyx_DECREF(__pyx_v___pyx_result->__pyx_base.queue);
+  __pyx_v___pyx_result->__pyx_base.queue = __pyx_t_1;
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 11)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 11), __pyx_ptype_5bnbpy_6cython_4node_Node))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 11);
+  __Pyx_INCREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->__pyx_base.root);
+  __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->__pyx_base.root);
+  __pyx_v___pyx_result->__pyx_base.root = ((struct __pyx_obj_5bnbpy_6cython_4node_Node *)__pyx_t_1);
+  __pyx_t_1 = 0;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v___pyx_state, 12)); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.rtol = __pyx_t_2;
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(PyTuple_GET_ITEM(__pyx_v___pyx_state, 13)); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_v___pyx_result->__pyx_base.save_tree = __pyx_t_3;
+
+  /* "(tree fragment)":13
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[14])
+ */
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(1, 13, __pyx_L1_error)
+  }
+  __pyx_t_7 = __Pyx_PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_8 = (__pyx_t_7 > 14);
+  if (__pyx_t_8) {
+  } else {
+    __pyx_t_6 = __pyx_t_8;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_8 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_6 = __pyx_t_8;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_6) {
+
+    /* "(tree fragment)":14
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[14])             # <<<<<<<<<<<<<<
+ */
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_update); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (unlikely(__pyx_v___pyx_state == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(1, 14, __pyx_L1_error)
+    }
+    __pyx_t_9 = NULL;
+    __pyx_t_11 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_10))) {
+      __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_10);
+      if (likely(__pyx_t_9)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+        __Pyx_INCREF(__pyx_t_9);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_10, function);
+        __pyx_t_11 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_9, PyTuple_GET_ITEM(__pyx_v___pyx_state, 14)};
+      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_11, 1+__pyx_t_11);
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "(tree fragment)":13
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[14])
+ */
+  }
+
+  /* "(tree fragment)":11
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_AddTraceback("bnbpy.cython.search.__pyx_unpickle_DepthFirstBnB__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __pyx_unpickle_BestFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ *     cdef object __pyx_PickleError
+ *     cdef object __pyx_result
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_11__pyx_unpickle_BestFirstBnB(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_5bnbpy_6cython_6search_11__pyx_unpickle_BestFirstBnB = {"__pyx_unpickle_BestFirstBnB", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_11__pyx_unpickle_BestFirstBnB, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5bnbpy_6cython_6search_11__pyx_unpickle_BestFirstBnB(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -17173,7 +18179,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_BestFirstBnB(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5bnbpy_6cython_6search_10__pyx_unpickle_BestFirstBnB(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -17186,7 +18192,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5bnbpy_6cython_6search_8__pyx_unpickle_BestFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5bnbpy_6cython_6search_10__pyx_unpickle_BestFirstBnB(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -18160,6 +19166,127 @@ static PyTypeObject __pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB = {
   #endif
 };
 #endif
+static struct __pyx_vtabstruct_5bnbpy_6cython_6search_DepthFirstBnB __pyx_vtable_5bnbpy_6cython_6search_DepthFirstBnB;
+
+static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_DepthFirstBnB(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *p;
+  PyObject *o = __pyx_tp_new_5bnbpy_6cython_6search_BranchAndBound(t, a, k);
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB *)o);
+  p->__pyx_base.__pyx_vtab = (struct __pyx_vtabstruct_5bnbpy_6cython_6search_BranchAndBound*)__pyx_vtabptr_5bnbpy_6cython_6search_DepthFirstBnB;
+  return o;
+}
+
+static PyMethodDef __pyx_methods_5bnbpy_6cython_6search_DepthFirstBnB[] = {
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {0, 0, 0, 0}
+};
+#if CYTHON_USE_TYPE_SPECS
+static PyType_Slot __pyx_type_5bnbpy_6cython_6search_DepthFirstBnB_slots[] = {
+  {Py_tp_traverse, (void *)__pyx_tp_traverse_5bnbpy_6cython_6search_BranchAndBound},
+  {Py_tp_clear, (void *)__pyx_tp_clear_5bnbpy_6cython_6search_BranchAndBound},
+  {Py_tp_methods, (void *)__pyx_methods_5bnbpy_6cython_6search_DepthFirstBnB},
+  {Py_tp_new, (void *)__pyx_tp_new_5bnbpy_6cython_6search_DepthFirstBnB},
+  {0, 0},
+};
+static PyType_Spec __pyx_type_5bnbpy_6cython_6search_DepthFirstBnB_spec = {
+  "bnbpy.cython.search.DepthFirstBnB",
+  sizeof(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB),
+  0,
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
+  __pyx_type_5bnbpy_6cython_6search_DepthFirstBnB_slots,
+};
+#else
+
+static PyTypeObject __pyx_type_5bnbpy_6cython_6search_DepthFirstBnB = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "bnbpy.cython.search.""DepthFirstBnB", /*tp_name*/
+  sizeof(struct __pyx_obj_5bnbpy_6cython_6search_DepthFirstBnB), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_5bnbpy_6cython_6search_BranchAndBound, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
+  0, /*tp_doc*/
+  __pyx_tp_traverse_5bnbpy_6cython_6search_BranchAndBound, /*tp_traverse*/
+  __pyx_tp_clear_5bnbpy_6cython_6search_BranchAndBound, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_5bnbpy_6cython_6search_DepthFirstBnB, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  #if !CYTHON_USE_TYPE_SPECS
+  0, /*tp_dictoffset*/
+  #endif
+  #if CYTHON_COMPILING_IN_PYPY || 0
+  __pyx_pw_5bnbpy_6cython_6search_14BranchAndBound_1__init__, /*tp_init*/
+  #else
+  0, /*tp_init*/
+  #endif
+  0, /*tp_alloc*/
+  __pyx_tp_new_5bnbpy_6cython_6search_DepthFirstBnB, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  #if CYTHON_USE_TP_FINALIZE
+  0, /*tp_finalize*/
+  #else
+  NULL, /*tp_finalize*/
+  #endif
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1 && (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800)
+  0, /*tp_vectorcall*/
+  #endif
+  #if __PYX_NEED_TP_PRINT_SLOT == 1
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030C0000
+  0, /*tp_watched*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030d00A4
+  0, /*tp_versions_used*/
+  #endif
+  #if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX >= 0x03090000 && PY_VERSION_HEX < 0x030a0000
+  0, /*tp_pypy_flags*/
+  #endif
+};
+#endif
 static struct __pyx_vtabstruct_5bnbpy_6cython_6search_BestFirstBnB __pyx_vtable_5bnbpy_6cython_6search_BestFirstBnB;
 
 static PyObject *__pyx_tp_new_5bnbpy_6cython_6search_BestFirstBnB(PyTypeObject *t, PyObject *a, PyObject *k) {
@@ -18330,6 +19457,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_Cutoff, __pyx_k_Cutoff, sizeof(__pyx_k_Cutoff), 0, 0, 1, 1},
     {&__pyx_n_s_DEBUG, __pyx_k_DEBUG, sizeof(__pyx_k_DEBUG), 0, 0, 1, 1},
     {&__pyx_n_s_DepthFirstBnB, __pyx_k_DepthFirstBnB, sizeof(__pyx_k_DepthFirstBnB), 0, 0, 1, 1},
+    {&__pyx_n_s_DepthFirstBnB___reduce_cython, __pyx_k_DepthFirstBnB___reduce_cython, sizeof(__pyx_k_DepthFirstBnB___reduce_cython), 0, 0, 1, 1},
+    {&__pyx_n_s_DepthFirstBnB___setstate_cython, __pyx_k_DepthFirstBnB___setstate_cython, sizeof(__pyx_k_DepthFirstBnB___setstate_cython), 0, 0, 1, 1},
     {&__pyx_n_s_FileHandler, __pyx_k_FileHandler, sizeof(__pyx_k_FileHandler), 0, 0, 1, 1},
     {&__pyx_n_s_Formatter, __pyx_k_Formatter, sizeof(__pyx_k_Formatter), 0, 0, 1, 1},
     {&__pyx_n_s_INFO, __pyx_k_INFO, sizeof(__pyx_k_INFO), 0, 0, 1, 1},
@@ -18356,7 +19485,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_Warmstart, __pyx_k_Warmstart, sizeof(__pyx_k_Warmstart), 0, 0, 1, 1},
     {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
     {&__pyx_n_s__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 0, 1, 1},
-    {&__pyx_n_s__46, __pyx_k__46, sizeof(__pyx_k__46), 0, 0, 1, 1},
+    {&__pyx_n_s__49, __pyx_k__49, sizeof(__pyx_k__49), 0, 0, 1, 1},
     {&__pyx_n_s_a, __pyx_k_a, sizeof(__pyx_k_a), 0, 0, 1, 1},
     {&__pyx_n_s_addHandler, __pyx_k_addHandler, sizeof(__pyx_k_addHandler), 0, 0, 1, 1},
     {&__pyx_kp_s_asctime_s_message_s, __pyx_k_asctime_s_message_s, sizeof(__pyx_k_asctime_s_message_s), 0, 0, 1, 0},
@@ -18377,7 +19506,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
     {&__pyx_n_s_dict_2, __pyx_k_dict_2, sizeof(__pyx_k_dict_2), 0, 0, 1, 1},
     {&__pyx_kp_u_disable, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
-    {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
     {&__pyx_kp_u_enable, __pyx_k_enable, sizeof(__pyx_k_enable), 0, 1, 0, 0},
     {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
     {&__pyx_n_s_enqueue, __pyx_k_enqueue, sizeof(__pyx_k_enqueue), 0, 0, 1, 1},
@@ -18400,7 +19528,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_in, __pyx_k_in, sizeof(__pyx_k_in), 0, 0, 1, 1},
     {&__pyx_n_s_info, __pyx_k_info, sizeof(__pyx_k_info), 0, 0, 1, 1},
     {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
-    {&__pyx_n_s_init_subclass, __pyx_k_init_subclass, sizeof(__pyx_k_init_subclass), 0, 0, 1, 1},
     {&__pyx_n_s_initializing, __pyx_k_initializing, sizeof(__pyx_k_initializing), 0, 0, 1, 1},
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
@@ -18417,11 +19544,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_maxiter, __pyx_k_maxiter, sizeof(__pyx_k_maxiter), 0, 0, 1, 1},
     {&__pyx_n_s_message, __pyx_k_message, sizeof(__pyx_k_message), 0, 0, 1, 1},
-    {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
     {&__pyx_n_s_min, __pyx_k_min, sizeof(__pyx_k_min), 0, 0, 1, 1},
     {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
-    {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
-    {&__pyx_n_s_mro_entries, __pyx_k_mro_entries, sizeof(__pyx_k_mro_entries), 0, 0, 1, 1},
     {&__pyx_n_s_mxiter, __pyx_k_mxiter, sizeof(__pyx_k_mxiter), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
@@ -18433,7 +19557,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
     {&__pyx_n_s_post_eval_callback, __pyx_k_post_eval_callback, sizeof(__pyx_k_post_eval_callback), 0, 0, 1, 1},
     {&__pyx_n_s_pre_eval_callback, __pyx_k_pre_eval_callback, sizeof(__pyx_k_pre_eval_callback), 0, 0, 1, 1},
-    {&__pyx_n_s_prepare, __pyx_k_prepare, sizeof(__pyx_k_prepare), 0, 0, 1, 1},
     {&__pyx_n_s_problem, __pyx_k_problem, sizeof(__pyx_k_problem), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
@@ -18444,8 +19567,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_pyx_unpickle_BestFirstBnB, __pyx_k_pyx_unpickle_BestFirstBnB, sizeof(__pyx_k_pyx_unpickle_BestFirstBnB), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_unpickle_BranchAndBound, __pyx_k_pyx_unpickle_BranchAndBound, sizeof(__pyx_k_pyx_unpickle_BranchAndBound), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_unpickle_BreadthFirstBnB, __pyx_k_pyx_unpickle_BreadthFirstBnB, sizeof(__pyx_k_pyx_unpickle_BreadthFirstBnB), 0, 0, 1, 1},
+    {&__pyx_n_s_pyx_unpickle_DepthFirstBnB, __pyx_k_pyx_unpickle_DepthFirstBnB, sizeof(__pyx_k_pyx_unpickle_DepthFirstBnB), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
-    {&__pyx_n_s_qualname, __pyx_k_qualname, sizeof(__pyx_k_qualname), 0, 0, 1, 1},
     {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
     {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
     {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
@@ -18455,12 +19578,10 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
     {&__pyx_n_s_setFormatter, __pyx_k_setFormatter, sizeof(__pyx_k_setFormatter), 0, 0, 1, 1},
     {&__pyx_n_s_setLevel, __pyx_k_setLevel, sizeof(__pyx_k_setLevel), 0, 0, 1, 1},
-    {&__pyx_n_s_set_lb, __pyx_k_set_lb, sizeof(__pyx_k_set_lb), 0, 0, 1, 1},
-    {&__pyx_n_s_set_name, __pyx_k_set_name, sizeof(__pyx_k_set_name), 0, 0, 1, 1},
-    {&__pyx_n_s_set_optimal, __pyx_k_set_optimal, sizeof(__pyx_k_set_optimal), 0, 0, 1, 1},
     {&__pyx_n_s_set_solution, __pyx_k_set_solution, sizeof(__pyx_k_set_solution), 0, 0, 1, 1},
     {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
     {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
+    {&__pyx_n_s_sol, __pyx_k_sol, sizeof(__pyx_k_sol), 0, 0, 1, 1},
     {&__pyx_n_s_solution, __pyx_k_solution, sizeof(__pyx_k_solution), 0, 0, 1, 1},
     {&__pyx_n_s_solution_callback, __pyx_k_solution_callback, sizeof(__pyx_k_solution_callback), 0, 0, 1, 1},
     {&__pyx_n_s_solve, __pyx_k_solve, sizeof(__pyx_k_solve), 0, 0, 1, 1},
@@ -18488,8 +19609,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_min = __Pyx_GetBuiltinName(__pyx_n_s_min); if (!__pyx_builtin_min) __PYX_ERR(0, 263, __pyx_L1_error)
-  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_builtin_min = __Pyx_GetBuiltinName(__pyx_n_s_min); if (!__pyx_builtin_min) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 321, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -18518,169 +19639,169 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         self,
  *         problem: Problem,
  */
-  __pyx_tuple__5 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_problem, __pyx_n_s_maxiter, __pyx_n_s_timelimit, __pyx_n_s_start_time, __pyx_n_s_current_time, __pyx_n_s_tlim, __pyx_n_s_mxiter, __pyx_n_s_node); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(10, __pyx_n_s_self, __pyx_n_s_problem, __pyx_n_s_maxiter, __pyx_n_s_timelimit, __pyx_n_s_start_time, __pyx_n_s_current_time, __pyx_n_s_tlim, __pyx_n_s_mxiter, __pyx_n_s_node, __pyx_n_s_sol); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solve, 80, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solve, 80, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 80, __pyx_L1_error)
   __pyx_tuple__7 = PyTuple_Pack(2, Py_None, Py_None); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "bnbpy/cython/search.pyx":133
+  /* "bnbpy/cython/search.pyx":136
  *             self.fathom(node)
  * 
  *     cpdef void enqueue(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_node); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_node); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":136
+  /* "bnbpy/cython/search.pyx":139
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  *     cpdef Node dequeue(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         cdef:
  *             Node node
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_dequeue, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_dequeue, 139, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 139, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":145
+  /* "bnbpy/cython/search.pyx":148
  *         return node
  * 
  *     cpdef void _warmstart(             # <<<<<<<<<<<<<<
  *         BranchAndBound self,
  *         Solution solution
  */
-  __pyx_tuple__12 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_solution); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_solution); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_warmstart, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_warmstart, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":159
+  /* "bnbpy/cython/search.pyx":162
  *                 self.log_row('Warmstart')
  * 
  *     cpdef void branch(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         cdef:
  *             list[Node] children
  */
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_branch, 159, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_branch, 162, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 162, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":174
+  /* "bnbpy/cython/search.pyx":177
  *             del node
  * 
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301             # <<<<<<<<<<<<<<
  *         node.fathom()
  *         if not self.save_tree and node is not self.root:
  */
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_fathom, 174, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_fathom, 177, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 177, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":180
+  /* "bnbpy/cython/search.pyx":183
  *             del node
  * 
  *     cpdef void pre_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks before node bound evaluation"""
  *         pass
  */
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_pre_eval_callback, 180, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_pre_eval_callback, 183, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 183, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":184
+  /* "bnbpy/cython/search.pyx":187
  *         pass
  * 
  *     cpdef void post_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node bound evaluation"""
  *         pass
  */
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_post_eval_callback, 184, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_post_eval_callback, 187, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 187, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":188
+  /* "bnbpy/cython/search.pyx":191
  *         pass
  * 
  *     cpdef void enqueue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node is enqueued"""
  *         pass
  */
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue_callback, 188, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue_callback, 191, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 191, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":192
+  /* "bnbpy/cython/search.pyx":195
  *         pass
  * 
  *     cpdef void dequeue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node is dequeued"""
  *         pass
  */
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_dequeue_callback, 192, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_dequeue_callback, 195, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 195, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":196
+  /* "bnbpy/cython/search.pyx":199
  *         pass
  * 
  *     cpdef void solution_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """
  *         Abstraction for callback when a candidate
  */
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solution_callback, 196, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solution_callback, 199, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 199, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":203
+  /* "bnbpy/cython/search.pyx":206
  *         pass
  * 
  *     cpdef void _solve_root(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         self.root = Node(self.problem, parent=None)
  *         self._enqueue_core(self.root)
  */
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solve_root, 203, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_solve_root, 206, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 206, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":209
+  /* "bnbpy/cython/search.pyx":212
  *         self.explored = 0
  * 
  *     cpdef void _node_eval(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         self.pre_eval_callback(node)
  *         node.compute_bound()
  */
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_node_eval, 209, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_node_eval, 212, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 212, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":214
+  /* "bnbpy/cython/search.pyx":217
  *         self.post_eval_callback(node)
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         if node.check_feasible():
  *             self.set_solution(node)
  */
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_feasibility_check, 214, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_feasibility_check, 217, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 217, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":221
+  /* "bnbpy/cython/search.pyx":224
  *             self.branch(node)
  * 
  *     cpdef void set_solution(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         self.incumbent = node
  *         self._update_gap()
  */
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_set_solution, 221, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_set_solution, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 224, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":272
+  /* "bnbpy/cython/search.pyx":278
  *             self.log_row('LB update')
  * 
  *     cpdef void _log_headers(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         self.__logger.log_headers()
  * 
  */
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_log_headers, 272, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_log_headers, 278, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 278, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":275
+  /* "bnbpy/cython/search.pyx":281
  *         self.__logger.log_headers()
  * 
  *     cpdef void log_row(BranchAndBound self, object message):             # <<<<<<<<<<<<<<
  *         gap = f'{(100 * self.gap):.2f}%'
  *         ub = f'{float(self.get_ub()):^6.4}'
  */
-  __pyx_tuple__26 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_message); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_message); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_log_row, 275, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_log_row, 281, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 281, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -18703,26 +19824,26 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__30);
   __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(1, 16, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":291
+  /* "bnbpy/cython/search.pyx":297
  * 
  * 
  * cpdef _first_element_lb(tuple[object, Node] x):             # <<<<<<<<<<<<<<
  *     return x[1].lb
  * 
  */
-  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_n_s_x); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_n_s_x); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_first_element_lb, 291, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_first_element_lb, 297, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 297, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":297
+  /* "bnbpy/cython/search.pyx":303
  * cdef class BreadthFirstBnB(BranchAndBound):
  * 
  *     cpdef void enqueue(self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((node.level, node.lb), node))
  * 
  */
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 297, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 303, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 303, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -18739,21 +19860,36 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  */
   __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(1, 16, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":317
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     cdef tuple state
+ *     cdef object _dict
+ */
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 1, __pyx_L1_error)
+
+  /* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)
+ */
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 16, __pyx_L1_error)
+
+  /* "bnbpy/cython/search.pyx":323
  *         super().__init__(rtol, atol, eval_node, save_tree)
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((node.lb, -node.level), node))
  * 
  */
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 317, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_enqueue, 323, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 323, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef tuple state
  *     cdef object _dict
  */
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":16
  *     else:
@@ -18761,31 +19897,32 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_BestFirstBnB__set_state(self, __pyx_state)
  */
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(1, 16, __pyx_L1_error)
 
-  /* "bnbpy/cython/search.pyx":321
+  /* "bnbpy/cython/search.pyx":327
  * 
  * 
  * def configure_logfile(             # <<<<<<<<<<<<<<
  *     filename: str, only_messages: bool = True, mode='a', **kwargs
  * ):
  */
-  __pyx_tuple__40 = PyTuple_Pack(7, __pyx_n_s_filename, __pyx_n_s_only_messages, __pyx_n_s_mode, __pyx_n_s_kwargs, __pyx_n_s_file_handler, __pyx_n_s_log_form, __pyx_n_s_formatter); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__40);
-  __Pyx_GIVEREF(__pyx_tuple__40);
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_configure_logfile, 321, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(7, __pyx_n_s_filename, __pyx_n_s_only_messages, __pyx_n_s_mode, __pyx_n_s_kwargs, __pyx_n_s_file_handler, __pyx_n_s_log_form, __pyx_n_s_formatter); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_search_pyx, __pyx_n_s_configure_logfile, 327, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 327, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_BranchAndBound(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__42 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__42);
-  __Pyx_GIVEREF(__pyx_tuple__42);
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BranchAndBound, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BestFirstBnB, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__44);
+  __Pyx_GIVEREF(__pyx_tuple__44);
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BranchAndBound, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_DepthFirstBnB, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_BestFirstBnB, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -18919,12 +20056,12 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_5bnbpy_6cython_6search_BreadthFirstBnB.__pyx_base = *__pyx_vtabptr_5bnbpy_6cython_6search_BranchAndBound;
   __pyx_vtable_5bnbpy_6cython_6search_BreadthFirstBnB.__pyx_base.enqueue = (void (*)(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *, struct __pyx_obj_5bnbpy_6cython_4node_Node *, int __pyx_skip_dispatch))__pyx_f_5bnbpy_6cython_6search_15BreadthFirstBnB_enqueue;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_t_1 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 301, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB_spec, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB)) __PYX_ERR(0, 295, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB_spec, __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (unlikely(!__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB)) __PYX_ERR(0, 301, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB_spec, __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
   #else
   __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB = &__pyx_type_5bnbpy_6cython_6search_BreadthFirstBnB;
   #endif
@@ -18932,7 +20069,7 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB->tp_base = __pyx_ptype_5bnbpy_6cython_6search_BranchAndBound;
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB->tp_print = 0;
@@ -18942,24 +20079,58 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB, __pyx_vtabptr_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB, __pyx_vtabptr_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BreadthFirstBnB, (PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BreadthFirstBnB, (PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 295, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
+  #endif
+  __pyx_vtabptr_5bnbpy_6cython_6search_DepthFirstBnB = &__pyx_vtable_5bnbpy_6cython_6search_DepthFirstBnB;
+  __pyx_vtable_5bnbpy_6cython_6search_DepthFirstBnB.__pyx_base = *__pyx_vtabptr_5bnbpy_6cython_6search_BranchAndBound;
+  #if CYTHON_USE_TYPE_SPECS
+  __pyx_t_1 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB_spec, __pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB)) __PYX_ERR(0, 307, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB_spec, __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
+  #else
+  __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB = &__pyx_type_5bnbpy_6cython_6search_DepthFirstBnB;
+  #endif
+  #if !CYTHON_COMPILING_IN_LIMITED_API
+  __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB->tp_base = __pyx_ptype_5bnbpy_6cython_6search_BranchAndBound;
+  #endif
+  #if !CYTHON_USE_TYPE_SPECS
+  if (__Pyx_PyType_Ready(__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
+  #endif
+  #if PY_MAJOR_VERSION < 3
+  __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB->tp_print = 0;
+  #endif
+  #if !CYTHON_COMPILING_IN_LIMITED_API
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB->tp_dictoffset && __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB->tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB->tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  #endif
+  if (__Pyx_SetVtable(__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB, __pyx_vtabptr_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
+  #if !CYTHON_COMPILING_IN_LIMITED_API
+  if (__Pyx_MergeVtables(__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
+  #endif
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_DepthFirstBnB, (PyObject *) __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
+  #if !CYTHON_COMPILING_IN_LIMITED_API
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB) < 0) __PYX_ERR(0, 307, __pyx_L1_error)
   #endif
   __pyx_vtabptr_5bnbpy_6cython_6search_BestFirstBnB = &__pyx_vtable_5bnbpy_6cython_6search_BestFirstBnB;
   __pyx_vtable_5bnbpy_6cython_6search_BestFirstBnB.__pyx_base = *__pyx_vtabptr_5bnbpy_6cython_6search_BranchAndBound;
   __pyx_vtable_5bnbpy_6cython_6search_BestFirstBnB.__pyx_base.enqueue = (void (*)(struct __pyx_obj_5bnbpy_6cython_6search_BranchAndBound *, struct __pyx_obj_5bnbpy_6cython_4node_Node *, int __pyx_skip_dispatch))__pyx_f_5bnbpy_6cython_6search_12BestFirstBnB_enqueue;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_t_1 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5bnbpy_6cython_6search_BestFirstBnB_spec, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB)) __PYX_ERR(0, 306, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5bnbpy_6cython_6search_BestFirstBnB_spec, __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (unlikely(!__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB)) __PYX_ERR(0, 312, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5bnbpy_6cython_6search_BestFirstBnB_spec, __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #else
   __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB = &__pyx_type_5bnbpy_6cython_6search_BestFirstBnB;
   #endif
@@ -18967,7 +20138,7 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB->tp_base = __pyx_ptype_5bnbpy_6cython_6search_BranchAndBound;
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB->tp_print = 0;
@@ -18977,13 +20148,13 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_vtabptr_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_vtabptr_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BestFirstBnB, (PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_BestFirstBnB, (PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -19205,7 +20376,6 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_search(PyObject *__pyx_pyinit_modu
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -19504,211 +20674,211 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":133
+  /* "bnbpy/cython/search.pyx":136
  *             self.fathom(node)
  * 
  *     cpdef void enqueue(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_5enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_5enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_enqueue, __pyx_t_2) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_enqueue, __pyx_t_2) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":136
+  /* "bnbpy/cython/search.pyx":139
  *         heapq.heappush(self.queue, ((-node.level, node.lb), node))
  * 
  *     cpdef Node dequeue(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         cdef:
  *             Node node
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_7dequeue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_dequeue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_7dequeue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_dequeue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_dequeue, __pyx_t_2) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_dequeue, __pyx_t_2) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":145
+  /* "bnbpy/cython/search.pyx":148
  *         return node
  * 
  *     cpdef void _warmstart(             # <<<<<<<<<<<<<<
  *         BranchAndBound self,
  *         Solution solution
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_9_warmstart, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__warmstart, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_9_warmstart, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__warmstart, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_warmstart, __pyx_t_2) < 0) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_warmstart, __pyx_t_2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":159
+  /* "bnbpy/cython/search.pyx":162
  *                 self.log_row('Warmstart')
  * 
  *     cpdef void branch(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         cdef:
  *             list[Node] children
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_11branch, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_branch, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_11branch, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_branch, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_branch, __pyx_t_2) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_branch, __pyx_t_2) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":174
+  /* "bnbpy/cython/search.pyx":177
  *             del node
  * 
  *     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301             # <<<<<<<<<<<<<<
  *         node.fathom()
  *         if not self.save_tree and node is not self.root:
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_13fathom, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_fathom, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_13fathom, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_fathom, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_fathom, __pyx_t_2) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_fathom, __pyx_t_2) < 0) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":180
+  /* "bnbpy/cython/search.pyx":183
  *             del node
  * 
  *     cpdef void pre_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks before node bound evaluation"""
  *         pass
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_15pre_eval_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_pre_eval_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_15pre_eval_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_pre_eval_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_pre_eval_callback, __pyx_t_2) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_pre_eval_callback, __pyx_t_2) < 0) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":184
+  /* "bnbpy/cython/search.pyx":187
  *         pass
  * 
  *     cpdef void post_eval_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node bound evaluation"""
  *         pass
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_17post_eval_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_post_eval_callbac, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_17post_eval_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_post_eval_callbac, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_post_eval_callback, __pyx_t_2) < 0) __PYX_ERR(0, 184, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_post_eval_callback, __pyx_t_2) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":188
+  /* "bnbpy/cython/search.pyx":191
  *         pass
  * 
  *     cpdef void enqueue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node is enqueued"""
  *         pass
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_19enqueue_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_enqueue_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_19enqueue_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_enqueue_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_enqueue_callback, __pyx_t_2) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_enqueue_callback, __pyx_t_2) < 0) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":192
+  /* "bnbpy/cython/search.pyx":195
  *         pass
  * 
  *     cpdef void dequeue_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """Abstraction for callbacks after node is dequeued"""
  *         pass
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_21dequeue_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_dequeue_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_21dequeue_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_dequeue_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_dequeue_callback, __pyx_t_2) < 0) __PYX_ERR(0, 192, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_dequeue_callback, __pyx_t_2) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":196
+  /* "bnbpy/cython/search.pyx":199
  *         pass
  * 
  *     cpdef void solution_callback(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         """
  *         Abstraction for callback when a candidate
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_23solution_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_solution_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_23solution_callback, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_solution_callback, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_solution_callback, __pyx_t_2) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_solution_callback, __pyx_t_2) < 0) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":203
+  /* "bnbpy/cython/search.pyx":206
  *         pass
  * 
  *     cpdef void _solve_root(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         self.root = Node(self.problem, parent=None)
  *         self._enqueue_core(self.root)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_25_solve_root, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__solve_root, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_25_solve_root, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__solve_root, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_solve_root, __pyx_t_2) < 0) __PYX_ERR(0, 203, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_solve_root, __pyx_t_2) < 0) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":209
+  /* "bnbpy/cython/search.pyx":212
  *         self.explored = 0
  * 
  *     cpdef void _node_eval(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         self.pre_eval_callback(node)
  *         node.compute_bound()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_27_node_eval, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__node_eval, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_27_node_eval, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__node_eval, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_node_eval, __pyx_t_2) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_node_eval, __pyx_t_2) < 0) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":214
+  /* "bnbpy/cython/search.pyx":217
  *         self.post_eval_callback(node)
  * 
  *     cpdef void _feasibility_check(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         if node.check_feasible():
  *             self.set_solution(node)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_29_feasibility_check, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__feasibility_chec, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_29_feasibility_check, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__feasibility_chec, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_feasibility_check, __pyx_t_2) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_feasibility_check, __pyx_t_2) < 0) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":221
+  /* "bnbpy/cython/search.pyx":224
  *             self.branch(node)
  * 
  *     cpdef void set_solution(BranchAndBound self, Node node):             # <<<<<<<<<<<<<<
  *         self.incumbent = node
  *         self._update_gap()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_31set_solution, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_set_solution, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_31set_solution, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_set_solution, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_set_solution, __pyx_t_2) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_set_solution, __pyx_t_2) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":272
+  /* "bnbpy/cython/search.pyx":278
  *             self.log_row('LB update')
  * 
  *     cpdef void _log_headers(BranchAndBound self):             # <<<<<<<<<<<<<<
  *         self.__logger.log_headers()
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_33_log_headers, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__log_headers, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_33_log_headers, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound__log_headers, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_log_headers, __pyx_t_2) < 0) __PYX_ERR(0, 272, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_log_headers, __pyx_t_2) < 0) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":275
+  /* "bnbpy/cython/search.pyx":281
  *         self.__logger.log_headers()
  * 
  *     cpdef void log_row(BranchAndBound self, object message):             # <<<<<<<<<<<<<<
  *         gap = f'{(100 * self.gap):.2f}%'
  *         ub = f'{float(self.get_ub()):^6.4}'
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_35log_row, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_log_row, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_14BranchAndBound_35log_row, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BranchAndBound_log_row, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_log_row, __pyx_t_2) < 0) __PYX_ERR(0, 275, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound, __pyx_n_s_log_row, __pyx_t_2) < 0) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
@@ -19735,28 +20905,28 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
 
-  /* "bnbpy/cython/search.pyx":291
+  /* "bnbpy/cython/search.pyx":297
  * 
  * 
  * cpdef _first_element_lb(tuple[object, Node] x):             # <<<<<<<<<<<<<<
  *     return x[1].lb
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_1_first_element_lb, 0, __pyx_n_s_first_element_lb, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_1_first_element_lb, 0, __pyx_n_s_first_element_lb, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_first_element_lb, __pyx_t_2) < 0) __PYX_ERR(0, 291, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_first_element_lb, __pyx_t_2) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "bnbpy/cython/search.pyx":297
+  /* "bnbpy/cython/search.pyx":303
  * cdef class BreadthFirstBnB(BranchAndBound):
  * 
  *     cpdef void enqueue(self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((node.level, node.lb), node))
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_15BreadthFirstBnB_1enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BreadthFirstBnB_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_15BreadthFirstBnB_1enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BreadthFirstBnB_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB, __pyx_n_s_enqueue, __pyx_t_2) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB, __pyx_n_s_enqueue, __pyx_t_2) < 0) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB);
 
@@ -19783,47 +20953,40 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BreadthFirstBnB);
 
-  /* "bnbpy/cython/search.pyx":301
- * 
- * 
- * class DepthFirstBnB(BranchAndBound):             # <<<<<<<<<<<<<<
- *     # Just an alias
- *     pass
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     cdef tuple state
+ *     cdef object _dict
  */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_13DepthFirstBnB_1__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_DepthFirstBnB___reduce_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
-  __Pyx_GIVEREF((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BranchAndBound))) __PYX_ERR(0, 301, __pyx_L1_error);
-  __pyx_t_4 = __Pyx_PEP560_update_bases(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_CalculateMetaclass(NULL, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_Py3MetaclassPrepare(__pyx_t_3, __pyx_t_4, __pyx_n_s_DepthFirstBnB, __pyx_n_s_DepthFirstBnB, (PyObject *) NULL, __pyx_n_s_bnbpy_cython_search, (PyObject *) NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (__pyx_t_4 != __pyx_t_2) {
-    if (unlikely((PyDict_SetItemString(__pyx_t_5, "__orig_bases__", __pyx_t_2) < 0))) __PYX_ERR(0, 301, __pyx_L1_error)
-  }
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_Py3ClassCreate(__pyx_t_3, __pyx_n_s_DepthFirstBnB, __pyx_t_4, __pyx_t_5, NULL, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DepthFirstBnB, __pyx_t_2) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB);
 
-  /* "bnbpy/cython/search.pyx":317
+  /* "(tree fragment)":16
+ *     else:
+ *         return __pyx_unpickle_DepthFirstBnB, (type(self), 0x3323442, state)
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_unpickle_DepthFirstBnB__set_state(self, __pyx_state)
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_13DepthFirstBnB_3__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_DepthFirstBnB___setstate_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_DepthFirstBnB);
+
+  /* "bnbpy/cython/search.pyx":323
  *         super().__init__(rtol, atol, eval_node, save_tree)
  * 
  *     cpdef void enqueue(BestFirstBnB self, Node node):             # <<<<<<<<<<<<<<
  *         heapq.heappush(self.queue, ((node.lb, -node.level), node))
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_3enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 317, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_enqueue, __pyx_t_4) < 0) __PYX_ERR(0, 317, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_3enqueue, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB_enqueue, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 323, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_enqueue, __pyx_t_2) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
 
   /* "(tree fragment)":1
@@ -19831,10 +20994,10 @@ if (!__Pyx_RefNanny) {
  *     cdef tuple state
  *     cdef object _dict
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_5__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB___reduce_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_reduce_cython, __pyx_t_4) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_5__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB___reduce_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
 
   /* "(tree fragment)":16
@@ -19843,59 +21006,59 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_BestFirstBnB__set_state(self, __pyx_state)
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_7__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB___setstate_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_setstate_cython, __pyx_t_4) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_12BestFirstBnB_7__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_BestFirstBnB___setstate_cython, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_6search_BestFirstBnB);
 
-  /* "bnbpy/cython/search.pyx":322
+  /* "bnbpy/cython/search.pyx":328
  * 
  * def configure_logfile(
  *     filename: str, only_messages: bool = True, mode='a', **kwargs             # <<<<<<<<<<<<<<
  * ):
  *     """Configure logfile to write solution INFO messages
  */
-  __pyx_t_4 = __Pyx_PyBool_FromLong(((int)1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 322, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = __Pyx_PyBool_FromLong(((int)1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
 
-  /* "bnbpy/cython/search.pyx":321
+  /* "bnbpy/cython/search.pyx":327
  * 
  * 
  * def configure_logfile(             # <<<<<<<<<<<<<<
  *     filename: str, only_messages: bool = True, mode='a', **kwargs
  * ):
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4)) __PYX_ERR(0, 321, __pyx_L1_error);
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_2);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error);
   __Pyx_INCREF(((PyObject*)__pyx_n_s_a));
   __Pyx_GIVEREF(((PyObject*)__pyx_n_s_a));
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 1, ((PyObject*)__pyx_n_s_a))) __PYX_ERR(0, 321, __pyx_L1_error);
-  __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_filename, __pyx_n_s_str) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_only_messages, __pyx_n_s_bool) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_3configure_logfile, 0, __pyx_n_s_configure_logfile, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_t_3);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject*)__pyx_n_s_a))) __PYX_ERR(0, 327, __pyx_L1_error);
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_filename, __pyx_n_s_str) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_only_messages, __pyx_n_s_bool) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_3configure_logfile, 0, __pyx_n_s_configure_logfile, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_t_4);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_configure_logfile, __pyx_t_5) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_configure_logfile, __pyx_t_3) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_BranchAndBound(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_5__pyx_unpickle_BranchAndBound, 0, __pyx_n_s_pyx_unpickle_BranchAndBound, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BranchAndBound, __pyx_t_5) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_5__pyx_unpickle_BranchAndBound, 0, __pyx_n_s_pyx_unpickle_BranchAndBound, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BranchAndBound, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "(tree fragment)":11
  *         __pyx_unpickle_BranchAndBound__set_state(<BranchAndBound> __pyx_result, __pyx_state)
@@ -19904,30 +21067,42 @@ if (!__Pyx_RefNanny) {
  *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
  *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_7__pyx_unpickle_BreadthFirstBnB, 0, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, __pyx_t_5) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_7__pyx_unpickle_BreadthFirstBnB, 0, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BreadthFirstBnB, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "(tree fragment)":1
- * def __pyx_unpickle_BestFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
+ * def __pyx_unpickle_DepthFirstBnB(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_9__pyx_unpickle_BestFirstBnB, 0, __pyx_n_s_pyx_unpickle_BestFirstBnB, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BestFirstBnB, __pyx_t_5) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_9__pyx_unpickle_DepthFirstBnB, 0, __pyx_n_s_pyx_unpickle_DepthFirstBnB, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_DepthFirstBnB, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "(tree fragment)":11
+ *         __pyx_unpickle_DepthFirstBnB__set_state(<DepthFirstBnB> __pyx_result, __pyx_state)
+ *     return __pyx_result
+ * cdef __pyx_unpickle_DepthFirstBnB__set_state(DepthFirstBnB __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
+ *     __pyx_result._BranchAndBound__logger = __pyx_state[0]; __pyx_result.atol = __pyx_state[1]; __pyx_result.bound_node = __pyx_state[2]; __pyx_result.eval_in = __pyx_state[3]; __pyx_result.eval_node = __pyx_state[4]; __pyx_result.eval_out = __pyx_state[5]; __pyx_result.explored = __pyx_state[6]; __pyx_result.gap = __pyx_state[7]; __pyx_result.incumbent = __pyx_state[8]; __pyx_result.problem = __pyx_state[9]; __pyx_result.queue = __pyx_state[10]; __pyx_result.root = __pyx_state[11]; __pyx_result.rtol = __pyx_state[12]; __pyx_result.save_tree = __pyx_state[13]
+ *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
+ */
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_6search_11__pyx_unpickle_BestFirstBnB, 0, __pyx_n_s_pyx_unpickle_BestFirstBnB, NULL, __pyx_n_s_bnbpy_cython_search, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_BestFirstBnB, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "bnbpy/cython/search.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
  * 
  */
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_5) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_3) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /*--- Wrapped vars code ---*/
 
@@ -19936,7 +21111,6 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
       __Pyx_AddTraceback("init bnbpy.cython.search", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -23827,361 +25001,6 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml, int flags, PyObject* qual
     return op;
 }
 
-/* Py3UpdateBases */
-static PyObject*
-__Pyx_PEP560_update_bases(PyObject *bases)
-{
-    Py_ssize_t i, j, size_bases;
-    PyObject *base, *meth, *new_base, *result, *new_bases = NULL;
-    size_bases = PyTuple_GET_SIZE(bases);
-    for (i = 0; i < size_bases; i++) {
-        base  = PyTuple_GET_ITEM(bases, i);
-        if (PyType_Check(base)) {
-            if (new_bases) {
-                if (PyList_Append(new_bases, base) < 0) {
-                    goto error;
-                }
-            }
-            continue;
-        }
-        meth = __Pyx_PyObject_GetAttrStrNoError(base, __pyx_n_s_mro_entries);
-        if (!meth && PyErr_Occurred()) {
-            goto error;
-        }
-        if (!meth) {
-            if (new_bases) {
-                if (PyList_Append(new_bases, base) < 0) {
-                    goto error;
-                }
-            }
-            continue;
-        }
-        new_base = __Pyx_PyObject_CallOneArg(meth, bases);
-        Py_DECREF(meth);
-        if (!new_base) {
-            goto error;
-        }
-        if (!PyTuple_Check(new_base)) {
-            PyErr_SetString(PyExc_TypeError,
-                            "__mro_entries__ must return a tuple");
-            Py_DECREF(new_base);
-            goto error;
-        }
-        if (!new_bases) {
-            if (!(new_bases = PyList_New(i))) {
-                goto error;
-            }
-            for (j = 0; j < i; j++) {
-                base = PyTuple_GET_ITEM(bases, j);
-                PyList_SET_ITEM(new_bases, j, base);
-                Py_INCREF(base);
-            }
-        }
-        j = PyList_GET_SIZE(new_bases);
-        if (PyList_SetSlice(new_bases, j, j, new_base) < 0) {
-            goto error;
-        }
-        Py_DECREF(new_base);
-    }
-    if (!new_bases) {
-        Py_INCREF(bases);
-        return bases;
-    }
-    result = PyList_AsTuple(new_bases);
-    Py_DECREF(new_bases);
-    return result;
-error:
-    Py_XDECREF(new_bases);
-    return NULL;
-}
-
-/* CalculateMetaclass */
-static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases) {
-    Py_ssize_t i, nbases;
-#if CYTHON_ASSUME_SAFE_MACROS
-    nbases = PyTuple_GET_SIZE(bases);
-#else
-    nbases = PyTuple_Size(bases);
-    if (nbases < 0) return NULL;
-#endif
-    for (i=0; i < nbases; i++) {
-        PyTypeObject *tmptype;
-#if CYTHON_ASSUME_SAFE_MACROS
-        PyObject *tmp = PyTuple_GET_ITEM(bases, i);
-#else
-        PyObject *tmp = PyTuple_GetItem(bases, i);
-        if (!tmp) return NULL;
-#endif
-        tmptype = Py_TYPE(tmp);
-#if PY_MAJOR_VERSION < 3
-        if (tmptype == &PyClass_Type)
-            continue;
-#endif
-        if (!metaclass) {
-            metaclass = tmptype;
-            continue;
-        }
-        if (PyType_IsSubtype(metaclass, tmptype))
-            continue;
-        if (PyType_IsSubtype(tmptype, metaclass)) {
-            metaclass = tmptype;
-            continue;
-        }
-        PyErr_SetString(PyExc_TypeError,
-                        "metaclass conflict: "
-                        "the metaclass of a derived class "
-                        "must be a (non-strict) subclass "
-                        "of the metaclasses of all its bases");
-        return NULL;
-    }
-    if (!metaclass) {
-#if PY_MAJOR_VERSION < 3
-        metaclass = &PyClass_Type;
-#else
-        metaclass = &PyType_Type;
-#endif
-    }
-    Py_INCREF((PyObject*) metaclass);
-    return (PyObject*) metaclass;
-}
-
-/* PyObjectCall2Args */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args[3] = {NULL, arg1, arg2};
-    return __Pyx_PyObject_FastCall(function, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
-}
-
-/* PyObjectLookupSpecial */
-#if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject* __Pyx__PyObject_LookupSpecial(PyObject* obj, PyObject* attr_name, int with_error) {
-    PyObject *res;
-    PyTypeObject *tp = Py_TYPE(obj);
-#if PY_MAJOR_VERSION < 3
-    if (unlikely(PyInstance_Check(obj)))
-        return with_error ? __Pyx_PyObject_GetAttrStr(obj, attr_name) : __Pyx_PyObject_GetAttrStrNoError(obj, attr_name);
-#endif
-    res = _PyType_Lookup(tp, attr_name);
-    if (likely(res)) {
-        descrgetfunc f = Py_TYPE(res)->tp_descr_get;
-        if (!f) {
-            Py_INCREF(res);
-        } else {
-            res = f(res, obj, (PyObject *)tp);
-        }
-    } else if (with_error) {
-        PyErr_SetObject(PyExc_AttributeError, attr_name);
-    }
-    return res;
-}
-#endif
-
-/* Py3ClassCreate */
-static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name,
-                                           PyObject *qualname, PyObject *mkw, PyObject *modname, PyObject *doc) {
-    PyObject *ns;
-    if (metaclass) {
-        PyObject *prep = __Pyx_PyObject_GetAttrStrNoError(metaclass, __pyx_n_s_prepare);
-        if (prep) {
-            PyObject *pargs[3] = {NULL, name, bases};
-            ns = __Pyx_PyObject_FastCallDict(prep, pargs+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET, mkw);
-            Py_DECREF(prep);
-        } else {
-            if (unlikely(PyErr_Occurred()))
-                return NULL;
-            ns = PyDict_New();
-        }
-    } else {
-        ns = PyDict_New();
-    }
-    if (unlikely(!ns))
-        return NULL;
-    if (unlikely(PyObject_SetItem(ns, __pyx_n_s_module, modname) < 0)) goto bad;
-#if PY_VERSION_HEX >= 0x03030000
-    if (unlikely(PyObject_SetItem(ns, __pyx_n_s_qualname, qualname) < 0)) goto bad;
-#else
-    CYTHON_MAYBE_UNUSED_VAR(qualname);
-#endif
-    if (unlikely(doc && PyObject_SetItem(ns, __pyx_n_s_doc, doc) < 0)) goto bad;
-    return ns;
-bad:
-    Py_DECREF(ns);
-    return NULL;
-}
-#if PY_VERSION_HEX < 0x030600A4 && CYTHON_PEP487_INIT_SUBCLASS
-static int __Pyx_SetNamesPEP487(PyObject *type_obj) {
-    PyTypeObject *type = (PyTypeObject*) type_obj;
-    PyObject *names_to_set, *key, *value, *set_name, *tmp;
-    Py_ssize_t i = 0;
-#if CYTHON_USE_TYPE_SLOTS
-    names_to_set = PyDict_Copy(type->tp_dict);
-#else
-    {
-        PyObject *d = PyObject_GetAttr(type_obj, __pyx_n_s_dict);
-        names_to_set = NULL;
-        if (likely(d)) {
-            PyObject *names_to_set = PyDict_New();
-            int ret = likely(names_to_set) ? PyDict_Update(names_to_set, d) : -1;
-            Py_DECREF(d);
-            if (unlikely(ret < 0))
-                Py_CLEAR(names_to_set);
-        }
-    }
-#endif
-    if (unlikely(names_to_set == NULL))
-        goto bad;
-    while (PyDict_Next(names_to_set, &i, &key, &value)) {
-        set_name = __Pyx_PyObject_LookupSpecialNoError(value, __pyx_n_s_set_name);
-        if (unlikely(set_name != NULL)) {
-            tmp = __Pyx_PyObject_Call2Args(set_name, type_obj, key);
-            Py_DECREF(set_name);
-            if (unlikely(tmp == NULL)) {
-                __Pyx_TypeName value_type_name =
-                    __Pyx_PyType_GetName(Py_TYPE(value));
-                __Pyx_TypeName type_name = __Pyx_PyType_GetName(type);
-                PyErr_Format(PyExc_RuntimeError,
-#if PY_MAJOR_VERSION >= 3
-                    "Error calling __set_name__ on '" __Pyx_FMT_TYPENAME "' instance %R " "in '" __Pyx_FMT_TYPENAME "'",
-                    value_type_name, key, type_name);
-#else
-                    "Error calling __set_name__ on '" __Pyx_FMT_TYPENAME "' instance %.100s in '" __Pyx_FMT_TYPENAME "'",
-                    value_type_name,
-                    PyString_Check(key) ? PyString_AS_STRING(key) : "?",
-                    type_name);
-#endif
-                goto bad;
-            } else {
-                Py_DECREF(tmp);
-            }
-        }
-        else if (unlikely(PyErr_Occurred())) {
-            goto bad;
-        }
-    }
-    Py_DECREF(names_to_set);
-    return 0;
-bad:
-    Py_XDECREF(names_to_set);
-    return -1;
-}
-static PyObject *__Pyx_InitSubclassPEP487(PyObject *type_obj, PyObject *mkw) {
-#if CYTHON_USE_TYPE_SLOTS && CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    PyTypeObject *type = (PyTypeObject*) type_obj;
-    PyObject *mro = type->tp_mro;
-    Py_ssize_t i, nbases;
-    if (unlikely(!mro)) goto done;
-    (void) &__Pyx_GetBuiltinName;
-    Py_INCREF(mro);
-    nbases = PyTuple_GET_SIZE(mro);
-    assert(PyTuple_GET_ITEM(mro, 0) == type_obj);
-    for (i = 1; i < nbases-1; i++) {
-        PyObject *base, *dict, *meth;
-        base = PyTuple_GET_ITEM(mro, i);
-        dict = ((PyTypeObject *)base)->tp_dict;
-        meth = __Pyx_PyDict_GetItemStrWithError(dict, __pyx_n_s_init_subclass);
-        if (unlikely(meth)) {
-            descrgetfunc f = Py_TYPE(meth)->tp_descr_get;
-            PyObject *res;
-            Py_INCREF(meth);
-            if (likely(f)) {
-                res = f(meth, NULL, type_obj);
-                Py_DECREF(meth);
-                if (unlikely(!res)) goto bad;
-                meth = res;
-            }
-            res = __Pyx_PyObject_FastCallDict(meth, NULL, 0, mkw);
-            Py_DECREF(meth);
-            if (unlikely(!res)) goto bad;
-            Py_DECREF(res);
-            goto done;
-        } else if (unlikely(PyErr_Occurred())) {
-            goto bad;
-        }
-    }
-done:
-    Py_XDECREF(mro);
-    return type_obj;
-bad:
-    Py_XDECREF(mro);
-    Py_DECREF(type_obj);
-    return NULL;
-#else
-    PyObject *super_type, *super, *func, *res;
-#if CYTHON_COMPILING_IN_PYPY && !defined(PySuper_Type)
-    super_type = __Pyx_GetBuiltinName(__pyx_n_s_super);
-#else
-    super_type = (PyObject*) &PySuper_Type;
-    (void) &__Pyx_GetBuiltinName;
-#endif
-    super = likely(super_type) ? __Pyx_PyObject_Call2Args(super_type, type_obj, type_obj) : NULL;
-#if CYTHON_COMPILING_IN_PYPY && !defined(PySuper_Type)
-    Py_XDECREF(super_type);
-#endif
-    if (unlikely(!super)) {
-        Py_CLEAR(type_obj);
-        goto done;
-    }
-    func = __Pyx_PyObject_GetAttrStrNoError(super, __pyx_n_s_init_subclass);
-    Py_DECREF(super);
-    if (likely(!func)) {
-        if (unlikely(PyErr_Occurred()))
-            Py_CLEAR(type_obj);
-        goto done;
-    }
-    res = __Pyx_PyObject_FastCallDict(func, NULL, 0, mkw);
-    Py_DECREF(func);
-    if (unlikely(!res))
-        Py_CLEAR(type_obj);
-    Py_XDECREF(res);
-done:
-    return type_obj;
-#endif
-}
-#endif
-static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObject *bases,
-                                      PyObject *dict, PyObject *mkw,
-                                      int calculate_metaclass, int allow_py2_metaclass) {
-    PyObject *result;
-    PyObject *owned_metaclass = NULL;
-    PyObject *margs[4] = {NULL, name, bases, dict};
-    if (allow_py2_metaclass) {
-        owned_metaclass = PyObject_GetItem(dict, __pyx_n_s_metaclass);
-        if (owned_metaclass) {
-            metaclass = owned_metaclass;
-        } else if (likely(PyErr_ExceptionMatches(PyExc_KeyError))) {
-            PyErr_Clear();
-        } else {
-            return NULL;
-        }
-    }
-    if (calculate_metaclass && (!metaclass || PyType_Check(metaclass))) {
-        metaclass = __Pyx_CalculateMetaclass((PyTypeObject*) metaclass, bases);
-        Py_XDECREF(owned_metaclass);
-        if (unlikely(!metaclass))
-            return NULL;
-        owned_metaclass = metaclass;
-    }
-    result = __Pyx_PyObject_FastCallDict(metaclass, margs+1, 3 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET,
-#if PY_VERSION_HEX < 0x030600A4
-        (metaclass == (PyObject*)&PyType_Type) ? NULL : mkw
-#else
-        mkw
-#endif
-    );
-    Py_XDECREF(owned_metaclass);
-#if PY_VERSION_HEX < 0x030600A4 && CYTHON_PEP487_INIT_SUBCLASS
-    if (likely(result) && likely(PyType_Check(result))) {
-        if (unlikely(__Pyx_SetNamesPEP487(result) < 0)) {
-            Py_CLEAR(result);
-        } else {
-            result = __Pyx_InitSubclassPEP487(result, mkw);
-        }
-    }
-#else
-    (void) &__Pyx_GetBuiltinName;
-#endif
-    return result;
-}
-
 /* CLineInTraceback */
 #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(PyThreadState *tstate, int c_line) {
@@ -25207,7 +26026,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__46);
+        name = __Pyx_NewRef(__pyx_n_s__49);
     }
     return name;
 }

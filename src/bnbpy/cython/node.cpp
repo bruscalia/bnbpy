@@ -2429,7 +2429,6 @@ int __pyx_module_is_main_bnbpy__cython__node = 0;
 static const char __pyx_k__2[] = ".";
 static const char __pyx_k__3[] = "*";
 static const char __pyx_k_gc[] = "gc";
-static const char __pyx_k_lb[] = "lb";
 static const char __pyx_k__19[] = "?";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_Node[] = "Node";
@@ -2599,7 +2598,6 @@ typedef struct {
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_kp_u_isenabled;
   PyObject *__pyx_n_s_itertools;
-  PyObject *__pyx_n_s_lb;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_new;
@@ -2728,7 +2726,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
   Py_CLEAR(clear_module_state->__pyx_n_s_itertools);
-  Py_CLEAR(clear_module_state->__pyx_n_s_lb);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_new);
@@ -2835,7 +2832,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
   Py_VISIT(traverse_module_state->__pyx_n_s_itertools);
-  Py_VISIT(traverse_module_state->__pyx_n_s_lb);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_new);
@@ -2960,7 +2956,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
 #define __pyx_n_s_itertools __pyx_mstate_global->__pyx_n_s_itertools
-#define __pyx_n_s_lb __pyx_mstate_global->__pyx_n_s_lb
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_new __pyx_mstate_global->__pyx_n_s_new
@@ -3687,7 +3682,7 @@ static int __pyx_pf_5bnbpy_6cython_4node_4Node___init__(struct __pyx_obj_5bnbpy_
  *         if parent is None:
  *             self._counter = itertools.count()             # <<<<<<<<<<<<<<
  *             self.level = 0
- *             self.lb = self.problem.lb
+ *             self.lb = self.problem.get_lb()
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_itertools); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -3726,7 +3721,7 @@ static int __pyx_pf_5bnbpy_6cython_4node_4Node___init__(struct __pyx_obj_5bnbpy_
  *         if parent is None:
  *             self._counter = itertools.count()
  *             self.level = 0             # <<<<<<<<<<<<<<
- *             self.lb = self.problem.lb
+ *             self.lb = self.problem.get_lb()
  *         else:
  */
     __pyx_v_self->level = 0;
@@ -3734,14 +3729,11 @@ static int __pyx_pf_5bnbpy_6cython_4node_4Node___init__(struct __pyx_obj_5bnbpy_
     /* "bnbpy/cython/node.pyx":26
  *             self._counter = itertools.count()
  *             self.level = 0
- *             self.lb = self.problem.lb             # <<<<<<<<<<<<<<
+ *             self.lb = self.problem.get_lb()             # <<<<<<<<<<<<<<
  *         else:
  *             self._counter = self.parent._counter
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->problem), __pyx_n_s_lb); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 26, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(2, 26, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_6 = __pyx_f_5bnbpy_6cython_7problem_7Problem_get_lb(__pyx_v_self->problem); if (unlikely(PyErr_Occurred())) __PYX_ERR(2, 26, __pyx_L1_error)
     __pyx_v_self->lb = __pyx_t_6;
 
     /* "bnbpy/cython/node.pyx":23
@@ -3755,7 +3747,7 @@ static int __pyx_pf_5bnbpy_6cython_4node_4Node___init__(struct __pyx_obj_5bnbpy_
   }
 
   /* "bnbpy/cython/node.pyx":28
- *             self.lb = self.problem.lb
+ *             self.lb = self.problem.get_lb()
  *         else:
  *             self._counter = self.parent._counter             # <<<<<<<<<<<<<<
  *             self.lb = self.parent.lb
@@ -4642,7 +4634,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_4node_4Node_8check_feasible(struct __py
  * 
  *     cpdef void set_solution(Node self, Solution solution):             # <<<<<<<<<<<<<<
  *         self.problem.set_solution(solution)
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  */
 
 static PyObject *__pyx_pw_5bnbpy_6cython_4node_4Node_11set_solution(PyObject *__pyx_v_self, 
@@ -4720,7 +4712,7 @@ static void __pyx_f_5bnbpy_6cython_4node_4Node_set_solution(struct __pyx_obj_5bn
  * 
  *     cpdef void set_solution(Node self, Solution solution):
  *         self.problem.set_solution(solution)             # <<<<<<<<<<<<<<
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  * 
  */
   ((struct __pyx_vtabstruct_5bnbpy_6cython_7problem_Problem *)__pyx_v_self->problem->__pyx_vtab)->set_solution(__pyx_v_self->problem, __pyx_v_solution, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(2, 67, __pyx_L1_error)
@@ -4728,14 +4720,11 @@ static void __pyx_f_5bnbpy_6cython_4node_4Node_set_solution(struct __pyx_obj_5bn
   /* "bnbpy/cython/node.pyx":68
  *     cpdef void set_solution(Node self, Solution solution):
  *         self.problem.set_solution(solution)
- *         self.lb = self.problem.lb             # <<<<<<<<<<<<<<
+ *         self.lb = self.problem.get_lb()             # <<<<<<<<<<<<<<
  * 
  *     cpdef Node copy(self, bool deep=True):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->problem), __pyx_n_s_lb); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(2, 68, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_6 = __pyx_f_5bnbpy_6cython_7problem_7Problem_get_lb(__pyx_v_self->problem); if (unlikely(PyErr_Occurred())) __PYX_ERR(2, 68, __pyx_L1_error)
   __pyx_v_self->lb = __pyx_t_6;
 
   /* "bnbpy/cython/node.pyx":66
@@ -4743,7 +4732,7 @@ static void __pyx_f_5bnbpy_6cython_4node_4Node_set_solution(struct __pyx_obj_5bn
  * 
  *     cpdef void set_solution(Node self, Solution solution):             # <<<<<<<<<<<<<<
  *         self.problem.set_solution(solution)
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  */
 
   /* function exit code */
@@ -4887,7 +4876,7 @@ static PyObject *__pyx_pf_5bnbpy_6cython_4node_4Node_10set_solution(struct __pyx
 }
 
 /* "bnbpy/cython/node.pyx":70
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  * 
  *     cpdef Node copy(self, bool deep=True):             # <<<<<<<<<<<<<<
  *         if deep:
@@ -5027,7 +5016,7 @@ static struct __pyx_obj_5bnbpy_6cython_4node_Node *__pyx_f_5bnbpy_6cython_4node_
   goto __pyx_L0;
 
   /* "bnbpy/cython/node.pyx":70
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  * 
  *     cpdef Node copy(self, bool deep=True):             # <<<<<<<<<<<<<<
  *         if deep:
@@ -7834,7 +7823,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
     {&__pyx_n_s_itertools, __pyx_k_itertools, sizeof(__pyx_k_itertools), 0, 0, 1, 1},
-    {&__pyx_n_s_lb, __pyx_k_lb, sizeof(__pyx_k_lb), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
@@ -7914,7 +7902,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     cpdef void set_solution(Node self, Solution solution):             # <<<<<<<<<<<<<<
  *         self.problem.set_solution(solution)
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  */
   __pyx_tuple__7 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_solution); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(2, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
@@ -7922,7 +7910,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_bnbpy_cython_node_pyx, __pyx_n_s_set_solution, 66, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(2, 66, __pyx_L1_error)
 
   /* "bnbpy/cython/node.pyx":70
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  * 
  *     cpdef Node copy(self, bool deep=True):             # <<<<<<<<<<<<<<
  *         if deep:
@@ -8459,7 +8447,7 @@ if (!__Pyx_RefNanny) {
  * 
  *     cpdef void set_solution(Node self, Solution solution):             # <<<<<<<<<<<<<<
  *         self.problem.set_solution(solution)
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5bnbpy_6cython_4node_4Node_11set_solution, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Node_set_solution, NULL, __pyx_n_s_bnbpy_cython_node, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -8468,7 +8456,7 @@ if (!__Pyx_RefNanny) {
   PyType_Modified(__pyx_ptype_5bnbpy_6cython_4node_Node);
 
   /* "bnbpy/cython/node.pyx":70
- *         self.lb = self.problem.lb
+ *         self.lb = self.problem.get_lb()
  * 
  *     cpdef Node copy(self, bool deep=True):             # <<<<<<<<<<<<<<
  *         if deep:

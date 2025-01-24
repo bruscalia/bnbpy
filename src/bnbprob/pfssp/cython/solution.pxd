@@ -4,30 +4,13 @@
 from libcpp cimport bool
 
 from bnbprob.pfssp.cpp.environ cimport Permutation
+from bnbpy.cython.solution cimport Solution
 
 
-cdef:
-    int LARGE_INT = 10000000
-
-
-cdef class FlowSolution:
-
-    cdef public:
-        int cost, lb
-        object status
+cdef class FlowSolution(Solution):
 
     cdef:
         Permutation perm
-
-    cpdef void set_optimal(FlowSolution self)
-
-    cpdef void set_lb(FlowSolution self, int lb)
-
-    cpdef void set_feasible(FlowSolution self)
-
-    cpdef void set_infeasible(FlowSolution self)
-
-    cpdef void fathom(FlowSolution self)
 
     cpdef bool is_feasible(FlowSolution self)
 
@@ -43,6 +26,6 @@ cdef class FlowSolution:
 
     cdef void _push_job(FlowSolution self, int& j)
 
-    cpdef FlowSolution copy(FlowSolution self)
+    cpdef FlowSolution copy(FlowSolution self, bool deep=*)
 
     cdef FlowSolution _copy(FlowSolution self)

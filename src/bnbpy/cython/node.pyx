@@ -23,7 +23,7 @@ cdef class Node:
         if parent is None:
             self._counter = itertools.count()
             self.level = 0
-            self.lb = self.problem.lb
+            self.lb = self.problem.get_lb()
         else:
             self._counter = self.parent._counter
             self.lb = self.parent.lb
@@ -65,7 +65,7 @@ cdef class Node:
 
     cpdef void set_solution(Node self, Solution solution):
         self.problem.set_solution(solution)
-        self.lb = self.problem.lb
+        self.lb = self.problem.get_lb()
 
     cpdef Node copy(self, bool deep=True):
         if deep:

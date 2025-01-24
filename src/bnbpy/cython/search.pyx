@@ -72,9 +72,9 @@ cdef class BranchAndBound:
 
     cdef Solution get_solution(BranchAndBound self):
         if self.incumbent is not None:
-            return self.incumbent.solution
+            return self.incumbent.get_solution()
         elif self.bound_node is not None:
-            return self.bound_node.solution
+            return self.bound_node.get_solution()
         return Solution()
 
     def solve(
@@ -88,6 +88,7 @@ cdef class BranchAndBound:
             double _tlim = LARGE_POS
             int _mxiter = LARGE_INT
             Node node
+            Solution sol
 
         self._set_problem(problem)
         self._restart_search()
@@ -117,8 +118,10 @@ cdef class BranchAndBound:
             # Termination by optimality
             if self._check_termination(_mxiter):
                 break
-        self.solution.set_lb(self.get_lb())
-        return self.solution
+
+        sol = self.get_solution()
+        sol.set_lb(self.get_lb())
+        return sol
 
     cdef void _do_iter(BranchAndBound self, Node node):
         # Node is valid for evaluation
@@ -243,9 +246,12 @@ cdef class BranchAndBound:
         return node
 
     cdef bool _check_termination(BranchAndBound self, int maxiter):
+        cdef:
+            Solution sol
         if self._optimality_check():
             self.log_row('Optimal')
-            self.solution.set_optimal()
+            sol = self.get_solution()
+            sol.set_optimal()
             return True
         # Termination by iteration limit
         elif self.explored >= maxiter:
@@ -298,7 +304,7 @@ cdef class BreadthFirstBnB(BranchAndBound):
         heapq.heappush(self.queue, ((node.level, node.lb), node))
 
 
-class DepthFirstBnB(BranchAndBound):
+cdef class DepthFirstBnB(BranchAndBound):
     # Just an alias
     pass
 

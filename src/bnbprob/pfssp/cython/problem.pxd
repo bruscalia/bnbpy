@@ -13,23 +13,20 @@ from bnbprob.pfssp.cpp.environ cimport (
     quick_constructive
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbpy.cython.problem cimport Problem
 
 
-cdef class PermFlowShop:
+cdef class PermFlowShop(Problem):
 
     cdef public:
-        FlowSolution solution
         string constructive
+        # Cannot override attribute `solution` in cdef class
+        # due to Cython limitation
 
-    cpdef void cleanup(PermFlowShop self)
+    cdef inline FlowSolution get_solution(PermFlowShop self):
+        return <FlowSolution>self.solution
 
     cdef void ccleanup(PermFlowShop self)
-
-    cpdef void compute_bound(PermFlowShop self)
-
-    cpdef bool check_feasible(PermFlowShop self)
-
-    cpdef void set_solution(PermFlowShop self, object solution)
 
     cpdef FlowSolution warmstart(PermFlowShop self)
 
@@ -39,7 +36,7 @@ cdef class PermFlowShop:
 
     cpdef FlowSolution local_search(PermFlowShop self)
 
-    cpdef int calc_bound(PermFlowShop self)
+    cpdef double calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)
 
@@ -49,11 +46,11 @@ cdef class PermFlowShop:
 
     cpdef void bound_upgrade(PermFlowShop self)
 
-    cpdef PermFlowShop copy(PermFlowShop self)
+    cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
 
 
 cdef class PermFlowShop2M(PermFlowShop):
 
-    cpdef int calc_bound(PermFlowShop2M self)
+    cpdef double calc_bound(PermFlowShop2M self)
