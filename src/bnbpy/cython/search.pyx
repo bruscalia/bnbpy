@@ -3,6 +3,7 @@
 
 from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp.string cimport string
 
 import heapq
 import logging
@@ -10,9 +11,9 @@ import time
 from typing import Any, List, Literal, Optional, Tuple, Union
 
 from bnbpy.cython.node cimport Node
+from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
 from bnbpy.logger import SearchLogger
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
 
 log = logging.getLogger(__name__)
 
@@ -24,38 +25,21 @@ cdef:
 
 
 cdef class BranchAndBound:
-    """Class for solving optimization problems via Branch & Bound"""
 
     def __init__(
         self,
         rtol: float = 1e-4,
         atol: float = 1e-4,
-        eval_node: Literal['in', 'out', 'both'] = 'out',
+        eval_node = 'out',
         save_tree: bool = False
     ) -> None:
-        """Instantiate algoritm to solve problems via Branch & Bound
 
-        Parameters
-        ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
-
-        eval_node : Literal['in', 'out', 'both'], optional
-            Node evaluation strategy, by default 'out' (as deque)
-
-        save_tree : bool, optional
-            Either or not to save node relationships, by default False.
-            It can consume a lot of memory in large trees.
-        """
         self.problem = None
         self.root = None
         self._restart_search()
         self.rtol = rtol
         self.atol = atol
-        self.eval_node = eval_node
+        self.eval_node = <string> eval_node.encode("utf-8")
         self.explored = 0
         self.eval_in = self.eval_node in {'in', 'both'}
         self.eval_out = self.eval_node in {'out', 'both'}
@@ -86,46 +70,19 @@ cdef class BranchAndBound:
     def solution(self):
         return self.get_solution()
 
-    cdef object get_solution(BranchAndBound self):
+    cdef Solution get_solution(BranchAndBound self):
         if self.incumbent is not None:
             return self.incumbent.solution
         elif self.bound_node is not None:
             return self.bound_node.solution
         return Solution()
 
-    cpdef void _set_problem(BranchAndBound self, problem: Problem):
-        self.problem = problem
-
-    cpdef void _restart_search(BranchAndBound self):
-        self.incumbent = None
-        self.bound_node = None
-        self.gap = LARGE_POS
-        self.queue = []
-
     def solve(
         self,
         problem: Problem,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Optional[Solution]:
-        """Solves optimization problem using Branch & Bound
-
-        Parameters
-        ----------
-        problem : Problem
-            Problem instance as in root node
-
-        maxiter : Optional[int], optional
-            Maximum number of iterations, by default None
-
-        timelimit : Optional[Union[int, float]], optional
-            Time limit in seconds, by default None
-
-        Returns
-        -------
-        Optional[Solution]
-            Best feasible solution found
-        """
+    ) -> Solution:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
@@ -164,13 +121,6 @@ cdef class BranchAndBound:
         return self.solution
 
     cdef void _do_iter(BranchAndBound self, Node node):
-        """Do loop iteration using a reference node just dequeued
-
-        Parameters
-        ----------
-        node : Node
-            Candidate node
-        """
         # Node is valid for evaluation
         self.explored += 1
         # Lower bound is accepted
@@ -181,23 +131,9 @@ cdef class BranchAndBound:
             self.fathom(node)
 
     cpdef void enqueue(BranchAndBound self, Node node):
-        """Include new node into queue
-
-        Parameters
-        ----------
-        node : Node
-            Node to be included
-        """
         heapq.heappush(self.queue, ((-node.level, node.lb), node))
 
     cpdef Node dequeue(BranchAndBound self):
-        """Chooses the next evaluated node and computes its lower bound
-
-        Returns
-        -------
-        Node
-            Node to be evaluated
-        """
         cdef:
             Node node
             tuple[object, Node] next_item
@@ -208,15 +144,8 @@ cdef class BranchAndBound:
 
     cpdef void _warmstart(
         BranchAndBound self,
-        solution: Optional[Solution]
+        Solution solution
     ):
-        """If a warmstart is available, use it to set an upper bound
-
-        Parameters
-        ----------
-        solution : Optional[Solution], optional
-            Initial solution, by default None
-        """
         cdef:
             Node node
 
@@ -228,13 +157,6 @@ cdef class BranchAndBound:
                 self.log_row('Warmstart')
 
     cpdef void branch(BranchAndBound self, Node node):
-        """From a given node, create children nodes and enqueue them
-
-        Parameters
-        ----------
-        node : Node
-            Node being evaluated
-        """
         cdef:
             list[Node] children
             Node child
@@ -250,16 +172,6 @@ cdef class BranchAndBound:
             del node
 
     cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301
-        """Fathom node (by default is not deleted)
-
-        If deletion is required for managing memory, remember to delete
-        node from parent `children` attribute
-
-        Parameters
-        ----------
-        node : Node
-            Node to be fathomed
-        """
         node.fathom()
         if not self.save_tree and node is not self.root:
             node.cleanup()
@@ -307,14 +219,6 @@ cdef class BranchAndBound:
             self.branch(node)
 
     cpdef void set_solution(BranchAndBound self, Node node):
-        """Assigns the current node as incumbent, updates gap and calls
-        `solution_callback`
-
-        Parameters
-        ----------
-        node : Node
-            New solution node
-        """
         self.incumbent = node
         self._update_gap()
         self.log_row('New incumbent')
@@ -388,31 +292,18 @@ cpdef _first_element_lb(tuple[object, Node] x):
     return x[1].lb
 
 
-class BreadthFirstBnB(BranchAndBound):
-    """Breadth-first Branch & Bound algorithm"""
+cdef class BreadthFirstBnB(BranchAndBound):
 
-    def enqueue(self, node: Node):
-        """Include new node into queue
-
-        Parameters
-        ----------
-        node : Node
-            Node to be included
-        """
+    cpdef void enqueue(self, Node node):
         heapq.heappush(self.queue, ((node.level, node.lb), node))
 
 
 class DepthFirstBnB(BranchAndBound):
-    """Depth-first Branch & Bound algorithm"""
-
     # Just an alias
     pass
 
 
-class BestFirstBnB(BranchAndBound):
-    """Relation priority Branch & Bound algorithm"""
-
-    queue: List[Tuple[Any, Node]]
+cdef class BestFirstBnB(BranchAndBound):
 
     def __init__(
         self,
@@ -423,8 +314,8 @@ class BestFirstBnB(BranchAndBound):
     ) -> None:
         super().__init__(rtol, atol, eval_node, save_tree)
 
-    def enqueue(self, node: Node):
-        return heapq.heappush(self.queue, ((node.lb, -node.level), node))
+    cpdef void enqueue(BestFirstBnB self, Node node):
+        heapq.heappush(self.queue, ((node.lb, -node.level), node))
 
 
 def configure_logfile(

@@ -3,12 +3,14 @@
 
 from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp.string cimport string
 
 from bnbpy.cython.node cimport Node
 
 from typing import Optional
 
-from bnbpy.solution import Solution
+from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.problem cimport Problem
 
 
 cdef:
@@ -21,14 +23,14 @@ cdef class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
 
     cdef public:
-        object problem
+        Problem problem
         Node root
         double gap
         object queue
         double rtol
         double atol
         int explored
-        object eval_node
+        string eval_node
         bool eval_in
         bool eval_out
         bool save_tree
@@ -40,11 +42,16 @@ cdef class BranchAndBound:
 
     cdef double get_lb(BranchAndBound self)
 
-    cdef object get_solution(BranchAndBound self)
+    cdef Solution get_solution(BranchAndBound self)
 
-    cpdef void _set_problem(BranchAndBound self, problem: Problem)
+    cdef inline void _set_problem(BranchAndBound self, Problem problem):
+        self.problem = problem
 
-    cpdef void _restart_search(BranchAndBound self)
+    cdef inline void _restart_search(BranchAndBound self):
+        self.incumbent = None
+        self.bound_node = None
+        self.gap = LARGE_POS
+        self.queue = []
 
     cdef void _do_iter(BranchAndBound self, Node node)
 
@@ -52,7 +59,7 @@ cdef class BranchAndBound:
 
     cpdef Node dequeue(BranchAndBound self)
 
-    cpdef void _warmstart(BranchAndBound self, solution: Optional[Solution])
+    cpdef void _warmstart(BranchAndBound self, Solution solution)
 
     cpdef void branch(BranchAndBound self, Node node)
 

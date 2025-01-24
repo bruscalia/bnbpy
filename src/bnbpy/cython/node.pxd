@@ -4,17 +4,15 @@
 from libcpp cimport bool
 
 import copy
-import itertools
-from typing import List, Optional, Union
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
 
 
 cdef class Node:
 
     cdef public:
-        object problem
+        Problem problem
         Node parent
         int level
         double lb
@@ -24,16 +22,25 @@ cdef class Node:
 
     cdef void cleanup(Node self)
 
+    cdef inline Solution get_solution(Node self):
+        return self.problem.solution
+
     cpdef void compute_bound(Node self)
 
     cpdef bool check_feasible(Node self)
 
-    cpdef void set_solution(Node self, solution: Solution)
+    cpdef void set_solution(Node self, Solution solution)
 
-    cpdef void fathom(Node self)
+    cdef inline void fathom(Node self):
+        self.solution.fathom()
+
+    cpdef Node copy(self, bool deep=*)
+
+    cdef inline Node deep_copy(Node self):
+        return copy.deepcopy(self)
 
     cpdef list[Node] branch(Node self)
 
-    cdef Node child_problem(Node self, object problem)
+    cdef Node child_problem(Node self, Problem problem)
 
-    cpdef Node shallow_copy(Node self)
+    cdef Node shallow_copy(Node self)
