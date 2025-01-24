@@ -101,7 +101,7 @@ cdef class FlowSolution:
         return self.perm.lower_bound_1m()
 
     cpdef int lower_bound_2m(FlowSolution self):
-        return self.perm.lower_bound_1m()
+        return self.perm.lower_bound_2m()
 
     cpdef void push_job(FlowSolution self, int& j):
         self.perm.push_job(j)
