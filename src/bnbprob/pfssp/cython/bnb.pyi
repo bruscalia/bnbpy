@@ -1,4 +1,3 @@
-from bnbprob.pfssp.cython.solution import FlowSolution
 from bnbpy.cython.node import Node
 from bnbpy.cython.search import BranchAndBound
 
