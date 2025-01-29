@@ -10,7 +10,7 @@ import logging
 import time
 from typing import Any, List, Literal, Optional, Tuple, Union
 
-from bnbpy.cython.node cimport Node
+from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 from bnbpy.logger import SearchLogger
@@ -153,7 +153,7 @@ cdef class BranchAndBound:
             Node node
 
         if solution is not None:
-            node = Node(self.problem.copy())
+            node = init_node(self.problem.copy())
             node.set_solution(solution)
             if node.lb < self.get_ub():
                 self._feasibility_check(node)
@@ -204,7 +204,7 @@ cdef class BranchAndBound:
         pass
 
     cpdef void _solve_root(BranchAndBound self):
-        self.root = Node(self.problem, parent=None)
+        self.root = init_node(self.problem)
         self._enqueue_core(self.root)
         self._update_bound()
         self.explored = 0

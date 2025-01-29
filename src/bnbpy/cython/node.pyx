@@ -112,3 +112,20 @@ cdef class Node:
         other.level = self.level + 1
         other._sort_index = next(other._counter)
         return other
+
+
+cdef Node init_node(Problem problem, Node parent=None):
+    node = Node.__new__(Node)
+    node.problem = problem
+    node.parent = parent
+    node.children = []
+    if parent is None:
+        node._counter = itertools.count()
+        node.level = 0
+        node.lb = node.problem.get_lb()
+    else:
+        node._counter = parent._counter
+        node.lb = parent.lb
+        node.level = parent.level + 1
+    node._sort_index = next(node._counter)
+    return node

@@ -44,3 +44,6 @@ cdef class Node:
     cdef Node child_problem(Node self, Problem problem)
 
     cdef Node shallow_copy(Node self)
+
+
+cdef Node init_node(Problem problem, Node parent=*)
