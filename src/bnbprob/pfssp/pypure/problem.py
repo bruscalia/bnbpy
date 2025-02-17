@@ -170,7 +170,7 @@ class PermFlowShop(Problem):
             New solution (best improvement) if exists
         """
         lb = self.solution.lb
-        perm = ls(self.solution.perm)
+        perm = ls(self.solution.sequence)
         sol_alt = FlowSolution(perm)
         new_cost = sol_alt.perm.calc_bound()
         if new_cost < lb:

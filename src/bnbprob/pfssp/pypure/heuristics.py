@@ -1,5 +1,6 @@
 from bnbprob.pfssp.pypure.job import Job
 from bnbprob.pfssp.pypure.permutation import Permutation, start_perm
+from bnbprob.pfssp.pypure.sequence import empty_sigma
 
 LARGE_INT = 10000000
 
@@ -57,59 +58,67 @@ def neh_constructive(jobs: list[Job]) -> Permutation:
     """
 
     # Find best order of two jobs with longest processing times
-    jobs.sort(key=lambda x: x.T, reverse=True)
-    M = len(jobs[0].p)
+    M = len(jobs[0].p)  # Assume r is the same size for all jobs
 
-    vec = [jobs[0].copy(), jobs[1].copy()]
-    s1 = start_perm(M, vec)
-    for _ in range(len(s1.free_jobs)):
-        job_i = s1.free_jobs.pop(0)
-        s1.sigma1.job_to_bottom(job_i)
+    # Sort jobs based on T in descending order
+    jobs.sort(key=lambda job: job.T, reverse=True)
 
-    vec = [jobs[1].copy(), jobs[0].copy()]
-    s2 = start_perm(M, vec)
-    for _ in range(len(s2.free_jobs)):
-        job_i = s2.free_jobs.pop(0)
-        s2.sigma1.job_to_bottom(job_i)
+    # Initial setup for two jobs
+    vec = [jobs[0], jobs[1]]
+    recompute_r0(vec, 0)
 
-    c1 = s1.calc_bound()
-    c2 = s2.calc_bound()
-    if c1 <= c2:
-        sol = s1
-    else:
-        sol = s2
+    s1 = empty_sigma(M)
+    for job in vec:
+        s1.job_to_bottom(job)
+
+    vec = [jobs[1], jobs[0]]
+    recompute_r0(vec, 0)
+
+    s2 = empty_sigma(M)
+    for job in vec:
+        s2.job_to_bottom(job)
+
+    c1 = max(s1.C)
+    c2 = max(s2.C)
+    sol = s1 if c1 <= c2 else s2
 
     # Find best insert for every other job
     seq_size = 2
     for j in range(2, len(jobs)):
-        best_cost = LARGE_INT
-        best_sol = None
-        # Positions in sequence
+        base_sig = empty_sigma(M)
+        best_cost = float('inf')
+
         for i in range(seq_size + 1):
-            s_alt = start_perm(sol.m, sol.get_sequence_copy())
             job = jobs[j]
-            s_alt.free_jobs.insert(i, job.copy())
-            # Fix all jobs
-            for _ in range(len(s_alt.free_jobs)):
-                job_i = s_alt.free_jobs.pop(0)
-                s_alt.sigma1.job_to_bottom(job_i)
-            cost_alt = s_alt.calc_bound()
-            # Update best of iteration
+            vec = sol.jobs.copy()
+            vec.insert(i, job)
+            recompute_r0(vec)
+
+            if i > 0:
+                base_sig.job_to_bottom(vec[i - 1])
+
+            s_alt = base_sig.copy()  # Shallow copy
+            for k in range(i, len(vec)):
+                s_alt.job_to_bottom(vec[k])
+
+            cost_alt = max(s_alt.C)
             if cost_alt < best_cost:
                 best_cost = cost_alt
                 best_sol = s_alt
+
         seq_size += 1
         sol = best_sol
-    return sol
+
+    return Permutation(sol.m, [], sol, empty_sigma(M), len(jobs))
 
 
-def local_search(perm: Permutation) -> Permutation:
+def local_search(jobs: list[Job]) -> Permutation:
     """Best insertion heuristic
 
     Parameters
     ----------
-    perm : Permutation
-        Base Solution
+    jobs : list[Job]
+        Jobs used to compose solution
 
     Returns
     -------
@@ -117,50 +126,46 @@ def local_search(perm: Permutation) -> Permutation:
         Solution obtained from best move derived from base solution
     """
 
-    # A new base solution following the same sequence of the current
-    sol_base = start_perm(perm.m, perm.get_sequence_copy())
+    M = len(jobs[0].p)
 
-    # The release date in the first machine must be recomputed
-    # As positions might change
-    recompute_r0(sol_base.free_jobs)
-    best_move = start_perm(perm.m, perm.get_sequence_copy())
-    for _ in range(len(best_move.free_jobs)):
-        job = best_move.free_jobs.pop(0)
-        best_move.sigma1.job_to_bottom(job)
-    best_cost = best_move.calc_bound()
+    recompute_r0(jobs)
+    best_move = empty_sigma(M)
+    for job in jobs:
+        best_move.job_to_bottom(job)
+    best_cost = max(best_move.C)
 
-    # Try to remove every job
-    for i in range(len(sol_base.free_jobs)):
-        # The current list decreases size in one unit after removal
-        for j in range(len(sol_base.free_jobs)):
-            # Job shouldn't be inserted in the same original position
-            # and avoids symmetric swaps
+    for i in range(len(jobs)):
+        base_sig = empty_sigma(M)
+
+        for j in range(len(jobs)):
+            free_jobs = jobs.copy()
+            job = free_jobs.pop(i)
+            free_jobs.insert(j, job)
+
+            if j > 0:
+                recompute_r0(free_jobs, j - 1)
+                base_sig.job_to_bottom(free_jobs[j - 1])
+            else:
+                recompute_r0(free_jobs, j)
+
             if j == i or j == i + 1:
                 continue
 
-            # Here the swap is performed
-            sol_alt = sol_base.copy()
-            job = sol_alt.free_jobs.pop(i)
-            sol_alt.free_jobs.insert(j, job)
-            recompute_r0(sol_alt.free_jobs)
+            s_alt = base_sig.copy()
+            for k in range(j, len(free_jobs)):
+                s_alt.job_to_bottom(free_jobs[k])
 
-            # In the new solution jobs are sequentially
-            # inserted in the last position, so only sigma 1 is modified
-            # Updates to sigma C for each machine are automatic
-            for _ in range(len(sol_alt.free_jobs)):
-                job = sol_alt.free_jobs.pop(0)
-                sol_alt.sigma1.job_to_bottom(job)
-
-            # New bound is computed considering sigma C
-            new_cost = sol_alt.calc_bound()
+            new_cost = max(s_alt.C)
             if new_cost < best_cost:
-                best_move = sol_alt
+                best_move = s_alt
                 best_cost = new_cost
 
-    return best_move
+    return Permutation(best_move.m, [], best_move, empty_sigma(M), len(jobs))
 
 
-def recompute_r0(jobs: list[Job]) -> None:
-    jobs[0].r[0] = 0
-    for j in range(1, len(jobs)):
+def recompute_r0(jobs: list[Job], k: int = 0) -> None:
+    if k == 0:
+        jobs[0].r[0] = 0
+        k += 1
+    for j in range(k, len(jobs)):
         jobs[j].r[0] = jobs[j - 1].r[0] + jobs[j - 1].p[0]
