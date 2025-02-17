@@ -115,6 +115,8 @@ cdef class Node:
 
 
 cdef Node init_node(Problem problem, Node parent=None):
+    cdef:
+        Node node
     node = Node.__new__(Node)
     node.problem = problem
     node.parent = parent
