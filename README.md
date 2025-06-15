@@ -15,26 +15,46 @@ See more examples in the [notebooks folder](./notebooks/):
 - [Lot Sizing](./notebooks/lot-size.ipynb)
 
 
-## Configure
+## Configuration
 
-### Using pip
+### Install
 
-Install all dependencies via pip.
+Install the package and its dependencies via pip from the root of the repository.
 
 ```
-pip install -r requirements.txt
+python -m pip install .
 ```
 
-Build extensions for Cython files.
+To include development resources to run `bnbprob`, tests, and linters, you can simply include the `dev` flavor.
+
+```
+python -m pip install .[dev]
+```
+
+Editable (development) mode can also be a good alternative to keep tracking changes from the files in the original location.
+
+```
+python -m pip install -e .[dev]
+```
+
+All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements and extension settings are under [pyproject.toml](./pyproject.toml).
+
+
+### Build
+
+To build extensions for Cython files, you can run:
 
 ```
 python setup.py build_ext --inplace
 ```
 
-And install the packages from the root.
+Be careful with deprecated commands in the `setup.py` file. You can check deprecated commands [here](https://packaging.python.org/en/latest/discussions/setup-py-deprecated/#needs-build).
+
+
+To build wheels for distribution, it is suggested to run:
 
 ```
-pip install .
+python -m build --wheel
 ```
 
 ## Usage
@@ -223,6 +243,29 @@ problem = gcol.ColGenColor(
 sol = bnb.solve(problem, maxiter=1000)
 print(sol)
 # >>> Status: OPTIMAL | Cost: 17 | LB: 17
+```
+
+
+## Development
+
+### Code Quality
+
+In this project Ruff is used as linter and Mypy as static type checker. Both are configured in [pyproject.toml](./pyproject.toml).
+
+```
+mypy src/
+```
+
+```
+ruff check src/
+```
+
+### Tests
+
+Tests are also configured in [pyproject.toml](./pyproject.toml). The package `pytest` is used as the main framework. To run, execute:
+
+```
+pytest
 ```
 
 
