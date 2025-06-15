@@ -29,16 +29,16 @@ class Permutation:  # noqa: PLR0904
         self.level = level
         self.update_params()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cleanup()
 
     def cleanup(self) -> None:
-        self.free_jobs = None
-        self.sigma1 = None
-        self.sigma2 = None
+        del self.free_jobs
+        del self.sigma1
+        del self.sigma2
 
     @staticmethod
-    def from_p(p: list[list[int]]):
+    def from_p(p: list[list[int]]) -> 'Permutation':
         m = len(p[0])
         jobs = [Job.start_job(j, p[j]) for j in range(len(p))]
 
@@ -50,13 +50,13 @@ class Permutation:  # noqa: PLR0904
         return self.get_sequence()
 
     @property
-    def n_jobs(self):
+    def n_jobs(self) -> int:
         return (
             len(self.sigma1.jobs) + len(self.free_jobs) + len(self.sigma2.jobs)
         )
 
     @property
-    def n_free(self):
+    def n_free(self) -> int:
         return len(self.free_jobs)
 
     def get_sequence(self) -> list[Job]:
@@ -104,14 +104,14 @@ class Permutation:  # noqa: PLR0904
                     self.sigma2.C[m - k], job.q[m - k + 1] + job.p[m - k + 1]
                 )
 
-    def calc_lb_1m(self) -> None:
+    def calc_lb_1m(self) -> int:
         # All positions are filled take values from self
         if len(self.free_jobs) == 0:
             return self.calc_lb_full()
         # Otherwise, use usual LB1
         return self.lower_bound_1m()
 
-    def calc_lb_2m(self) -> None:
+    def calc_lb_2m(self) -> int:
         # All positions are filled take values from self
         if len(self.free_jobs) == 0:
             return self.calc_lb_full()
@@ -174,7 +174,7 @@ class Permutation:  # noqa: PLR0904
             for m in range(self.m)
         ]
 
-    def copy(self, deep=False) -> 'Permutation':
+    def copy(self, deep: bool = False) -> 'Permutation':
         if deep:
             return copy.deepcopy(self)
         perm = Permutation.__new__(Permutation)
@@ -246,7 +246,7 @@ def two_mach_problem(jobs: list[Job], m1: int, m2: int) -> int:
     return res
 
 
-def two_mach_makespan(job_times: list[JobParams], m1: int, m2: int):
+def two_mach_makespan(job_times: list[JobParams], m1: int, m2: int) -> int:
     time_m1 = 0  # Completion time for machine 1
     time_m2 = 0  # Completion time for machine 2
 

@@ -8,12 +8,13 @@ class LazyBnB(BranchAndBound):
     that solves a 2M lower bound (`problem.bound_upgrade`)."""
 
     def __init__(
-        self, rtol=0.0001, atol=0.0001, eval_node='in', save_tree=False
-    ):
-        ...
-
-    def post_eval_callback(self, node: Node) -> None:
-        ...
+        self,
+        rtol: float = 0.0001,
+        atol: float = 0.0001,
+        eval_node: str = 'in',
+        save_tree: bool = False,
+    ): ...
+    def post_eval_callback(self, node: Node) -> None: ...
 
 class CallbackBnB(LazyBnB):
     """Subclass derived from `BranchAndBound` with `post_eval_callback`
@@ -24,14 +25,12 @@ class CallbackBnB(LazyBnB):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
-        eval_node='in',
-        save_tree=False,
-        restart_freq=RESTART,
-    ):
-        ...
-
+        rtol: float = 0.0001,
+        atol: float = 0.0001,
+        eval_node: str = 'in',
+        save_tree: bool = False,
+        restart_freq: int = RESTART,
+    ): ...
     def solution_callback(self, node: Node) -> None:
         """Applies local search with best improvement making
         remove-insertion moves."""
@@ -47,10 +46,9 @@ class CallbackBnBAge(CallbackBnB):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
-        eval_node='in',
-        save_tree=False,
-        restart_freq=RESTART,
-    ):
-        ...
+        rtol: float = 0.0001,
+        atol: float = 0.0001,
+        eval_node: str = 'in',
+        save_tree: bool = False,
+        restart_freq: int = RESTART,
+    ): ...

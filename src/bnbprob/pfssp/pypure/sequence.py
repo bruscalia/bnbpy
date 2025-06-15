@@ -21,11 +21,11 @@ class Sigma:
         self.C = C
         self.m = len(self.C)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cleanup()
 
     def cleanup(self) -> None:
-        self.jobs = None
+        del self.jobs
 
     def job_to_bottom(self, job: Job) -> None:
         """Inserts job to the last position of sequence
@@ -66,7 +66,7 @@ class Sigma:
                 max(self.C[m - k], self.C[m - k + 1]) + job.p[m - k]
             )
 
-    def copy(self, deep=False) -> 'Sigma':
+    def copy(self, deep: bool = False) -> 'Sigma':
         if deep:
             return copy.deepcopy(self)
         sigma = Sigma.__new__(Sigma)

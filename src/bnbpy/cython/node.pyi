@@ -1,8 +1,8 @@
 import itertools
 from typing import Optional
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbpy.cython.problem import Problem
+from bnbpy.cython.solution import Solution
 
 class Node:
     """Class for representing a node in a search tree."""
@@ -12,7 +12,7 @@ class Node:
     lb: float
     children: list[Node]
     _sort_index: int
-    _counter: itertools.count
+    _counter: itertools.count[int]
 
     def __init__(
         self, problem: Problem, parent: Optional['Node'] = None
@@ -30,10 +30,10 @@ class Node:
         """
         ...
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         ...
 
-    def __lt__(self, other: 'Node'):
+    def __lt__(self, other: 'Node') -> bool:
         ...
 
     @property
@@ -44,7 +44,7 @@ class Node:
     def index(self) -> int:
         ...
 
-    def compute_bound(self):
+    def compute_bound(self) -> None:
         """
         Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
@@ -55,7 +55,7 @@ class Node:
         """Calls `problem` `check_feasible()` method"""
         ...
 
-    def set_solution(self, solution: Solution):
+    def set_solution(self, solution: Solution) -> None:
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -66,14 +66,14 @@ class Node:
         """
         ...
 
-    def fathom(self):
+    def fathom(self) -> None:
         """Sets solution status of node as 'FATHOMED'"""
         ...
 
-    def copy(self, deep=True):
+    def copy(self, deep: bool = True) -> 'Node':
         ...
 
-    def deep_copy(self):
+    def deep_copy(self) -> 'Node':
         ...
 
     def branch(self) -> list['Node']:

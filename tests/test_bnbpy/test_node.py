@@ -3,7 +3,7 @@ import pytest
 from bnbpy.node import Node
 from bnbpy.solution import Solution
 from bnbpy.status import OptStatus
-from test_bnbpy.myproblem import MyProblem
+from tests.fixtures.myproblem import MyProblem
 
 
 @pytest.mark.node

@@ -1,7 +1,7 @@
 import pyomo.environ as pyo
 
 
-def disjunctive_model(p: list[list[int]]):
+def disjunctive_model(p: list[list[int]]) -> pyo.ConcreteModel:
     """Positional model for Permutation Flow-Shop Scheduling Problem
 
     Parameters
@@ -45,15 +45,15 @@ def disjunctive_model(p: list[list[int]]):
 
 
 # Constraints
-def cstr_position(model, k):
+def cstr_position(model: pyo.ConcreteModel, k: int) -> pyo.Expression:
     return sum(model.x[j, k] for j in model.J) == 1
 
 
-def cstr_job(model, j):
+def cstr_job(model: pyo.ConcreteModel, j: int) -> pyo.Expression:
     return sum(model.x[j, k] for k in model.K) == 1
 
 
-def cstr_seq(model, m, k):
+def cstr_seq(model: pyo.ConcreteModel, m: int, k: int) -> pyo.Expression:
     if k == model.K.last():
         return pyo.Constraint.Skip
     return (
@@ -62,7 +62,7 @@ def cstr_seq(model, m, k):
     )
 
 
-def cstr_precede(model, m, k):
+def cstr_precede(model: pyo.ConcreteModel, m: int, k: int) -> pyo.Expression:
     if m == model.M.last():
         return pyo.Constraint.Skip
     return (
@@ -71,13 +71,13 @@ def cstr_precede(model, m, k):
     )
 
 
-def cstr_comp_precede(model, j, k):
+def cstr_comp_precede(model: pyo.ConcreteModel, j: int, k: int) -> pyo.Expression:
     if j == k:
         return model.z[j, k] + model.z[k, j] == 0.0
     return model.z[j, k] + model.z[k, j] == 1.0
 
 
-def cstr_total_time(model, m):
+def cstr_total_time(model: pyo.ConcreteModel, m: int) -> pyo.Expression:
     k = model.K.last()
     return (
         model.h[m, k] + sum(model.p[j, m] * model.x[j, k] for j in model.J)

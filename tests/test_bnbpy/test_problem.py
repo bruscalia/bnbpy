@@ -2,7 +2,7 @@ import pytest
 
 from bnbpy.problem import Problem
 from bnbpy.solution import Solution
-from test_bnbpy.myproblem import MyProblem
+from tests.fixtures.myproblem import MyProblem
 
 
 @pytest.mark.problem

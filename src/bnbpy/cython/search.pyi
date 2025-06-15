@@ -1,9 +1,9 @@
 from typing import Any, Literal, Optional, Union
 
 from bnbpy.cython.node import Node
+from bnbpy.cython.problem import Problem
+from bnbpy.cython.solution import Solution
 from bnbpy.logger import SearchLogger
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
 
 class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
@@ -93,7 +93,7 @@ class BranchAndBound:
         """
         ...
 
-    def enqueue(self, node: Node):
+    def enqueue(self, node: Node) -> None:
         """Include new node into queue
 
         Parameters
@@ -123,7 +123,7 @@ class BranchAndBound:
         """
         ...
 
-    def fathom(self, node: Node):  # noqa: PLR6301
+    def fathom(self, node: Node) -> None:  # noqa: PLR6301
         """Fathom node (by default is not deleted)
 
         If deletion is required for managing memory, remember to delete
@@ -136,30 +136,30 @@ class BranchAndBound:
         """
         ...
 
-    def pre_eval_callback(self, node: Node):
+    def pre_eval_callback(self, node: Node) -> None:
         """Abstraction for callbacks before node bound evaluation"""
         ...
 
-    def post_eval_callback(self, node: Node):
+    def post_eval_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node bound evaluation"""
         ...
 
-    def enqueue_callback(self, node: Node):
+    def enqueue_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node is enqueued"""
         ...
 
-    def dequeue_callback(self, node: Node):
+    def dequeue_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node is dequeued"""
         ...
 
-    def solution_callback(self, node: Node):
+    def solution_callback(self, node: Node) -> None:
         """
         Abstraction for callback when a candidate
         feasible solution is verified (before being set)
         """
         ...
 
-    def set_solution(self, node: Node):
+    def set_solution(self, node: Node) -> None:
         """Assigns the current node as incumbent, updates gap and calls
         `solution_callback`
 
@@ -170,13 +170,13 @@ class BranchAndBound:
         """
         ...
 
-    def log_row(self, message: str):
+    def log_row(self, message: str) -> None:
         ...
 
 class BreadthFirstBnB(BranchAndBound):
     """Breadth-first Branch & Bound algorithm"""
 
-    def enqueue(self, node: Node):
+    def enqueue(self, node: Node) -> None:
         """Include new node into queue
 
         Parameters
@@ -197,8 +197,8 @@ class BestFirstBnB(BranchAndBound):
     ...
 
 def configure_logfile(
-    filename: str, only_messages: bool = True, mode='a', **kwargs
-):
+    filename: str, only_messages: bool = True, mode: str = 'a', **kwargs: Any
+) -> None:
     """Configure logfile to write solution INFO messages
 
     Parameters

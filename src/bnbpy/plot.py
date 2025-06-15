@@ -7,7 +7,7 @@ from bnbpy.node import Node
 from bnbpy.status import OptStatus
 
 
-def get_color(node: Node):  # noqa: PLR0911
+def get_color(node: Node) -> str:  # noqa: PLR0911
     if node.parent is None:
         return 'cyan'
     if node.solution.status is OptStatus.OPTIMAL:
@@ -23,7 +23,7 @@ def get_color(node: Node):  # noqa: PLR0911
     return 'lightgrey'
 
 
-class Edges(list):
+class Edges(list[Any]):
     nodes: List[Node]
 
     def __init__(self, root: Node):
@@ -31,18 +31,18 @@ class Edges(list):
         self.nodes = []
         self.traverse(root)
 
-    def traverse(self, node: Node):
+    def traverse(self, node: Node) -> None:
         self.nodes.append(node)
         for child in node.children:
             self.append((node.index, child.index))
             self.traverse(child)
 
     @property
-    def colors(self):
+    def colors(self) -> dict[int, str]:
         return {node.index: get_color(node) for node in self.nodes}
 
 
-def _format_lb(x):
+def _format_lb(x: float | str) -> str:
     if isinstance(x, float):
         return f'{x:.1f}'
     else:
@@ -54,10 +54,10 @@ def plot_tree(  # noqa: PLR0913, PLR0917
     align: str = 'horizontal',
     show_lb: bool = True,
     custom_labels: Any = None,
-    figsize: Optional[Union[tuple, list]] = None,
+    figsize: Optional[Union[tuple[Any, ...], list[Any]]] = None,
     dpi: int = 100,
-    **options
-):
+    **options: Any
+) -> None:
     """From the root node of a solved Branch & Bound, create a tree-plot
 
     Parameters
@@ -87,7 +87,7 @@ def plot_tree(  # noqa: PLR0913, PLR0917
     tree_edges = Edges(root)
 
     # Create a directed graph
-    G = nx.DiGraph()
+    G: nx.DiGraph = nx.DiGraph()
     G.add_edges_from(tree_edges)
 
     # Draw the graph with a spring layout

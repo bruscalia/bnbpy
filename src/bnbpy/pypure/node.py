@@ -1,6 +1,6 @@
 import copy
 import itertools
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from bnbpy.pypure.problem import Problem
 from bnbpy.pypure.solution import Solution
@@ -15,7 +15,7 @@ class Node:
     lb: Union[float, int]
     children: List['Node']
     _sort_index: int
-    _counter = itertools.count
+    _counter: itertools.count[int]
 
     def __init__(
         self, problem: Problem, parent: Optional['Node'] = None
@@ -39,25 +39,25 @@ class Node:
             self.level = 0
             self.lb = self.problem.lb
         else:
-            self._counter = self.parent._counter
-            self.lb = self.parent.lb
+            self._counter = parent._counter
+            self.lb = parent.lb
             self.level = parent.level + 1
         self._sort_index = next(self._counter)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cleanup()
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         if self.problem:
             self.problem.cleanup()
-            self.problem = None
+            del self.problem
         if self.children is not None:
             for child in self.children:
                 child.parent = None
         if self.parent:
             self.parent = None
 
-    def __lt__(self, other: 'Node'):
+    def __lt__(self, other: 'Node') -> bool:
         return self._sort_index > other._sort_index
 
     @property
@@ -65,10 +65,10 @@ class Node:
         return self.problem.solution
 
     @property
-    def index(self):
+    def index(self) -> int:
         return self._sort_index
 
-    def compute_bound(self, **options):
+    def compute_bound(self, **options: Any) -> None:
         """
         Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
@@ -76,7 +76,7 @@ class Node:
         self.problem.compute_bound(**options)
         self.lb = max(self.lb, self.problem.lb)
 
-    def check_feasible(self):
+    def check_feasible(self) -> bool:
         """Calls `problem` `check_feasible()` method"""
         return self.problem.check_feasible()
 
@@ -101,7 +101,7 @@ class Node:
         self.children = children
         return self.children
 
-    def set_solution(self, solution: Solution):
+    def set_solution(self, solution: Solution) -> None:
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -113,19 +113,19 @@ class Node:
         self.problem.set_solution(solution)
         self.lb = self.problem.lb
 
-    def fathom(self):
+    def fathom(self) -> None:
         """Sets solution status of node as 'FATHOMED'"""
         self.solution.fathom()
 
-    def copy(self, deep=True):
+    def copy(self, deep: bool = True) -> 'Node':
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
-    def deep_copy(self):
+    def deep_copy(self) -> 'Node':
         other = copy.deepcopy(self)
         return other
 
-    def shallow_copy(self):
+    def shallow_copy(self) -> 'Node':
         other = copy.copy(self)
         return other

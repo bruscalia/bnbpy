@@ -47,14 +47,14 @@ class PermFlowShop:
     ) -> None:
         ...
 
-    def __del__(self):
+    def __del__(self) -> None:
         ...
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         ...
 
     @property
-    def lb(self):
+    def lb(self) -> float:
         ...
 
     def compute_bound(self) -> None:
@@ -171,13 +171,13 @@ class PermFlowShop:
         # Get fixed and unfixed job lists to create new solution
         ...
 
-    def bound_upgrade(self):
+    def bound_upgrade(self) -> None:
         """
         Solves 2-machine subproblems to upgrade current lower bound
         """
         ...
 
-    def copy(self):
+    def copy(self) -> 'PermFlowShop':
         ...
 
 class PermFlowShop2M(PermFlowShop):

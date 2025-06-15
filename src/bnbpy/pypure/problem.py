@@ -1,6 +1,6 @@
 import copy
 from abc import ABC, abstractmethod
-from typing import List, Optional, Union
+from typing import Optional, Sequence, Union
 
 from bnbpy.pypure.solution import Solution
 from bnbpy.pypure.status import OptStatus
@@ -16,14 +16,14 @@ class Problem(ABC):
         super().__init__()
         self.solution = Solution()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cleanup()
 
-    def cleanup(self):
-        self.solution = None
+    def cleanup(self) -> None:
+        del self.solution
 
     @abstractmethod
-    def calc_bound(self) -> Optional[Union[int, float]]:
+    def calc_bound(self) -> Union[int, float]:
         """Returns a lower bound of the (sub)problem."""
         pass
 
@@ -36,15 +36,15 @@ class Problem(ABC):
         pass
 
     @abstractmethod
-    def branch(self) -> Optional[List['Problem']]:
+    def branch(self) -> Optional[Sequence['Problem']]:
         """Generates child nodes (problems) by branching."""
         pass
 
     @property
-    def lb(self):
+    def lb(self) -> Union[int, float]:
         return self.solution.lb
 
-    def compute_bound(self):
+    def compute_bound(self) -> None:
         """
         Computes the lower bound of the (sub)problem via `calc_bound`
         and sets it as the value of the attribute `lb`
@@ -71,7 +71,7 @@ class Problem(ABC):
             self.solution.set_infeasible()
         return feas
 
-    def set_solution(self, solution: Solution):
+    def set_solution(self, solution: Solution) -> None:
         """Overwrites problem solution and computes lower bound in case
         if is not yet solved
 
@@ -96,15 +96,15 @@ class Problem(ABC):
         """
         return None
 
-    def copy(self, deep=True):
+    def copy(self, deep: bool = True) -> 'Problem':
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
-    def deep_copy(self):
+    def deep_copy(self) -> 'Problem':
         other = copy.deepcopy(self)
         return other
 
-    def shallow_copy(self):
+    def shallow_copy(self) -> 'Problem':
         other = copy.copy(self)
         return other
