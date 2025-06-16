@@ -1,6 +1,7 @@
 #include "neh.hpp"
 
 #include <algorithm>
+#include <climits>
 #include <vector>
 
 #include "job.hpp"
