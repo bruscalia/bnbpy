@@ -1,5 +1,10 @@
 [build-system]
-requires = ["setuptools", "wheel", "numpy>=1.19.0", "Cython>=0.29.21"]
+requires = [
+    "setuptools>=64",
+    "wheel",
+    "Cython>=3.0",
+    "numpy>=1.19.0"
+]
 build-backend = "setuptools.build_meta"
 
 [tool.ruff]
@@ -21,6 +26,12 @@ select = [
 [tool.ruff.format]
 preview = true
 quote-style = "single"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+strict = true
+disable_error_code = ["unused-ignore"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

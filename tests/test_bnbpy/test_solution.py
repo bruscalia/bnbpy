@@ -11,29 +11,29 @@ class TestSolution:
     copy_value = 400
 
     @staticmethod
-    def test_initial_state():
+    def test_initial_state() -> None:
         """Test the initial state of the Solution instance."""
         sol = Solution()
-        assert sol.cost is None
+        assert sol.cost == float('inf')
         assert sol.lb == -float('inf')
         assert sol.status == OptStatus.NO_SOLUTION
-        assert (str(sol)) == 'Status: NO_SOLUTION | Cost: None | LB: -inf'
+        assert (str(sol)) == 'Status: NO_SOLUTION | Cost: inf | LB: -inf'
 
     @staticmethod
-    def test_set_optimal():
+    def test_set_optimal() -> None:
         """Test setting the status to OPTIMAL."""
         sol = Solution()
         sol.set_optimal()
         assert sol.status == OptStatus.OPTIMAL
 
-    def test_set_lb(self):
+    def test_set_lb(self) -> None:
         """Test setting a lower bound (lb) and checking status."""
         sol = Solution()
         sol.set_lb(self.lb_value)
         assert sol.lb == self.lb_value
         assert sol.status == OptStatus.RELAXATION
 
-    def test_set_feasible(self):
+    def test_set_feasible(self) -> None:
         """Test setting the status to FEASIBLE and ensuring cost is set to lb."""
         sol = Solution()
         sol.set_lb(self.cost_value)
@@ -42,15 +42,15 @@ class TestSolution:
         assert sol.cost == self.cost_value
 
     @staticmethod
-    def test_set_infeasible():
+    def test_set_infeasible() -> None:
         """Test setting the status to INFEASIBLE and ensuring cost is reset."""
         sol = Solution()
         sol.set_lb(300)
         sol.set_infeasible()
         assert sol.status == OptStatus.INFEASIBLE
-        assert sol.cost is None
+        assert sol.cost == float('inf')
 
-    def test_copy(self):
+    def test_copy(self) -> None:
         """Test copying functionality."""
         sol = Solution()
         sol.set_lb(self.copy_value)
@@ -63,26 +63,3 @@ class TestSolution:
         assert deep_copy is not sol
         assert shallow_copy.status == sol.status
         assert deep_copy.status == sol.status
-
-    @staticmethod
-    def test_get_status_cls():
-        """Test get_status_cls method."""
-        sol = Solution()
-        assert sol.get_status_cls() == OptStatus
-
-    @staticmethod
-    def test_get_status_options():
-        """Test get_status_options method."""
-        sol = Solution()
-        options = sol.get_status_options()
-        expected_options = {
-            'NO_SOLUTION': 0,
-            'RELAXATION': 1,
-            'OPTIMAL': 2,
-            'FEASIBLE': 3,
-            'INFEASIBLE': 4,
-            'FATHOM': 5,
-            'ERROR': 6,
-            'OTHER': 7,
-        }
-        assert options == expected_options

@@ -1,34 +1,32 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from libcpp.string cimport string
 
 from typing import Optional
 
-from bnbprob.pfssp.cython.heuristics cimport (
-    local_search as ls,
-    neh_constructive as neh,
-    quick_constructive as qc,
+from bnbprob.pfssp.cpp.environ cimport (
+    Permutation,
+    local_search,
+    neh_constructive,
+    quick_constructive
 )
-from bnbprob.pfssp.cython.permutation cimport Permutation
 from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbpy.cython.problem cimport Problem
 
 
-cdef class PermFlowShop:
+cdef class PermFlowShop(Problem):
 
     cdef public:
-        FlowSolution solution
-        str constructive
+        string constructive
+        # Cannot override attribute `solution` in cdef class
+        # due to Cython limitation
 
-    cpdef void cleanup(PermFlowShop self)
+    cdef inline FlowSolution get_solution(PermFlowShop self):
+        return <FlowSolution>self.solution
 
     cdef void ccleanup(PermFlowShop self)
-
-    cpdef void compute_bound(PermFlowShop self)
-
-    cpdef bool check_feasible(PermFlowShop self)
-
-    cpdef void set_solution(PermFlowShop self, object solution)
 
     cpdef FlowSolution warmstart(PermFlowShop self)
 
@@ -38,21 +36,21 @@ cdef class PermFlowShop:
 
     cpdef FlowSolution local_search(PermFlowShop self)
 
-    cpdef int calc_bound(PermFlowShop self)
+    cpdef double calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)
 
     cpdef list[PermFlowShop] branch(PermFlowShop self)
 
-    cdef PermFlowShop _child_push(PermFlowShop self, int j)
+    cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
     cpdef void bound_upgrade(PermFlowShop self)
 
-    cpdef PermFlowShop copy(PermFlowShop self)
+    cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
 
 
 cdef class PermFlowShop2M(PermFlowShop):
 
-    cpdef int calc_bound(PermFlowShop2M self)
+    cpdef double calc_bound(PermFlowShop2M self)

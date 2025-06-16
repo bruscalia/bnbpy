@@ -1,6 +1,6 @@
 import copy
 from dataclasses import dataclass
-from typing import List
+from typing import Any, List
 
 import numpy as np
 
@@ -23,7 +23,7 @@ class Job:
     Job delivery time on each machine based on partial solution
     (1 | :math:`r_j` , :math:`q_j` | :math:`sum_{j in J}{w_j C_j}`)
     """
-    lat: np.ndarray[tuple[int, int], int]
+    lat: np.ndarray[tuple[int, int], Any]
     """Job latency between two machines `sum(p_i k < i < m)`"""
 
     def __repr__(self) -> str:
@@ -33,36 +33,32 @@ class Job:
         return self._signature
 
     @property
-    def _signature(self):
+    def _signature(self) -> str:
         return f'Job {self.j}'
 
     @property
-    def slope(self):
+    def slope(self) -> float:
         """Slope in fast initialization heuristic"""
         m = len(self.p) + 1
-        s = 0
+        s = 0.0
         for k in range(1, m):
             s += (k - (m + 1) / 2) * self.p[k - 1]
         return s
 
     @property
-    def T(self):
+    def T(self) -> int:
         """Total processing time initialization heuristic"""
         return sum(self.p)
 
     @staticmethod
-    def start_job(j: int, p: list[int]):
+    def start_job(j: int, p: list[int]) -> 'Job':
         return start_job(j, p)
 
-    def copy(self, deep=False):
+    def copy(self, deep: bool = False) -> 'Job':
         if deep:
             return copy.deepcopy(self)
         other = Job(
-            self.j,
-            self.p,
-            copy.copy(self.r),
-            copy.copy(self.q),
-            self.lat
+            self.j, self.p, copy.copy(self.r), copy.copy(self.q), self.lat
         )
         return other
 
@@ -77,9 +73,7 @@ def start_job(j: int, p: list[int]) -> Job:
     lat = np.zeros((m, m), dtype='i')
 
     # Compute sums
-    T = 0
     for m1 in range(m):
-        T += p[m1]
         for m2 in range(m):
             if m2 + 1 < m1:  # Ensure range is valid
                 sum_p = 0

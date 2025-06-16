@@ -1,10 +1,17 @@
-from bnbprob.pfssp.environ import (  # noqa: F401
+__all__ = [
+    "CallbackBnB",
+    "CallbackBnBAge",
+    "LazyBnB",
+    "PermFlowShop",
+    "PermFlowShop2M",
+    "plot_gantt"
+]
+
+from bnbprob.pfssp.environ import (
     CallbackBnB,
     CallbackBnBAge,
-    Job,
     LazyBnB,
     PermFlowShop,
     PermFlowShop2M,
-    Permutation,
 )
-from bnbprob.pfssp.plot import plot_gantt  # noqa: F401
+from bnbprob.pfssp.plot import plot_gantt

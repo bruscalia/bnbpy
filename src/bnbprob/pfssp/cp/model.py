@@ -5,7 +5,7 @@ from ortools.sat.python import cp_model
 from bnbprob.pfssp.cp.datamodels import CPFlowShop, CPJob, CPResults
 
 
-def build_cpsat(p: list[list[int]], lock_perm=True) -> CPFlowShop:
+def build_cpsat(p: list[list[int]], lock_perm: bool = True) -> CPFlowShop:
     """Create a constraint programming model using CP-SAT
 
     Parameters
@@ -28,10 +28,7 @@ def build_cpsat(p: list[list[int]], lock_perm=True) -> CPFlowShop:
     # Create the model
     model = cp_model.CpModel()
 
-    jobs = {
-        j: CPJob(j, p[j])
-        for j in range(J)
-    }
+    jobs = {j: CPJob(j, p[j]) for j in range(J)}
 
     # Sets
     V = sum((sum(pi, 0) for pi in p), 0)  # Upper bound on makespan
@@ -41,7 +38,7 @@ def build_cpsat(p: list[list[int]], lock_perm=True) -> CPFlowShop:
     _fill_jobs(model, jobs, machines, V)
 
     # Makespan variable
-    makespan = model.NewIntVar(0, V, "makespan")
+    makespan = model.NewIntVar(0, V, 'makespan')
 
     # Arc variables for the circuit constraint
     if lock_perm:
@@ -61,9 +58,7 @@ def build_cpsat(p: list[list[int]], lock_perm=True) -> CPFlowShop:
     # Add precedence constraints for each job
     for job in jobs.values():
         for m in machines[:-1]:
-            model.Add(
-                job.starts[m + 1] >= job.ends[m]
-            )
+            model.Add(job.starts[m + 1] >= job.ends[m])
 
     # Add disjunctive constraints for all tasks on the same machine
     for m in machines:
@@ -81,22 +76,19 @@ def build_cpsat(p: list[list[int]], lock_perm=True) -> CPFlowShop:
     return flow_model
 
 
-def log_callback(message):
-    sys.stdout.write(message + "\n")
+def log_callback(message: str) -> None:
+    sys.stdout.write(message + '\n')
     sys.stdout.flush()
 
 
-def extract_results(flow_model: CPFlowShop, solver: cp_model.CpSolver):
-    result = CPResults(
-        solver.Value(flow_model.makespan),
-        []
-    )
+def extract_results(
+    flow_model: CPFlowShop, solver: cp_model.CpSolver
+) -> CPResults:
+    result = CPResults(solver.Value(flow_model.makespan), [])
     for job in flow_model.jobs.values():
         job_schedule = []
         for m in flow_model.machines:
-            start_time = solver.Value(
-                job.starts[m]
-            )
+            start_time = solver.Value(job.starts[m])
             job_schedule.append(start_time)
         job.r = job_schedule
 
@@ -106,8 +98,9 @@ def extract_results(flow_model: CPFlowShop, solver: cp_model.CpSolver):
     return result
 
 
-def solve_cpsat(flow_model: CPFlowShop, verbose=True, time_limit=None):
-
+def solve_cpsat(
+    flow_model: CPFlowShop, verbose: bool = True, time_limit: int | None = None
+) -> CPResults | None:
     # Solve the model
     solver = cp_model.CpSolver()
 
@@ -121,7 +114,8 @@ def solve_cpsat(flow_model: CPFlowShop, verbose=True, time_limit=None):
     status = solver.Solve(flow_model.model)
 
     # Extract solution
-    if status in {cp_model.OPTIMAL, cp_model.FEASIBLE}:
+    # Needed to disable ruff due to mypy
+    if int(status) in {int(cp_model.OPTIMAL), int(cp_model.FEASIBLE)}:  # type: ignore
         return extract_results(flow_model, solver)
     else:
         return None
@@ -131,21 +125,18 @@ def _fill_jobs(
     model: cp_model.CpModel,
     jobs: dict[int, CPJob],
     machines: list[int],
-    V: int
-):
+    V: int,
+) -> None:
     # Start and end times for each task
     for j, job in jobs.items():
         job.starts = []
         job.ends = []
         job.intervals = []
         for m in machines:
-            start = model.NewIntVar(0, V, f"s_{j}_{m}")
-            end = model.NewIntVar(0, V, f"e_{j}_{m}")
+            start = model.NewIntVar(0, V, f's_{j}_{m}')
+            end = model.NewIntVar(0, V, f'e_{j}_{m}')
             interval = model.NewIntervalVar(
-                start,
-                job.p[m],
-                end,
-                f"x_{job}_{m}"
+                start, job.p[m], end, f'x_{job}_{m}'
             )
             job.starts.append(start)
             job.ends.append(end)
@@ -153,18 +144,17 @@ def _fill_jobs(
 
 
 def _create_arcs(
-    model: cp_model.CpModel,
-    J: int
+    model: cp_model.CpModel, J: int
 ) -> dict[tuple[int, int], cp_model.IntVar]:
     arcs = {}
     for i in range(J):
         # Dummy arcs make the first position flexible
-        from_dummy = model.NewBoolVar(f"arc_dummy_{i}")
+        from_dummy = model.NewBoolVar(f'arc_dummy_{i}')
         arcs[-1, i] = from_dummy
-        to_dummy = model.NewBoolVar(f"arc_{i}_dummy")
+        to_dummy = model.NewBoolVar(f'arc_{i}_dummy')
         arcs[i, -1] = to_dummy
         for j in range(J):
             if i != j:
-                arc = model.NewBoolVar(f"arc_{i}_{j}")
+                arc = model.NewBoolVar(f'arc_{i}_{j}')
                 arcs[i, j] = arc
     return arcs

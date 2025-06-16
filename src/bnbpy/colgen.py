@@ -2,7 +2,7 @@ import copy
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Optional, Set
+from typing import Any, Optional, Set, cast
 
 from bnbpy.problem import Problem
 
@@ -21,7 +21,7 @@ class PriceSol:
     red_cost: float
     new_col: Any
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(str(self.new_col))
 
     def __eq__(self, value: object) -> bool:
@@ -37,7 +37,7 @@ class MasterSol:
     cost: float
     duals: Any
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(str(self))
 
 
@@ -49,12 +49,12 @@ class Pricing(ABC):
     solutions: Set[PriceSol]
     """Solutions to price problems already returned"""
 
-    def __init__(self, price_tol=1e-2):
+    def __init__(self, price_tol: float = 1e-2):
         self.price_tol = price_tol
         self.solutions = set()
 
     @abstractmethod
-    def set_weights(self, c: Any):
+    def set_weights(self, c: Any) -> None:
         """Modifies problem by incorporating new weights
 
         Parameters
@@ -88,8 +88,9 @@ class Pricing(ABC):
         ):
             self.solutions.add(sol_price)
             return sol_price
+        return None
 
-    def copy(self, deep=False):
+    def copy(self, deep: bool = False) -> 'Pricing':
         if deep:
             return copy.deepcopy(self)
         child = copy.copy(self)
@@ -130,7 +131,7 @@ class Master(ABC):
         """
         pass
 
-    def copy(self, deep=False):
+    def copy(self, deep: bool = False) -> 'Master':
         if deep:
             return copy.deepcopy(self)
         return copy.copy(self)
@@ -169,12 +170,12 @@ class ColumnGenProblem(Problem):
         self.master = master
         self.pricing = pricing
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         super().cleanup()
-        self.master = None
-        self.pricing = None
+        del self.master
+        del self.pricing
 
-    def calc_bound(self):
+    def calc_bound(self) -> float:
         sol_master = self._calc_bound()
         return sol_master.cost
 
@@ -197,9 +198,9 @@ class ColumnGenProblem(Problem):
                 break
         return sol_master
 
-    def copy(self, deep=False):
+    def copy(self, deep: bool = False) -> 'ColumnGenProblem':
         if deep:
-            return super().copy(deep=True)
+            return cast(ColumnGenProblem, super().copy(deep=True))
         child = copy.copy(self)
         child.solution = self.solution.copy(deep=False)
         child.pricing = self.pricing.copy()

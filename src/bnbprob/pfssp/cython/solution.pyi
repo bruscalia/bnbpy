@@ -1,28 +1,23 @@
 
-from bnbprob.pfssp.cython.job import Job
-from bnbprob.pfssp.cython.permutation import Permutation
-from bnbpy.status import OptStatus
+from bnbprob.pfssp.pypure.job import Job
+from bnbpy.cython.status import OptStatus
 
 class FlowSolution:
     """
     Solution representation to the Permutation Flow Shop
     Scheduling Problem
     """
-    perm: Permutation
     cost: int
     lb: int
     status: OptStatus
 
-    def __init__(self, perm: Permutation):
+    def __del__(self) -> None:
         ...
 
-    def __del__(self):
+    def get_status_cls(self) -> type:
         ...
 
-    def get_status_cls(self):
-        ...
-
-    def get_status_options(self):
+    def get_status_options(self) -> list[str]:
         ...
 
     @property
@@ -31,7 +26,7 @@ class FlowSolution:
 
     @property
     def free_jobs(self) -> list[Job]:
-        return self.perm.free_jobs
+        ...
 
     def calc_lb_1m(self) -> int:
         ...

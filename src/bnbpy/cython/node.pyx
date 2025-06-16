@@ -1,40 +1,29 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
 
 import copy
 import itertools
-from typing import Optional
 
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
+from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
 
 
 cdef class Node:
     """Class for representing a node in a search tree."""
 
     def __init__(
-        self, problem: Problem, parent: Optional['Node'] = None
+        self, Problem problem, Node parent=None
     ) -> None:
-        """Instantiates a new `Node` object based on a (sub)problem.
-        The node is evaluated in terms of lower bound as it is initialized.
 
-        Parameters
-        ----------
-        problem : Problem
-            Problem instance derived from parent node
-
-        parent : Optional[Node], optional
-            Parent node itself, if not root, by default None
-        """
         self.problem = problem
         self.parent = parent
         self.children = []
         if parent is None:
             self._counter = itertools.count()
             self.level = 0
-            self.lb = self.problem.lb
+            self.lb = self.problem.get_lb()
         else:
             self._counter = self.parent._counter
             self.lb = self.parent.lb
@@ -61,60 +50,29 @@ cdef class Node:
 
     @property
     def solution(self) -> Solution:
-        return self.problem.solution
+        return self.get_solution()
 
     @property
     def index(self):
         return self._sort_index
 
     cpdef void compute_bound(Node self):
-        """
-        Computes the lower bound of the problem and sets it to
-        problem attribute `lb`, which is referenced as a `Node` property.
-        """
         self.problem.compute_bound()
-        self.lb = max(self.lb, self.problem.lb)
+        self.lb = max(self.lb, self.problem.get_lb())
 
     cpdef bool check_feasible(Node self):
-        """Calls `problem` `check_feasible()` method"""
         return self.problem.check_feasible()
 
-    cpdef void set_solution(Node self, solution: Solution):
-        """Calls method `set_solution` of problem, which also computes
-        its lower bound if not yet solved.
-
-        Parameters
-        ----------
-        solution : Solution
-            New solution to overwrite current
-        """
+    cpdef void set_solution(Node self, Solution solution):
         self.problem.set_solution(solution)
-        self.lb = self.problem.lb
+        self.lb = self.problem.get_lb()
 
-    cpdef void fathom(Node self):
-        """Sets solution status of node as 'FATHOMED'"""
-        self.solution.fathom()
-
-    def copy(self, deep=True):
+    cpdef Node copy(self, bool deep=True):
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
-    def deep_copy(self):
-        other = copy.deepcopy(self)
-        return other
-
     cpdef list[Node] branch(Node self):
-        """Calls `problem` `branch()` method to create derived sub-problems.
-        Each subproblem is used to instantiate a child node.
-        Child nodes are evaluated in terms of lower bound as they are
-        initialized.
-
-        Returns
-        -------
-        Optional[List['Node']]
-            List of child nodes, if any
-        """
         cdef:
             list prob_children
             list[Node] children
@@ -129,7 +87,7 @@ cdef class Node:
         self.children = children
         return self.children
 
-    cdef Node child_problem(Node self, object problem):
+    cdef Node child_problem(Node self, Problem problem):
         cdef:
             Node other
         other = Node.__new__(Node)
@@ -142,7 +100,9 @@ cdef class Node:
         other._sort_index = next(other._counter)
         return other
 
-    cpdef Node shallow_copy(Node self):
+    cdef Node shallow_copy(Node self):
+        cdef:
+            Node other
         other = Node.__new__(Node)
         other.problem = self.problem
         other.parent = self
@@ -152,3 +112,22 @@ cdef class Node:
         other.level = self.level + 1
         other._sort_index = next(other._counter)
         return other
+
+
+cdef Node init_node(Problem problem, Node parent=None):
+    cdef:
+        Node node
+    node = Node.__new__(Node)
+    node.problem = problem
+    node.parent = parent
+    node.children = []
+    if parent is None:
+        node._counter = itertools.count()
+        node.level = 0
+        node.lb = node.problem.get_lb()
+    else:
+        node._counter = parent._counter
+        node.lb = parent.lb
+        node.level = parent.level + 1
+    node._sort_index = next(node._counter)
+    return node

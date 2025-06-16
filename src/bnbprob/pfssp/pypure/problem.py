@@ -1,5 +1,5 @@
 import logging
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Sequence
 
 from bnbprob.pfssp.pypure.heuristics import (
     local_search as ls,
@@ -12,7 +12,7 @@ from bnbprob.pfssp.pypure.heuristics import (
 )
 from bnbprob.pfssp.pypure.permutation import Permutation
 from bnbprob.pfssp.pypure.solution import FlowSolution
-from bnbpy import Problem
+from bnbpy.pypure.problem import Problem
 
 log = logging.getLogger(__name__)
 
@@ -61,11 +61,11 @@ class PermFlowShop(Problem):
         self.solution = solution
         self.constructive = constructive
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.cleanup()
 
     def cleanup(self) -> None:
-        self.solution = None
+        del self.solution
 
     @classmethod
     def from_p(
@@ -170,7 +170,7 @@ class PermFlowShop(Problem):
             New solution (best improvement) if exists
         """
         lb = self.solution.lb
-        perm = ls(self.solution.perm)
+        perm = ls(self.solution.sequence)
         sol_alt = FlowSolution(perm)
         new_cost = sol_alt.perm.calc_bound()
         if new_cost < lb:
@@ -183,7 +183,7 @@ class PermFlowShop(Problem):
     def is_feasible(self) -> bool:
         return self.solution.perm.is_feasible()
 
-    def branch(self) -> list['PermFlowShop']:
+    def branch(self) -> Sequence['PermFlowShop']:
         # Get fixed and unfixed job lists to create new solution
         return [
             self._child_push(j)
@@ -203,7 +203,7 @@ class PermFlowShop(Problem):
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 
-    def copy(self) -> 'PermFlowShop':
+    def copy(self, deep: bool = False) -> 'PermFlowShop':
         child = type(self).__new__(type(self))
         child.solution = self.solution.copy()
         child.constructive = self.constructive

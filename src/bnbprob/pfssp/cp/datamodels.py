@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ortools.sat.python import cp_model
 
@@ -7,10 +7,10 @@ from ortools.sat.python import cp_model
 class CPJob:
     j: int
     p: list[int]
-    r: list[int] = None
-    starts: list[cp_model.IntVar] = None
-    ends: list[cp_model.IntVar] = None
-    intervals: list[cp_model.IntervalVar] = None
+    r: list[int] = field(default_factory=list)
+    starts: list[cp_model.IntVar] = field(default_factory=list)
+    ends: list[cp_model.IntVar] = field(default_factory=list)
+    intervals: list[cp_model.IntervalVar] = field(default_factory=list)
 
 
 @dataclass

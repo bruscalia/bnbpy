@@ -1,2 +1,8 @@
-from bnbprob.milpy.colgen import ColGenMILP  # noqa: F401
-from bnbprob.milpy.problem import MILP, MILPSol  # noqa: F401
+__all__ = [
+    "MILP",
+    "MILPSol",
+    "ColGenMILP"
+]
+
+from bnbprob.milpy.colgen import ColGenMILP
+from bnbprob.milpy.problem import MILP, MILPSol

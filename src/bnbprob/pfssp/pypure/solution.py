@@ -1,12 +1,14 @@
 import copy
 
+from bnbprob.pfssp.pypure.job import Job
 from bnbprob.pfssp.pypure.permutation import Permutation
-from bnbpy import OptStatus, Solution
+from bnbpy.pypure.solution import Solution
+from bnbpy.pypure.status import OptStatus
 
 LARGE_INT = 10000000
 
 
-class FlowSolution(Solution):  # noqa: PLR0904
+class FlowSolution(Solution):
     perm: Permutation
 
     def __init__(self, perm: Permutation):
@@ -14,9 +16,8 @@ class FlowSolution(Solution):  # noqa: PLR0904
         self.perm = perm
         self.cost = LARGE_INT
 
-    def __del__(self):
+    def __del__(self) -> None:
         del self.perm
-        self.perm = None
 
     def __repr__(self) -> str:
         return self._signature
@@ -25,21 +26,21 @@ class FlowSolution(Solution):  # noqa: PLR0904
         return self._signature
 
     @property
-    def _signature(self):
+    def _signature(self) -> str:
         return (
             f'Status: {self.status.name} | Cost: {self.cost} | LB: {self.lb}'
         )
 
     @property
-    def sequence(self):
+    def sequence(self) -> list[Job]:
         return self.perm.sequence
 
     @property
-    def free_jobs(self):
+    def free_jobs(self) -> list[Job]:
         return self.perm.free_jobs
 
     @property
-    def n_jobs(self):
+    def n_jobs(self) -> int:
         return len(self.sequence)
 
     def is_feasible(self) -> bool:
@@ -60,7 +61,7 @@ class FlowSolution(Solution):  # noqa: PLR0904
     def push_job(self, j: int) -> None:
         self.perm.push_job(j)
 
-    def copy(self, deep=False) -> 'FlowSolution':
+    def copy(self, deep: bool = False) -> 'FlowSolution':
         if deep:
             return copy.deepcopy(self)
         sol = FlowSolution.__new__(FlowSolution)

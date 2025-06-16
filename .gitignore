@@ -157,3 +157,6 @@ test-output/
 .ipynb_checkpoints/
 src/bnbpy/cython/*.html
 src/bnbprob/pfssp/cython/*.html
+
+# Local tests
+local_tests/*

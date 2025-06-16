@@ -1,9 +1,10 @@
 import logging
 import math
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Sequence, Tuple, Union, cast
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy.optimize import OptimizeResult, linprog
 
 from bnbprob.milpy.problem import MILP, MILPSol
@@ -23,16 +24,16 @@ log = logging.getLogger(__name__)
 class MILPColumn:
     """New column create in set cover master problem"""
 
-    a_ub: Optional[np.ndarray] = None
+    a_ub: Optional[NDArray[np.float64]] = None
     """Column coefficients (1d array)"""
-    a_eq: Optional[np.ndarray] = None
+    a_eq: Optional[NDArray[np.float64]] = None
     """Column coefficients (1d array)"""
     c: Union[int, float] = 0.0
     """Column partial cost in obj function (minimize)"""
     bounds: BoundType = (0, None)
     """Column bounds (tuple - scipy compatible)"""
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(str(self))
 
 
@@ -40,16 +41,16 @@ class MILPColumn:
 class MILPDuals:
     """Dual information of MILP problem solution"""
 
-    lower: Optional[np.ndarray] = None
+    lower: Optional[NDArray[np.float64]] = None
     """Duals of lower bounds"""
-    upper: Optional[np.ndarray] = None
+    upper: Optional[NDArray[np.float64]] = None
     """Duals of upper bounds"""
-    eqlin: Optional[np.ndarray] = None
+    eqlin: Optional[NDArray[np.float64]] = None
     """Duals of equality constraints"""
-    ineqlin: Optional[np.ndarray] = None
+    ineqlin: Optional[NDArray[np.float64]] = None
     """Duals of inequality constraints"""
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(str(self))
 
 
@@ -63,51 +64,51 @@ class MILPMaster(Master):
         self.milp = milp
 
     @property
-    def c(self):
+    def c(self) -> NDArray[np.float64]:
         return self.milp.c
 
     @c.setter
-    def c(self, c: np.ndarray):
+    def c(self, c: NDArray[np.float64]) -> None:
         self.milp.c = c
 
     @property
-    def A_ub(self):
+    def A_ub(self) -> NDArray[np.float64] | None:
         return self.milp.A_ub
 
     @A_ub.setter
-    def A_ub(self, A_ub: np.ndarray):
+    def A_ub(self, A_ub: NDArray[np.float64]) -> None:
         self.milp.A_ub = A_ub
 
     @property
-    def A_eq(self):
+    def A_eq(self) -> NDArray[np.float64] | None:
         return self.milp.A_eq
 
     @A_eq.setter
-    def A_eq(self, A_eq: np.ndarray):
+    def A_eq(self, A_eq: NDArray[np.float64]) -> None:
         self.milp.A_eq = A_eq
 
     @property
-    def b_ub(self):
+    def b_ub(self) -> NDArray[np.float64] | None:
         return self.milp.b_ub
 
     @b_ub.setter
-    def b_ub(self, b_ub: np.ndarray):
+    def b_ub(self, b_ub: NDArray[np.float64]) -> None:
         self.milp.b_ub = b_ub
 
     @property
-    def b_eq(self):
+    def b_eq(self) -> NDArray[np.float64] | None:
         return self.milp.b_eq
 
     @b_eq.setter
-    def b_eq(self, b_eq: np.ndarray):
+    def b_eq(self, b_eq: NDArray[np.float64]) -> None:
         self.milp.b_eq = b_eq
 
     @property
-    def bounds(self):
+    def bounds(self) -> List[BoundType]:
         return self.milp.bounds
 
     @bounds.setter
-    def bounds(self, bounds: np.ndarray):
+    def bounds(self, bounds: List[BoundType]) -> None:
         self.milp.bounds = bounds
 
     def add_col(self, c: MILPColumn) -> bool:
@@ -129,25 +130,29 @@ class MILPMaster(Master):
         if c.a_ub is not None:
             a_ub = c.a_ub.reshape(-1, 1)
             if not self._column_exists_ub(a_ub):
-                self.A_ub = np.hstack((self.A_ub, a_ub))
+                self.A_ub = np.hstack(
+                    cast(Sequence[NDArray[np.float64]], (self.A_ub, a_ub))
+                )
                 valid = True
         if c.a_eq is not None:
             a_eq = c.a_eq.reshape(-1, 1)
             if not self._column_exists_eq(a_eq):
-                self.A_eq = np.hstack((self.A_eq, a_eq))
+                self.A_eq = np.hstack(
+                    cast(Sequence[NDArray[np.float64]], (self.A_eq, a_eq))
+                )
                 valid = True
         if valid:
             self.c = np.append(self.c, c.c)
             self.bounds.append(c.bounds)
-        return valid
+        return cast(bool, valid)
 
-    def _column_exists_ub(self, a: np.ndarray):
+    def _column_exists_ub(self, a: NDArray[np.float64]) -> bool:
         matches = self.A_ub == a
-        return np.any(np.all(matches, axis=0))
+        return cast(bool, np.any(np.all(matches, axis=0)))
 
-    def _column_exists_eq(self, a: np.ndarray):
+    def _column_exists_eq(self, a: NDArray[np.float64]) -> bool:
         matches = self.A_eq == a
-        return np.any(np.all(matches, axis=0))
+        return cast(bool, np.any(np.all(matches, axis=0)))
 
     def solve(self) -> MasterSol:
         """Solves Master Problem, returning solution with CG attributes
@@ -161,12 +166,12 @@ class MILPMaster(Master):
         self.milp.compute_bound()
         sol = self.milp.solution.scipy_res
         duals = MILPDuals(
-            lower=sol.lower.marginals,
-            upper=sol.upper.marginals,
-            eqlin=sol.eqlin.marginals,
-            ineqlin=sol.ineqlin.marginals
+            lower=sol.lower.marginals,  # type: ignore
+            upper=sol.upper.marginals,  # type: ignore
+            eqlin=sol.eqlin.marginals,  # type: ignore
+            ineqlin=sol.ineqlin.marginals,  # type: ignore
         )
-        return MasterSol(sol.fun, duals)
+        return MasterSol(sol.fun, duals)  # type: ignore
 
     def solve_ineq_dual(self) -> OptimizeResult:
         """Backup for dual solution stabilization alternative
@@ -176,6 +181,10 @@ class MILPMaster(Master):
         OptimizeResult
             Scipy results for a dual formulation of the set cover problem
         """
+        if self.A_ub is None or self.b_ub is None:
+            raise ValueError(
+                'Master problem does not have valid A_ub or b_ub matrices.'
+            )
         sol_dual = linprog(
             self.b_ub,
             A_ub=-self.A_ub.T,
@@ -200,7 +209,7 @@ class ColGenMILP(ColumnGenProblem):
         b_ub: Optional[np.ndarray] = None,
         A_eq: Optional[np.ndarray] = None,
         b_eq: Optional[np.ndarray] = None,
-        bounds: Optional[Union[BoundType, List[BoundType]]] = None,
+        bounds: Optional[Union[BoundType, Sequence[BoundType]]] = None,
         integrality: Optional[Union[np.ndarray, int]] = None,
         pricing: Optional[Pricing] = None,
         max_iter_price: Optional[int] = None,
@@ -246,9 +255,9 @@ class ColGenMILP(ColumnGenProblem):
         tol : float, optional
             Tolerance (gap) for MILP termination, by default 1e-4
         """
-        assert isinstance(
-            pricing, Pricing
-        ), 'Pricing must be valid instance of child class from `Pricing`'
+        assert isinstance(pricing, Pricing), (
+            'Pricing must be valid instance of child class from `Pricing`'
+        )
         self.milp = MILP(
             c,
             A_ub=A_ub,
@@ -264,14 +273,14 @@ class ColGenMILP(ColumnGenProblem):
         super().__init__(master, pricing, max_iter_price)
         self.solution = self.milp.solution
 
-    def set_solution(self, solution: Solution):
+    def set_solution(self, solution: Solution) -> None:
         self.milp.set_solution(solution)
         self.solution = self.milp.solution
 
-    def is_feasible(self):
+    def is_feasible(self) -> bool:
         return self.milp.is_feasible()
 
-    def branch(self) -> Optional[List['MILP']]:
+    def branch(self) -> Optional[Sequence['ColGenMILP']]:
         # If not successful, just return
         if not self.solution.valid:
             self.solution.set_infeasible()
@@ -279,8 +288,11 @@ class ColGenMILP(ColumnGenProblem):
 
         # Choose branch var to define new limits
         i = self.milp.choose_branch_var()
-        xi_lb = math.ceil(self.solution.x[i])
-        xi_ub = math.floor(self.solution.x[i])
+        x_sol = self.solution.x
+        if x_sol is None:
+            raise ValueError('Solution x is None, cannot branch on it.')
+        xi_lb = math.ceil(x_sol[i])
+        xi_ub = math.floor(x_sol[i])
 
         # Instantiate and return the two child nodes
         p1 = self.copy()
@@ -289,7 +301,7 @@ class ColGenMILP(ColumnGenProblem):
         p2.update_bounds(i, (self.milp.bounds[i][0], xi_ub))
         return [p1, p2]
 
-    def calc_bound(self):
+    def calc_bound(self) -> float:
         sol_master = self._calc_bound()
         lb = float('inf')
         if self.solution.valid:
@@ -297,18 +309,20 @@ class ColGenMILP(ColumnGenProblem):
         log.debug(f'Price finished: {lb:.2f}')
         return lb
 
-    def update_bounds(self, i: int, bounds: Tuple[int, int]):
+    def update_bounds(
+        self, i: int, bounds: Tuple[float | None, float | None]
+    ) -> None:
         self.master.bounds[i] = bounds
 
-    def copy(self, deep=False):
+    def copy(self, deep: bool = False) -> 'ColGenMILP':
         """
         Shallow copy (if `deep=False`) of self with
         bounds being a shallow copy of bounds
         and node choice method reinitialized
         """
         if deep:
-            return super().copy(deep=deep)
-        child = super().copy(deep=deep)
+            return cast(ColGenMILP, super().copy(deep=deep))
+        child = cast(ColGenMILP, super().copy(deep=deep))
         child.milp = self.milp.copy()
         child.master = MILPMaster(child.milp)
         child.solution = child.milp.solution

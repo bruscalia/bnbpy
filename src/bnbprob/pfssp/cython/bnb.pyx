@@ -1,6 +1,7 @@
 # distutils: language = c++
-# cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from bnbprob.pfssp.cython.problem cimport PermFlowShop
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.search cimport BranchAndBound
@@ -17,9 +18,12 @@ cdef class LazyBnB(BranchAndBound):
         super(LazyBnB, self).__init__(rtol, atol, eval_node, save_tree)
 
     cpdef void post_eval_callback(LazyBnB self, Node node):
-        if node.lb < self.ub:
-            node.problem.bound_upgrade()
-            node.lb = node.problem.lb
+        cdef:
+            PermFlowShop problem
+        if node.lb < self.get_ub():
+            problem = node.problem
+            problem.bound_upgrade()
+            node.lb = node.problem.get_lb()
 
 
 cdef class CallbackBnB(LazyBnB):
@@ -37,12 +41,14 @@ cdef class CallbackBnB(LazyBnB):
 
     cpdef void solution_callback(CallbackBnB self, Node node):
         cdef:
+            PermFlowShop problem
             FlowSolution new_sol
 
-        new_sol = node.problem.local_search()
+        problem = node.problem
+        new_sol = problem.local_search()
         if new_sol is not None:
             # General procedure in case is valid
-            if new_sol.is_feasible() and new_sol.lb < node.solution.lb:
+            if new_sol.is_feasible() and new_sol.lb < node.get_solution().lb:
                 node.set_solution(new_sol)
                 node.check_feasible()
                 self.set_solution(node)

@@ -1,0 +1,4 @@
+include README.md
+include pyproject.toml
+include setup.cfg
+recursive-include src *

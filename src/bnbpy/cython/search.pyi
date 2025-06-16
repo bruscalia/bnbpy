@@ -1,9 +1,9 @@
 from typing import Any, Literal, Optional, Union
 
 from bnbpy.cython.node import Node
+from bnbpy.cython.problem import Problem
+from bnbpy.cython.solution import Solution
 from bnbpy.logger import SearchLogger
-from bnbpy.problem import Problem
-from bnbpy.solution import Solution
 
 class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
@@ -28,7 +28,11 @@ class BranchAndBound:
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False
     ) -> None:
-        """Instantiate algoritm to solve problems via Branch & Bound
+        """Instantiate algoritm to solve problems via Branch & Bound.
+
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
 
         Parameters
         ----------
@@ -48,15 +52,15 @@ class BranchAndBound:
         ...
 
     @property
-    def ub(self):
+    def ub(self) -> float:
         ...
 
     @property
-    def lb(self):
+    def lb(self) -> float:
         ...
 
     @property
-    def solution(self):
+    def solution(self) -> Solution:
         ...
 
     def solve(
@@ -65,7 +69,11 @@ class BranchAndBound:
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
     ) -> Optional[Solution]:
-        """Solves optimization problem using Branch & Bound
+        """Solves optimization problem using Branch & Bound.
+
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
 
         Parameters
         ----------
@@ -85,7 +93,7 @@ class BranchAndBound:
         """
         ...
 
-    def enqueue(self, node: Node):
+    def enqueue(self, node: Node) -> None:
         """Include new node into queue
 
         Parameters
@@ -115,7 +123,7 @@ class BranchAndBound:
         """
         ...
 
-    def fathom(self, node: Node):  # noqa: PLR6301
+    def fathom(self, node: Node) -> None:  # noqa: PLR6301
         """Fathom node (by default is not deleted)
 
         If deletion is required for managing memory, remember to delete
@@ -128,30 +136,30 @@ class BranchAndBound:
         """
         ...
 
-    def pre_eval_callback(self, node: Node):
+    def pre_eval_callback(self, node: Node) -> None:
         """Abstraction for callbacks before node bound evaluation"""
         ...
 
-    def post_eval_callback(self, node: Node):
+    def post_eval_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node bound evaluation"""
         ...
 
-    def enqueue_callback(self, node: Node):
+    def enqueue_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node is enqueued"""
         ...
 
-    def dequeue_callback(self, node: Node):
+    def dequeue_callback(self, node: Node) -> None:
         """Abstraction for callbacks after node is dequeued"""
         ...
 
-    def solution_callback(self, node: Node):
+    def solution_callback(self, node: Node) -> None:
         """
         Abstraction for callback when a candidate
         feasible solution is verified (before being set)
         """
         ...
 
-    def set_solution(self, node: Node):
+    def set_solution(self, node: Node) -> None:
         """Assigns the current node as incumbent, updates gap and calls
         `solution_callback`
 
@@ -162,13 +170,13 @@ class BranchAndBound:
         """
         ...
 
-    def log_row(self, message: str):
+    def log_row(self, message: str) -> None:
         ...
 
 class BreadthFirstBnB(BranchAndBound):
     """Breadth-first Branch & Bound algorithm"""
 
-    def enqueue(self, node: Node):
+    def enqueue(self, node: Node) -> None:
         """Include new node into queue
 
         Parameters
@@ -189,8 +197,8 @@ class BestFirstBnB(BranchAndBound):
     ...
 
 def configure_logfile(
-    filename: str, only_messages: bool = True, mode='a', **kwargs
-):
+    filename: str, only_messages: bool = True, mode: str = 'a', **kwargs: Any
+) -> None:
     """Configure logfile to write solution INFO messages
 
     Parameters

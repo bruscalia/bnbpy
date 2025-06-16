@@ -148,7 +148,7 @@ class TestColGen:
         print(sol)
         assert sol.status == res[0], 'Wrong status after B&P'
         if res[1] is None:
-            assert sol.cost is None, 'Wrong cost for unsolved problem'
+            assert sol.cost == float('inf'), 'Wrong cost for unsolved problem'
         else:
             assert math.isclose(
                 sol.cost, res[1], abs_tol=1e-1

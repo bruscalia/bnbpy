@@ -1,10 +1,8 @@
 import argparse
 import os
 import sys
-from distutils.errors import CompileError
 
-from setuptools import Extension, find_packages, setup
-from setuptools.command.build_ext import build_ext
+from setuptools import Extension, setup
 
 # -----------------------------------------------------------------------------
 # BASE CONFIGURATION
@@ -15,38 +13,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 BASE_PACKAGE = 'bnbpy'
 
-base_kwargs = dict(  # noqa: C408
-    name='bnbpy',
-    package_dir={'': 'src'},
-    packages=find_packages(where='src'),
-    version='0.1.0',
-    license='Apache License 2.0',
-    description='A Python general Branch & Bound framework.',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    author='Bruno Scalia C. F. Leite',
-    author_email='bruscalia12@gmail.com',
-    url='https://github.com/bruscalia/bnbpy',
-    download_url='https://github.com/bruscalia/bnbpy',
-    keywords=[
-        'Branch & Bound',
-        'Branch and Bound',
-        'Mixed Integer Programming',
-        'Mixed Integer Linear Programming',
-        'MIP',
-        'MILP',
-        'Discrete Optimization',
-        'Optimization',
-        'Operations Research',
-        'Combinatorial Optimization',
-
-    ],
-    install_requires=[
-        'numpy>=1.21.0',
-        'scipy>=1.9.0',
-        'Cython==3.*'
-    ],
-)
+base_kwargs: dict[str, str | list[str]] = {}
 
 # -----------------------------------------------------------------------------
 # ARGPARSER
@@ -101,24 +68,6 @@ class CompilingFailed(Exception):
     pass
 
 
-# try to compile, if not possible throw exception
-def construct_build_ext(build_ext):
-    class WrappedBuildExt(build_ext):
-        def run(self):
-            try:
-                build_ext.run(self)
-            except BaseException as e:
-                raise CompilingFailed() from e
-
-        def build_extension(self, ext):
-            try:
-                build_ext.build_extension(self, ext)
-            except BaseException as e:
-                raise CompilingFailed() from e
-
-    return WrappedBuildExt
-
-
 # -----------------------------------------------------------------------------
 # HANDLING CYTHON FILES
 # -----------------------------------------------------------------------------
@@ -126,6 +75,17 @@ def construct_build_ext(build_ext):
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
 CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
+CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
+CPP_FILES_PFSSP = [
+    os.path.join(CPP_PATH_PFSSP, f)
+    for f in os.listdir(CPP_PATH_PFSSP)
+    if f.endswith('.cpp') and 'environ' not in f
+]
+HPP_PATH_PFSSP = os.path.join(ROOT, 'include')
+
+
+def get_ext_pfssp(f: str) -> list[str]:
+    return [os.path.join(CY_PATH_PFSSP, f)] + CPP_FILES_PFSSP
 
 
 if params.nopyx:
@@ -142,11 +102,21 @@ else:
         ]
         ext_modules_pfssp = [
             Extension(
+                'bnbprob.pfssp.cpp.environ',
+                [os.path.join(CPP_PATH_PFSSP, 'environ.pyx')]
+                    + CPP_FILES_PFSSP,
+                include_dirs=[CPP_PATH_PFSSP],
+                language="c++",
+            )
+        ] + [
+            Extension(
                 f'bnbprob.pfssp.cython.{f[:-4]}',
-                [os.path.join(CY_PATH_PFSSP, f)],
+                get_ext_pfssp(f),  # Mandatory to include all cpp files used
+                include_dirs=[CPP_PATH_PFSSP],
             )
             for f in os.listdir(CY_PATH_PFSSP) if f.endswith('.pyx')
         ]
+
         ext_modules_ = ext_modules_base + ext_modules_pfssp
         if params.nocython:
             ext_modules = ext_modules_
@@ -154,7 +124,7 @@ else:
             try:
                 from Cython.Build import cythonize
 
-                ext_modules = cythonize(
+                ext_modules = cythonize(  # type: ignore
                     ext_modules_
                 )
             except ImportError:
@@ -179,40 +149,6 @@ else:
         )
         print('*' * 75)
         ext_modules = []
-
-if not params.nolibs:
-    if len(ext_modules) > 0:
-        base_kwargs['ext_modules'] = ext_modules
-
-        try:
-            import numpy as np
-
-            base_kwargs['include_dirs'] = [np.get_include()]
-
-        except BaseException as e:
-            raise CompileError(
-                'NumPy libraries must be installed for compiled extensions!'
-                ' Speedups are not enabled.'
-            ) from e
-
-        base_kwargs['cmdclass'] = dict(  # noqa: C408
-            build_ext=construct_build_ext(build_ext)
-        )
-
-    else:
-        print('*' * 75)
-        print('External cython modules found.')
-        print('To verify compilation success run:')
-        print(
-            'from bnbpy import is_compiled'
-        )
-        print('This function will be True to mark compilation success;')
-        print(
-            'If no compilation occurs, .py files will be used instead,'
-            ' which provide the same results but'
-            ' with worse computational time.'
-        )
-        print('*' * 75)
 
 # -----------------------------------------------------------------------------
 # RUN SETUP

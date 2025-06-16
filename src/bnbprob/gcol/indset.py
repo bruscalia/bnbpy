@@ -1,12 +1,15 @@
 import random
 from functools import total_ordering
-from typing import Dict, List, Optional, Set, Tuple, Type, Union
+from logging import getLogger
+from typing import Dict, Optional, Union
 
 from bnbprob.gcol.base import BaseGraph, BaseNode
 
+log = getLogger(__name__)
 
-class IndepSetNode(BaseNode):
-    neighbors: Set['IndepSetNode']
+
+class IndepSetNode(BaseNode['IndepSetNode']):
+    neighbors: set['IndepSetNode']
     selected: bool
     weight: float
     degree_red: int
@@ -14,8 +17,8 @@ class IndepSetNode(BaseNode):
 
     def __init__(
         self,
-        index,
-        neighbors: Optional[Set['IndepSetNode']] = None,
+        index: int,
+        neighbors: Optional[set['IndepSetNode']] = None,
         weight: float = 1.0,
     ):
         super().__init__(index, neighbors)
@@ -24,26 +27,25 @@ class IndepSetNode(BaseNode):
         self.degree_red = 0
         self.active_degree = self.degree - self.degree_red
 
-    def select(self):
+    def select(self) -> None:
         self.selected = True
         for n in self.neighbors:
             n.degree_red += 1
             n.active_degree = n.degree - n.degree_red
 
 
-class IndepGraph(BaseGraph):
+class IndepGraph(BaseGraph['IndepSetNode']):
     nodes: Dict[int, IndepSetNode]
 
-    def __init__(
-        self, edges: List[Tuple[int]], cls: Type[IndepSetNode] = IndepSetNode
-    ):
-        super().__init__(edges, cls)
+    def __init__(self, edges: list[tuple[int, int]]):
+        self._set_node_cls(IndepSetNode)
+        super().__init__(edges)
 
-    def set_weights(self, weights: List[float]):
+    def set_weights(self, weights: list[float]) -> None:
         for j, w in enumerate(weights):
             self.nodes[j].weight = w
 
-    def clean(self):
+    def clean(self) -> None:
         for node in self.nodes.values():
             node.selected = False
             node.degree = len(node.neighbors)
@@ -54,49 +56,56 @@ class IndepGraph(BaseGraph):
 @total_ordering
 class IndepSetSolution:
     cost: Union[float, int]
-    nodes: Set[IndepSetNode]
+    nodes: set[IndepSetNode]
 
-    def __init__(self, nodes: Optional[Set[IndepSetNode]] = None):
+    def __init__(self, nodes: Optional[set[IndepSetNode]] = None):
         if nodes is None:
             nodes = set()
         self.nodes = nodes
         self.cost = sum(n.weight for n in self.nodes)
 
-    def add(self, node: 'IndepSetNode'):
+    def add(self, node: 'IndepSetNode') -> None:
         self.nodes.add(node)
         self.cost += node.weight
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(str(self.nodes))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.nodes)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, IndepSetSolution):
-            return NotImplemented
+            raise NotImplementedError(
+                f'Cannot compare {type(self)} with {type(other)}'
+            )
         return self.cost == other.cost
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         if not isinstance(other, IndepSetSolution):
-            return NotImplemented
+            raise NotImplementedError(
+                f'Cannot compare {type(self)} with {type(other)}'
+            )
         return self.cost < other.cost
 
-    def __repr__(self):
-        return f"IndepSetSolution({self.cost})"
+    def __repr__(self) -> str:
+        return f'IndepSetSolution({self.cost})'
 
 
 class IndepSetHeur:
     graph: Optional[IndepGraph]
-    sol: Set[IndepSetNode]
-    history: List['IndepSetNode']
+    sol: IndepSetSolution
+    queue: list['IndepSetNode']
+    history: list['IndepSetNode']
 
     def __init__(self) -> None:
         self.graph = None
         self.sol = IndepSetSolution()
         self.history = []
 
-    def solve(self, graph: IndepGraph, save_history=False) -> IndepSetSolution:
+    def solve(
+        self, graph: IndepGraph, save_history: bool = False
+    ) -> IndepSetSolution:
         self.sol = IndepSetSolution()
         self.graph = graph
         self.graph.clean()
@@ -112,7 +121,7 @@ class IndepSetHeur:
                 break
         return self.sol
 
-    def select(self, node: IndepSetNode):
+    def select(self, node: IndepSetNode) -> None:
         node.select()
         self.sol.add(node)
         for other in node.neighbors:
@@ -126,11 +135,11 @@ class IndepSetHeur:
 
 
 class RandomIndepSet(IndepSetHeur):
-    def __init__(self, seed=None):
+    def __init__(self, seed: Optional[int] = None):
         super().__init__()
         self.rng = random.Random(seed)
 
-    def dequeue(self):
+    def dequeue(self) -> IndepSetNode:
         node = self.rng.choice(self.queue)
         self.queue.remove(node)
         return node
@@ -142,7 +151,13 @@ class TargetMultiStart(RandomIndepSet):
     base_iter: int
     max_iter: int
 
-    def __init__(self, seed=None, target=1.0, base_iter=10, max_iter=100):
+    def __init__(
+        self,
+        seed: Optional[int] = None,
+        target: Union[float, int] = 1.0,
+        base_iter: int = 10,
+        max_iter: int = 100,
+    ):
         """Random selection heuristic with stoppage based on target value.
 
         Parameters
@@ -165,7 +180,14 @@ class TargetMultiStart(RandomIndepSet):
         self.base_iter = base_iter
         self.max_iter = max_iter
 
-    def solve(self, graph: IndepGraph):
+    def solve(
+        self, graph: IndepGraph, save_history: bool = False
+    ) -> IndepSetSolution:
+        if save_history:
+            log.warning(
+                'TargetMultiStart does not support saving history, '
+                'history will not be saved.'
+            )
         best_sol = self.greedy.solve(graph)
         if best_sol.cost >= self.target:
             return best_sol
@@ -177,7 +199,9 @@ class TargetMultiStart(RandomIndepSet):
                 return self._prepare_return(graph, best_sol)
         return self._prepare_return(graph, best_sol)
 
-    def _prepare_return(self, graph: IndepGraph, sol: IndepSetSolution):
+    def _prepare_return(
+        self, graph: IndepGraph, sol: IndepSetSolution
+    ) -> IndepSetSolution:
         graph.clean()
         for node in sol.nodes:
             self.select(node)

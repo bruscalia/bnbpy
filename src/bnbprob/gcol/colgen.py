@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, cast
 
 import numpy as np
 from scipy.optimize import linprog
@@ -13,7 +13,7 @@ from bnbpy.colgen import PriceSol, Pricing
 log = logging.getLogger(__name__)
 
 
-def _find_max_node(edges: List[Tuple[int, int]]):
+def _find_max_node(edges: list[tuple[int, int]]) -> int:
     return max(max(edge) for edge in edges)
 
 
@@ -69,17 +69,19 @@ class ColorMIPPricing(Pricing):
             self.A[e, j] = self.A[e, i]
 
     @property
-    def solve_options(self):
+    def solve_options(self) -> dict[str, float]:
         options = {'mip_rel_gap': self.mip_rel_gap}
         if self.time_limit:
             options['time_limit'] = self.time_limit
         return options
 
-    def set_weights(self, c: MILPDuals):
+    def set_weights(self, c: MILPDuals) -> None:
+        if c.ineqlin is None:
+            raise ValueError('Duals must contain inequal linear constraints')
         self.c = -c.ineqlin
         self.presolved = None
 
-    def solve(self):
+    def solve(self) -> PriceSol:
         if self.presolved is not None:
             print('Presolved', self.presolved.red_cost)
             return self.presolved
@@ -129,11 +131,13 @@ class ColorHeurPricing(Pricing):
         self.heur = heur
         self.presolved = None
 
-    def set_weights(self, c: MILPDuals):
-        self.graph.set_weights(-c.ineqlin)
+    def set_weights(self, c: MILPDuals) -> None:
+        if c.ineqlin is None:
+            raise ValueError('Duals must contain inequal linear constraints')
+        self.graph.set_weights(cast(list[float], -c.ineqlin))
         self.presolved = None
 
-    def solve(self):
+    def solve(self) -> PriceSol:
         if self.presolved is not None:
             return self.presolved
         sol = self.heur.solve(self.graph)
@@ -193,12 +197,12 @@ class ColorHybrPricing(Pricing):
         self.price_tol = price_tol
         self.presolved = None
 
-    def set_weights(self, c: MILPDuals):
+    def set_weights(self, c: MILPDuals) -> None:
         self.pmip.set_weights(c)
         self.pheur.set_weights(c)
         self.presolved = None
 
-    def solve(self):
+    def solve(self) -> PriceSol:
         sol_price = self.pheur.evaluate()
         if sol_price is not None:
             self.presolved = sol_price
@@ -227,7 +231,7 @@ class ColGenColor(ColGenMILP):
     def __init__(  # noqa: PLR0913, PLR0917
         self,
         edges: List[Tuple[int, int]],
-        color_heur: ColorHeuristic = None,
+        color_heur: ColorHeuristic | None = None,
         pricing: Optional[Pricing] = None,
         max_iter_price: Optional[int] = None,
         branching: str = 'max',
@@ -262,9 +266,9 @@ class ColGenColor(ColGenMILP):
         c = np.ones(N)
         A_ub = -np.eye(N)
         b_ub = -np.ones(N)
-        bounds = [(0, 1) for _ in range(N)]
+        bounds: list[tuple[float, float]] = [(0.0, 1.0) for _ in range(N)]
         if pricing is None:
-            pricing = ColorHybrPricing(edges, IndepSetHeur, 1e-2)
+            pricing = ColorHybrPricing(edges, None, 1e-2)
         super().__init__(
             c,
             A_ub=A_ub,
@@ -281,7 +285,7 @@ class ColGenColor(ColGenMILP):
             color_heur = DSatur()
         self.color_heur = color_heur
 
-    def warmstart(self):
+    def warmstart(self) -> MILPSol:
         self.color_heur.solve(self.color_graph)
         A = self.columns_from_heur()
         self.milp.A_ub = -A
@@ -292,7 +296,7 @@ class ColGenColor(ColGenMILP):
         heur.milp.compute_bound()
         return heur.solution
 
-    def columns_from_heur(self):
+    def columns_from_heur(self) -> np.ndarray:
         columns = []
         for c in self.color_graph.colors:
             new_col = np.zeros(len(self.color_graph.nodes))
@@ -302,7 +306,7 @@ class ColGenColor(ColGenMILP):
         return np.column_stack(columns)
 
 
-def graph_from_solution(graph: ColorGraph, sol: MILPSol):
+def graph_from_solution(graph: ColorGraph, sol: MILPSol) -> None:
     """From a instance of `ColorGraph`, uses the solution of the MILP
     master problem to set node colors
 
@@ -317,7 +321,13 @@ def graph_from_solution(graph: ColorGraph, sol: MILPSol):
     """
     tol = 0.5
     graph.clean()
-    cols = [-sol.problem.A_ub[:, j] for j, x in enumerate(sol.x) if x > tol]
+    if sol.x is None:
+        raise ValueError('Solution must be computed before coloring graph')
+    if sol.problem.A_ub is None:
+        raise ValueError('Problem A_ub must be defined before coloring graph')
+    cols = [
+        -sol.problem.A_ub[:, j] for j, x in enumerate(sol.x) if x > tol
+    ]
     colors = [
         set((int(i) for i in np.nonzero(c > tol)[0].astype(int)))  # noqa: C401
         for c in cols  # noqa: C401
