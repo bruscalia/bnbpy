@@ -10,4 +10,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install .[tests]
-      - run: ruff src/
+      - run: ruff check src/
