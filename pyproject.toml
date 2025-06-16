@@ -31,6 +31,7 @@ quote-style = "single"
 python_version = "3.12"
 ignore_missing_imports = true
 strict = true
+disable_error_code = ["unused-ignore"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

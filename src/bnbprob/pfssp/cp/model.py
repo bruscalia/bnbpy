@@ -115,7 +115,7 @@ def solve_cpsat(
 
     # Extract solution
     # Needed to disable ruff due to mypy
-    if int(status) in {int(cp_model.OPTIMAL), int(cp_model.FEASIBLE)}:
+    if int(status) in {int(cp_model.OPTIMAL), int(cp_model.FEASIBLE)}:  # type: ignore
         return extract_results(flow_model, solver)
     else:
         return None
