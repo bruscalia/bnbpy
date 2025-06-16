@@ -11,25 +11,24 @@ log = logging.getLogger(__name__)
 class MachDeadlineProb(Problem):
     solution: MachSolution
     jobs: Dict[Hashable, Job]
-    lb: Optional[int]
+    lb: int
     cost: Optional[int]
 
-    def __init__(self, jobs: Optional[List[Job]]) -> None:
+    def __init__(self, jobs: List[Job]) -> None:
         self.solution = MachSolution([])
-        self.jobs = {
-            job.id: job
-            for job in jobs
-        }
+        self.jobs = {job.id: job for job in jobs}
 
-    def calc_bound(self) -> Optional[int]:
+    def calc_bound(self) -> int:
         fixed = self.get_fixed()
         unfixed = self.get_unfixed()
         self.find_wspt(unfixed)
-        fixed.sort(key=lambda job: job.k, reverse=False)
+        fixed.sort(
+            key=lambda job: job.k if job.k is not None else -1, reverse=False
+        )
         self.solution = MachSolution(unfixed + fixed)
         return self.solution.calc_bound()
 
-    def is_feasible(self):
+    def is_feasible(self) -> bool:
         return self.solution.check_feasible()
 
     def branch(self) -> Optional[List['MachDeadlineProb']]:
@@ -51,19 +50,19 @@ class MachDeadlineProb(Problem):
         return children
 
     @staticmethod
-    def _find_next_pos(fixed_jobs: List[Job], unfixed_jobs: List[Job]):
+    def _find_next_pos(fixed_jobs: List[Job], unfixed_jobs: List[Job]) -> int:
         if len(fixed_jobs) == 0:
             next_k = len(unfixed_jobs) - 1
         else:
-            next_k = min(job.k for job in fixed_jobs) - 1
+            next_k = min(job.k for job in fixed_jobs if job.k is not None) - 1
         return next_k
 
-    def fix_job(self, j: Hashable, k: int) -> bool:
+    def fix_job(self, j: Hashable, k: int) -> None:
         job = self.jobs[j]
         job.set_position(k)
         job.fix()
 
-    def unfix_job(self, j: int):
+    def unfix_job(self, j: int) -> None:
         self.jobs[j].unfix()
 
     def get_fixed(self) -> List[Job]:
@@ -72,13 +71,13 @@ class MachDeadlineProb(Problem):
     def get_unfixed(self) -> List[Job]:
         return [job for job in self.jobs.values() if not job.fixed]
 
-    def copy_to_child(self):
+    def copy_to_child(self) -> 'MachDeadlineProb':
         child = MachDeadlineProb(self.jobs_to_copy_list())
         return child
 
-    def jobs_to_copy_list(self):
+    def jobs_to_copy_list(self) -> List[Job]:
         return [job.model_copy() for job in self.jobs.values()]
 
     @staticmethod
-    def find_wspt(jobs: List[Job]):
-        return jobs.sort(key=lambda job: job.w / job.p, reverse=True)
+    def find_wspt(jobs: List[Job]) -> None:
+        jobs.sort(key=lambda job: job.w / job.p, reverse=True)

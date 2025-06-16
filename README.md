@@ -250,7 +250,7 @@ print(sol)
 
 ### Code Quality
 
-In this project Ruff is used as linter and Mypy as static type checker. Both are configured in [pyproject.toml](./pyproject.toml).
+In this project [Ruff](https://docs.astral.sh/ruff/) is used as linter and [Mypy](https://mypy-lang.org/) as static type checker. Both are configured in [pyproject.toml](./pyproject.toml).
 
 ```
 mypy src/
@@ -268,6 +268,11 @@ Tests are also configured in [pyproject.toml](./pyproject.toml). The package `py
 pytest
 ```
 
+To keep track of code coverage of the main package `bnbpy`, run:
+
+```
+pytest --cov=bnbpy --cov-report=html
+```
 
 ## Contact
 

@@ -1,4 +1,11 @@
 [run]
 omit =
+    */__init__.py
+    src/bnbpy/node.py
+    src/bnbpy/problem.py
+    src/bnbpy/search.py
+    src/bnbpy/solution.py
+    src/bnbpy/status.py
     src/bnbpy/plot.py
     src/bnbpy/parallel.py
+    src/bnbpy/problem.py

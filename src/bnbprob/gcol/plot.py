@@ -15,10 +15,10 @@ INT_TOL = 0.5
 SMALL = 1e-6
 
 
-def draw_gc_from_nodes(nodes: Dict[int, ColorNode], **kwargs):
+def draw_gc_from_nodes(nodes: Dict[int, ColorNode], **kwargs: Any) -> None:
     N = [n.index for n in nodes.values()]
     N.sort(reverse=False)
-    C = [nodes[n].color.index for n in N]
+    C = [nodes[n].color.index for n in N if nodes[n].color is not None]  # type: ignore
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
     E.sort(reverse=False)
     _draw_colored_graph(N, C, E, **kwargs)
@@ -32,21 +32,21 @@ def draw_colored_gif(  # noqa: PLR0913, PLR0917
     nodes: Dict[int, ColorNode],
     history: List[ColorNode],
     uncolored_color: Optional[Any] = 'grey',
-    node_size=200,
-    node_alpha=1.0,
-    edge_color='grey',
-    edge_alpha=0.2,
-    duration=200,
-    **kwargs,
-):
+    node_size: int = 200,
+    node_alpha: float = 1.0,
+    edge_color: Any = 'grey',
+    edge_alpha: float = 0.2,
+    duration: int = 200,
+    **kwargs: Any,
+) -> None:
     N = [n.index for n in nodes.values()]
-    C = {n.index: n.color.index for n in nodes.values()}
+    C = {n.index: n.color.index for n in nodes.values() if n.color is not None}
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
     N.sort(reverse=False)
     E.sort(reverse=False)
 
-    @gif.frame
-    def new_frame(i: int):
+    @gif.frame  # type: ignore
+    def new_frame(i: int) -> None:
         Ni = [n for n in N if nodes[n] in history[:i]]
         Nx = [n for n in N if nodes[n] in history[i:]]
         Ci = [C[i] for i in Ni]
@@ -93,8 +93,8 @@ def draw_mis_from_nodes(
     nodes: Dict[int, IndepSetNode],
     active_color: Any = 'firebrick',
     inactive_color: Any = 'grey',
-    **kwargs,
-):
+    **kwargs: Any,
+) -> None:
     N = [n.index for n in nodes.values()]
     C = [int(n.selected) for n in nodes.values()]
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
@@ -112,19 +112,19 @@ def draw_mis_gif(  # noqa: PLR0913, PLR0917
     history: List[IndepSetNode],
     active_color: Any = 'firebrick',
     inactive_color: Any = 'grey',
-    node_size=200,
-    node_alpha=1.0,
-    edge_color='grey',
-    edge_alpha=0.2,
-    duration=200,
-    **kwargs,
-):
+    node_size: int = 200,
+    node_alpha: float = 1.0,
+    edge_color: Any = 'grey',
+    edge_alpha: float = 0.2,
+    duration: int = 200,
+    **kwargs: Any,
+) -> None:
     N = [n.index for n in nodes.values()]
     C = {n.index: int(n.selected) for n in nodes.values()}
     E = [(n.index, m.index) for n in nodes.values() for m in n.neighbors]
 
-    @gif.frame
-    def new_frame(i: int):
+    @gif.frame  # type: ignore
+    def new_frame(i: int) -> None:
         Ni = [n for n in N if nodes[n] in history[:i]]
         Nx = [n for n in N if nodes[n] not in history[:i]]
         Ci = [C[i] for i in Ni]
@@ -172,25 +172,25 @@ def _draw_colored_graph(  # noqa: PLR0913, PLR0917
     nodes: List[int],
     colors: List[int],
     edges: List[Tuple[int, int]],
-    ax=None,
-    plot_colors=None,
-    node_size=200,
-    node_alpha=1.0,
-    font_size=8,
-    edge_color='grey',
-    edge_alpha=0.2,
-    use_labels=True,
-    plot_margins=True,
-    layout_iter=100,
-    seed=None,
-):
+    ax: Optional[plt.Axes] = None,  # type: ignore
+    plot_colors: Optional[List[Tuple[float, float, float]]] = None,
+    node_size: int = 200,
+    node_alpha: float = 1.0,
+    font_size: int = 8,
+    edge_color: Any = 'grey',
+    edge_alpha: float = 0.2,
+    use_labels: bool = True,
+    plot_margins: bool = True,
+    layout_iter: int = 100,
+    seed: Optional[int] = None,
+) -> Tuple[nx.Graph, Dict[int, Tuple[float, float]], plt.Axes]:  # type: ignore
     # Create a list of colors base on two colormaps
     if plot_colors is None:
         plot_colors = (
-            colormaps['Dark2'].colors
-            + colormaps['Set1'].colors
-            + colormaps['Set2'].colors
-            + colormaps['Set3'].colors
+            colormaps['Dark2'].colors  # type: ignore
+            + colormaps['Set1'].colors  # type: ignore
+            + colormaps['Set2'].colors  # type: ignore
+            + colormaps['Set3'].colors  # type: ignore
         )
 
     # Expand plot_colors to handle any number of distinct colors
@@ -234,26 +234,35 @@ def _draw_colored_graph(  # noqa: PLR0913, PLR0917
 
 
 def plot_columns_gcol(
-    sol: MILPSol, figsize=None, dpi=100, plot_colors: Optional[list] = None
-):
+    sol: MILPSol,
+    figsize: Optional[tuple[int, int]] = None,
+    dpi: int = 100,
+    plot_colors: Optional[list[Any]] = None,
+) -> None:
     if figsize is None:
-        figsize = [7, 3]
+        figsize = (7, 3)
 
     # Create a mask for all columns
+    if sol.problem.A_ub is None:
+        raise ValueError(
+            'The problem does not have an upper bound matrix A_ub.'
+        )
+    if sol.x is None:
+        raise ValueError('The solution does not have a variable vector x.')
     columns = (-sol.problem.A_ub > INT_TOL).astype(int)
     cols_x = np.nonzero(sol.x > INT_TOL)[0]
 
     # Create a list of colors base on two colormaps
     if plot_colors is None:
         plot_colors = (
-            colormaps['Dark2'].colors
-            + colormaps['Set1'].colors
-            + colormaps['Set2'].colors
-            + colormaps['Set3'].colors
+            colormaps['Dark2'].colors  # type: ignore
+            + colormaps['Set1'].colors  # type: ignore
+            + colormaps['Set2'].colors  # type: ignore
+            + colormaps['Set3'].colors  # type: ignore
         )
 
     cmap = ListedColormap(
-        [(1, 1, 1, 0), (0, 0, 0, 0.2), *plot_colors], len(plot_colors) + 2
+        [(1, 1, 1, 0), (0, 0, 0, 0.2), *plot_colors], N=len(plot_colors) + 2
     )
 
     # Plot all columns in gray

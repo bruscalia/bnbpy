@@ -5,4 +5,4 @@ try:
 except (ModuleNotFoundError, ImportError) as e:
     print("Cython Node not found, using Python version")
     print(e)
-    from bnbpy.pypure.node import Node  # type: ignore # noqa: F401
+    from bnbpy.pypure.node import Node  # type: ignore

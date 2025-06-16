@@ -1,9 +1,9 @@
 from typing import List, Optional, Union
 
-from bnbpy.problem import Problem
+from bnbpy.pypure.problem import Problem
 
 
-class MyProblem(Problem):  # type: ignore
+class PyProblem(Problem):  # type: ignore
     """Concrete subclass of Problem for testing purposes."""
 
     def __init__(
@@ -23,11 +23,11 @@ class MyProblem(Problem):  # type: ignore
 
     def branch(self) -> Optional[List['Problem']]:
         # Create two child problems for testing
-        child1 = MyProblem(
+        child1 = PyProblem(
             lb_value=self._lb_value + 1 if self._lb_value is not None else 1,
             feasible=True,
         )
-        child2 = MyProblem(
+        child2 = PyProblem(
             lb_value=self._lb_value + 2 if self._lb_value is not None else 2,
             feasible=False,
         )

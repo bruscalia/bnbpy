@@ -1,9 +1,9 @@
 import pytest
+from fixtures.myproblem import MyProblem
 
 from bnbpy.node import Node
 from bnbpy.solution import Solution
 from bnbpy.status import OptStatus
-from tests.fixtures.myproblem import MyProblem
 
 
 @pytest.mark.node
@@ -11,15 +11,15 @@ class TestNode:
     """Test class for the Node class."""
 
     @pytest.fixture
-    def parent_problem(self):  # noqa: PLR6301
+    def parent_problem(self) -> MyProblem:  # noqa: PLR6301
         return MyProblem(lb_value=5, feasible=True)
 
     @pytest.fixture
-    def child_problem(self):  # noqa: PLR6301
+    def child_problem(self) -> MyProblem:  # noqa: PLR6301
         return MyProblem(lb_value=10, feasible=False)
 
     @staticmethod
-    def test_node_initialization(parent_problem):
+    def test_node_initialization(parent_problem: MyProblem) -> None:
         """Test the initialization of a Node instance."""
         node = Node(problem=parent_problem)
         assert node.problem == parent_problem
@@ -29,7 +29,7 @@ class TestNode:
         assert node.lb == parent_problem.lb
 
     @staticmethod
-    def test_node_sorting(parent_problem):
+    def test_node_sorting(parent_problem: MyProblem) -> None:
         """Test that nodes are sorted based on their _sort_index."""
         node1 = Node(problem=parent_problem)
         node2 = Node(problem=parent_problem, parent=node1)
@@ -38,7 +38,7 @@ class TestNode:
         assert node1 > node2
 
     @staticmethod
-    def test_node_lb_property(parent_problem):
+    def test_node_lb_property(parent_problem: MyProblem) -> None:
         """Test that the lb property returns the correct lower bound."""
         node = Node(problem=parent_problem)
         assert node.lb == parent_problem.lb
@@ -51,7 +51,9 @@ class TestNode:
             (False, OptStatus.INFEASIBLE),
         ],
     )
-    def test_check_feasible(feasible, expected_status):
+    def test_check_feasible(
+        feasible: bool, expected_status: OptStatus
+    ) -> None:
         """Test the check_feasible method of Node."""
         prob = MyProblem(feasible=feasible)
         node = Node(problem=prob)
@@ -60,7 +62,7 @@ class TestNode:
         assert node.solution.status == expected_status
 
     @staticmethod
-    def test_branch_on(parent_problem: MyProblem):
+    def test_branch_on(parent_problem: MyProblem) -> None:
         """Test the branch method of Node."""
         # Create a node with a problem that generates two child problems
         node = Node(problem=parent_problem)
@@ -83,7 +85,7 @@ class TestNode:
         assert children[0].lb == parent_problem.lb + 2
 
     @staticmethod
-    def test_copy(parent_problem: MyProblem):
+    def test_copy(parent_problem: MyProblem) -> None:
         """Test copying functionality of Node."""
         node = Node(problem=parent_problem)
         node.problem.compute_bound()

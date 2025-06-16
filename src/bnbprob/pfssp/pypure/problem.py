@@ -203,7 +203,7 @@ class PermFlowShop(Problem):
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 
-    def copy(self, deep: bool=False) -> 'PermFlowShop':
+    def copy(self, deep: bool = False) -> 'PermFlowShop':
         child = type(self).__new__(type(self))
         child.solution = self.solution.copy()
         child.constructive = self.constructive

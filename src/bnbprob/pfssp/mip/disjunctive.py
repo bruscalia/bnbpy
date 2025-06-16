@@ -71,7 +71,9 @@ def cstr_precede(model: pyo.ConcreteModel, m: int, k: int) -> pyo.Expression:
     )
 
 
-def cstr_comp_precede(model: pyo.ConcreteModel, j: int, k: int) -> pyo.Expression:
+def cstr_comp_precede(
+    model: pyo.ConcreteModel, j: int, k: int
+) -> pyo.Expression:
     if j == k:
         return model.z[j, k] + model.z[k, j] == 0.0
     return model.z[j, k] + model.z[k, j] == 1.0

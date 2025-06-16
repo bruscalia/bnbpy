@@ -130,12 +130,16 @@ class MILPMaster(Master):
         if c.a_ub is not None:
             a_ub = c.a_ub.reshape(-1, 1)
             if not self._column_exists_ub(a_ub):
-                self.A_ub = np.hstack((self.A_ub, a_ub))  # type: ignore
+                self.A_ub = np.hstack(
+                    cast(Sequence[NDArray[np.float64]], (self.A_ub, a_ub))
+                )
                 valid = True
         if c.a_eq is not None:
             a_eq = c.a_eq.reshape(-1, 1)
             if not self._column_exists_eq(a_eq):
-                self.A_eq = np.hstack((self.A_eq, a_eq))  # type: ignore
+                self.A_eq = np.hstack(
+                    cast(Sequence[NDArray[np.float64]], (self.A_eq, a_eq))
+                )
                 valid = True
         if valid:
             self.c = np.append(self.c, c.c)
@@ -205,7 +209,7 @@ class ColGenMILP(ColumnGenProblem):
         b_ub: Optional[np.ndarray] = None,
         A_eq: Optional[np.ndarray] = None,
         b_eq: Optional[np.ndarray] = None,
-        bounds: Optional[Union[BoundType, List[BoundType]]] = None,
+        bounds: Optional[Union[BoundType, Sequence[BoundType]]] = None,
         integrality: Optional[Union[np.ndarray, int]] = None,
         pricing: Optional[Pricing] = None,
         max_iter_price: Optional[int] = None,

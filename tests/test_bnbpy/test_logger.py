@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 import pytest
 
@@ -6,13 +7,13 @@ from bnbpy.logger import SearchLogger
 
 
 @pytest.fixture
-def mock_logger(mocker):
+def mock_logger(mocker: Any) -> Any:
     """Fixture to create a mock logger."""
     return mocker.MagicMock(spec=logging.Logger)
 
 
 @pytest.fixture
-def search_logger(mock_logger):
+def search_logger(mock_logger: Any) -> SearchLogger:
     """Fixture to create a SearchLogger instance with a mock logger."""
     return SearchLogger(logger=mock_logger)
 
@@ -25,7 +26,7 @@ class TestLogger:
     ref_row = '   A    |    123     |  456.789   |   12%   |   Processing  '
     ref_args = ('A', '123', '456.789', '12%', 'Processing')
 
-    def test_log_headers(self, search_logger, mock_logger):
+    def test_log_headers(self, search_logger: SearchLogger, mock_logger: Any) -> None:
         """
         Test that log_headers logs correctly formatted headers and underscores.
         """
@@ -45,7 +46,7 @@ class TestLogger:
         # Check the underscore line
         assert underscore_call[0][0] == self.underscores
 
-    def test_log_row(self, search_logger, mock_logger):
+    def test_log_row(self, search_logger: SearchLogger, mock_logger: Any) -> None:
         """Test that log_row logs a correctly formatted row."""
         search_logger.log_row(*self.ref_args)
 
@@ -58,13 +59,13 @@ class TestLogger:
         # Check the row formatting
         assert log_call[0][0] == self.ref_row
 
-    def test_format_row(self, search_logger):
+    def test_format_row(self, search_logger: SearchLogger) -> None:
         """Test the private _format_row method (optional)."""
         # Directly test the formatting
         formatted_row = search_logger._format_row(*self.ref_args)
         assert formatted_row == self.ref_row
 
-    def test_create_underscore_line(self, search_logger):
+    def test_create_underscore_line(self, search_logger: SearchLogger) -> None:
         """Test the private _create_underscore_line method (optional)."""
         underscore_line = search_logger._create_underscore_line()
         assert underscore_line == self.underscores

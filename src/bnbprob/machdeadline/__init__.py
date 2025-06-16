@@ -1,3 +1,9 @@
-from bnbprob.machdeadline.instance import MachInstance  # noqa: F401
-from bnbprob.machdeadline.job import Job  # noqa: F401
-from bnbprob.machdeadline.problem import MachDeadlineProb  # noqa: F401
+__all__ = [
+    "MachInstance",
+    "Job",
+    "MachDeadlineProb"
+]
+
+from bnbprob.machdeadline.instance import MachInstance
+from bnbprob.machdeadline.job import Job
+from bnbprob.machdeadline.problem import MachDeadlineProb

@@ -232,7 +232,6 @@ class BranchAndBound:
         else:
             self.log_row('Cutoff')
         if not self.save_tree and node is not self.root:
-            node.cleanup()
             del node
 
     def fathom(self, node: Node) -> None:  # noqa: PLR6301
@@ -248,7 +247,6 @@ class BranchAndBound:
         """
         node.fathom()
         if not self.save_tree and node is not self.root:
-            node.cleanup()
             del node
 
     def pre_eval_callback(self, node: Node) -> None:

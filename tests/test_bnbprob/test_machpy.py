@@ -14,7 +14,8 @@ class TestMachDeadLine:
     bfs_nodes = 5
     bb_nodes = 3
 
-    def start_problem(self):
+    @pytest.fixture
+    def problem(self) -> MachDeadlineProb:  # noqa: PLR6301
         jobs = [
             Job(id=j, p=self.p[j], w=self.w[j], dl=self.dl[j])
             for j in range(len(self.p))
@@ -22,8 +23,7 @@ class TestMachDeadLine:
         problem = MachDeadlineProb(jobs)
         return problem
 
-    def test_dfs(self):
-        problem = self.start_problem()
+    def test_dfs(self, problem: MachDeadlineProb) -> None:
         bnb = DepthFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost
@@ -35,8 +35,7 @@ class TestMachDeadLine:
             f' expected {self.dfs_nodes}'
         )
 
-    def test_bfs(self):
-        problem = self.start_problem()
+    def test_bfs(self, problem: MachDeadlineProb) -> None:
         bnb = BreadthFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost
@@ -48,8 +47,7 @@ class TestMachDeadLine:
             f' expected {self.bfs_nodes}'
         )
 
-    def test_bbs(self):
-        problem = self.start_problem()
+    def test_bbs(self, problem: MachDeadlineProb) -> None:
         bnb = BestFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost

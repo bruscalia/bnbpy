@@ -1,2 +1,7 @@
-from bnbprob.pfssp.mip.disjunctive import disjunctive_model  # noqa: F401
-from bnbprob.pfssp.mip.positional import positional_model  # noqa: F401
+__all__ = [
+    "disjunctive_model",
+    "positional_model"
+]
+
+from bnbprob.pfssp.mip.disjunctive import disjunctive_model
+from bnbprob.pfssp.mip.positional import positional_model

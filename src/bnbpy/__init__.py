@@ -15,7 +15,7 @@ __all__ = [
     'Pricing',
 ]
 
-from bnbpy.colgen import (  # noqa: F401
+from bnbpy.colgen import (
     ColumnGenProblem,
     Master,
     MasterSol,

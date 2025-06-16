@@ -1,4 +1,4 @@
-from typing import List, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 
 from bnbpy.cython.solution import Solution
 
@@ -78,7 +78,7 @@ class Problem:
         """
         ...
 
-    def warmstart(self) -> Optional[Solution]:  # noqa: PLR6301
+    def warmstart(self) -> Optional[Solution]:
         """This is a white label for warmstart
         If the problem has a warmstart function that returns a valid
         solution, it will be used at the begining of the search tree.

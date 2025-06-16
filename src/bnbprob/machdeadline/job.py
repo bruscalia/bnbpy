@@ -21,14 +21,14 @@ class Job(BaseModel):
     """Completion time of the job."""
 
     @property
-    def feasible(self):
+    def feasible(self) -> Optional[bool]:
         if self.c is None:
             return None
         return self.c <= self.dl
 
     @property
-    def _signature(self):
-        j = self.model_dump(include=["id", "c"])
+    def _signature(self) -> str:
+        j = self.model_dump(include={"id", "c"})
         return json.dumps(
             j,
             indent=4
@@ -40,14 +40,14 @@ class Job(BaseModel):
     def __str__(self) -> str:
         return self._signature
 
-    def set_position(self, k: int):
+    def set_position(self, k: int) -> None:
         self.k = k
 
-    def set_completion(self, c: int):
+    def set_completion(self, c: int) -> None:
         self.c = c
 
-    def fix(self):
+    def fix(self) -> None:
         self.fixed = True
 
-    def unfix(self):
+    def unfix(self) -> None:
         self.fixed = False

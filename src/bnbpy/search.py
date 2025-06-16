@@ -17,7 +17,7 @@ try:
 except (ModuleNotFoundError, ImportError) as e:
     print('Cython Node not found, using Python version')
     print(e)
-    from bnbpy.pypure.search import (  # type: ignore  # noqa: F401
+    from bnbpy.pypure.search import (  # type: ignore
         BestFirstBnB,
         BranchAndBound,
         BreadthFirstBnB,

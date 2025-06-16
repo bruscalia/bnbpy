@@ -72,7 +72,7 @@ class MILP(Problem):
         b_ub: Optional[NDArray[np.float64]] = None,
         A_eq: Optional[NDArray[np.float64]] = None,
         b_eq: Optional[NDArray[np.float64]] = None,
-        bounds: Optional[Union[BoundType, List[BoundType]]] = None,
+        bounds: Optional[Union[BoundType, Sequence[BoundType]]] = None,
         integrality: Optional[Union[NDArray[np.float64], int, float]] = None,
         tol: float = 1e-4,
         branching: str = 'max',
@@ -148,13 +148,13 @@ class MILP(Problem):
             raise ValueError(f'Unrecognized branching rule {self.branching}')
 
     def _init_bounds(
-        self, bounds: Optional[Union[BoundType, List[BoundType]]]
+        self, bounds: Optional[Union[BoundType, Sequence[BoundType]]]
     ) -> None:
         if bounds is None:
             bounds = [(0, None) for _ in range(len(self.c))]
         elif isinstance(bounds, tuple):
             bounds = [(*bounds,) for _ in range(len(self.c))]
-        self.bounds = bounds
+        self.bounds = cast(list[BoundType], bounds)
 
     def set_solution(self, solution: Solution) -> None:
         super().set_solution(solution)
