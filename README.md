@@ -1,9 +1,15 @@
 # bnbpy
 
-A generic configurable Python framework to solve optimization problems
+
+![Tests](https://github.com/<USER>/<REPO>/actions/workflows/test.yml/badge.svg)
+![Ruff](https://github.com/<USER>/<REPO>/actions/workflows/ruff.yml/badge.svg)
+![Mypy](https://github.com/<USER>/<REPO>/actions/workflows/mypy.yml/badge.svg)
+
+
+A generic, configurable Python framework for solving optimization problems
 using Branch & Bound. Also supports Column Generation and Branch & Price.
 
-[Configure](#configure) | [Usage](#usage) | [Base Problems](#base-problems) | [Development](#development) | [Contact](#contact)
+[Configure](#configuration) | [Usage](#usage) | [Base Problems](#base-problems) | [Development](#development) | [Contact](#contact)
 
 See more examples in the [notebooks folder](./notebooks/):
 
@@ -14,44 +20,41 @@ See more examples in the [notebooks folder](./notebooks/):
 - [Graph Coloring](./notebooks/graph-coloring-bak.ipynb)
 - [Lot Sizing](./notebooks/lot-size.ipynb)
 
-
 ## Configuration
 
-### Install
+### Installation
 
-Install the package and its dependencies via pip from the root of the repository.
+Install the package and its dependencies via pip from the root of the repository:
 
 ```
 python -m pip install .
 ```
 
-To include development resources to run `bnbprob`, tests, and linters, you can simply include the `dev` flavor.
+To include development resources for running `bnbprob`, tests, and linters, use the `dev` extra:
 
 ```
 python -m pip install .[dev]
 ```
 
-Editable (development) mode can also be a good alternative to keep tracking changes from the files in the original location.
+For editable (development) mode, which allows you to track changes in the source files:
 
 ```
 python -m pip install -e .[dev]
 ```
 
-All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements and extension settings are under [pyproject.toml](./pyproject.toml).
+All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements and extension settings are in [pyproject.toml](./pyproject.toml).
 
+### Building
 
-### Build
-
-To build extensions for Cython files, you can run:
+To build Cython extensions, run:
 
 ```
 python setup.py build_ext --inplace
 ```
 
-Be careful with deprecated commands in the `setup.py` file. You can check deprecated commands [here](https://packaging.python.org/en/latest/discussions/setup-py-deprecated/#needs-build).
+Be aware of deprecated commands in `setup.py`. See [here](https://packaging.python.org/en/latest/discussions/setup-py-deprecated/#needs-build) for more information.
 
-
-To build wheels for distribution, it is suggested to run:
+To build wheels for distribution, run:
 
 ```
 python -m build --wheel
@@ -62,11 +65,10 @@ python -m build --wheel
 ### Branch & Bound
 
 ```python
-from bnbpy import BrachAndBound, Problem
-
+from bnbpy import BranchAndBound, Problem
 
 class MyProblem(Problem):
-    # Here you define your problem specifications from abstract methods
+    # Define your problem specifications by implementing abstract methods
 
     def calc_bound(self):
         # Compute node lower bound
@@ -77,13 +79,12 @@ class MyProblem(Problem):
         pass
 
     def branch(self):
-        # Should return a list of subproblems if not fathomed
+        # Return a list of subproblems if not fathomed
         pass
 
-
-# Here you apply B&B
+# Apply Branch & Bound
 problem = MyProblem()
-bnb = BrachAndBound()
+bnb = BranchAndBound()
 bnb.solve(problem)
 print(bnb.solution)
 ```
@@ -93,14 +94,13 @@ print(bnb.solution)
 ```python
 import bnbpy as bbp
 
-
 class MyMaster(bbp.Master):
     def __init__(self, *args):
-        # Write your master
+        # Implement your master problem
         pass
 
     def add_col(self, c) -> bool:
-        # Includes new column and return True if accepted
+        # Include a new column and return True if accepted
         return True
 
     def solve(self) -> bbp.MasterSol:
@@ -109,14 +109,13 @@ class MyMaster(bbp.Master):
         # return MasterSol(cost=cost, duals=duals)
         pass
 
-
 class MyPricing(bbp.Pricing):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Instantiate your pricing problem
 
     def set_weights(self, c):
-        # This should modify the instance incorporanting new weights
+        # Modify the instance by incorporating new weights
         pass
 
     def solve(self) -> bbp.PriceSol:
@@ -125,9 +124,7 @@ class MyPricing(bbp.Pricing):
         # return PriceSol(red_cost=red_cost, new_col=new_col)
         pass
 
-
 class MyCG(bbp.ColumnGenProblem):
-
     def __init__(self, **kwargs):
         master = MyMaster()
         pricing = MyPricing(**kwargs)
@@ -141,20 +138,20 @@ class MyCG(bbp.ColumnGenProblem):
         pass
 
     def is_feasible(self) -> bool:
-        # Check for feasiblity in the complete formulation
+        # Check for feasibility in the complete formulation
         pass
 ```
 
 ## Base Problems
 
-The package `bnbprob` incorporates elements of `bnbpy` to solve classical examples.
-They are installed simultaneously.
+The `bnbprob` package incorporates elements of `bnbpy` to solve classical examples.
+It is installed alongside `bnbpy`.
 
-See here examples for a [MILP](#milp), a [Flow Shop](#flow-shop), and a [Graph Coloring](#graph-coloring) problem.
+See examples for [MILP](#milp), [Flow Shop](#flow-shop), and [Graph Coloring](#graph-coloring) problems below.
 
 ### MILP
 
-The MILP implementation is based on `scipy.optimize.linprog` for solving the LPs.
+The MILP implementation is based on `scipy.optimize.linprog` for solving LPs.
 
 ```python
 import numpy as np
@@ -165,10 +162,10 @@ from bnbpy import BranchAndBound
 # Simple problem
 c = np.array([-5.0, -4.0])
 
-A_ub = np.array(
-    [[2.0, 3.0],
-     [2.0, 1.0]]
-)
+A_ub = np.array([
+    [2.0, 3.0],
+    [2.0, 1.0]
+])
 b_ub = np.array([12.0, 6.0])
 
 milp = MILP(c, A_ub=A_ub, b_ub=b_ub)
@@ -180,9 +177,8 @@ print(f"Sol: {sol} | x: {sol.x}")
 
 ### Flow Shop
 
-In this example, I used an instance from the literature with 20 jobs on 10 machines.
-It takes less than 1s to be solved, which
-is an incredible performance even compared to the best commercial MILP solvers.
+In this example, an instance from the literature with 20 jobs on 10 machines is solved.
+It takes less than 1 second, which is an impressive performance even compared to the best commercial MILP solvers.
 
 ```python
 import json
@@ -196,7 +192,7 @@ bnb = CallbackBnB(
     eval_node='in', rtol=0.0001, save_tree=False
 )
 
-# The commercial solver Gurobi took 600s (timeout) to find the near optimal
+# The commercial solver Gurobi took 600s (timeout) to find the near-optimal
 # solution 1432
 sol = bnb.solve(
     problem, maxiter=1000000, timelimit=600
@@ -208,7 +204,6 @@ plot_gantt(sol.sequence, figsize=[8, 3])
 ```
 
 ![pfssp](./data/images/gantt.png)
-
 
 ### Graph Coloring
 
@@ -222,7 +217,7 @@ from bnbpy import BranchAndBound
 # Instances are available in the 'data' folder
 instance = gcol.load_instance("./data/gcol/gcol_70_7.txt")
 
-# Do the magic (70 nodes instance solved to optimality in 24s)
+# Solve a 70-node instance to optimality in 24s
 # With only heuristics to generate columns, it took only 14s
 # The commercial solver Gurobi took 81s to find the optimal solution
 # but could only prove optimality within 51 min
@@ -245,12 +240,11 @@ print(sol)
 # >>> Status: OPTIMAL | Cost: 17 | LB: 17
 ```
 
-
 ## Development
 
 ### Code Quality
 
-In this project [Ruff](https://docs.astral.sh/ruff/) is used as linter and [Mypy](https://mypy-lang.org/) as static type checker. Both are configured in [pyproject.toml](./pyproject.toml).
+This project uses [Ruff](https://docs.astral.sh/ruff/) as a linter and [Mypy](https://mypy-lang.org/) as a static type checker. Both are configured in [pyproject.toml](./pyproject.toml).
 
 ```
 mypy src/
@@ -262,13 +256,13 @@ ruff check src/
 
 ### Tests
 
-Tests are also configured in [pyproject.toml](./pyproject.toml). The package `pytest` is used as the main framework. To run, execute:
+Tests are configured in [pyproject.toml](./pyproject.toml). The package `pytest` is used as the main framework. To run tests, execute:
 
 ```
 pytest
 ```
 
-To keep track of code coverage of the main package `bnbpy`, run:
+To track code coverage of the main package `bnbpy`, run:
 
 ```
 pytest --cov=bnbpy --cov-report=html
