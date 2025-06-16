@@ -114,7 +114,8 @@ def solve_cpsat(
     status = solver.Solve(flow_model.model)
 
     # Extract solution
-    if status in {cp_model.OPTIMAL, cp_model.FEASIBLE}:
+    # Needed to disable ruff due to mypy
+    if (status == cp_model.OPTIMAL) or (status == cp_model.FEASIBLE):  # noqa: PLR1714
         return extract_results(flow_model, solver)
     else:
         return None
