@@ -1,9 +1,9 @@
 # bnbpy
 
 
-![Tests](https://github.com/<USER>/<REPO>/actions/workflows/test.yml/badge.svg)
-![Ruff](https://github.com/<USER>/<REPO>/actions/workflows/ruff.yml/badge.svg)
-![Mypy](https://github.com/<USER>/<REPO>/actions/workflows/mypy.yml/badge.svg)
+![Tests](https://github.com/bruscalia/bnbpy/actions/workflows/test.yml/badge.svg)
+![Ruff](https://github.com/bruscalia/bnbpy/actions/workflows/ruff.yml/badge.svg)
+![Mypy](https://github.com/bruscalia/bnbpy/actions/workflows/mypy.yml/badge.svg)
 
 
 A generic, configurable Python framework for solving optimization problems
