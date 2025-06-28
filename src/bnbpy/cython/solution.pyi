@@ -11,7 +11,7 @@ class Solution:
     lb: Union[int, float]
     status: OptStatus
 
-    def __init__(self, lb: float = LOW_NEG):
+    def __init__(self) -> None:
         ...
 
     @property

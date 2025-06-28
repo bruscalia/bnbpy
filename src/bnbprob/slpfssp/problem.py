@@ -1,18 +1,10 @@
 import logging
-from typing import List, Literal, Optional, Sequence
+from typing import Literal, Optional, Sequence
 
-from bnbprob.pfssp.pypure.heuristics import (
-    local_search as ls,
-)
-from bnbprob.pfssp.pypure.heuristics import (
-    neh_constructive as neh,
-)
-from bnbprob.pfssp.pypure.heuristics import (
-    quick_constructive as qc,
-)
-from bnbprob.pfssp.pypure.permutation import Permutation
-from bnbprob.pfssp.pypure.solution import FlowSolution
-from bnbpy.pypure.problem import Problem
+from bnbprob.slpfssp.heuristics import local_search, neh_constructive_sl
+from bnbprob.slpfssp.permutation import Permutation
+from bnbprob.slpfssp.solution import FlowSolution
+from bnbpy.problem import Problem
 
 log = logging.getLogger(__name__)
 
@@ -69,14 +61,14 @@ class PermFlowShop(Problem):
     @classmethod
     def from_p(
         cls,
-        p: List[List[int]],
+        p: list[list[list[int]]],
         constructive: Literal['neh', 'quick'] = 'neh'
     ) -> 'PermFlowShop':
         """Instantiate problem based on processing times only
 
         Parameters
         ----------
-        p : List[List[int]]
+        p : list[list[int]]
             Processing times for each job
 
         constructive: Literal['neh', 'quick']
@@ -118,27 +110,7 @@ class PermFlowShop(Problem):
         in the minimum total time—a quick method of obtaining a near optimum.
         Journal of the Operational Research Society, 16(1), 101-107
         """
-        if self.constructive == 'neh':
-            return self.neh_constructive()
-        return self.quick_constructive()
-
-    def quick_constructive(self) -> FlowSolution:
-        """Computes a feasible solution based on the sorting
-        strategy by Palmer (1965).
-
-        Returns
-        -------
-        FlowSolution
-            Solution to the problem
-
-        References
-        ----------
-        Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
-        in the minimum total time—a quick method of obtaining a near optimum.
-        Journal of the Operational Research Society, 16(1), 101-107
-        """
-        perm = qc(self.solution.perm.get_sequence_copy())
-        return FlowSolution(perm)
+        return self.neh_constructive()
 
     def neh_constructive(self) -> FlowSolution:
         """Constructive heuristic of Nawaz et al. (1983) based
@@ -157,7 +129,7 @@ class PermFlowShop(Problem):
         n-job flow-shop sequencing problem.
         Omega, 11(1), 91-95.
         """
-        perm = neh(self.solution.perm.get_sequence_copy())
+        perm = neh_constructive_sl(self.solution.perm.get_sequence_copy())
         return FlowSolution(perm)
 
     def local_search(self) -> Optional[FlowSolution]:
@@ -169,7 +141,7 @@ class PermFlowShop(Problem):
             New solution (best improvement) if exists
         """
         lb = self.solution.lb
-        perm = ls(self.solution.perm.get_sequence_copy())
+        perm = local_search(self.solution.perm.get_sequence_copy())
         sol_alt = FlowSolution(perm)
         new_cost = sol_alt.perm.calc_bound()
         if new_cost < lb:

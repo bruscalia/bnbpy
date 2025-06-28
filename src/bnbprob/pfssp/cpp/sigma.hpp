@@ -16,7 +16,7 @@ public:
     std::vector<JobPtr> jobs;
     std::vector<int> C;
 
-    // Deafult constructor
+    // Default constructor
     Sigma() : m(0), jobs(), C() {}
 
     // Constructor with empty instance
@@ -43,6 +43,7 @@ public:
 
     // Push job to top sequence
     void job_to_top(const JobPtr &job);
+
 };
 
 #endif  // SIGMA_HPP
