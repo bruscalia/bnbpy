@@ -1,6 +1,6 @@
 from typing import Literal
 
-from bnbprob.slpfssp.problem import PermFlowShop
+from bnbprob.slpfssp.cython.problem import PermFlowShop
 from bnbpy.node import Node
 from bnbpy.search import BranchAndBound
 

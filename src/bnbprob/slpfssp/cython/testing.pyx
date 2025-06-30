@@ -1,7 +1,11 @@
+# distutils: language = c++
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+
 from libcpp.vector cimport vector
 from libcpp.memory cimport shared_ptr, make_shared
+from cython.operator cimport dereference as deref
 
-from bnpprob.slpfssp.cpp.environ import Job, JobPtr, Sigma
+from bnbprob.slpfssp.cpp.environ cimport Job, JobPtr, Sigma
 
 
 cdef vector[vector[int]] py2vec2d(list l):
@@ -34,12 +38,11 @@ cpdef list[list[int]] job_to_bottom(
     cdef vector[vector[int]] q_ = py2vec2d(q)
     cdef vector[vector[int]] C_ = py2vec2d(C)
     cdef vector[int] m_ = py2vec1d(m)
-    cdef shared_ptr[vector[vector[int]]] p_ptr = make_shared[vector[vector[int]]](p_)
     cdef shared_ptr[vector[int]] m_ptr = make_shared[vector[int]](m_)
-    cdef JobPtr job = make_shared[Job](j, p_ptr)
+    cdef JobPtr job = make_shared[Job](<int>j, p_)
     cdef Sigma sigma = Sigma(m_ptr, vector[JobPtr](), C_)
-    job.r = r_
-    job.q = q_
+    deref(job).r = r_
+    deref(job).q = q_
     sigma.job_to_bottom(job)
     # Convert sigma.C back to Python list
     return [[int(x) for x in row] for row in sigma.C]
@@ -57,12 +60,11 @@ cpdef list[list[int]] job_to_top(
     cdef vector[vector[int]] q_ = py2vec2d(q)
     cdef vector[vector[int]] C_ = py2vec2d(C)
     cdef vector[int] m_ = py2vec1d(m)
-    cdef shared_ptr[vector[vector[int]]] p_ptr = make_shared[vector[vector[int]]](p_)
     cdef shared_ptr[vector[int]] m_ptr = make_shared[vector[int]](m_)
-    cdef JobPtr job = make_shared[Job](j, p_ptr)
+    cdef JobPtr job = make_shared[Job](<int>j, p_)
     cdef Sigma sigma = Sigma(m_ptr, vector[JobPtr](), C_)
-    job.r = r_
-    job.q = q_
+    deref(job).r = r_
+    deref(job).q = q_
     sigma.job_to_top(job)
     # Convert sigma.C back to Python list
     return [[int(x) for x in row] for row in sigma.C]

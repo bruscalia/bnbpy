@@ -29,7 +29,17 @@ public:
     Job() : j(0), p(nullptr), r(), q(), lat(nullptr), m(nullptr), L(0), s(0) {}
 
     // Constructor with job ID and shared pointer to processing times
-    Job(const int &j_, const Int2DPtr &p_, const int s_ = 1)
+    Job(const int &j_, const Int2DPtr &p_)
+        : j(j_), p(p_), r(), q(),
+        lat(std::make_shared<Int3D>(p_->size())),
+        m(std::make_shared<Int1D>(p_->size())), L(p_->size()), s(1)
+    {
+        fill_m(p_);
+        initialize(p_);
+    }
+
+    // Constructor with job ID and shared pointer to processing times
+    Job(const int &j_, const Int2DPtr &p_, const int s_)
         : j(j_), p(p_), r(), q(),
         lat(std::make_shared<Int3D>(p_->size())),
         m(std::make_shared<Int1D>(p_->size())), L(p_->size()), s(s_)
@@ -40,7 +50,23 @@ public:
 
     // Constructor with job ID and vector for processing times (creates
     // shared_ptr internally)
-    Job(const int &j_, const Int2D &p_, const int s_ = 1)
+    Job(const int &j_, const Int2D &p_)
+        : j(j_),
+          p(std::make_shared<Int2D>(p_)),
+          r(),
+          q(),
+          lat(std::make_shared<Int3D>(p_.size())),
+          m(std::make_shared<Int1D>(p_.size())),
+          L(p_.size()),
+          s(1)
+    {
+        fill_m(p);
+        initialize(p);
+    }
+
+    // Constructor with job ID and vector for processing times (creates
+    // shared_ptr internally)
+    Job(const int &j_, const Int2D &p_, const int s_)
         : j(j_),
           p(std::make_shared<Int2D>(p_)),
           r(),
@@ -56,8 +82,15 @@ public:
 
     // Parameterized constructor -> deepcopy of arrays
     Job(const int &j_, const Int2DPtr &p_, const Int2D &r_, const Int2D &q_,
-        const Int3DPtr &lat_, const Int1DPtr &m_, const int s_ = 1)
+        const Int3DPtr &lat_, const Int1DPtr &m_, const int s_)
         : j(j_), p(p_), r(r_), q(q_), lat(lat_), m(m_), L(p_->size()), s(s_)
+    {
+    }
+
+    // Parameterized constructor -> deepcopy of arrays
+    Job(const int &j_, const Int2DPtr &p_, const Int2D &r_, const Int2D &q_,
+        const Int3DPtr &lat_, const Int1DPtr &m_)
+        : j(j_), p(p_), r(r_), q(q_), lat(lat_), m(m_), L(p_->size()), s(1)
     {
     }
 

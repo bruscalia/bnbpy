@@ -20,6 +20,12 @@ public:
     // Constructor with empty instance
     Sigma(const Int1DPtr &m_) : m(m_), jobs(), C() { fill_C(); }
 
+    // Constructor with empty instance
+    Sigma(const Int1D &m_) : m(std::make_shared<Int1D>(m_)), jobs(), C()
+    {
+        fill_C();
+    }
+
     // Constructor only jobs
     Sigma(const Int1DPtr &m_, const std::vector<JobPtr> &jobs_)
         : m(m_), jobs(jobs_), C()
@@ -38,6 +44,16 @@ public:
 
     // Get cost: maximum completion time on all machines
     int cost() const;
+
+    // Insert job at the end (bottom) of the sequence
+    void job_to_bottom(const Job &job) {
+        job_to_bottom(std::make_shared<Job>(job));
+    }
+
+    // Insert job at the beginning (top) of the sequence
+    void job_to_top(const Job &job) {
+        job_to_top(std::make_shared<Job>(job));
+    }
 
     // Insert job at the end (bottom) of the sequence
     void job_to_bottom(const JobPtr &job);

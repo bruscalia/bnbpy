@@ -135,15 +135,14 @@ else:
                 include_dirs=[CPP_PATH_SLPFSSP],
                 language="c++",
             )
+        ] + [
+            Extension(
+                f'bnbprob.slpfssp.cython.{f[:-4]}',
+                get_ext_slpfssp(f),  # Mandatory to include all cpp files used
+                include_dirs=[CPP_PATH_SLPFSSP],
+            )
+            for f in os.listdir(CY_PATH_SLPFSSP) if f.endswith('.pyx')
         ]
-        # + [
-        #     Extension(
-        #         f'bnbprob.slpfssp.cython.{f[:-4]}',
-        #         get_ext_slpfssp(f),  # Mandatory to include all cpp files used
-        #         include_dirs=[CPP_PATH_SLPFSSP],
-        #     )
-        #     for f in os.listdir(CY_PATH_SLPFSSP) if f.endswith('.pyx')
-        # ]
 
         ext_modules_ = (
             ext_modules_base + ext_modules_pfssp + ext_modules_slpfssp

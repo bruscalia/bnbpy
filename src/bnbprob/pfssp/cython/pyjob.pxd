@@ -18,7 +18,7 @@ cdef class PyJob:
 
     cpdef list[int] get_q(self) except *
 
-    cpdef list[int] get_lat(self) except *
+    cpdef list[list[int]] get_lat(self) except *
 
     cpdef int get_slope(self) except *
 
