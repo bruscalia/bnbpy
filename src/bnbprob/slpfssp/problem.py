@@ -49,7 +49,7 @@ class PermFlowShop(Problem):
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
         super().__init__()
-        self.solution = solution
+        self.set_solution(solution)
         self.constructive = constructive
 
     def __del__(self) -> None:

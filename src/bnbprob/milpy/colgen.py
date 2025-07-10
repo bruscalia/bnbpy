@@ -275,7 +275,7 @@ class ColGenMILP(ColumnGenProblem):
 
     def set_solution(self, solution: Solution) -> None:
         self.milp.set_solution(solution)
-        self.solution = self.milp.solution
+        super().set_solution(self.milp.solution)
 
     def is_feasible(self) -> bool:
         return self.milp.is_feasible()

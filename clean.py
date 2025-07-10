@@ -2,7 +2,7 @@ import glob
 import os
 
 
-def delete_files(folder: str, extensions: list[str]):
+def delete_files(folder: str, extensions: list[str]) -> None:
     for ext in extensions:
         files = glob.glob(os.path.join(folder, f'*.{ext}'))
         for file in files:
@@ -19,7 +19,7 @@ CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
 CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
 
 
-def main():
+def main() -> None:
     # Define the folders
     cython_folders = [CY_PATH, CY_PATH_PFSSP]
     cpp_folders = [CPP_PATH_PFSSP]
