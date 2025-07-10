@@ -77,6 +77,8 @@ cdef class PermFlowShop(Problem):
         sol_alt.perm = perm
         new_cost = perm.calc_lb_full()
         if new_cost < lb:
+            sol_alt.set_lb(new_cost)
+            sol_alt.set_feasible()
             return sol_alt
         return None
 
