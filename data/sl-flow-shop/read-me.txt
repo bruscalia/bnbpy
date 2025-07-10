@@ -1,0 +1,18 @@
+Let m1 be the number of machines of semi-line 1, and m2 be the number of machines of semi-line 2.
+
+n: number of jobs
+
+m: m1 + m2 + 2 (number of machines in each same line plus 2 since final synchronization machine is duplicated)
+
+matrix of processing times machine x job
+
+line 1: processing times of the jobs in the first machine of semi-line 1
+line 2: processing times of the jobs in the second machine of semi-line 1
+…
+line m1: processing times of the jobs in the last machine of semi-line 1
+line m1+1: processing times of the jobs in thefinal synchronization machine
+line m1+2: processing times of the jobs in the first machine of semi-line 2
+…
+line m1+m2+1: processing times of the jobs in the last machine of semi-line 2
+line m1+m2+2: processing times of the jobs in the first machine of semi-line 2 (duplicated from line m1+1)
+
