@@ -1,4 +1,4 @@
-from typing import Iterator, Optional
+from typing import Optional
 
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
@@ -11,7 +11,6 @@ class Node:
     lb: float
     children: list[Node]
     _sort_index: int
-    _counter: Iterator[int]
 
     def __init__(
         self, problem: Problem, parent: Optional['Node'] = None

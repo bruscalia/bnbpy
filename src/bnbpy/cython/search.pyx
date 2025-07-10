@@ -121,7 +121,22 @@ cdef class BranchAndBound:
 
         sol = self.get_solution()
         sol.set_lb(self.get_lb())
+        self._clean_queue()
         return sol
+
+    cdef void _clean_queue(BranchAndBound self):
+        cdef:
+            int i
+            Node node
+            tuple[object, Node] next_item
+
+        for i in range(len(self.queue)):
+            next_item = self.queue[i]
+            node = next_item[1]
+            if not self.save_tree and node is not self.root:
+                node.parent = None
+                node.children = []
+
 
     cdef void _do_iter(BranchAndBound self, Node node):
         # Node is valid for evaluation

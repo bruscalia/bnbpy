@@ -2,6 +2,7 @@ import copy
 import itertools
 from typing import Any, Iterator, List, Optional, Union
 
+from bnbpy.pypure.counter import Counter
 from bnbpy.pypure.problem import Problem
 from bnbpy.pypure.solution import Solution
 
@@ -15,7 +16,7 @@ class Node:
     lb: Union[float, int]
     children: List['Node']
     _sort_index: int
-    _counter: Iterator[int]
+    _counter: Counter
 
     def __init__(
         self, problem: Problem, parent: Optional['Node'] = None
@@ -35,14 +36,14 @@ class Node:
         self.parent = parent
         self.children = []
         if parent is None:
-            self._counter = itertools.count()
+            self._counter = Counter()
             self.level = 0
             self.lb = self.problem.lb
         else:
             self._counter = parent._counter
             self.lb = parent.lb
             self.level = parent.level + 1
-        self._sort_index = next(self._counter)
+        self._sort_index = self._counter.next()
 
     def __del__(self) -> None:
         self.cleanup()
@@ -53,6 +54,7 @@ class Node:
         if self.children is not None:
             for child in self.children:
                 child.parent = None
+            self.children = None
         if self.parent:
             self.parent = None
 

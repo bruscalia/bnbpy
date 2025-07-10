@@ -44,6 +44,8 @@ cdef class BranchAndBound:
 
     cdef Solution get_solution(BranchAndBound self)
 
+    cdef void _clean_queue(BranchAndBound self)
+
     cdef inline void _set_problem(BranchAndBound self, Problem problem):
         self.problem = problem
 
