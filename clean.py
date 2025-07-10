@@ -17,12 +17,14 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
 CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
 CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
+CY_PATH_SLPFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'slpfssp', 'cython')
+CPP_PATH_SLPFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'slpfssp', 'cpp')
 
 
 def main() -> None:
     # Define the folders
-    cython_folders = [CY_PATH, CY_PATH_PFSSP]
-    cpp_folders = [CPP_PATH_PFSSP]
+    cython_folders = [CY_PATH, CY_PATH_PFSSP, CY_PATH_SLPFSSP]
+    cpp_folders = [CPP_PATH_PFSSP, CPP_PATH_SLPFSSP]
 
     # Define extensions to delete
     cython_extensions = ['cpp', 'pyd', 'so', 'html']
