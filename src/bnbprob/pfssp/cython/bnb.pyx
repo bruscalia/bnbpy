@@ -58,6 +58,20 @@ cdef class CallbackBnB(LazyBnB):
             return _min_queue(self.queue)
         return super(CallbackBnB, self).dequeue()
 
+    # cpdef Node dequeue(CallbackBnB self):
+    #     cdef:
+    #         Node node
+    #         PermFlowShop problem
+    #         FlowSolution new_sol
+    #     if self.explored % self.restart_freq == 0:
+    #         node = _min_queue(self.queue)
+    #         problem = node.problem
+    #         new_sol = problem.intensification()
+    #         if new_sol.lb < self.get_ub():
+    #             self.set_solution(new_sol)
+    #         return node
+    #     return super(CallbackBnB, self).dequeue()
+
 
 cdef Node _min_queue(list[tuple[object, Node]] queue):
     cdef:

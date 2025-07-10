@@ -46,7 +46,7 @@ Sigma *Permutation::get_sigma2()
     return &sigma2;
 }
 
-std::vector<JobPtr> Permutation::get_sequence()
+std::vector<JobPtr> Permutation::get_sequence() const
 {
     // Implementation here
     std::vector<JobPtr> seq = {};
@@ -58,7 +58,7 @@ std::vector<JobPtr> Permutation::get_sequence()
     return seq;
 }
 
-std::vector<JobPtr> Permutation::get_sequence_copy()
+std::vector<JobPtr> Permutation::get_sequence_copy() const
 {
     // Implementation here
     std::vector<JobPtr> base_seq = get_sequence();
@@ -66,7 +66,14 @@ std::vector<JobPtr> Permutation::get_sequence_copy()
     return seq;
 }
 
-std::vector<int> Permutation::get_r()
+std::vector<JobPtr> Permutation::get_free_jobs_copy() const
+{
+    // Implementation here
+    std::vector<JobPtr> seq = copy_jobs(this->free_jobs);
+    return seq;
+}
+
+std::vector<int> Permutation::get_r() const
 {
     // Implementation here
     std::vector<int> r_ = std::vector<int>(this->m);
@@ -82,7 +89,7 @@ std::vector<int> Permutation::get_r()
     return r_;
 }
 
-std::vector<int> Permutation::get_q()
+std::vector<int> Permutation::get_q() const
 {
     // Implementation here
     std::vector<int> q_ = std::vector<int>(this->m);

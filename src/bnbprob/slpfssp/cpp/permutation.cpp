@@ -46,7 +46,7 @@ Sigma *Permutation::get_sigma2()
     return &sigma2;
 }
 
-JobPtr1D Permutation::get_sequence()
+JobPtr1D Permutation::get_sequence() const
 {
     // Implementation here
     JobPtr1D seq = {};
@@ -58,7 +58,7 @@ JobPtr1D Permutation::get_sequence()
     return seq;
 }
 
-JobPtr1D Permutation::get_sequence_copy()
+JobPtr1D Permutation::get_sequence_copy() const
 {
     // Implementation here
     JobPtr1D base_seq = get_sequence();
@@ -66,7 +66,7 @@ JobPtr1D Permutation::get_sequence_copy()
     return seq;
 }
 
-Int2D Permutation::get_r()
+Int2D Permutation::get_r() const
 {
     // Returns a 2D vector: for each semiline, for each machine, the min r among free_jobs
     Int2D r_;
@@ -91,7 +91,7 @@ Int2D Permutation::get_r()
     return r_;
 }
 
-Int2D Permutation::get_q()
+Int2D Permutation::get_q() const
 {
     // Returns a 2D vector: for each semiline, for each machine, the min q among free_jobs
     Int2D q_;

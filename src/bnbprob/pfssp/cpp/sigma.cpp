@@ -42,3 +42,12 @@ void Sigma::job_to_top(const JobPtr &job)
         this->C[k] = std::max(this->C[k], this->C[k + 1]) + job->p->at(k);
     }
 }
+
+// Deepcopy of self
+Sigma Sigma::deepcopy() const {
+    Sigma other = Sigma();
+    other.m = this->m;
+    other.C = this->C;
+    other.jobs = copy_jobs(this->jobs);
+    return other;
+}

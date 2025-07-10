@@ -54,3 +54,18 @@ int get_max_value(const std::vector<int> &vec)
     int max_val = *std::max_element(vec.begin(), vec.end());
     return max_val;
 }
+
+int get_max_value(const std::vector<int> &v1, const std::vector<int> &v2)
+{
+    int min_size = std::min(v1.size(), v2.size());
+    int max_val = SMALL;
+    for (int i = 0; i < min_size; ++i)
+    {
+        int val = v1[i] + v2[i];
+        if (val > max_val)
+        {
+            max_val = val;
+        }
+    }
+    return max_val;
+}

@@ -58,10 +58,10 @@ public:
     JobPtr1D *get_free_jobs();
     Sigma *get_sigma1();
     Sigma *get_sigma2();
-    JobPtr1D get_sequence();
-    JobPtr1D get_sequence_copy();
-    Int2D get_r();
-    Int2D get_q();
+    JobPtr1D get_sequence() const;
+    JobPtr1D get_sequence_copy() const;
+    Int2D get_r() const;
+    Int2D get_q() const;
 
     // Modification methods
     void push_job(const int &j);

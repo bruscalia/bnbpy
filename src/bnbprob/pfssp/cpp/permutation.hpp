@@ -56,10 +56,11 @@ public:
     std::vector<JobPtr> *get_free_jobs();
     Sigma *get_sigma1();
     Sigma *get_sigma2();
-    std::vector<JobPtr> get_sequence();
-    std::vector<JobPtr> get_sequence_copy();
-    std::vector<int> get_r();
-    std::vector<int> get_q();
+    std::vector<JobPtr> get_sequence() const;
+    std::vector<JobPtr> get_sequence_copy() const;
+    std::vector<JobPtr> get_free_jobs_copy() const;
+    std::vector<int> get_r() const;
+    std::vector<int> get_q() const;
 
     // Modification methods
     void push_job(const int &j);

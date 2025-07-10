@@ -44,6 +44,9 @@ public:
     // Push job to top sequence
     void job_to_top(const JobPtr &job);
 
+    // Deepcopy of self
+    Sigma deepcopy() const;
+
 };
 
 #endif  // SIGMA_HPP

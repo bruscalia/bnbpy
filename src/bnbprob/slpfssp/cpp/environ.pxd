@@ -128,10 +128,10 @@ cdef extern from "permutation.hpp":
         vector[shared_ptr[Job]] *get_free_jobs()
         Sigma *get_sigma1()
         Sigma *get_sigma2()
-        vector[shared_ptr[Job]] get_sequence()
-        vector[shared_ptr[Job]] get_sequence_copy()
-        vector[vector[int]] get_r()
-        vector[vector[int]] get_q()
+        vector[shared_ptr[Job]] get_sequence() const
+        vector[shared_ptr[Job]] get_sequence_copy() const
+        vector[vector[int]] get_r() const
+        vector[vector[int]] get_q() const
 
         # Modification methods
         void push_job(const int &j)

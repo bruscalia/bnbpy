@@ -10,7 +10,8 @@ from bnbprob.pfssp.cpp.environ cimport (
     Permutation,
     local_search,
     neh_constructive,
-    quick_constructive
+    quick_constructive,
+    intensification
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.cython.problem cimport Problem
@@ -35,6 +36,8 @@ cdef class PermFlowShop(Problem):
     cpdef FlowSolution neh_constructive(PermFlowShop self)
 
     cpdef FlowSolution local_search(PermFlowShop self)
+
+    cpdef FlowSolution intensification(PermFlowShop self)
 
     cpdef double calc_bound(PermFlowShop self)
 

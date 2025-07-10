@@ -13,7 +13,8 @@ from bnbprob.pfssp.cpp.environ cimport (
     Permutation,
     local_search,
     neh_constructive,
-    quick_constructive
+    quick_constructive,
+    intensification
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.cython.problem cimport Problem
@@ -99,8 +100,31 @@ cdef class PermFlowShop(Problem):
         sol_alt.perm = perm
         new_cost = perm.calc_lb_full()
         if new_cost < lb:
+            sol_alt.set_lb(new_cost)
+            sol_alt.set_feasible()
+            sol_alt.set_lb(new_cost)
             return sol_alt
         return None
+
+    cpdef FlowSolution intensification(PermFlowShop self):
+        cdef:
+            double new_cost, lb
+            Permutation perm
+            FlowSolution sol_alt, sol_ls
+            vector[JobPtr] jobs
+
+        perm = intensification(
+            self.get_solution().perm.sigma1,
+            self.get_solution().perm.free_jobs,
+            self.get_solution().perm.sigma2
+        )
+        sol_alt = FlowSolution()
+        sol_alt.perm = perm
+        new_cost = perm.calc_lb_full()
+        sol_alt.set_lb(new_cost)
+        sol_alt.set_feasible()
+
+        return sol_alt
 
     cpdef double calc_bound(PermFlowShop self):
         return self.get_solution().perm.calc_lb_1m()
