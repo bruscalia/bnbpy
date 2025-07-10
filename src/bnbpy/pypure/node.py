@@ -54,7 +54,7 @@ class Node:
         if self.children is not None:
             for child in self.children:
                 child.parent = None
-            self.children = None
+            self.children = []
         if self.parent:
             self.parent = None
 
