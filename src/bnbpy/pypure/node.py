@@ -1,32 +1,30 @@
 import copy
-import itertools
-from typing import Any, Iterator, List, Optional, Union
+from typing import Any, Generic, List, Optional, Union
 
 from bnbpy.pypure.counter import Counter
-from bnbpy.pypure.problem import Problem
-from bnbpy.pypure.solution import Solution
+from bnbpy.pypure.problem import Problem, S
 
 
-class Node:
+class Node(Generic[S]):
     """Class for representing a node in a search tree."""
 
-    problem: Problem
-    parent: Optional['Node']
+    problem: Problem[S]
+    parent: Optional['Node'[S]]
     level: int
     lb: Union[float, int]
-    children: List['Node']
+    children: List['Node'[S]]
     _sort_index: int
     _counter: Counter
 
     def __init__(
-        self, problem: Problem, parent: Optional['Node'] = None
+        self, problem: Problem[S], parent: Optional['Node'[S]] = None
     ) -> None:
         """Instantiates a new `Node` object based on a (sub)problem.
         The node is evaluated in terms of lower bound as it is initialized.
 
         Parameters
         ----------
-        problem : Problem
+        problem : Problem[S]
             Problem instance derived from parent node
 
         parent : Optional[Node], optional
@@ -58,11 +56,11 @@ class Node:
         if self.parent:
             self.parent = None
 
-    def __lt__(self, other: 'Node') -> bool:
+    def __lt__(self, other: 'Node'[S]) -> bool:
         return self._sort_index > other._sort_index
 
     @property
-    def solution(self) -> Solution:
+    def solution(self) -> S:
         return self.problem.solution
 
     @property
@@ -81,7 +79,7 @@ class Node:
         """Calls `problem` `check_feasible()` method"""
         return self.problem.check_feasible()
 
-    def branch(self) -> Optional[List['Node']]:
+    def branch(self) -> Optional[List['Node'[S]]]:
         """Calls `problem` `branch()` method to create derived sub-problems.
         Each subproblem is used to instantiate a child node.
         Child nodes are evaluated in terms of lower bound as they are
@@ -89,7 +87,7 @@ class Node:
 
         Returns
         -------
-        Optional[List['Node']]
+        Optional[List['Node'[S]]]
             List of child nodes, if any
         """
         prob_children = self.problem.branch()
@@ -102,7 +100,7 @@ class Node:
         self.children = children
         return self.children
 
-    def set_solution(self, solution: Solution) -> None:
+    def set_solution(self, solution: S) -> None:
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -118,15 +116,15 @@ class Node:
         """Sets solution status of node as 'FATHOMED'"""
         self.solution.fathom()
 
-    def copy(self, deep: bool = True) -> 'Node':
+    def copy(self, deep: bool = True) -> 'Node'[S]:
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
-    def deep_copy(self) -> 'Node':
+    def deep_copy(self) -> 'Node'[S]:
         other = copy.deepcopy(self)
         return other
 
-    def shallow_copy(self) -> 'Node':
+    def shallow_copy(self) -> 'Node'[S]:
         other = copy.copy(self)
         return other

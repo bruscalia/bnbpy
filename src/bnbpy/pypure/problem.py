@@ -1,20 +1,25 @@
 import copy
 from abc import ABC, abstractmethod
-from typing import Optional, Sequence, Union
+from typing import Generic, Optional, Sequence, TypeVar, Union
 
 from bnbpy.pypure.solution import Solution
 from bnbpy.pypure.status import OptStatus
 
+S = TypeVar("S", bound=Solution)
 
-class Problem(ABC):
+
+class Problem(ABC, Generic[S]):
     """Abstraction for an optimization problem"""
 
-    solution: Solution
+    solution: S
     """Solution of the (sub)problem (if any)"""
 
+    @abstractmethod
     def __init__(self) -> None:
-        super().__init__()
-        self.solution = Solution()
+        """Initialization method. Must set attribute `solution` here.
+        """
+        self.solution: S
+        pass
 
     def __del__(self) -> None:
         self.cleanup()
@@ -36,12 +41,13 @@ class Problem(ABC):
         pass
 
     @abstractmethod
-    def branch(self) -> Optional[Sequence['Problem']]:
+    def branch(self) -> Optional[Sequence['Problem'[S]]]:
         """Generates child nodes (problems) by branching."""
         pass
 
     @property
     def lb(self) -> Union[int, float]:
+        """Lower bound of solution"""
         return self.solution.lb
 
     def compute_bound(self) -> None:
@@ -71,7 +77,7 @@ class Problem(ABC):
             self.solution.set_infeasible()
         return feas
 
-    def set_solution(self, solution: Solution) -> None:
+    def set_solution(self, solution: S) -> None:
         """Overwrites problem solution and computes lower bound in case
         if is not yet solved
 
@@ -84,7 +90,7 @@ class Problem(ABC):
         if self.solution.status == OptStatus.NO_SOLUTION:
             self.compute_bound()
 
-    def warmstart(self) -> Optional[Solution]:  # noqa: PLR6301
+    def warmstart(self) -> Optional[S]:  # noqa: PLR6301
         """This is a white label for warmstart
         If the problem has a warmstart function that returns a valid
         solution, it will be used at the begining of the search tree.
@@ -96,15 +102,15 @@ class Problem(ABC):
         """
         return None
 
-    def copy(self, deep: bool = True) -> 'Problem':
+    def copy(self, deep: bool = True) -> 'Problem'[S]:
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
-    def deep_copy(self) -> 'Problem':
+    def deep_copy(self) -> 'Problem'[S]:
         other = copy.deepcopy(self)
         return other
 
-    def shallow_copy(self) -> 'Problem':
+    def shallow_copy(self) -> 'Problem'[S]:
         other = copy.copy(self)
         return other
