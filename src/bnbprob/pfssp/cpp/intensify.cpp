@@ -88,8 +88,9 @@ Permutation intensification(const Sigma &sigma1,
         std::cout << "Inserted job" << j << std::endl;
     }
     std::cout << "Going to exit" << std::endl;
-    Permutation perm = Permutation(sol.m, jobs.size(), jobs.size(), sol,
-                                   std::vector<JobPtr>{}, sigma2.deepcopy());
+    Permutation perm = Permutation(
+        sol.m, jobs.size(), jobs.size(), sol,
+        std::vector<JobPtr>{}, sigma2.deepcopy());
     return perm;
 }
 

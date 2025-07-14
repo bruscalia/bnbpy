@@ -6,6 +6,7 @@
 
 #include "job.hpp"
 #include "sigma.hpp"
+#include "two_mach.hpp"
 
 class Permutation
 {
@@ -31,7 +32,8 @@ public:
           level(0),
           sigma1(m_),
           free_jobs(jobs_),
-          sigma2(m)
+          sigma2(m),
+          two_mach_cache(m_, free_jobs)
     {
         // Constructor implementation here
         update_params();
@@ -40,13 +42,30 @@ public:
     // Constructor given all desired attributes
     Permutation(const int &m_, const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
+                const Sigma &sigma2_, const TwoMach &two_mach_cache_)
+        : m(m_),
+          n(n_),
+          level(level_),
+          sigma1(sigma1_),
+          free_jobs(free_jobs_),
+          sigma2(sigma2_),
+          two_mach_cache(two_mach_cache_)
+    {
+        // Constructor implementation here
+        update_params();
+    }
+
+    // Constructor given all desired attributes but two_mach
+    Permutation(const int &m_, const int &n_, const int &level_,
+                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_)
         : m(m_),
           n(n_),
           level(level_),
           sigma1(sigma1_),
           free_jobs(free_jobs_),
-          sigma2(sigma2_)
+          sigma2(sigma2_),
+          two_mach_cache(m_, free_jobs_)
     {
         // Constructor implementation here
         update_params();
@@ -109,20 +128,26 @@ public:
     {
         // std:: vector<JobPtr> new_jobs = copy_jobs(this->free_jobs);
         return Permutation(this->m, this->n, this->level, this->sigma1,
-                           copy_jobs(this->free_jobs), this->sigma2);
+                           copy_jobs(this->free_jobs), this->sigma2,
+                           this->two_mach_cache);
     }
 
     // Constructor for copy
     Permutation(int m_, int n_, int level_, const Sigma &sigma1_,
-                vector<shared_ptr<Job>> &&free_jobs_, const Sigma &sigma2_)
+                vector<shared_ptr<Job>> &&free_jobs_, const Sigma &sigma2_,
+                const TwoMach &two_mach_cache_)
         : m(m_),
           n(n_),
           level(level_),
           sigma1(sigma1_),
           free_jobs(std::move(free_jobs_)),
-          sigma2(sigma2_)
+          sigma2(sigma2_),
+          two_mach_cache(two_mach_cache_)
     {
     }
+
+private:
+    TwoMach two_mach_cache;
 };
 
 struct JobParams
@@ -147,12 +172,7 @@ struct JobParams
     }
 };
 
-// // Two machine problem definition
-int two_mach_problem(const std::vector<JobPtr> &jobs, const int &m1,
-                     const int &m2);
-
 // Makespan given ordered operations
-int two_mach_makespan(const std::vector<JobParams> &job_times, const int &m1,
-                      const int &m2);
+int two_mach_makespan(const JobTimes1D &job_times);
 
 #endif  // PERMUTATION_HPP

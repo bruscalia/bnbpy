@@ -109,6 +109,7 @@ std::vector<int> Permutation::get_q() const
 void Permutation::push_job(const int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
+    this->two_mach_cache.erase_job(jobptr);
     // Implementation here
     if (this->level % 2 == 0)
     {
@@ -248,70 +249,17 @@ int Permutation::lower_bound_2m()
         for (int m2 = m1 + 1; m2 < this->m; ++m2)
         {
             int temp_value =
-                (r[m1] + two_mach_problem(this->free_jobs, m1, m2) + q[m2]);
+                (r[m1] +
+                 two_mach_makespan(this->two_mach_cache.get_seq(m1, m2)) +
+                 q[m2]);
             lbs = std::max(lbs, temp_value);
         }
     }
     return lbs;
 }
 
-inline bool asc_t1(const JobParams &a, const JobParams &b)
-{
-    return a.t1 < b.t1;  // Sort by t1 in ascending order
-}
-
-inline bool desc_t2(const JobParams &a, const JobParams &b)
-{
-    return b.t2 < a.t2;  // Sort by t2 in descending order
-}
-
-// Two machine problem definition
-int two_mach_problem(const std::vector<JobPtr> &jobs, const int &m1,
-                     const int &m2)
-{
-    // Implementation here
-    int t1, t2;
-    int J = jobs.size();
-
-    std::vector<JobParams> j1;
-    std::vector<JobParams> j2;
-    j1.reserve(J);
-    j2.reserve(J);
-
-    for (const auto &job : jobs)
-    {
-        int &lat = job->lat->at(m2)[m1];
-        // The extrapolation below is invalid, preserving the attempt
-        // int lat = job->r[m2] - job->r[m1] - job->p->at(m1);
-        t1 = job->p->at(m1) + lat;
-        t2 = job->p->at(m2) + lat;
-        if (t1 <= t2)
-        {
-            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), lat);
-        }
-        else
-        {
-            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), lat);
-        }
-    }
-
-    // Sort set1 in ascending order of t1
-    sort(j1.begin(), j1.end(), asc_t1);
-
-    // Sort set2 in descending order of t2
-    sort(j2.begin(), j2.end(), desc_t2);
-
-    // Include j2 into j1
-    j1.insert(j1.end(), j2.begin(), j2.end());
-
-    // Concatenate the sorted lists
-    int res = two_mach_makespan(j1, m1, m2);
-    return res;
-}
-
 // Makespan given ordered operations
-int two_mach_makespan(const std::vector<JobParams> &job_times, const int &m1,
-                      const int &m2)
+int two_mach_makespan(const JobTimes1D &job_times)
 {
     // Implementation here
     int time_m1 = 0;
@@ -319,9 +267,9 @@ int two_mach_makespan(const std::vector<JobParams> &job_times, const int &m1,
 
     for (int j = 0; j < job_times.size(); ++j)
     {
-        time_m1 += *job_times[j].p1;
+        time_m1 += *job_times[j]->p1;
         time_m2 =
-            std::max(time_m1 + *job_times[j].lat, time_m2) + *job_times[j].p2;
+            std::max(time_m1 + *job_times[j]->lat, time_m2) + *job_times[j]->p2;
     }
 
     return std::max(time_m1, time_m2);

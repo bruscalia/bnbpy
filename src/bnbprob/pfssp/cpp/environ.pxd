@@ -83,6 +83,33 @@ cdef extern from "sigma.hpp":
         void job_to_top(const shared_ptr[Job] &job)
 
 
+cdef extern from "job_times.hpp":
+    cdef cppclass JobTimes:
+        int t1
+        int t2
+        const int* p1
+        const int* p2
+        const int* lat
+        const Job* jobptr
+
+        JobTimes(const int& t1_, const int& t2_, const int*& p1_, const int*& p2_,
+                 const int*& lat_, const JobPtr& jobptr_)
+
+        JobTimes(const int& t1_, const int& t2_, const int& p1_, const int& p2_,
+                 const int& lat_, const JobPtr& jobptr_)
+
+        JobTimes(const int& m1, const int& m2, const JobPtr& jobptr_)
+
+
+cdef extern from "two_mach.hpp":
+    cdef cppclass TwoMach:
+        TwoMach()
+        TwoMach(const int& m, const vector[JobPtr]& jobs)
+
+        void erase_job(const JobPtr& job)
+        vector[JobTimes] get_seq(const int& m1, const int& m2)
+
+
 cdef extern from "permutation.hpp":
 
     cdef cppclass Permutation:
@@ -106,7 +133,8 @@ cdef extern from "permutation.hpp":
         Permutation(
             const int &m_, const int &n_, const int &level_,
             const Sigma &sigma1_, const vector[shared_ptr[Job]] &free_jobs_,
-            const Sigma &sigma2_
+            const Sigma &sigma2_,
+            const TwoMach &two_mach_cache_
         )
 
         # Accessor methods
@@ -146,7 +174,8 @@ cdef extern from "permutation.hpp":
             int level_,
             const Sigma &sigma1_,
             vector[shared_ptr[Job]] &&free_jobs_,
-            const Sigma &sigma2_
+            const Sigma &sigma2_,
+            const TwoMach &two_mach_cache_
         )
 
     cdef cppclass JobParams:
