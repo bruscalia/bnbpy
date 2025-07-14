@@ -53,24 +53,37 @@ cdef class CallbackBnB(LazyBnB):
                 node.check_feasible()
                 self.set_solution(node)
 
-    cpdef Node dequeue(CallbackBnB self):
-        if self.explored % self.restart_freq == 0:
-            return _min_queue(self.queue)
-        return super(CallbackBnB, self).dequeue()
-
     # cpdef Node dequeue(CallbackBnB self):
-    #     cdef:
-    #         Node node
-    #         PermFlowShop problem
-    #         FlowSolution new_sol
     #     if self.explored % self.restart_freq == 0:
-    #         node = _min_queue(self.queue)
-    #         problem = node.problem
-    #         new_sol = problem.intensification()
-    #         if new_sol.lb < self.get_ub():
-    #             self.set_solution(new_sol)
-    #         return node
+    #         return _min_queue(self.queue)
     #     return super(CallbackBnB, self).dequeue()
+
+    cpdef Node dequeue(CallbackBnB self):
+        cdef:
+            Node node
+        if self.explored % self.restart_freq == 0:
+            node = _min_queue(self.queue)
+            self.intensify(node)
+        else:
+            node = super(CallbackBnB, self).dequeue()
+        # if node is self.bound_node:
+        #     self.intensify(node)
+        return node
+
+    cpdef void intensify(CallbackBnB self, Node node):
+        cdef:
+            Node new_node
+            PermFlowShop problem
+            FlowSolution new_sol
+
+        problem = node.problem
+        if self.explored >= 1:
+            new_sol = problem.intensification()
+            if new_sol.lb < self.get_ub():
+                new_node = Node(problem._copy())
+                new_node.set_solution(new_sol)
+                self.log_row("Intens sol")
+                self.set_solution(new_node)
 
 
 cdef Node _min_queue(list[tuple[object, Node]] queue):

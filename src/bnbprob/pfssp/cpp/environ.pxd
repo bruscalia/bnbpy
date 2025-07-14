@@ -190,6 +190,16 @@ cdef extern from "intensify.hpp":
 
     cdef Permutation intensification(
         const Sigma &sigma1,
-        vector[shared_ptr[Job]] &jobs,
+        const vector[shared_ptr[Job]] &jobs,
         const Sigma &sigma2
+    )
+
+    cdef Permutation intensify(
+        const Sigma &sigma1,
+        const vector[shared_ptr[Job]] &jobs,
+        const Sigma &sigma2
+    )
+
+    cdef Permutation intensify(
+        const Permutation &perm
     )

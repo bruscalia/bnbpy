@@ -20,6 +20,8 @@ cdef class CallbackBnB(LazyBnB):
 
     cpdef void solution_callback(CallbackBnB self, Node node)
 
+    cpdef void intensify(CallbackBnB self, Node node)
+
 
 cdef Node _min_queue(list[tuple[object, Node]] queue)
 

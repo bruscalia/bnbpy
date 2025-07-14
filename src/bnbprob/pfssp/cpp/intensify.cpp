@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "job.hpp"
+#include "local_search.hpp"
 #include "permutation.hpp"
 #include "sigma.hpp"
 #include "utils.hpp"
@@ -15,7 +16,8 @@ inline bool desc_T(const JobPtr &a, const JobPtr &b)
     return b->get_T() < a->get_T();
 }
 
-Permutation intensification(const Sigma &sigma1, std::vector<JobPtr> &jobs_,
+Permutation intensification(const Sigma &sigma1,
+                            const std::vector<JobPtr> &jobs_,
                             const Sigma &sigma2)
 {
     int j, j0, i, k, M, c1, c2, best_cost, seq_size, cost_alt, best_pos;
@@ -89,4 +91,35 @@ Permutation intensification(const Sigma &sigma1, std::vector<JobPtr> &jobs_,
     Permutation perm = Permutation(sol.m, jobs.size(), jobs.size(), sol,
                                    std::vector<JobPtr>{}, sigma2.deepcopy());
     return perm;
+}
+
+Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
+                      const Sigma &sigma2)
+{
+    int best_cost;
+    Permutation best_sol;
+    // Initialize
+    best_sol = intensification(sigma1, jobs, sigma2);
+    best_cost = best_sol.calc_lb_full();
+
+    // Local search iterations
+    for (int i = 0; i < 1000; i++)
+    {
+        Permutation new_sol = local_search(best_sol.get_sequence_copy());
+        int new_cost = new_sol.calc_lb_full();
+        if (new_cost < best_cost)
+        {
+            best_sol = std::move(new_sol);
+            best_cost = new_cost;
+        }
+        else {
+            break;
+        }
+    }
+    return best_sol;
+}
+
+Permutation intensify(const Permutation &perm)
+{
+    return intensify(perm.sigma1, perm.free_jobs, perm.sigma2);
 }

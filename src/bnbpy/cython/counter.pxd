@@ -10,5 +10,4 @@ cdef class Counter:
         self.value += 1
         return self.get_value()
 
-    cdef inline int get_value(Counter self):
-        return self.value
+    cpdef int get_value(Counter self)

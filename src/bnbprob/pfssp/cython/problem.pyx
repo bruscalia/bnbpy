@@ -14,14 +14,25 @@ from bnbprob.pfssp.cpp.environ cimport (
     local_search,
     neh_constructive,
     quick_constructive,
-    intensification
+    intensify
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 from bnbpy.cython.status cimport OptStatus
 
 log = logging.getLogger(__name__)
+
+cdef:
+    Counter lb5_counter, lb1_counter
+
+lb5_counter = Counter()
+lb1_counter = Counter()
+
+
+cpdef tuple[int, int] get_counts():
+    return lb5_counter.get_value(), lb1_counter.get_value()
 
 
 cdef class PermFlowShop(Problem):
@@ -113,10 +124,8 @@ cdef class PermFlowShop(Problem):
             FlowSolution sol_alt, sol_ls
             vector[JobPtr] jobs
 
-        perm = intensification(
-            self.get_solution().perm.sigma1,
-            self.get_solution().perm.free_jobs,
-            self.get_solution().perm.sigma2
+        perm = intensify(
+            self.get_solution().perm
         )
         sol_alt = FlowSolution()
         sol_alt.perm = perm
@@ -161,6 +170,10 @@ cdef class PermFlowShop(Problem):
             lb5 = <double>current.perm.calc_lb_full()
         else:
             lb5 = <double>current.lower_bound_2m()
+        # if lb5 > self.solution.lb:
+        #     lb5_counter.next()
+        # else:
+        #     lb1_counter.next()
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 

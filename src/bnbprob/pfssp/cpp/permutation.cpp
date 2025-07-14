@@ -280,17 +280,18 @@ int two_mach_problem(const std::vector<JobPtr> &jobs, const int &m1,
 
     for (const auto &job : jobs)
     {
-        t1 = job->p->at(m1) + job->lat->at(m2)[m1];
-        t2 = job->p->at(m2) + job->lat->at(m2)[m1];
+        int &lat = job->lat->at(m2)[m1];
+        // The extrapolation below is invalid, preserving the attempt
+        // int lat = job->r[m2] - job->r[m1] - job->p->at(m1);
+        t1 = job->p->at(m1) + lat;
+        t2 = job->p->at(m2) + lat;
         if (t1 <= t2)
         {
-            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2),
-                            job->lat->at(m2)[m1]);
+            j1.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), lat);
         }
         else
         {
-            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2),
-                            job->lat->at(m2)[m1]);
+            j2.emplace_back(t1, t2, job->p->at(m1), job->p->at(m2), lat);
         }
     }
 
