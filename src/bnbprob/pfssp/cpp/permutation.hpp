@@ -2,6 +2,7 @@
 #define PERMUTATION_HPP
 
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "job.hpp"
@@ -33,16 +34,18 @@ public:
           sigma1(m_),
           free_jobs(jobs_),
           sigma2(m),
-          two_mach_cache(m_, free_jobs)
+          two_mach_cache(std::make_shared<TwoMach>(m, free_jobs))
     {
         // Constructor implementation here
         update_params();
+        complete_prescheduled();
     }
 
     // Constructor given all desired attributes
     Permutation(const int &m_, const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
-                const Sigma &sigma2_, const TwoMach &two_mach_cache_)
+                const Sigma &sigma2_,
+                const std::shared_ptr<TwoMach> &two_mach_cache_)
         : m(m_),
           n(n_),
           level(level_),
@@ -53,6 +56,7 @@ public:
     {
         // Constructor implementation here
         update_params();
+        complete_prescheduled();
     }
 
     // Constructor given all desired attributes but two_mach
@@ -65,10 +69,11 @@ public:
           sigma1(sigma1_),
           free_jobs(free_jobs_),
           sigma2(sigma2_),
-          two_mach_cache(m_, free_jobs_)
+          two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_))
     {
         // Constructor implementation here
         update_params();
+        complete_prescheduled();
     }
 
     // Accessor methods
@@ -80,6 +85,7 @@ public:
     std::vector<JobPtr> get_free_jobs_copy() const;
     std::vector<int> get_r() const;
     std::vector<int> get_q() const;
+    std::vector<JobTimes *> get_job_times(const int &m1, const int &m2) const;
 
     // Modification methods
     void push_job(const int &j);
@@ -122,6 +128,20 @@ public:
     int calc_lb_full();
     int lower_bound_1m();
     int lower_bound_2m();
+    int calc_idle_time()
+    {
+        // Implementation here
+        int idle_time = 0;
+        for (int k = 0; k < this->m; ++k)
+        {
+            idle_time += this->sigma1.C[k] + this->sigma2.C[k];
+            for (const auto &jobptr : this->free_jobs)
+            {
+                idle_time -= jobptr->p->at(k);
+            }
+        }
+        return idle_time;
+    }
 
     // Deepcopy
     Permutation copy() const
@@ -129,25 +149,41 @@ public:
         // std:: vector<JobPtr> new_jobs = copy_jobs(this->free_jobs);
         return Permutation(this->m, this->n, this->level, this->sigma1,
                            copy_jobs(this->free_jobs), this->sigma2,
-                           this->two_mach_cache);
+                           this->two_mach_cache, this->scheduled_jobs);
     }
 
     // Constructor for copy
     Permutation(int m_, int n_, int level_, const Sigma &sigma1_,
                 vector<shared_ptr<Job>> &&free_jobs_, const Sigma &sigma2_,
-                const TwoMach &two_mach_cache_)
+                const std::shared_ptr<TwoMach> &two_mach_cache_,
+                const std::unordered_set<int> &scheduled_jobs_)
         : m(m_),
           n(n_),
           level(level_),
           sigma1(sigma1_),
           free_jobs(std::move(free_jobs_)),
           sigma2(sigma2_),
-          two_mach_cache(two_mach_cache_)
+          two_mach_cache(two_mach_cache_),
+          scheduled_jobs(scheduled_jobs_)
     {
     }
 
 private:
-    TwoMach two_mach_cache;
+    std::shared_ptr<TwoMach> two_mach_cache;
+    std::unordered_set<int> scheduled_jobs;
+
+    // Complete prescheduled
+    void complete_prescheduled()
+    {
+        for (const auto &job : sigma1.jobs)
+        {
+            this->scheduled_jobs.emplace(job->j);
+        }
+        for (const auto &job : sigma2.jobs)
+        {
+            this->scheduled_jobs.emplace(job->j);
+        }
+    }
 };
 
 struct JobParams
@@ -173,6 +209,6 @@ struct JobParams
 };
 
 // Makespan given ordered operations
-int two_mach_makespan(const JobTimes1D &job_times);
+int two_mach_makespan(const std::vector<JobTimes *> &job_times);
 
 #endif  // PERMUTATION_HPP

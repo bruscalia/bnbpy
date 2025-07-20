@@ -9,14 +9,14 @@
 #include "job.hpp"
 #include "job_times.hpp"
 
-inline bool _asc_t1(const JobTimesPtr &a, const JobTimesPtr &b)
+inline bool _asc_t1(const JobTimes &a, const JobTimes &b)
 {
-    return a->t1 < b->t1;  // Sort by t1 in ascending order
+    return a.t1 < b.t1;  // Sort by t1 in ascending order
 }
 
-inline bool _desc_t2(const JobTimesPtr &a, const JobTimesPtr &b)
+inline bool _desc_t2(const JobTimes &a, const JobTimes &b)
 {
-    return b->t2 < a->t2;  // Sort by t2 in descending order
+    return b.t2 < a.t2;  // Sort by t2 in descending order
 }
 
 // Define this at file scope (or in an anonymous namespace if in the cpp file)
@@ -26,9 +26,9 @@ struct JobTimesPredicate
 
     JobTimesPredicate(const JobPtr &jobptr) : target(&(*jobptr)) {}
 
-    bool operator()(const JobTimesPtr &jt) const
+    bool operator()(const JobTimes &jt) const
     {
-        return jt->jobptr->j == target->j;
+        return jt.jobptr->j == target->j;
     }
 };
 
@@ -47,7 +47,7 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
         // int lat = job->r[m2] - job->r[m1] - job->p->at(m1);
         int t1 = job->p->at(m1) + lat;
         int t2 = job->p->at(m2) + lat;
-        JobTimesPtr jt = std::make_shared<JobTimes>(m1, m2, job);
+        JobTimes jt = JobTimes(m1, m2, job);
         if (t1 <= t2)
         {
             j1.push_back(jt);
@@ -86,7 +86,7 @@ void TwoMach::erase_job(const JobPtr &jobptr)
 {
     for (auto it = sorted_maps.begin(); it != sorted_maps.end(); ++it)
     {
-        std::vector<JobTimesPtr> &vec = it->second;
+        std::vector<JobTimes> &vec = it->second;
         vec.erase(
             std::remove_if(vec.begin(), vec.end(), JobTimesPredicate(jobptr)),
             vec.end());

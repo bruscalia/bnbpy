@@ -26,6 +26,8 @@ cdef class FlowSolution(Solution):
 
     cdef void _push_job(FlowSolution self, int& j)
 
+    cpdef void compute_starts(FlowSolution self)
+
     cpdef FlowSolution copy(FlowSolution self, bool deep=*)
 
     cdef FlowSolution _copy(FlowSolution self)

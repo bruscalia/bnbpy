@@ -16,7 +16,8 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_)
       level(0),
       sigma1(m),
       free_jobs(n),
-      sigma2(m)
+      sigma2(m),
+      scheduled_jobs()
 {
     // Constructor implementation here
     // Create jobs used in permutation solution
@@ -25,6 +26,9 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_)
         const std::vector<int> &pj = p_[j];
         this->free_jobs[j] = std::make_shared<Job>(j, pj);
     }
+
+    // Creates the cache 2M
+    this->two_mach_cache = std::make_shared<TwoMach>(this->m, this->free_jobs);
 
     // Update parameters
     update_params();
@@ -105,11 +109,29 @@ std::vector<int> Permutation::get_q() const
     return q_;
 }
 
+std::vector<JobTimes *> Permutation::get_job_times(
+    const int &m1,
+    const int &m2
+) const
+{
+    std::vector<JobTimes *> seq = {};
+    JobTimes1D &full_seq = this->two_mach_cache->get_seq(m1, m2);
+    seq.reserve(full_seq.size());
+    for (JobTimes &jt : full_seq)
+    {
+        if (this->scheduled_jobs.find(jt.jobptr->j) == this->scheduled_jobs.end())
+        {
+            seq.push_back(&jt);
+        }
+    }
+    return seq;
+}
+
 // Modification methods
 void Permutation::push_job(const int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
-    this->two_mach_cache.erase_job(jobptr);
+    this->scheduled_jobs.emplace(jobptr->j);
     // Implementation here
     if (this->level % 2 == 0)
     {
@@ -250,7 +272,7 @@ int Permutation::lower_bound_2m()
         {
             int temp_value =
                 (r[m1] +
-                 two_mach_makespan(this->two_mach_cache.get_seq(m1, m2)) +
+                 two_mach_makespan(get_job_times(m1, m2)) +
                  q[m2]);
             lbs = std::max(lbs, temp_value);
         }
@@ -259,7 +281,7 @@ int Permutation::lower_bound_2m()
 }
 
 // Makespan given ordered operations
-int two_mach_makespan(const JobTimes1D &job_times)
+int two_mach_makespan(const std::vector<JobTimes *> &job_times)
 {
     // Implementation here
     int time_m1 = 0;

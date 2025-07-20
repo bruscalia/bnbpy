@@ -9,7 +9,7 @@
 #include "job.hpp"
 #include "job_times.hpp"
 
-using JobTimes1D = std::vector<JobTimesPtr>;
+using JobTimes1D = std::vector<JobTimes>;
 using MachTuple = std::tuple<int, int>;
 using JobTimesMap = std::map<MachTuple, JobTimes1D>;
 

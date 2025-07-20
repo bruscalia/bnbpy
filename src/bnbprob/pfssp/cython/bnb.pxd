@@ -15,16 +15,16 @@ cdef class LazyBnB(BranchAndBound):
 
 cdef class CallbackBnB(LazyBnB):
 
-    cdef public:
+    cdef:
         int restart_freq
+        int base_heur_factor
+        int heur_factor
+        int heur_calls
+        int level_restart
 
     cpdef void solution_callback(CallbackBnB self, Node node)
 
     cpdef void intensify(CallbackBnB self, Node node)
-
-
-cdef Node _min_queue(list[tuple[object, Node]] queue)
-
 
 
 cdef class CallbackBnBAge(CallbackBnB):

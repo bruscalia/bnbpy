@@ -2,6 +2,7 @@ import logging
 from typing import List, Literal, Optional
 
 from bnbprob.pfssp.cython.solution import FlowSolution
+from bnbpy.cython.counter import Counter
 
 log = logging.getLogger(__name__)
 
@@ -180,7 +181,43 @@ class PermFlowShop:
     def copy(self) -> 'PermFlowShop':
         ...
 
+class PermFlowShop1M(PermFlowShop):
+    """This approach uses the single machine bound upgrade
+    in child problems.
+    """
+
+class PermFlowShop2MHalf(PermFlowShop):
+    """This approach uses the two-machine bound upgrade
+    in child problems, in nodes of which level is greater than
+    or equal to floor(n/2) + 1, where n is the number of jobs.
+    """
+
 class PermFlowShop2M(PermFlowShop):
+    """This approach uses strictly the two-machine bound upgrade"""
 
     def calc_bound(self) -> int:
         ...
+
+class PermFlowShopQuit(PermFlowShop):
+    """This approach quits the two-machine bound upgrade
+    in child problems if the single machine bound is better.
+    The two-machine bound upgrade is resumed
+    in nodes of which level is greater than
+    or equal to floor(n/2) + 1, where n is the number of jobs.
+    """
+    ...
+
+class PermFlowShopCounter(PermFlowShopQuit):
+    """This approach counts the number of times
+    the two-machine bound upgrade is better than the single machine.
+    """
+    ...
+
+class UpgradeCounter:
+    """Counter for the number of times the two-machine bound upgrade
+    is better than the single machine bound.
+    """
+    stay_two_mach: Counter
+    switch_to_single: Counter
+    stay_single: Counter
+    switch_to_two_mach: Counter

@@ -10,4 +10,6 @@ cdef class Counter:
         self.value += 1
         return self.get_value()
 
+    cpdef int pynext(Counter self)
+
     cpdef int get_value(Counter self)

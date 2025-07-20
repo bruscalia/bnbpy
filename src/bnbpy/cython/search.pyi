@@ -1,6 +1,7 @@
 from typing import Any, Literal, Optional, Union
 
 from bnbpy.cython.node import Node
+from bnbpy.cython.priqueue import BasePriQueue
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
 from bnbpy.logger import SearchLogger
@@ -11,7 +12,7 @@ class BranchAndBound:
     problem: Problem
     root: Node
     gap: float
-    queue: list[tuple[Any, Node]]
+    queue: BasePriQueue
     rtol: float
     atol: float
     explored: int

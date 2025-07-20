@@ -63,6 +63,9 @@ cdef class FlowSolution(Solution):
     cdef void _push_job(FlowSolution self, int& j):
         self.perm.push_job(j)
 
+    cpdef void compute_starts(FlowSolution self):
+        self.perm.compute_starts()
+
     cpdef FlowSolution copy(FlowSolution self, bool deep=False):
         return self._copy()
 

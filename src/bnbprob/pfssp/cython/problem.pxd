@@ -14,6 +14,7 @@ from bnbprob.pfssp.cpp.environ cimport (
     intensification
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 
 
@@ -49,6 +50,8 @@ cdef class PermFlowShop(Problem):
 
     cpdef void bound_upgrade(PermFlowShop self)
 
+    cpdef int calc_idle_time(PermFlowShop self)
+
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
@@ -57,3 +60,47 @@ cdef class PermFlowShop(Problem):
 cdef class PermFlowShop2M(PermFlowShop):
 
     cpdef double calc_bound(PermFlowShop2M self)
+
+
+cdef class PermFlowShopLevelCount(PermFlowShop):
+
+    cdef public:
+        object lb_counter
+
+    cpdef void bound_upgrade(PermFlowShopLevelCount self)
+
+    cpdef PermFlowShopLevelCount copy(PermFlowShopLevelCount self, bool deep=*)
+
+    cdef PermFlowShopLevelCount _copy(PermFlowShopLevelCount self)
+
+
+cdef class PermFlowShopQuit(PermFlowShop):
+
+    cdef:
+        bool do_lb5
+
+    cpdef void bound_upgrade(PermFlowShopQuit self)
+
+    cpdef PermFlowShopQuit copy(PermFlowShopQuit self, bool deep=*)
+
+    cdef PermFlowShopQuit _copy(PermFlowShopQuit self)
+
+
+cdef class UpgradeCounter:
+    cdef public:
+        Counter stay_two_mach
+        Counter switch_to_single
+        Counter stay_single
+        Counter switch_to_two_mach
+
+
+cdef class PermFlowShopCounter(PermFlowShopQuit):
+
+    cdef public:
+        UpgradeCounter upgrade_counter
+
+    cpdef void bound_upgrade(PermFlowShopCounter self)
+
+    cpdef PermFlowShopCounter copy(PermFlowShopCounter self, bool deep=*)
+
+    cdef PermFlowShopCounter _copy(PermFlowShopCounter self)

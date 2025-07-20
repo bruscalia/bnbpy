@@ -163,6 +163,7 @@ cdef extern from "permutation.hpp":
         int calc_lb_full()
         int lower_bound_1m()
         int lower_bound_2m()
+        int calc_idle_time()
 
         # Copy method
         inline Permutation copy() const

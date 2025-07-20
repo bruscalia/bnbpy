@@ -72,7 +72,6 @@ class CallbackBnB(LazyBnB):
 
     def dequeue(self) -> Node:
         if self.explored % self.restart_freq == 0:
-            pri, node = min(self.queue, key=lambda x: x[-1].lb)
-            self.queue.remove((pri, node))
+            node = self.queue.pop_lower_bound()
             return node
         return super().dequeue()

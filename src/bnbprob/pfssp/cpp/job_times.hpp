@@ -30,7 +30,4 @@ struct JobTimes
     JobTimes(const int &m1, const int &m2, const JobPtr &jobptr_);
 };
 
-// Type definition for shared pointer
-typedef std::shared_ptr<JobTimes> JobTimesPtr;
-
 #endif  // JOB_TIMES_HPP

@@ -11,6 +11,6 @@ JobTimes::JobTimes(const int &m1, const int &m2, const JobPtr &jobptr_)
     this->t2 = jobptr_->p->at(m2) + lat;
     this->p1 = &jobptr_->p->at(m1);
     this->p2 = &jobptr_->p->at(m2);
-    this->lat = &lat;
+    this->lat = &jobptr_->lat->at(m2)[m1];
     this->jobptr = &(*jobptr_);
 }
