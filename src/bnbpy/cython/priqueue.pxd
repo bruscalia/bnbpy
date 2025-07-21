@@ -10,6 +10,16 @@ cdef class NodePriQueue:
         Node node
 
 
+cdef inline NodePriQueue init_node_pri_queue(tuple priority, Node node):
+
+    cdef:
+        NodePriQueue npri
+    npri = NodePriQueue.__new__(NodePriQueue)
+    npri.priority = priority
+    npri.node = node
+    return npri
+
+
 cdef class BasePriQueue:
 
     cpdef bint not_empty(BasePriQueue self)

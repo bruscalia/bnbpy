@@ -1,3 +1,6 @@
+# distutils: language = c++
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+
 import heapq
 
 from bnbpy.cython.node cimport Node
@@ -38,7 +41,7 @@ cdef class BasePriQueue:
 
 
 cdef class HeapPriQueue(BasePriQueue):
-    def __init__(self):
+    def __cinit__(self):
         self._queue = []
 
     cpdef bint not_empty(HeapPriQueue self):
@@ -94,16 +97,16 @@ cdef class HeapPriQueue(BasePriQueue):
 cdef class DFSPriQueue(HeapPriQueue):
     cpdef void enqueue(self, Node node):
         # DFS: (-level, lb)
-        heapq.heappush(self._queue, NodePriQueue((-node.level, node.lb), node))
+        heapq.heappush(self._queue, init_node_pri_queue((-node.level, node.lb), node))
 
 
 cdef class BFSPriQueue(HeapPriQueue):
     cpdef void enqueue(BFSPriQueue self, Node node):
         # BFS: (level, lb)
-        heapq.heappush(self._queue, NodePriQueue((node.level, node.lb), node))
+        heapq.heappush(self._queue, init_node_pri_queue((node.level, node.lb), node))
 
 
 cdef class BestPriQueue(HeapPriQueue):
     cpdef void enqueue(self, Node node):
         # Best-first: (lb, -level)
-        heapq.heappush(self._queue, NodePriQueue((node.lb, -node.level), node))
+        heapq.heappush(self._queue, init_node_pri_queue((node.lb, -node.level), node))

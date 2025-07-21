@@ -121,6 +121,7 @@ cdef class BranchAndBound:
             if timelimit is not None:
                 current_time = time.time()
                 if current_time - start_time >= _tlim:
+                    self.log_row('Time Limit')
                     break
             node = self._dequeue_core()
             # Avoid node with poor parents in case ub was updated meanwhile
