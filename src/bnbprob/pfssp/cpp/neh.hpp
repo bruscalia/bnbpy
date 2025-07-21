@@ -13,4 +13,6 @@ inline bool desc_T(const JobPtr &a, const JobPtr &b);
 
 Permutation neh_constructive(std::vector<JobPtr> &jobs);
 
+Permutation neh_core(std::vector<JobPtr> &jobs);
+
 #endif  // NEH_HPP

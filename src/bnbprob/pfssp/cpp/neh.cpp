@@ -16,14 +16,20 @@ inline bool desc_T(const JobPtr& a, const JobPtr& b)
 
 Permutation neh_constructive(std::vector<JobPtr>& jobs)
 {
+    // Find best order of two jobs with longest processing times
+    std::sort(jobs.begin(), jobs.end(), desc_T);
+
+    return neh_core(jobs);
+}
+
+Permutation neh_core(std::vector<JobPtr>& jobs)
+{
     int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec;
     Sigma s1, s2, sol, best_sol;
 
-    // Find best order of two jobs with longest processing times
-    std::sort(jobs.begin(), jobs.end(), desc_T);
     M = jobs[0]->p->size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs

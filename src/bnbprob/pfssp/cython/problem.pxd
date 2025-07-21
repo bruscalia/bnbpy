@@ -36,6 +36,12 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution neh_constructive(PermFlowShop self)
 
+    cpdef FlowSolution randomized_heur(
+        PermFlowShop self,
+        int n_iter=*,
+        unsigned int seed=*
+    )
+
     cpdef FlowSolution local_search(PermFlowShop self)
 
     cpdef FlowSolution intensification(PermFlowShop self)

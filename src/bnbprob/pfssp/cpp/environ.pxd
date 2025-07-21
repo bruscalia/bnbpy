@@ -216,6 +216,15 @@ cdef extern from "quick_constructive.hpp":
     cdef Permutation quick_constructive(vector[shared_ptr[Job]] &jobs)
 
 
+cdef extern from "randomized_heur.hpp":
+
+    cdef Permutation randomized_heur(
+        vector[shared_ptr[Job]] &jobs,
+        int n_iter,
+        unsigned int seed
+    )
+
+
 cdef extern from "intensify.hpp":
 
     cdef Permutation intensification(

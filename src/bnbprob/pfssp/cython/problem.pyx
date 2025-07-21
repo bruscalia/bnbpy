@@ -12,10 +12,11 @@ from typing import List, Literal, Optional
 from bnbprob.pfssp.cpp.environ cimport (
     JobPtr,
     Permutation,
+    intensify,
     local_search,
     neh_constructive,
     quick_constructive,
-    intensify
+    randomized_heur
 )
 from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.cython.counter cimport Counter
@@ -94,6 +95,26 @@ cdef class PermFlowShop(Problem):
 
         jobs = self.get_solution().perm.get_sequence_copy()
         perm = neh_constructive(jobs)
+        solution = FlowSolution()
+        solution.perm = perm
+        return solution
+
+    cpdef FlowSolution randomized_heur(
+        PermFlowShop self,
+        int n_iter=10,
+        unsigned int seed=0
+    ):
+        cdef:
+            FlowSolution solution
+            vector[JobPtr] jobs
+
+        jobs = self.get_solution().perm.get_sequence_copy()
+        solution = FlowSolution()
+        solution.perm = randomized_heur(jobs, n_iter, seed)
+        return solution
+
+        jobs = self.get_solution().perm.get_sequence_copy()
+        perm = randomized_heur(jobs)
         solution = FlowSolution()
         solution.perm = perm
         return solution
@@ -201,7 +222,7 @@ cdef class PermFlowShop1M(PermFlowShop):
 cdef class PermFlowShop2MHalf(PermFlowShop):
 
     cpdef void bound_upgrade(PermFlowShop2MHalf self):
-        if self.get_solution().perm.level < (self.get_solution().perm.n // 2) + 1:
+        if self.get_solution().perm.level < (self.get_solution().perm.n // 3) + 1:
             return
         super(PermFlowShop2MHalf, self).bound_upgrade()
 
