@@ -242,3 +242,16 @@ cdef extern from "intensify.hpp":
     cdef Permutation intensify(
         const Permutation &perm
     )
+
+    cdef Permutation intensify_ref(
+        const Permutation &perm,
+        const Permutation &ref_perm
+    )
+
+
+cdef extern from "path_relinking.hpp":
+
+    cdef Permutation path_relinking(
+        const Permutation &a,
+        const Permutation &b
+    )

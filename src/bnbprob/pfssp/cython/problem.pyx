@@ -13,8 +13,10 @@ from bnbprob.pfssp.cpp.environ cimport (
     JobPtr,
     Permutation,
     intensify,
+    intensify_ref,
     local_search,
     neh_constructive,
+    path_relinking,
     quick_constructive,
     randomized_heur
 )
@@ -122,16 +124,14 @@ cdef class PermFlowShop(Problem):
     cpdef FlowSolution local_search(PermFlowShop self):
         cdef:
             double lb, new_cost
-            Permutation perm
             FlowSolution sol_alt
             vector[JobPtr] jobs
 
         lb = self.solution.lb
         jobs = self.get_solution().perm.get_sequence_copy()
-        perm = local_search(jobs)
         sol_alt = FlowSolution()
-        sol_alt.perm = perm
-        new_cost = perm.calc_lb_full()
+        sol_alt.perm = local_search(jobs)
+        new_cost = sol_alt.perm.calc_lb_full()
         if new_cost < lb:
             sol_alt.set_feasible()
             sol_alt.set_lb(new_cost)
@@ -141,9 +141,39 @@ cdef class PermFlowShop(Problem):
     cpdef FlowSolution intensification(PermFlowShop self):
         cdef:
             double new_cost, lb
-            Permutation perm
             FlowSolution sol_alt, sol_ls
             vector[JobPtr] jobs
+
+        sol_alt = FlowSolution()
+        sol_alt.perm = intensify(
+            self.get_solution().perm
+        )
+        new_cost = sol_alt.perm.calc_lb_full()
+        sol_alt.set_lb(new_cost)
+        sol_alt.set_feasible()
+
+        return sol_alt
+
+    cpdef FlowSolution intensification_ref(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    ):
+        cdef:
+            double new_cost, lb
+            FlowSolution sol_alt, sol_ls
+            vector[JobPtr] jobs
+
+        sol_alt = FlowSolution()
+        sol_alt.perm = intensify_ref(
+            self.get_solution().perm,
+            ref_solution.perm
+        )
+        new_cost = sol_alt.perm.calc_lb_full()
+        sol_alt.set_lb(new_cost)
+        sol_alt.set_feasible()
+
+        return sol_alt
+
 
         perm = intensify(
             self.get_solution().perm
@@ -151,6 +181,29 @@ cdef class PermFlowShop(Problem):
         sol_alt = FlowSolution()
         sol_alt.perm = perm
         new_cost = perm.calc_lb_full()
+        sol_alt.set_lb(new_cost)
+        sol_alt.set_feasible()
+
+        return sol_alt
+
+    cpdef FlowSolution path_relinking(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    ):
+        cdef:
+            double new_cost, lb
+            FlowSolution sol_alt
+
+        sol_alt = FlowSolution()
+        sol_alt.perm = intensify(
+            path_relinking(
+                self.get_solution().perm,
+                ref_solution.perm
+            )
+        )
+        new_cost = sol_alt.perm.calc_lb_full()
+        print(f"Current cost: {self.get_solution().perm.calc_lb_full()}")
+        print(f"Path relinking cost: {new_cost}")
         sol_alt.set_lb(new_cost)
         sol_alt.set_feasible()
 

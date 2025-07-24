@@ -140,10 +140,10 @@ cdef class BranchAndBound:
         return sol
 
     cdef void _do_iter(BranchAndBound self, Node node):
-        # Node is valid for evaluation
-        self.explored += 1
         # Lower bound is accepted
         if node.lb < self.get_ub():
+            # Node is valid for evaluation
+            self.explored += 1
             # Node satisfies all constraints
             self._feasibility_check(node)
         else:

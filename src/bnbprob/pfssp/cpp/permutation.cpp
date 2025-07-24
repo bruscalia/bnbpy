@@ -7,8 +7,6 @@
 #include "job.hpp"
 #include "sigma.hpp"
 
-int LARGE = 10000000;
-
 // Constructor from processing times
 Permutation::Permutation(const std::vector<std::vector<int>> &p_)
     : m(p_[0].size()),
@@ -109,17 +107,16 @@ std::vector<int> Permutation::get_q() const
     return q_;
 }
 
-std::vector<JobTimes *> Permutation::get_job_times(
-    const int &m1,
-    const int &m2
-) const
+std::vector<JobTimes *> Permutation::get_job_times(const int &m1,
+                                                   const int &m2) const
 {
     std::vector<JobTimes *> seq = {};
     JobTimes1D &full_seq = this->two_mach_cache->get_seq(m1, m2);
     seq.reserve(full_seq.size());
     for (JobTimes &jt : full_seq)
     {
-        if (this->scheduled_jobs.find(jt.jobptr->j) == this->scheduled_jobs.end())
+        if (this->scheduled_jobs.find(jt.jobptr->j) ==
+            this->scheduled_jobs.end())
         {
             seq.push_back(&jt);
         }
@@ -145,6 +142,17 @@ void Permutation::push_job(const int &j)
         this->free_jobs.erase(this->free_jobs.begin() + j);
         this->back_updates();
     }
+    this->level += 1;
+}
+
+// Modification methods
+void Permutation::push_job_forward(const int &j)
+{
+    JobPtr &jobptr = this->free_jobs[j];
+    this->scheduled_jobs.emplace(jobptr->j);
+    this->sigma1.job_to_bottom(jobptr);
+    this->free_jobs.erase(this->free_jobs.begin() + j);
+    this->front_updates();
     this->level += 1;
 }
 
@@ -271,9 +279,13 @@ int Permutation::lower_bound_2m()
         for (int m2 = m1 + 1; m2 < this->m; ++m2)
         {
             int temp_value =
-                (r[m1] +
-                 two_mach_makespan(get_job_times(m1, m2)) +
-                 q[m2]);
+                (
+                    r[m1] + two_mach_makespan(
+                    get_job_times(m1, m2),
+                    (r[m1] - r[m2]),
+                    (q[m2] - q[m1])
+                ) + q[m2]
+                );
             lbs = std::max(lbs, temp_value);
         }
     }
@@ -281,11 +293,12 @@ int Permutation::lower_bound_2m()
 }
 
 // Makespan given ordered operations
-int two_mach_makespan(const std::vector<JobTimes *> &job_times)
+int two_mach_makespan(const std::vector<JobTimes *> &job_times, int rho1,
+                      int rho2)
 {
     // Implementation here
     int time_m1 = 0;
-    int time_m2 = 0;
+    int time_m2 = rho1;
 
     for (int j = 0; j < job_times.size(); ++j)
     {
@@ -293,6 +306,7 @@ int two_mach_makespan(const std::vector<JobTimes *> &job_times)
         time_m2 =
             std::max(time_m1 + *job_times[j]->lat, time_m2) + *job_times[j]->p2;
     }
+    time_m1 += rho2;
 
     return std::max(time_m1, time_m2);
 }

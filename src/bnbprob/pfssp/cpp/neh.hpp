@@ -15,4 +15,6 @@ Permutation neh_constructive(std::vector<JobPtr> &jobs);
 
 Permutation neh_core(std::vector<JobPtr> &jobs);
 
+Sigma neh_body(Sigma sol, std::vector<JobPtr> &jobs);
+
 #endif  // NEH_HPP

@@ -24,4 +24,7 @@ Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
 // Intensification heuristic with constructive and local search
 Permutation intensify(const Permutation &perm);
 
+// Intensification heuristic with constructive and local search
+Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm);
+
 #endif  // INTENSIFY_HPP

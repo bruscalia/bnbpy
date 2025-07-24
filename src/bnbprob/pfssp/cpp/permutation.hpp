@@ -1,13 +1,17 @@
 #ifndef PERMUTATION_HPP
 #define PERMUTATION_HPP
 
+#include <algorithm>
 #include <memory>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 #include "job.hpp"
 #include "sigma.hpp"
 #include "two_mach.hpp"
+
+const int LARGE = 1000000000;
 
 class Permutation
 {
@@ -89,6 +93,7 @@ public:
 
     // Modification methods
     void push_job(const int &j);
+    void push_job_forward(const int &j);
     void update_params();
     void front_updates();
     void back_updates();
@@ -135,12 +140,31 @@ public:
         for (int k = 0; k < this->m; ++k)
         {
             idle_time += this->sigma1.C[k] + this->sigma2.C[k];
-            for (const auto &jobptr : this->free_jobs)
+            for (const auto &job : this->sigma1.jobs)
             {
-                idle_time -= jobptr->p->at(k);
+                idle_time -= job->p->at(k);
+            }
+            for (const auto &job : this->sigma2.jobs)
+            {
+                idle_time -= job->p->at(k);
             }
         }
         return idle_time;
+    }
+
+    void emplace_from_ref_solution(
+        const std::vector<JobPtr> &ref_solution)
+    {
+        // Sort free jobs according to
+        // corresponding order in incumbent solution
+        sort_free_jobs_reverse(ref_solution);
+
+        while (!this->free_jobs.empty()) {
+            JobPtr job = this->free_jobs.back();
+            this->sigma1.job_to_bottom(job);
+            this->free_jobs.pop_back();
+            front_updates();
+        }
     }
 
     // Deepcopy
@@ -184,6 +208,20 @@ private:
             this->scheduled_jobs.emplace(job->j);
         }
     }
+
+    void sort_free_jobs_reverse(const std::vector<JobPtr> &ref_solution)
+    {
+        // Sort free jobs according to
+        // corresponding order in incumbent solution
+        std::unordered_map<int, int> job_pos;
+        for (int i = 0; i < ref_solution.size(); ++i)
+        {
+            job_pos[ref_solution[i]->j] = i;
+        }
+        std::sort(this->free_jobs.begin(), this->free_jobs.end(),
+                  [&job_pos](const JobPtr &a, const JobPtr &b)
+                  { return job_pos[a->j] > job_pos[b->j]; });
+    }
 };
 
 struct JobParams
@@ -209,6 +247,10 @@ struct JobParams
 };
 
 // Makespan given ordered operations
-int two_mach_makespan(const std::vector<JobTimes *> &job_times);
+int two_mach_makespan(
+    const std::vector<JobTimes *> &job_times,
+    int rho1,
+    int rho2
+);
 
 #endif  // PERMUTATION_HPP

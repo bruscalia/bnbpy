@@ -2,6 +2,7 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 import heapq
+from libc.math cimport sqrt
 
 from bnbprob.pfssp.cython.problem cimport PermFlowShop
 from bnbprob.pfssp.cython.solution cimport FlowSolution
@@ -23,7 +24,39 @@ cdef class DFSPriQueueFS(HeapPriQueue):
             PermFlowShop problem
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        heapq.heappush(self._queue, NodePriQueue((-node.level, node.lb, idle_time), node))
+        heapq.heappush(
+            self._queue,
+            NodePriQueue((-node.level, node.lb, idle_time), node)
+        )
+
+
+cdef class DFSPriQueueFSTrunc(HeapPriQueue):
+    cdef:
+        int trunc_index
+
+    def __init__(self):
+        super(DFSPriQueueFSTrunc, self).__init__()
+        self.trunc_index = 0
+
+    cpdef void enqueue(self, Node node):
+        cdef:
+            int idle_time
+            PermFlowShop problem
+        problem = node.problem
+        idle_time = problem.calc_idle_time()
+        heapq.heappush(
+            self._queue,
+            NodePriQueue(
+                (self.trunc_index, node.lb, -node.level, idle_time), node
+                # (self.trunc_index, -node.level, node.lb, idle_time), node
+            )
+        )
+
+    cdef void next(self):
+        self.trunc_index += 1
+
+    cdef void reset(self):
+        self.trunc_index = 0
 
 
 cdef class LazyBnB(BranchAndBound):
@@ -127,7 +160,7 @@ cdef class CallbackBnB(LazyBnB):
 
     cpdef void solution_callback(CallbackBnB self, Node node):
         cdef:
-            PermFlowShop problem
+            PermFlowShop problem, ref_problem
             FlowSolution new_sol
 
         problem = node.problem
@@ -141,31 +174,94 @@ cdef class CallbackBnB(LazyBnB):
 
     cpdef Node dequeue(CallbackBnB self):
         cdef:
+            DFSPriQueueFS queue
             Node node
 
         node = self.queue.dequeue()
         if (
-            self.explored % self.heur_factor == 0
+            self.explored >= self.heur_factor or node is self.bound_node
         ):
             self.intensify(node)
-            self.heur_calls += 1
-            self.heur_factor += self.base_heur_factor * self.heur_calls
         return node
 
     cpdef void intensify(CallbackBnB self, Node node):
         cdef:
             Node new_node
-            PermFlowShop problem
+            PermFlowShop problem, ref_problem
             FlowSolution new_sol
 
         problem = node.problem
         if self.explored >= 1:
-            new_sol = problem.intensification()
+            # Sort free jobs according to
+            # corresponding order in incumbent solution
+            if self.incumbent is not None:
+                ref_problem = self.incumbent.problem
+                new_sol = problem.intensification_ref(
+                    ref_problem.get_solution()
+                )
+            else:
+                new_sol = problem.intensification()
+            # new_sol = problem.intensification()
             if new_sol.lb < self.get_ub():
                 new_node = Node(problem._copy())
                 new_node.set_solution(new_sol)
                 self.log_row("Intensification")
                 self.set_solution(new_node)
+                # Reduce the heuristic wait iterations factor
+                self.heur_calls = <int>sqrt(self.heur_calls)
+            else:
+                self.heur_calls += 1
+            self.heur_factor = (
+                self.explored + self.base_heur_factor * self.heur_calls
+            )
+
+
+cdef class TruncateBnB(CallbackBnB):
+    def __init__(
+        self,
+        rtol=0.0001,
+        atol=0.0001,
+        eval_node='in',
+        save_tree=False,
+        queue_mode='dfs',
+        heur_factor=HEUR_BASE,
+    ):
+        super(TruncateBnB, self).__init__(
+            rtol, atol, eval_node, save_tree, queue_mode, heur_factor
+        )
+        self.queue = DFSPriQueueFSTrunc()
+
+    cpdef void branch(TruncateBnB self, Node node):
+        cdef:
+            # int k
+            DFSPriQueueFSTrunc queue
+            list[Node] children
+            Node child
+
+        queue = <DFSPriQueueFSTrunc>self.queue
+        queue.reset()
+
+        children = node.branch()
+        for child in children:
+            self._node_eval(child)
+
+        children.sort(key=_node_lb)
+        # k = 0
+        if children:
+            for child in children:
+                self._enqueue_core(child)
+                # if k % 2 == 0:
+                queue.next()
+                # k += 1
+        else:
+            self.log_row('Cutoff')
+        if not self.save_tree and node is not self.root:
+            node.cleanup()
+            del node
+
+
+cpdef float _node_lb(Node node):
+    return node.lb
 
 
 cdef class CallbackBnBAge(CallbackBnB):

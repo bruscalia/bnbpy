@@ -46,6 +46,16 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution intensification(PermFlowShop self)
 
+    cpdef FlowSolution intensification_ref(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    )
+
+    cpdef FlowSolution path_relinking(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    )
+
     cpdef double calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)
