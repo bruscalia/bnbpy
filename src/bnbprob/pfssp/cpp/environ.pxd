@@ -149,6 +149,7 @@ cdef extern from "permutation.hpp":
 
         # Modification methods
         void push_job(const int &j)
+        void push_job_dyn(const int &j)
         void update_params()
         void front_updates()
         void back_updates()
@@ -254,4 +255,12 @@ cdef extern from "path_relinking.hpp":
     cdef Permutation path_relinking(
         const Permutation &a,
         const Permutation &b
+    )
+
+
+cdef extern from "ils.hpp":
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        int max_iter
     )

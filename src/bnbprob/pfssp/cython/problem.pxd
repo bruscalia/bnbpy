@@ -36,6 +36,8 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution neh_constructive(PermFlowShop self)
 
+    cpdef FlowSolution ils(PermFlowShop self, int max_iter=*)
+
     cpdef FlowSolution randomized_heur(
         PermFlowShop self,
         int n_iter=*,

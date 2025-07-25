@@ -12,6 +12,7 @@ from typing import List, Literal, Optional
 from bnbprob.pfssp.cpp.environ cimport (
     JobPtr,
     Permutation,
+    ils,
     intensify,
     intensify_ref,
     local_search,
@@ -91,14 +92,22 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution neh_constructive(PermFlowShop self):
         cdef:
-            Permutation perm
             FlowSolution solution
             vector[JobPtr] jobs
 
         jobs = self.get_solution().perm.get_sequence_copy()
-        perm = neh_constructive(jobs)
         solution = FlowSolution()
-        solution.perm = perm
+        solution.perm = neh_constructive(jobs)
+        return solution
+
+    cpdef FlowSolution ils(PermFlowShop self, int max_iter=1000):
+        cdef:
+            FlowSolution solution
+            vector[JobPtr] jobs
+
+        jobs = self.get_solution().perm.get_sequence_copy()
+        solution = FlowSolution()
+        solution.perm = ils(jobs, max_iter)
         return solution
 
     cpdef FlowSolution randomized_heur(

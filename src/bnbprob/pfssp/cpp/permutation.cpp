@@ -145,7 +145,6 @@ void Permutation::push_job(const int &j)
     this->level += 1;
 }
 
-// Modification methods
 void Permutation::push_job_forward(const int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
@@ -154,6 +153,43 @@ void Permutation::push_job_forward(const int &j)
     this->free_jobs.erase(this->free_jobs.begin() + j);
     this->front_updates();
     this->level += 1;
+}
+
+void Permutation::push_job_backward(const int &j)
+{
+    JobPtr &jobptr = this->free_jobs[j];
+    this->scheduled_jobs.emplace(jobptr->j);
+    this->sigma2.job_to_top(jobptr);
+    this->free_jobs.erase(this->free_jobs.begin() + j);
+    this->back_updates();
+    this->level += 1;
+}
+
+void Permutation::push_job_dyn(const int &j)
+{
+    // Implementation here
+    int loss1 = 0;
+    int loss2 = 0;
+    for (int k = 0; k < this->m; ++k)
+    {
+        // loss1 = std::max(loss1, this->sigma1.C[k]);
+        // loss2 = std::max(loss2, this->sigma2.C[k]);
+        loss1 += this->sigma1.C[k];
+        loss2 += this->sigma2.C[k];
+    }
+    if (loss1 < loss2)
+    {
+        this->push_job_forward(j);
+    }
+    else if (loss1 > loss2)
+    {
+        this->push_job_backward(j);
+    }
+    else
+    {
+        // If both idle times are equal, default to alternating
+        this->push_job(j);
+    }
 }
 
 void Permutation::update_params()
@@ -279,13 +315,10 @@ int Permutation::lower_bound_2m()
         for (int m2 = m1 + 1; m2 < this->m; ++m2)
         {
             int temp_value =
-                (
-                    r[m1] + two_mach_makespan(
-                    get_job_times(m1, m2),
-                    (r[m1] - r[m2]),
-                    (q[m2] - q[m1])
-                ) + q[m2]
-                );
+                (r[m1] +
+                 two_mach_makespan(get_job_times(m1, m2), (r[m1] - r[m2]),
+                                   (q[m2] - q[m1])) +
+                 q[m2]);
             lbs = std::max(lbs, temp_value);
         }
     }
