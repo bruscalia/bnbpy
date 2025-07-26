@@ -86,7 +86,7 @@ cdef class LazyBnB(BranchAndBound):
         if node.lb < self.get_ub():
             problem = node.problem
             problem.bound_upgrade()
-            node.lb = node.problem.get_lb()
+            node.lb = problem.get_lb()
 
 
 cdef class CutoffBnB(LazyBnB):

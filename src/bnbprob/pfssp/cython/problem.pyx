@@ -100,14 +100,20 @@ cdef class PermFlowShop(Problem):
         solution.perm = neh_constructive(jobs)
         return solution
 
-    cpdef FlowSolution ils(PermFlowShop self, int max_iter=1000):
+    cpdef FlowSolution ils(
+        PermFlowShop self,
+        int max_iter=1000,
+        int max_age=1000,
+        int d=5,
+        unsigned int seed=0
+    ):
         cdef:
             FlowSolution solution
             vector[JobPtr] jobs
 
         jobs = self.get_solution().perm.get_sequence_copy()
         solution = FlowSolution()
-        solution.perm = ils(jobs, max_iter)
+        solution.perm = ils(jobs, max_iter, d, max_age, seed)
         return solution
 
     cpdef FlowSolution randomized_heur(
@@ -259,6 +265,9 @@ cdef class PermFlowShop(Problem):
 
     cpdef int calc_idle_time(PermFlowShop self):
         return self.get_solution().perm.calc_idle_time()
+
+    cpdef int calc_tot_time(PermFlowShop self):
+        return self.get_solution().perm.calc_tot_time()
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=False):
         return self._copy()

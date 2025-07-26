@@ -165,6 +165,7 @@ cdef extern from "permutation.hpp":
         int lower_bound_1m()
         int lower_bound_2m()
         int calc_idle_time()
+        int calc_tot_time()
 
         # Copy method
         inline Permutation copy() const
@@ -263,4 +264,25 @@ cdef extern from "ils.hpp":
     cdef Permutation ils(
         vector[shared_ptr[Job]] &jobs,
         int max_iter
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &seed
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &d,
+        const int &seed
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &d,
+        const int &max_age,
+        const int &seed
     )

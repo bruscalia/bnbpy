@@ -20,6 +20,15 @@ struct ILSDestruction
 
 ILSDestruction ils_destruction(Sigma sigma, int d, int seed);
 
-Permutation ils(std::vector<JobPtr> &jobs, int max_iter);
+ILSDestruction ils_destruction(Sigma sigma, int d, std::mt19937 generator);
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter);
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &seed);
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &d, const int &seed);
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &d, const int &max_age,
+                const int &seed);
 
 #endif  // ILS_HPP

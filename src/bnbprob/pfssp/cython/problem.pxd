@@ -36,7 +36,13 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution neh_constructive(PermFlowShop self)
 
-    cpdef FlowSolution ils(PermFlowShop self, int max_iter=*)
+    cpdef FlowSolution ils(
+        PermFlowShop self,
+        int max_iter=*,
+        int max_age=*,
+        int d=*,
+        unsigned int seed=*
+    )
 
     cpdef FlowSolution randomized_heur(
         PermFlowShop self,
@@ -69,6 +75,8 @@ cdef class PermFlowShop(Problem):
     cpdef void bound_upgrade(PermFlowShop self)
 
     cpdef int calc_idle_time(PermFlowShop self)
+
+    cpdef int calc_tot_time(PermFlowShop self)
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 

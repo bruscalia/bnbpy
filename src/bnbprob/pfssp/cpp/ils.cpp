@@ -12,13 +12,19 @@
 
 ILSDestruction ils_destruction(Sigma sigma, int d, int seed)
 {
+    // Initialize random number generator
+    std::mt19937 generator(seed);
+    return ils_destruction(sigma, d, generator);
+}
+
+ILSDestruction ils_destruction(Sigma sigma, int d, std::mt19937 generator)
+{
+
     ILSDestruction result;
     result.sigma = Sigma(sigma.m);
     std::vector<JobPtr> alloc_jobs = copy_jobs(sigma.jobs);
     std::vector<JobPtr> free_jobs{};
     free_jobs.reserve(d);
-
-    std::mt19937 generator(seed);
 
     // Destruction phase
     for (int i = 0; i < d; ++i)
@@ -41,39 +47,57 @@ ILSDestruction ils_destruction(Sigma sigma, int d, int seed)
     return result;
 }
 
-Permutation ils(std::vector<JobPtr>& jobs, int max_iter)
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter)
 {
-    // Initial solution with NEH
+    // Initialize variables for ILS
+    int d = jobs.size() / 10; // Destruction size
+    int max_age = jobs.size(); // Maximum age before restart
+    return ils(jobs, max_iter, d, max_age, 42);
+
+}
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &seed)
+{
+    // Initialize variables for ILS
+    int d = jobs.size() / 10; // Destruction size
+    int max_age = jobs.size(); // Maximum age before restart
+
+    return ils(jobs, max_iter, d, max_age, seed);
+}
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &d, const int &seed)
+{
+    // Initialize variables for ILS
+    int max_age = jobs.size(); // Maximum age before restart
+
+    return ils(jobs, max_iter, d, max_age, seed);
+}
+
+Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &d, const int &max_age,
+                const int &seed)
+{
+    // Initial solution with NEH + best move local search
     Permutation perm = neh_constructive(jobs);
-    for (int i = 0; i < 1000; ++i)
-    {
-        // Local search to improve the solution
-        Permutation new_perm = local_search(perm.get_sequence_copy());
-        int new_cost = new_perm.calc_lb_full();
-        if (new_cost < perm.calc_lb_full())
-        {
-            perm = std::move(new_perm);
-        }
-        else
-        {
-            break;  // Stop if no improvement is found
-        }
-    }
+    perm = local_search(perm.get_sequence_copy());
+
+    // Initialize variables for ILS
+    int age_improv = 0; // Age of improvement
 
     Permutation best_perm = perm.copy();
     Permutation ref_perm = perm.copy();
     int best_cost = best_perm.calc_lb_full();
     int ref_cost = best_cost;
 
+    // Generator to randomize the solution
+    std::mt19937 generator(seed);
+    std::uniform_real_distribution<> dist(0.0, 1.0);
+
     // ILS
     for (int i = 0; i < max_iter; ++i)
     {
-        // Generator
-        std::mt19937 generator(i);
-        std::uniform_real_distribution<> dist(0.0, 1.0); // Uniform distribution from 0.0 to 1.0
 
         // Destruction phase
-        ILSDestruction destruction = ils_destruction(ref_perm.sigma1, 5, i);
+        ILSDestruction destruction = ils_destruction(ref_perm.sigma1, d, generator);
         Sigma sigma1 = destruction.sigma;
         std::vector<JobPtr> free_jobs = destruction.jobs;
 
@@ -82,35 +106,15 @@ Permutation ils(std::vector<JobPtr>& jobs, int max_iter)
 
         // Local search phase
         Permutation new_perm = local_search(new_sigma.jobs);
-
         int new_cost = new_perm.calc_lb_full();
-        for (int k = 0; k < 1000; ++k)
-        {
-            // Local search to improve the solution
-            Permutation alt_perm = local_search(new_perm.get_sequence_copy());
-            int alt_cost = alt_perm.calc_lb_full();
-            if (alt_cost < new_cost)
-            {
-                new_perm = std::move(alt_perm);
-                new_cost = alt_cost;
-            }
-            else if (alt_cost == new_cost &&
-                     alt_perm.calc_idle_time() < new_perm.calc_idle_time())
-            {
-                // Prefer solutions with less idle time
-                new_perm = std::move(alt_perm);
-            }
-            else
-            {
-                break;  // Stop if no improvement is found
-            }
-        }
+
         if (new_cost < best_cost)
         {
             best_perm = std::move(new_perm);
             best_cost = new_cost;
             ref_perm = best_perm.copy();
             ref_cost = best_cost;
+            age_improv = 0; // Reset age of improvement
         }
         // Accept if exponential of negative delta in costs
         // is lesser than random float
@@ -127,6 +131,13 @@ Permutation ils(std::vector<JobPtr>& jobs, int max_iter)
             ref_perm = std::move(new_perm);
             ref_cost = new_cost;
         }
+
+        // Update the age of improvement
+        if (age_improv >= max_age)
+        {
+            break;
+        }
+        age_improv++;
     }
 
     return best_perm;

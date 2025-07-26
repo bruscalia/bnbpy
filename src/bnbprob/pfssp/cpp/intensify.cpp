@@ -101,22 +101,9 @@ Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
     Permutation best_sol;
     // Initialize
     best_sol = intensification(sigma1, jobs, sigma2);
-    best_cost = best_sol.calc_lb_full();
 
     // Local search iterations
-    for (int i = 0; i < 1000; i++)
-    {
-        Permutation new_sol = local_search(best_sol.get_sequence_copy());
-        int new_cost = new_sol.calc_lb_full();
-        if (new_cost < best_cost)
-        {
-            best_sol = std::move(new_sol);
-            best_cost = new_cost;
-        }
-        else {
-            break;
-        }
-    }
+    best_sol = local_search(best_sol.get_sequence_copy());
     return best_sol;
 }
 
@@ -131,21 +118,6 @@ Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm)
     Permutation best_sol = perm.copy();
     // Initialize
     best_sol.emplace_from_ref_solution(ref_perm.get_sequence_copy());
-    best_cost = best_sol.calc_lb_full();
-
-    // Local search iterations
-    for (int i = 0; i < 1000; i++)
-    {
-        Permutation new_sol = local_search(best_sol.get_sequence_copy());
-        int new_cost = new_sol.calc_lb_full();
-        if (new_cost < best_cost)
-        {
-            best_sol = std::move(new_sol);
-            best_cost = new_cost;
-        }
-        else {
-            break;
-        }
-    }
+    best_sol = local_search(best_sol.get_sequence_copy());
     return best_sol;
 }

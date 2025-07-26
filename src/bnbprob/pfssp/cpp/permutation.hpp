@@ -153,6 +153,16 @@ public:
         }
         return idle_time;
     }
+    int calc_tot_time()
+    {
+        // Implementation here
+        int idle_time = 0;
+        for (int k = 0; k < this->m; ++k)
+        {
+            idle_time += this->sigma1.C[k] + this->sigma2.C[k];
+        }
+        return idle_time;
+    }
 
     void emplace_from_ref_solution(
         const std::vector<JobPtr> &ref_solution)
