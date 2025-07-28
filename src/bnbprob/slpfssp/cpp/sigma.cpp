@@ -90,3 +90,11 @@ void Sigma::job_to_top(const JobPtr& job) {
     }
 }
 
+// Deepcopy of self
+Sigma Sigma::deepcopy() const {
+    Sigma other = Sigma();
+    other.m = this->m;
+    other.C = this->C;
+    other.jobs = copy_jobs(this->jobs);
+    return other;
+}

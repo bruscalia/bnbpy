@@ -147,11 +147,16 @@ cdef extern from "permutation.hpp":
         int calc_lb_full()
         int calc_lb_1m()
         int calc_lb_2m()
+        int calc_idle_time()
+
         inline int lower_bound_1m()
         inline int lower_bound_2m()
 
         # Deepcopy
         Permutation copy() const
+
+        # Construction from reference
+        emplace_from_ref_solution(const vector[shared_ptr[Job]] &ref_solution)
 
     # JobParams struct (if you need to use it from Cython)
     cdef struct JobParams:
@@ -176,3 +181,11 @@ cdef extern from "neh.hpp":
 cdef extern from "local_search.hpp":
 
     cdef Permutation local_search(vector[shared_ptr[Job]] &jobs)
+
+
+cdef extern from "intensify.hpp":
+
+    cdef Permutation intensify_ref(
+        const Permutation &perm,
+        const Permutation &ref_perm
+    )

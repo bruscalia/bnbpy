@@ -9,8 +9,12 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
+// Comparator for descending total processing time
 inline bool desc_T(const JobPtr &a, const JobPtr &b);
 
+// Modular NEH functions for SLPFSSP
 Permutation neh_constructive(std::vector<JobPtr> &jobs);
+Permutation neh_core(std::vector<JobPtr> &jobs);
+Sigma neh_body(Sigma sol, std::vector<JobPtr> &jobs);
 
 #endif  // NEH_HPP

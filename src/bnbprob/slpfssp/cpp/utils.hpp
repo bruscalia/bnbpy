@@ -17,6 +17,10 @@ void compute_starts(std::vector<JobPtr> &jobs, const Int1D &m);
 void compute_starts(std::vector<JobPtr> &jobs, const Int1D &m, int k);
 
 // Recompute release of first job
-void compute_start_first_job(const JobPtr& job, const Int1D& m);
+void compute_start_first_job(const JobPtr &job, const Int1D &m);
+
+// Pairwise sum max value for two vectors
+int get_max_value(const std::vector<std::vector<int>> &v1,
+                  const std::vector<std::vector<int>> &v2);
 
 #endif  // UTILS_HPP

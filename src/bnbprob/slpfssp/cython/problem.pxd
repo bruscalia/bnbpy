@@ -25,6 +25,11 @@ cdef class PermFlowShop(Problem):
 
     cpdef FlowSolution local_search(PermFlowShop self)
 
+    cpdef FlowSolution intensification_ref(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    )
+
     cpdef double calc_bound(PermFlowShop self)
 
     cpdef bool is_feasible(PermFlowShop self)
@@ -34,6 +39,8 @@ cdef class PermFlowShop(Problem):
     cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
     cpdef void bound_upgrade(PermFlowShop self)
+
+    cpdef int calc_idle_time(PermFlowShop self)
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 

@@ -61,6 +61,9 @@ public:
     // Insert job at the beginning (top) of the sequence
     void job_to_top(const JobPtr &job);
 
+    // Deepcopy of self
+    Sigma deepcopy() const;
+
 private:
     // Helper function to fill C with zeros
     void fill_C()

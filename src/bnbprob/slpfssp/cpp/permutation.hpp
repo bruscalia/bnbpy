@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <algorithm>
 
 #include "job.hpp"
 #include "sigma.hpp"
@@ -102,8 +104,40 @@ public:
         return this->lower_bound_2m();
     }
     int calc_lb_full();
+    int calc_idle_time()
+    {
+        // Implementation here
+        int idle_time = 0;
+        for (int sl = 0; sl < this->m->size(); ++sl)
+        {
+            for (int k = 0; k < this->m->at(sl); ++k)
+            {
+                idle_time += this->sigma1.C[sl][k] + this->sigma2.C[sl][k];
+                for (const auto &job : this->sigma1.jobs)
+                {
+                    idle_time -= job->p->at(sl)[k];
+                }
+            }
+        }
+        return idle_time;
+    }
     int lower_bound_1m();
     int lower_bound_2m();
+
+    void emplace_from_ref_solution(
+        const std::vector<JobPtr> &ref_solution)
+    {
+        // Sort free jobs according to
+        // corresponding order in incumbent solution
+        sort_free_jobs_reverse(ref_solution);
+
+        while (!this->free_jobs.empty()) {
+            JobPtr job = this->free_jobs.back();
+            this->sigma1.job_to_bottom(job);
+            this->free_jobs.pop_back();
+            front_updates();
+        }
+    }
 
     // Deepcopy
     Permutation copy() const
@@ -123,6 +157,20 @@ public:
           free_jobs(std::move(free_jobs_)),
           sigma2(sigma2_)
     {
+    }
+
+    void sort_free_jobs_reverse(const std::vector<JobPtr> &ref_solution)
+    {
+        // Sort free jobs according to
+        // corresponding order in incumbent solution
+        std::unordered_map<int, int> job_pos;
+        for (int i = 0; i < ref_solution.size(); ++i)
+        {
+            job_pos[ref_solution[i]->j] = i;
+        }
+        std::sort(this->free_jobs.begin(), this->free_jobs.end(),
+                  [&job_pos](const JobPtr &a, const JobPtr &b)
+                  { return job_pos[a->j] > job_pos[b->j]; });
     }
 
 private:

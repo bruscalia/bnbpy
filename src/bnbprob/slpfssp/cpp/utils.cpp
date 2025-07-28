@@ -55,11 +55,13 @@ void compute_starts(std::vector<JobPtr> &jobs, const Int1D &m, int k)
     }
 }
 
-
-void compute_starts_alt(std::vector<JobPtr> &jobs, const Int1D &m) {
+void compute_starts_alt(std::vector<JobPtr> &jobs, const Int1D &m)
+{
     // Initialize all r to zero
-    for (auto& job : jobs) {
-        for (size_t sl = 0; sl < m.size(); ++sl) {
+    for (auto &job : jobs)
+    {
+        for (size_t sl = 0; sl < m.size(); ++sl)
+        {
             int m_sl = m[sl];
             job->r[sl].assign(m_sl, 0);
         }
@@ -68,51 +70,59 @@ void compute_starts_alt(std::vector<JobPtr> &jobs, const Int1D &m) {
     // First job
     compute_start_first_job(jobs[0], m);
     // Remaining jobs
-    for (size_t j = 1; j < jobs.size(); ++j) {
-        JobPtr& job = jobs[j];
-        JobPtr& prev = jobs[j - 1];
+    for (size_t j = 1; j < jobs.size(); ++j)
+    {
+        JobPtr &job = jobs[j];
+        JobPtr &prev = jobs[j - 1];
         int job_rec = 0;
         // Update on each semiline
-        for (size_t sl = 0; sl < m.size(); ++sl) {
+        for (size_t sl = 0; sl < m.size(); ++sl)
+        {
             int m_sl = m[sl];
             job->r[sl][0] = prev->r[sl][0] + prev->p->at(sl)[0];
             int m_ = 1;
-            for (; m_ < m_sl - job->s; ++m_) {
-                job->r[sl][m_] = std::max(
-                    job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1],
-                    prev->r[sl][m_] + prev->p->at(sl)[m_]
-                );
+            for (; m_ < m_sl - job->s; ++m_)
+            {
+                job->r[sl][m_] =
+                    std::max(job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1],
+                             prev->r[sl][m_] + prev->p->at(sl)[m_]);
             }
             if (m_ - 1 >= 0)
-                job_rec = std::max(job_rec, job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1]);
+                job_rec = std::max(job_rec,
+                                   job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1]);
         }
         // Update on reconciliation machine(s)
-        for (size_t sl = 0; sl < m.size(); ++sl) {
+        for (size_t sl = 0; sl < m.size(); ++sl)
+        {
             int m_sl = m[sl];
             int recon_idx = m_sl - job->s;
-            job_rec = std::max(job_rec, prev->r[sl][recon_idx] + prev->p->at(sl)[recon_idx]);
+            job_rec = std::max(
+                job_rec, prev->r[sl][recon_idx] + prev->p->at(sl)[recon_idx]);
         }
-        for (size_t sl = 0; sl < m.size(); ++sl) {
+        for (size_t sl = 0; sl < m.size(); ++sl)
+        {
             int m_sl = m[sl];
             int recon_idx = m_sl - job->s;
             job->r[sl][recon_idx] = job_rec;
-            for (int m_ = recon_idx + 1; m_ < m_sl; ++m_) {
-                job->r[sl][m_] = std::max(
-                    job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1],
-                    prev->r[sl][m_] + prev->p->at(sl)[m_]
-                );
+            for (int m_ = recon_idx + 1; m_ < m_sl; ++m_)
+            {
+                job->r[sl][m_] =
+                    std::max(job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1],
+                             prev->r[sl][m_] + prev->p->at(sl)[m_]);
             }
         }
     }
 }
 
-
-void compute_start_first_job(const JobPtr& job, const Int1D& m) {
+void compute_start_first_job(const JobPtr &job, const Int1D &m)
+{
     int job_rec = 0;
-    for (size_t sl = 0; sl < m.size(); ++sl) {
+    for (size_t sl = 0; sl < m.size(); ++sl)
+    {
         int m_sl = m[sl];
         // Update the first job on each semiline
-        for (int m_ = 1; m_ < m_sl - job->s; ++m_) {
+        for (int m_ = 1; m_ < m_sl - job->s; ++m_)
+        {
             job->r[sl][m_] = job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1];
         }
         int m_ = m_sl - job->s - 1;
@@ -120,12 +130,34 @@ void compute_start_first_job(const JobPtr& job, const Int1D& m) {
             job_rec = std::max(job_rec, job->r[sl][m_] + job->p->at(sl)[m_]);
     }
     // Update the first job on the reconciliation machine(s)
-    for (size_t sl = 0; sl < m.size(); ++sl) {
+    for (size_t sl = 0; sl < m.size(); ++sl)
+    {
         int m_sl = m[sl];
         int recon_idx = m_sl - job->s;
         job->r[sl][recon_idx] = job_rec;
-        for (int m_ = recon_idx + 1; m_ < m_sl; ++m_) {
+        for (int m_ = recon_idx + 1; m_ < m_sl; ++m_)
+        {
             job->r[sl][m_] = job->r[sl][m_ - 1] + job->p->at(sl)[m_ - 1];
         }
     }
+}
+
+int get_max_value(const std::vector<std::vector<int>> &v1,
+                  const std::vector<std::vector<int>> &v2)
+{
+    int min_size = std::min(v1.size(), v2.size());
+    int max_val = SMALL;
+    for (int i = 0; i < min_size; ++i)
+    {
+        int min_size_inner = std::min(v1[i].size(), v2[i].size());
+        for (int j = 0; j < min_size_inner; ++j)
+        {
+            int val = v1[i][j] + v2[i][j];
+            if (val > max_val)
+            {
+                max_val = val;
+            }
+        }
+    }
+    return max_val;
 }

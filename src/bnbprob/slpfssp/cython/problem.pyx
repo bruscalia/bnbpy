@@ -11,6 +11,7 @@ from typing import Literal, Optional
 from bnbprob.slpfssp.cpp.environ cimport (
     JobPtr,
     Permutation,
+    intensify_ref,
     local_search,
     neh_constructive
 )
@@ -82,6 +83,26 @@ cdef class PermFlowShop(Problem):
             return sol_alt
         return None
 
+    cpdef FlowSolution intensification_ref(
+        PermFlowShop self,
+        FlowSolution ref_solution
+    ):
+        cdef:
+            double new_cost, lb
+            FlowSolution sol_alt, sol_ls
+            vector[JobPtr] jobs
+
+        sol_alt = FlowSolution()
+        sol_alt.perm = intensify_ref(
+            self.get_solution().perm,
+            ref_solution.perm
+        )
+        new_cost = sol_alt.perm.calc_lb_full()
+        sol_alt.set_lb(new_cost)
+        sol_alt.set_feasible()
+
+        return sol_alt
+
     cpdef double calc_bound(PermFlowShop self):
         return self.get_solution().perm.calc_lb_1m()
 
@@ -119,6 +140,9 @@ cdef class PermFlowShop(Problem):
             lb5 = <double>current.lower_bound_2m()
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
+
+    cpdef int calc_idle_time(PermFlowShop self):
+        return self.get_solution().perm.calc_idle_time()
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=False):
         return self._copy()

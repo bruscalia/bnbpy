@@ -4,6 +4,7 @@
 {
     "distutils": {
         "depends": [
+            "src\\bnbprob\\slpfssp\\cpp\\intensify.hpp",
             "src\\bnbprob\\slpfssp\\cpp\\job.hpp",
             "src\\bnbprob\\slpfssp\\cpp\\local_search.hpp",
             "src\\bnbprob\\slpfssp\\cpp\\neh.hpp",
@@ -18,6 +19,7 @@
         "name": "bnbprob.slpfssp.cpp.environ",
         "sources": [
             "C:\\Users\\brusc\\Code\\bnbpy\\src\\bnbprob\\slpfssp\\cpp\\environ.pyx",
+            "C:\\Users\\brusc\\Code\\bnbpy\\src\\bnbprob\\slpfssp\\cpp\\intensify.cpp",
             "C:\\Users\\brusc\\Code\\bnbpy\\src\\bnbprob\\slpfssp\\cpp\\job.cpp",
             "C:\\Users\\brusc\\Code\\bnbpy\\src\\bnbprob\\slpfssp\\cpp\\local_search.cpp",
             "C:\\Users\\brusc\\Code\\bnbpy\\src\\bnbprob\\slpfssp\\cpp\\neh.cpp",
@@ -1168,6 +1170,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "permutation.hpp"
 #include "neh.hpp"
 #include "local_search.hpp"
+#include "intensify.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
