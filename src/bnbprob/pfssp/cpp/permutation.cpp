@@ -78,11 +78,12 @@ std::vector<JobPtr> Permutation::get_free_jobs_copy() const
 std::vector<int> Permutation::get_r() const
 {
     // Implementation here
-    std::vector<int> r_ = std::vector<int>(this->m);
+    std::vector<int> r_(this->m);
+    const size_t free_jobs_size = this->free_jobs.size();
     for (int i = 0; i < this->m; ++i)
     {
         int min_rm = LARGE;
-        for (int j = 0; j < this->free_jobs.size(); ++j)
+        for (size_t j = 0; j < free_jobs_size; ++j)
         {
             min_rm = std::min(min_rm, this->free_jobs[j]->r[i]);
         }
@@ -94,11 +95,12 @@ std::vector<int> Permutation::get_r() const
 std::vector<int> Permutation::get_q() const
 {
     // Implementation here
-    std::vector<int> q_ = std::vector<int>(this->m);
+    std::vector<int> q_(this->m);
+    const size_t free_jobs_size = this->free_jobs.size();
     for (int i = 0; i < this->m; ++i)
     {
         int min_qm = LARGE;
-        for (int j = 0; j < this->free_jobs.size(); ++j)
+        for (size_t j = 0; j < free_jobs_size; ++j)
         {
             min_qm = std::min(min_qm, this->free_jobs[j]->q[i]);
         }
@@ -133,13 +135,21 @@ void Permutation::push_job(const int &j)
     if (this->level % 2 == 0)
     {
         this->sigma1.job_to_bottom(jobptr);
-        this->free_jobs.erase(this->free_jobs.begin() + j);
+        // Efficient O(1) removal: swap with last element and pop
+        if (j < this->free_jobs.size() - 1) {
+            std::swap(this->free_jobs[j], this->free_jobs.back());
+        }
+        this->free_jobs.pop_back();
         this->front_updates();
     }
     else
     {
         this->sigma2.job_to_top(jobptr);
-        this->free_jobs.erase(this->free_jobs.begin() + j);
+        // Efficient O(1) removal: swap with last element and pop
+        if (j < this->free_jobs.size() - 1) {
+            std::swap(this->free_jobs[j], this->free_jobs.back());
+        }
+        this->free_jobs.pop_back();
         this->back_updates();
     }
     this->level += 1;
@@ -150,7 +160,11 @@ void Permutation::push_job_forward(const int &j)
     JobPtr &jobptr = this->free_jobs[j];
     this->scheduled_jobs.emplace(jobptr->j);
     this->sigma1.job_to_bottom(jobptr);
-    this->free_jobs.erase(this->free_jobs.begin() + j);
+    // Efficient O(1) removal: swap with last element and pop
+    if (j < this->free_jobs.size() - 1) {
+        std::swap(this->free_jobs[j], this->free_jobs.back());
+    }
+    this->free_jobs.pop_back();
     this->front_updates();
     this->level += 1;
 }
@@ -160,7 +174,11 @@ void Permutation::push_job_backward(const int &j)
     JobPtr &jobptr = this->free_jobs[j];
     this->scheduled_jobs.emplace(jobptr->j);
     this->sigma2.job_to_top(jobptr);
-    this->free_jobs.erase(this->free_jobs.begin() + j);
+    // Efficient O(1) removal: swap with last element and pop
+    if (j < this->free_jobs.size() - 1) {
+        std::swap(this->free_jobs[j], this->free_jobs.back());
+    }
+    this->free_jobs.pop_back();
     this->back_updates();
     this->level += 1;
 }
@@ -202,14 +220,16 @@ void Permutation::update_params()
 void Permutation::front_updates()
 {
     // Implementation here
-    for (int j = 0; j < this->free_jobs.size(); ++j)
+    const size_t free_jobs_size = this->free_jobs.size();
+    for (size_t j = 0; j < free_jobs_size; ++j)
     {
-        JobPtr &job = this->free_jobs[j];
-        job->r[0] = this->sigma1.C[0];
+        Job &job = *this->free_jobs[j];
+        std::vector<int> &jp = *job.p;
+        job.r[0] = this->sigma1.C[0];
         for (int k = 1; k < this->m; ++k)
         {
-            job->r[k] =
-                std::max(this->sigma1.C[k], job->r[k - 1] + job->p->at(k - 1));
+            job.r[k] =
+                std::max(this->sigma1.C[k], job.r[k - 1] + jp[k - 1]);
         }
     }
 }
@@ -217,14 +237,16 @@ void Permutation::front_updates()
 void Permutation::back_updates()
 {
     // Implementation here
-    for (int j = 0; j < this->free_jobs.size(); ++j)
+    const size_t free_jobs_size = this->free_jobs.size();
+    for (size_t j = 0; j < free_jobs_size; ++j)
     {
-        JobPtr &job = this->free_jobs[j];
-        job->q[this->m - 1] = this->sigma2.C[this->m - 1];
+        Job &job = *this->free_jobs[j];
+        std::vector<int> &jp = *job.p;
+        job.q[this->m - 1] = this->sigma2.C[this->m - 1];
         for (int k = this->m - 2; k >= 0; --k)
         {
-            job->q[k] =
-                std::max(this->sigma2.C[k], job->q[k + 1] + job->p->at(k + 1));
+            job.q[k] =
+                std::max(this->sigma2.C[k], job.q[k + 1] + jp[k + 1]);
         }
     }
 }
@@ -233,7 +255,8 @@ void Permutation::compute_starts()
 {
     // Implementation here
     std::vector<JobPtr> seq = this->get_sequence();
-    for (int j = 0; j < seq.size(); ++j)
+    const size_t seq_size = seq.size();
+    for (size_t j = 0; j < seq_size; ++j)
     {
         for (int i = 0; i < this->m; ++i)
         {
@@ -246,7 +269,7 @@ void Permutation::compute_starts()
         seq[0]->r[i] = seq[0]->r[i - 1] + seq[0]->p->at(i - 1);
     }
 
-    for (int j = 1; j < seq.size(); ++j)
+    for (size_t j = 1; j < seq_size; ++j)
     {
         JobPtr &job = seq[j];
         JobPtr &prev = seq[j - 1];
@@ -274,6 +297,7 @@ int Permutation::lower_bound_1m()
 {
     // Implementation here
     int max_value = 0;
+    const size_t free_jobs_size = this->free_jobs.size();
 
     for (int k = 0; k < this->m; ++k)
     {
@@ -281,18 +305,18 @@ int Permutation::lower_bound_1m()
         int min_q = LARGE;
         int sum_p = 0;
 
-        for (int j = 0; j < this->free_jobs.size(); ++j)
+        for (size_t j = 0; j < free_jobs_size; ++j)
         {
-            JobPtr &jobptr = this->free_jobs[j];
-            if (jobptr->r[k] < min_r)
+            Job &jobptr = *this->free_jobs[j];
+            if (jobptr.r[k] < min_r)
             {
-                min_r = jobptr->r[k];
+                min_r = jobptr.r[k];
             }
-            if (jobptr->q[k] < min_q)
+            if (jobptr.q[k] < min_q)
             {
-                min_q = jobptr->q[k];
+                min_q = jobptr.q[k];
             }
-            sum_p += jobptr->p->at(k);
+            sum_p += jobptr.p->at(k);
         }
         int temp_value = min_r + sum_p + min_q;
         if (temp_value > max_value)
@@ -307,8 +331,8 @@ int Permutation::lower_bound_2m()
 {
     // Implementation here
     int lbs = 0;
-    vector<int> r = this->get_r();
-    vector<int> q = this->get_q();
+    std::vector<int> r = this->get_r();
+    std::vector<int> q = this->get_q();
 
     for (int m1 = 0; m1 < this->m; ++m1)
     {
@@ -333,7 +357,8 @@ int two_mach_makespan(const std::vector<JobTimes *> &job_times, int rho1,
     int time_m1 = 0;
     int time_m2 = rho1;
 
-    for (int j = 0; j < job_times.size(); ++j)
+    const size_t job_times_size = job_times.size();
+    for (size_t j = 0; j < job_times_size; ++j)
     {
         time_m1 += *job_times[j]->p1;
         time_m2 =
