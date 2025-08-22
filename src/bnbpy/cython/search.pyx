@@ -342,7 +342,7 @@ cdef class BestFirstBnB(BranchAndBound):
         save_tree: bool = False,
     ) -> None:
         super().__init__(rtol, atol, eval_node, save_tree)
-        self.queue = BestFirstBnB()
+        self.queue = BestPriQueue()
 
 
 def configure_logfile(
