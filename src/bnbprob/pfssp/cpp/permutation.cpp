@@ -340,8 +340,8 @@ int Permutation::lower_bound_2m()
         {
             int temp_value =
                 (r[m1] +
-                 two_mach_makespan(get_job_times(m1, m2), (r[m1] - r[m2]),
-                                   (q[m2] - q[m1])) +
+                 two_mach_makespan(get_job_times(m1, m2), (r[m2] - r[m1]),
+                                   (q[m1] - q[m2])) +
                  q[m2]);
             lbs = std::max(lbs, temp_value);
         }

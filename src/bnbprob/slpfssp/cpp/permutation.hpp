@@ -117,6 +117,10 @@ public:
                 {
                     idle_time -= job->p->at(sl)[k];
                 }
+                for (const auto &job : this->sigma2.jobs)
+                {
+                    idle_time -= job->p->at(sl)[k];
+                }
             }
         }
         return idle_time;
