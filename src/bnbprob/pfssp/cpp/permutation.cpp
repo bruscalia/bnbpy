@@ -113,14 +113,14 @@ std::vector<JobTimes *> Permutation::get_job_times(const int &m1,
                                                    const int &m2) const
 {
     std::vector<JobTimes *> seq = {};
-    JobTimes1D &full_seq = this->two_mach_cache->get_seq(m1, m2);
+    const JobTimes1D &full_seq = this->two_mach_cache->get_seq(m1, m2);
     seq.reserve(full_seq.size());
-    for (JobTimes &jt : full_seq)
+    for (const JobTimes &jt : full_seq)
     {
         if (this->scheduled_jobs.find(jt.jobptr->j) ==
             this->scheduled_jobs.end())
         {
-            seq.push_back(&jt);
+            seq.push_back(const_cast<JobTimes*>(&jt));
         }
     }
     return seq;

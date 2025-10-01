@@ -107,7 +107,7 @@ cdef extern from "two_mach.hpp":
         TwoMach(const int& m, const vector[JobPtr]& jobs)
 
         void erase_job(const JobPtr& job)
-        vector[JobTimes] get_seq(const int& m1, const int& m2)
+        const vector[JobTimes]& get_seq(const int& m1, const int& m2)
 
 
 cdef extern from "permutation.hpp":
