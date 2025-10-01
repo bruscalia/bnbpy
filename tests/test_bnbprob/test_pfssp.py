@@ -5,12 +5,7 @@ import pytest
 
 from bnbprob.pfssp.cython.bnb import LazyBnB
 from bnbprob.pfssp.cython.problem import PermFlowShop, PermFlowShop2M
-from bnbprob.pfssp.pypure.bnb import LazyBnB as PyLazyBnB
-from bnbprob.pfssp.pypure.problem import PermFlowShop as PyPermFlowShop
 from bnbpy.cython.search import BestFirstBnB, BranchAndBound, DepthFirstBnB
-from bnbpy.pypure.search import BestFirstBnB as PyBFS
-from bnbpy.pypure.search import BranchAndBound as PyBnB
-from bnbpy.pypure.search import DepthFirstBnB as PyDFS
 
 
 @pytest.mark.pfssp
@@ -39,14 +34,6 @@ class TestPFSSP:
             (BestFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (DepthFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),
             (BestFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),
-            (PyDFS, PyPermFlowShop, 'in', 182, 11, 'quick'),
-            (PyBFS, PyPermFlowShop, 'in', 182, 11, 'quick'),
-            (PyDFS, PyPermFlowShop, 'out', 182, 27, 'quick'),
-            (PyBFS, PyPermFlowShop, 'out', 182, 17, 'quick'),
-            (PyDFS, PyPermFlowShop, 'in', 182, 0, 'neh'),
-            (PyBFS, PyPermFlowShop, 'in', 182, 0, 'neh'),
-            (PyDFS, PyPermFlowShop, 'out', 182, 0, 'neh'),
-            (PyBFS, PyPermFlowShop, 'out', 182, 0, 'neh'),
         ],
     )
     def test_res_pfssp(  # noqa: PLR0913, PLR0917
@@ -56,16 +43,16 @@ class TestPFSSP:
         eval_node: str,
         cost: int,
         explored: int,
-        constructive: str
+        constructive: str,
     ) -> None:
         problem = self.start_problem(prob_cls, constructive=constructive)
         print(problem)
         bnb = bnb_cls(eval_node=eval_node)
         bnb.solve(problem)
         cost_sol = bnb.solution.cost
-        assert (
-            cost_sol == cost
-        ), f'Wrong cost for FSSP {bnb_cls} {cost_sol}, expected {cost}'
+        assert cost_sol == cost, (
+            f'Wrong cost for FSSP {bnb_cls} {cost_sol}, expected {cost}'
+        )
         assert bnb.explored == explored, (
             f'Wrong number of nodes explored for FSSP {bnb_cls}'
             f' {bnb.explored}, expected {explored}'
@@ -85,38 +72,28 @@ class TestPFSSP:
         bnb = DepthFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost: int = bnb.solution.cost
-        assert (
-            bnb.solution.cost == self.sol_value
-        ), f'Wrong solution for DFS {cost}, expected {self.sol_value}'
+        assert bnb.solution.cost == self.sol_value, (
+            f'Wrong solution for DFS {cost}, expected {self.sol_value}'
+        )
         assert bnb.explored == self.nodes, (
             f'Wrong number of explored nodes for DFS {bnb.explored},'
             f' expected {self.nodes}'
         )
 
-    @pytest.mark.parametrize(
-        ('cls', 'bnb_cls', 'bnblazy_cls'),
-        [
-            (PermFlowShop, BranchAndBound, LazyBnB),
-            (PyPermFlowShop, PyBnB, PyLazyBnB),
-        ],
-    )
     def test_lazy(
         self,
-        cls: Type[Any],
-        bnb_cls: Type[Any],
-        bnblazy_cls: Type[Any]
     ) -> None:
-        problem = self.start_problem(cls, constructive='quick')
-        bnb = bnblazy_cls(eval_node='in')
+        problem = self.start_problem(PermFlowShop, constructive='quick')
+        bnb = LazyBnB(eval_node='in')
         bnb.solve(problem)
-        bnblazy = bnb_cls(eval_node='in')
-        problem_lazy = self.start_problem(cls)
+        bnblazy = BranchAndBound(eval_node='in')
+        problem_lazy = self.start_problem(PermFlowShop)
         bnblazy.solve(problem_lazy)
         base_cost: int = bnb.solution.cost
         cb_cost: int = self.sol_value
-        assert (
-            bnb.solution.cost == bnblazy.solution.cost
-        ), f'Wrong solution for CB {base_cost}, expected {cb_cost}'
+        assert bnb.solution.cost == bnblazy.solution.cost, (
+            f'Wrong solution for CB {base_cost}, expected {cb_cost}'
+        )
         assert bnb.explored == self.nodes, (
             f'Wrong number of explored nodes for CB {bnblazy.explored},'
             f' expected {self.nodes}'
@@ -143,7 +120,7 @@ class TestPFSSPBounds:
         [5, 9, 7, 4],
         [9, 3, 3, 8],
         [8, 10, 5, 6],
-        [1, 8, 6, 2]
+        [1, 8, 6, 2],
     ]
 
     res_root: tuple[int, int] = (39, 42)

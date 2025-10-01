@@ -3,8 +3,8 @@ from typing import Any, List, Optional, Union
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from bnbpy.node import Node
-from bnbpy.status import OptStatus
+from bnbpy.cython.node import Node
+from bnbpy.cython.status import OptStatus
 
 
 def get_color(node: Node) -> str:  # noqa: PLR0911

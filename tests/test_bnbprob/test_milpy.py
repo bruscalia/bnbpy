@@ -2,8 +2,13 @@ import numpy as np
 import pytest
 
 from bnbprob.milpy.problem import MILP
-from bnbpy import BestFirstBnB, BranchAndBound, BreadthFirstBnB, DepthFirstBnB
-from bnbpy.status import OptStatus
+from bnbpy.cython.search import (
+    BestFirstBnB,
+    BranchAndBound,
+    BreadthFirstBnB,
+    DepthFirstBnB,
+)
+from bnbpy.cython.status import OptStatus
 
 np.random.seed(42)
 

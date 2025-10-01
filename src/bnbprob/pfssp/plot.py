@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import Colormap, ListedColormap
 
-from bnbprob.pfssp.pypure.job import Job
+from bnbprob.pfssp.cython.pyjob import PyJob as Job
 
 MAX_LABEL = 10
 

@@ -4,8 +4,8 @@ from typing import Any, List, cast
 import pytest
 
 from bnbpy.colgen import ColumnGenProblem, Master, MasterSol, PriceSol, Pricing
-from bnbpy.search import BranchAndBound
-from bnbpy.status import OptStatus
+from bnbpy.cython.search import BranchAndBound
+from bnbpy.cython.status import OptStatus
 
 
 class DummyMaster(Master):  # type: ignore

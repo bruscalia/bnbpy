@@ -3,9 +3,9 @@ import os
 import pytest
 
 from bnbprob import gcol
-from bnbpy import BranchAndBound
 from bnbpy.colgen import Pricing
-from bnbpy.status import OptStatus
+from bnbpy.cython.search import BranchAndBound
+from bnbpy.cython.status import OptStatus
 
 HERE = os.path.dirname(__file__)
 

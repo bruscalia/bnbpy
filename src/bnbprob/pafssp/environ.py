@@ -1,15 +1,17 @@
 __all__ = [
     'CallbackBnB',
-    'CallbackBnBAge',
     'LazyBnB',
     'PermFlowShop',
     'PermFlowShop2M'
 ]
 
+from logging import getLogger
+
+log = getLogger(__name__)
+
 try:
     from bnbprob.pafssp.cython.bnb import (
         CallbackBnB,
-        CallbackBnBAge,
         LazyBnB,
     )
     from bnbprob.pafssp.cython.problem import (
@@ -17,14 +19,6 @@ try:
         PermFlowShop2M,
     )
 except (ModuleNotFoundError, ImportError) as e:
-    print('Cython imports failed')
-    print(e)
-    from bnbprob.pafssp.pypure import (  # type: ignore
-        CallbackBnB,
-        CallbackBnBAge,
-        LazyBnB,
-    )
-    from bnbprob.pafssp.pypure.problem import (  # type: ignore
-        PermFlowShop,
-        PermFlowShop2M,
-    )
+    log.error('Cython imports failed for PFSSP - No Python fallback')
+    log.error(e)
+    raise e

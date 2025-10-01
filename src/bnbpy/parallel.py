@@ -2,8 +2,8 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Literal
 
-from bnbpy.node import Node
-from bnbpy.search import BranchAndBound
+from bnbpy.cython.node import Node
+from bnbpy.cython.search import BranchAndBound
 
 log = logging.getLogger(__name__)
 

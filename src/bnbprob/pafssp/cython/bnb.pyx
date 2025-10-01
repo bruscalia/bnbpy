@@ -261,23 +261,3 @@ cdef class TruncateBnB(CallbackBnB):
 
 cpdef float _node_lb(Node node):
     return node.lb
-
-
-cdef class CallbackBnBAge(CallbackBnB):
-
-    def __init__(
-        self,
-        rtol=0.0001,
-        atol=0.0001,
-        eval_node='in',
-        save_tree=False,
-        restart_freq=RESTART,
-    ):
-        super().__init__(rtol, atol, eval_node, save_tree, restart_freq)
-        self.sol_age = 0
-
-    cpdef Node dequeue(CallbackBnBAge self):
-        self.sol_age += 1
-        if (self.sol_age % self.restart_freq) == 0:
-            return self.queue.pop_lower_bound()
-        return super(CallbackBnBAge, self).dequeue()

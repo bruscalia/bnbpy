@@ -88,13 +88,6 @@ CPP_FILES_PAFSSP = [
     for f in os.listdir(CPP_PATH_PAFSSP)
     if f.endswith('.cpp') and 'environ' not in f
 ]
-CY_PATH_SLPFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'slpfssp', 'cython')
-CPP_PATH_SLPFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'slpfssp', 'cpp')
-CPP_FILES_SLPFSSP = [
-    os.path.join(CPP_PATH_SLPFSSP, f)
-    for f in os.listdir(CPP_PATH_SLPFSSP)
-    if f.endswith('.cpp') and 'environ' not in f
-]
 HPP_PATH_PFSSP = os.path.join(ROOT, 'include')
 
 
@@ -104,10 +97,6 @@ def get_ext_pfssp(f: str) -> list[str]:
 
 def get_ext_pafssp(f: str) -> list[str]:
     return [os.path.join(CY_PATH_PAFSSP, f)] + CPP_FILES_PAFSSP
-
-
-def get_ext_slpfssp(f: str) -> list[str]:
-    return [os.path.join(CY_PATH_SLPFSSP, f)] + CPP_FILES_SLPFSSP
 
 
 if params.nopyx:
@@ -157,29 +146,11 @@ else:
             for f in os.listdir(CY_PATH_PAFSSP)
             if f.endswith('.pyx')
         ]
-        ext_modules_slpfssp = [
-            Extension(
-                'bnbprob.slpfssp.cpp.environ',
-                [os.path.join(CPP_PATH_SLPFSSP, 'environ.pyx')]
-                + CPP_FILES_SLPFSSP,
-                include_dirs=[CPP_PATH_SLPFSSP],
-                language='c++',
-            )
-        ] + [
-            Extension(
-                f'bnbprob.slpfssp.cython.{f[:-4]}',
-                get_ext_slpfssp(f),  # Mandatory to include all cpp files used
-                include_dirs=[CPP_PATH_SLPFSSP],
-            )
-            for f in os.listdir(CY_PATH_SLPFSSP)
-            if f.endswith('.pyx')
-        ]
 
         ext_modules_ = (
             ext_modules_base
             + ext_modules_pfssp
             + ext_modules_pafssp
-            + ext_modules_slpfssp
         )
         if params.nocython:
             ext_modules = ext_modules_

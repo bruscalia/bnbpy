@@ -25,11 +25,3 @@ cdef class CallbackBnB(LazyBnB):
     cpdef void solution_callback(CallbackBnB self, Node node)
 
     cpdef void intensify(CallbackBnB self, Node node)
-
-
-cdef class CallbackBnBAge(CallbackBnB):
-
-    cdef public:
-        int sol_age
-
-    cpdef Node dequeue(CallbackBnBAge self)

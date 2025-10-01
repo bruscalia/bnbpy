@@ -15,7 +15,7 @@ from bnbpy.colgen import (
     MasterSol,
     Pricing,
 )
-from bnbpy.solution import Solution
+from bnbpy.cython.solution import Solution
 
 log = logging.getLogger(__name__)
 
@@ -281,11 +281,11 @@ class ColGenMILP(ColumnGenProblem):
     def is_feasible(self) -> bool:
         return self.milp.is_feasible()
 
-    def branch(self) -> Optional[Sequence['ColGenMILP']]:
+    def branch(self) -> Sequence['ColGenMILP']:
         # If not successful, just return
         if not self.results.valid:
             self.solution.set_infeasible()
-            return None
+            return []
 
         # Choose branch var to define new limits
         i = self.milp.choose_branch_var()

@@ -24,23 +24,22 @@ class Problem:
         """
         ...
 
-    def cleanup(self) -> None:
-        ...
+    def __del__(self) -> None: ...
 
     def calc_bound(self) -> Union[int, float]:
         """Returns a lower bound of the (sub)problem."""
-        pass
+        ...
 
     def is_feasible(self) -> bool:
         """
         Returns `True` if the problem in its complete
         form has a feasible solution.
         """
-        pass
+        ...
 
-    def branch(self) -> Optional[Sequence['Problem']]:
+    def branch(self) -> Sequence['Problem']:
         """Generates child nodes (problems) by branching."""
-        pass
+        ...
 
     @property
     def lb(self) -> Union[int, float]:
@@ -94,5 +93,4 @@ class Problem:
         """
         ...
 
-    def copy(self, deep: bool = True) -> 'Problem':
-        ...
+    def copy(self, deep: bool = True) -> 'Problem': ...
