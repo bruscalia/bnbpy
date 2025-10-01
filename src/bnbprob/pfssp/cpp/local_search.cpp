@@ -1,5 +1,6 @@
 #include "local_search.hpp"
 
+#include <climits>
 #include <vector>
 
 #include "job.hpp"
