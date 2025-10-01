@@ -55,12 +55,12 @@ class MachDeadlineProb(Problem):
         valid = all(job.feasible for job in self.sequence)
         return valid
 
-    def branch(self) -> Optional[List['MachDeadlineProb']]:
+    def branch(self) -> List['MachDeadlineProb']:
         # Get fixed and unfixed job lists to create new solution
         fixed_jobs = self.get_fixed()
         unfixed_jobs = self.get_unfixed()
         if len(unfixed_jobs) == 0:
-            return None
+            return []
         # Find next position to fix and iterate creating children
         next_k = self._find_next_pos(fixed_jobs, unfixed_jobs)
         children = []

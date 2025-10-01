@@ -173,11 +173,11 @@ class MILP(Problem):
     ) -> None:
         self.bounds[i] = bounds
 
-    def branch(self) -> Optional[Sequence['MILP']]:
+    def branch(self) -> Sequence['MILP']:
         # If not successful, just return
         if not self.results.valid:
             self.solution.set_infeasible()
-            return None
+            return []
 
         # Choose branch var to define new limits
         i = self.choose_branch_var()

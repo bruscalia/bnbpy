@@ -7,6 +7,7 @@ __all__ = [
     'BestFirstBnB',
     'BreadthFirstBnB',
     'DepthFirstBnB',
+    'SearchResults',
     'configure_logfile',
     'ColumnGenProblem',
     'Master',
@@ -24,12 +25,14 @@ from bnbpy.colgen import (
     PriceSol,
     Pricing,
 )
+from bnbpy.cython.node import Node
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import (
     BestFirstBnB,
     BranchAndBound,
     BreadthFirstBnB,
     DepthFirstBnB,
+    SearchResults,
     configure_logfile,
 )
 from bnbpy.cython.solution import Solution

@@ -7,12 +7,51 @@ from bnbpy.logger import SearchLogger
 from bnbpy.pypure.node import Node
 from bnbpy.pypure.problem import Problem
 from bnbpy.pypure.solution import Solution
+from bnbpy.pypure.status import OptStatus
 
 log = logging.getLogger(__name__)
 
 LARGE_INT = 100000000
 LARGE_POS = float('inf')
 LOW_NEG = -float('inf')
+
+
+class SearchResults:
+    """Results container for Branch & Bound search"""
+
+    def __init__(self, solution: Solution, problem: Problem) -> None:
+        """Initialize SearchResults
+
+        Parameters
+        ----------
+        solution : Solution
+            The best solution found
+        problem : Problem
+            The problem instance corresponding to the solution
+        """
+        self.solution = solution
+        self.problem = problem
+
+    def __repr__(self) -> str:
+        return str(self.solution)
+
+    def __str__(self) -> str:
+        return str(self.solution)
+
+    @property
+    def cost(self) -> float:
+        """Cost of the best solution found"""
+        return self.solution.cost
+
+    @property
+    def lb(self) -> float:
+        """Lower bound of the search"""
+        return self.solution.lb
+
+    @property
+    def status(self) -> OptStatus:
+        """Optimization status"""
+        return self.solution.status
 
 
 class BranchAndBound:
@@ -130,7 +169,7 @@ class BranchAndBound:
         problem: Problem,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Solution:
+    ) -> SearchResults:
         """Solves optimization problem using Branch & Bound
 
         Parameters
@@ -146,7 +185,7 @@ class BranchAndBound:
 
         Returns
         -------
-        Solution
+        SearchResults
             Best feasible solution found
         """
         self._set_problem(problem)
@@ -181,7 +220,12 @@ class BranchAndBound:
 
         sol = self.get_solution()
         sol.set_lb(self.get_lb())
-        return sol
+
+        inc_problem = problem
+        if self.incumbent is not None:
+            inc_problem = self.incumbent.problem
+
+        return SearchResults(sol, inc_problem)
 
     def _do_iter(self, node: Node) -> None:
         """Do loop iteration using a reference node just dequeued

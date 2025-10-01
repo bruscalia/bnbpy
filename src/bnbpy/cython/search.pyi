@@ -1,10 +1,51 @@
-from typing import Any, Literal, Optional, Union
+from typing import Any, Generic, Literal, Optional, TypeVar, Union
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.priqueue import BasePriQueue
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
+from bnbpy.cython.status import OptStatus
 from bnbpy.logger import SearchLogger
+
+P = TypeVar('P', bound=Problem)
+
+class SearchResults(Generic[P]):
+    """Results container for Branch & Bound search"""
+
+    solution: Solution
+    problem: P
+
+    def __init__(self, solution: Solution, problem: P) -> None:
+        """Initialize SearchResults
+
+        Parameters
+        ----------
+        solution : Solution
+            The best solution found
+
+        problem : Problem
+            The problem instance corresponding to the solution
+        """
+        ...
+
+    def __repr__(self) -> str: ...
+
+    def __str__(self) -> str: ...
+
+    @property
+    def cost(self) -> float:
+        """Cost of the best solution found"""
+        ...
+
+    @property
+    def lb(self) -> float:
+        """Lower bound of the search"""
+        ...
+
+    @property
+    def status(self) -> OptStatus:
+        """Optimization status"""
+        ...
 
 class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
@@ -65,10 +106,10 @@ class BranchAndBound:
 
     def solve(
         self,
-        problem: Problem,
+        problem: P,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Solution:
+    ) -> SearchResults[P]:
         """Solves optimization problem using Branch & Bound.
 
         Note that the Cython implementation uses static typing,
@@ -88,8 +129,8 @@ class BranchAndBound:
 
         Returns
         -------
-        Solution
-            Best feasible solution found
+        SearchResults
+            Search results containing best solution and problem instance
         """
         ...
 

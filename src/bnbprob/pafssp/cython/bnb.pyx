@@ -13,7 +13,6 @@ from bnbpy.cython.solution cimport Solution
 
 cdef:
     int HEUR_BASE = 100
-    int RESTART = 10_000
 
 
 cdef class DFSPriQueueFS(HeapPriQueue):
@@ -27,35 +26,6 @@ cdef class DFSPriQueueFS(HeapPriQueue):
             self._queue,
             NodePriQueue((-node.level, node.lb, idle_time), node)
         )
-
-
-cdef class DFSPriQueueFSTrunc(HeapPriQueue):
-    cdef:
-        int trunc_index
-
-    def __init__(self):
-        super(DFSPriQueueFSTrunc, self).__init__()
-        self.trunc_index = 0
-
-    cpdef void enqueue(self, Node node):
-        cdef:
-            int idle_time
-            PermFlowShop problem
-        problem = node.problem
-        idle_time = problem.calc_idle_time()
-        heapq.heappush(
-            self._queue,
-            NodePriQueue(
-                (self.trunc_index, node.lb, -node.level, idle_time), node
-                # (self.trunc_index, -node.level, node.lb, idle_time), node
-            )
-        )
-
-    cdef void next(self):
-        self.trunc_index += 1
-
-    cdef void reset(self):
-        self.trunc_index = 0
 
 
 cdef class LazyBnB(BranchAndBound):
@@ -213,50 +183,6 @@ cdef class CallbackBnB(LazyBnB):
             self.heur_factor = (
                 self.explored + self.base_heur_factor * self.heur_calls
             )
-
-
-cdef class TruncateBnB(CallbackBnB):
-    def __init__(
-        self,
-        rtol=0.0001,
-        atol=0.0001,
-        eval_node='in',
-        save_tree=False,
-        queue_mode='dfs',
-        heur_factor=HEUR_BASE,
-    ):
-        super(TruncateBnB, self).__init__(
-            rtol, atol, eval_node, save_tree, queue_mode, heur_factor
-        )
-        self.queue = DFSPriQueueFSTrunc()
-
-    cpdef void branch(TruncateBnB self, Node node):
-        cdef:
-            # int k
-            DFSPriQueueFSTrunc queue
-            list[Node] children
-            Node child
-
-        queue = <DFSPriQueueFSTrunc>self.queue
-        queue.reset()
-
-        children = node.branch()
-        for child in children:
-            self._node_eval(child)
-
-        children.sort(key=_node_lb)
-        # k = 0
-        if children:
-            for child in children:
-                self._enqueue_core(child)
-                # if k % 2 == 0:
-                queue.next()
-                # k += 1
-        else:
-            self.log_row('Cutoff')
-        if not self.save_tree and node is not self.root:
-            node.cleanup()
-            del node
 
 
 cpdef float _node_lb(Node node):

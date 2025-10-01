@@ -20,6 +20,12 @@ cdef:
     int LARGE_INT = 100000000
 
 
+cdef class SearchResults:
+    cdef public:
+        Solution solution
+        Problem problem
+
+
 cdef class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
 

@@ -28,6 +28,35 @@ cdef:
     int LARGE_INT = 100000000
 
 
+cdef class SearchResults:
+
+    def __init__(
+        self,
+        Solution solution,
+        Problem problem
+    ) -> None:
+        self.solution = solution
+        self.problem = problem
+
+    def __repr__(self) -> str:
+        return str(self.solution)
+
+    def __str__(self) -> str:
+        return str(self.solution)
+
+    @property
+    def cost(self) -> float:
+        return self.solution.cost
+
+    @property
+    def lb(self) -> float:
+        return self.solution.lb
+
+    @property
+    def status(self) -> OptStatus:
+        return self.solution.status
+
+
 cdef class BranchAndBound:
 
     def __init__(
@@ -96,13 +125,14 @@ cdef class BranchAndBound:
         problem: Problem,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Solution:
+    ) -> SearchResults:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
             int _mxiter = LARGE_INT
             Node node
             Solution sol
+            Problem inc_problem
 
         self._set_problem(problem)
         self._restart_search()
@@ -138,7 +168,13 @@ cdef class BranchAndBound:
 
         sol = self.get_solution()
         sol.set_lb(self.get_lb())
-        return sol
+
+        inc_problem = self.problem
+        if self.incumbent is not None:
+            inc_problem = self.incumbent.problem
+
+        res = SearchResults(sol, inc_problem)
+        return res
 
     cdef void _do_iter(BranchAndBound self, Node node):
         # Lower bound is accepted
