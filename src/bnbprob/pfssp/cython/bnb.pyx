@@ -5,7 +5,6 @@ import heapq
 from libc.math cimport sqrt
 
 from bnbprob.pfssp.cython.problem cimport PermFlowShop
-from bnbprob.pfssp.cython.solution cimport FlowSolution
 from bnbpy.cython.mod_queue cimport CycleQueue
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport DFSPriQueue, HeapPriQueue, NodePriQueue
@@ -107,11 +106,11 @@ cdef class CutoffBnB(LazyBnB):
         self.queue = self.queue_factory(queue_mode)
         self.ub_value = ub_value
 
-    cpdef void _warmstart(
-        CutoffBnB self,
-        Solution solution
-    ):
-        return
+    # cpdef void _warmstart(
+    #     CutoffBnB self,
+    #     Solution solution
+    # ):
+    #     return
 
     cdef inline void _restart_search(CutoffBnB self):
         cdef:
@@ -161,13 +160,16 @@ cdef class CallbackBnB(LazyBnB):
     cpdef void solution_callback(CallbackBnB self, Node node):
         cdef:
             PermFlowShop problem, ref_problem
-            FlowSolution new_sol
+            PermFlowShop new_prob
+            Solution new_sol
 
         problem = node.problem
-        new_sol = problem.local_search()
-        if new_sol is not None:
+        new_prob = problem.local_search()
+        if new_prob is not None:
+            new_sol = new_prob.solution
             # General procedure in case is valid
-            if new_sol.is_feasible() and new_sol.lb < node.lb:
+            if new_prob.is_feasible() and new_sol.lb < node.lb:
+                node.problem = new_prob
                 node.set_solution(new_sol)
                 node.check_feasible()
                 self.set_solution(node)
@@ -181,14 +183,14 @@ cdef class CallbackBnB(LazyBnB):
         if (
             self.explored >= self.heur_factor or node is self.bound_node
         ):
+            # pass
             self.intensify(node)
         return node
 
     cpdef void intensify(CallbackBnB self, Node node):
         cdef:
             Node new_node
-            PermFlowShop problem, ref_problem
-            FlowSolution new_sol
+            PermFlowShop problem, ref_problem, new_prob
 
         problem = node.problem
         if self.explored >= 1:
@@ -196,15 +198,12 @@ cdef class CallbackBnB(LazyBnB):
             # corresponding order in incumbent solution
             if self.incumbent is not None:
                 ref_problem = self.incumbent.problem
-                new_sol = problem.intensification_ref(
-                    ref_problem.get_solution()
-                )
+                new_prob = problem.intensification_ref(ref_problem)
             else:
-                new_sol = problem.intensification()
+                new_prob = problem.intensification()
             # new_sol = problem.intensification()
-            if new_sol.lb < self.get_ub():
-                new_node = Node(problem._copy())
-                new_node.set_solution(new_sol)
+            if new_prob.solution.lb < self.get_ub():
+                new_node = Node(new_prob)
                 self.log_row("Intensification")
                 self.set_solution(new_node)
                 # Reduce the heuristic wait iterations factor

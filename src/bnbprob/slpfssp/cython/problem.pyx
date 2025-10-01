@@ -52,8 +52,9 @@ cdef class PermFlowShop(Problem):
             solution
         )
 
-    cpdef FlowSolution warmstart(PermFlowShop self):
+    cpdef PermFlowShop warmstart(PermFlowShop self):
         cdef:
+            PermFlowShop child
             Permutation perm
             FlowSolution solution
             vector[JobPtr] jobs
@@ -62,7 +63,10 @@ cdef class PermFlowShop(Problem):
         perm = neh_constructive(jobs)
         solution = FlowSolution()
         solution.perm = perm
-        return solution
+        child = PermFlowShop(
+            solution
+        )
+        return child
 
     cpdef FlowSolution local_search(PermFlowShop self):
         cdef:

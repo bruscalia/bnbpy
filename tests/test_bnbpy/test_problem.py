@@ -2,10 +2,10 @@ import pytest
 from fixtures.myproblem import MyProblem
 from fixtures.pyproblem import PyProblem
 
-from bnbpy.problem import Problem
+from bnbpy.cython.problem import Problem
+from bnbpy.cython.solution import Solution
 from bnbpy.pypure.problem import Problem as PyProblemI
 from bnbpy.pypure.solution import Solution as PySolution
-from bnbpy.solution import Solution
 
 
 @pytest.mark.problem

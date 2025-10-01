@@ -10,7 +10,7 @@ from bnbprob.milpy.utils import BoundType
 from bnbpy import Problem, Solution
 
 
-class MILPSol(Solution):
+class ScipyResults:
     problem: 'MILP'
     scipy_res: Optional[OptimizeResult]
     x: Optional[np.ndarray]
@@ -18,7 +18,6 @@ class MILPSol(Solution):
     residuals: Optional[np.ndarray]
 
     def __init__(self, problem: 'MILP'):
-        super().__init__()
         self.problem = problem
         self.scipy_res = None
         self.x = None
@@ -44,15 +43,14 @@ class MILPSol(Solution):
         )
         self.set_results(res)
         lb = float('inf')
-        if self.valid:
-            lb = cast(float, self.scipy_res.fun)  # type: ignore
+        if self.valid and self.scipy_res is not None:
+            lb = cast(float, self.scipy_res.fun)
         return lb
 
 
 class MILP(Problem):
     """Mixed-Integer Linear Problem (compatible with scipy and bnbpy)"""
 
-    solution: MILPSol
     c: NDArray[np.float64]
     A_ub: Optional[NDArray[np.float64]]
     b_ub: Optional[NDArray[np.float64]]
@@ -60,6 +58,7 @@ class MILP(Problem):
     b_eq: Optional[NDArray[np.float64]]
     bounds: List[BoundType]
     integrality: Union[NDArray[np.float64], int, bool, float]
+    results: ScipyResults
     tol: float
     branching: str
     _rng: np.random.Generator
@@ -133,7 +132,7 @@ class MILP(Problem):
         self.branching = branching
         self._rng = np.random.default_rng(seed)
         self._init_branching()
-        self.solution = MILPSol(self)
+        self.results = ScipyResults(self)
 
     def _init_branching(self) -> None:
         if self.branching == 'min':
@@ -156,21 +155,12 @@ class MILP(Problem):
             bounds = [(*bounds,) for _ in range(len(self.c))]
         self.bounds = cast(list[BoundType], bounds)
 
-    def set_solution(self, solution: Solution) -> None:
-        super().set_solution(solution)
-        if isinstance(solution, MILPSol):
-            solution.problem = self
-        else:
-            raise TypeError(
-                'Solution must be an instance of MILPSol or its subclass'
-            )
-
     def calc_bound(self) -> float:
-        return self.solution.calc_bound()
+        return self.results.calc_bound()
 
     @property
     def residuals(self) -> NDArray[np.float64]:
-        return cast(NDArray[np.float64], self.solution.residuals)
+        return cast(NDArray[np.float64], self.results.residuals)
 
     def is_feasible(self) -> bool:
         valid = np.all(self.residuals <= self.tol)
@@ -185,15 +175,15 @@ class MILP(Problem):
 
     def branch(self) -> Optional[Sequence['MILP']]:
         # If not successful, just return
-        if not self.solution.valid:
+        if not self.results.valid:
             self.solution.set_infeasible()
             return None
 
         # Choose branch var to define new limits
         i = self.choose_branch_var()
-        if self.solution.x is None:
+        if self.results.x is None:
             raise ValueError('Solution x is None, cannot branch')
-        x_sol = cast(NDArray[np.float64], self.solution.x)
+        x_sol = cast(NDArray[np.float64], self.results.x)
         xi_lb: float = math.ceil(x_sol[i])
         xi_ub: float = math.floor(x_sol[i])
 
@@ -246,5 +236,6 @@ class MILP(Problem):
         child = cast(MILP, super().copy(deep=deep))
         child.bounds = copy.copy(self.bounds)
         child._init_branching()
-        child.solution = MILPSol(child)
+        child.solution = Solution()
+        child.results = ScipyResults(child)
         return child

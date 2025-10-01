@@ -1,7 +1,6 @@
 import logging
 from typing import List, Literal, Optional
 
-from bnbprob.pfssp.cython.solution import FlowSolution
 from bnbpy.cython.counter import Counter
 
 log = logging.getLogger(__name__)
@@ -39,11 +38,8 @@ class PermFlowShop:
     Journal of the Operational Research Society, 16(1), 101-107
     """
 
-    solution: FlowSolution
-
     def __init__(
         self,
-        solution: FlowSolution,
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
         ...
@@ -62,9 +58,6 @@ class PermFlowShop:
         ...
 
     def check_feasible(self) -> bool:
-        ...
-
-    def set_solution(self, solution: FlowSolution) -> None:
         ...
 
     @classmethod
@@ -90,7 +83,7 @@ class PermFlowShop:
         """
         ...
 
-    def warmstart(self) -> FlowSolution:
+    def warmstart(self) -> 'PermFlowShop':
         """
         Computes an initial feasible solution based on the method of choice.
 
@@ -100,7 +93,7 @@ class PermFlowShop:
 
         Returns
         -------
-        FlowSolution
+        PermFlowShop
             Solution to the problem
 
         References
@@ -116,13 +109,13 @@ class PermFlowShop:
         """
         ...
 
-    def quick_constructive(self) -> FlowSolution:
+    def quick_constructive(self) -> PermFlowShop:
         """Computes a feasible solution based on the sorting
         strategy by Palmer (1965).
 
         Returns
         -------
-        FlowSolution
+        PermFlowShop
             Solution to the problem
 
         References
@@ -133,14 +126,14 @@ class PermFlowShop:
         """
         ...
 
-    def neh_constructive(self) -> FlowSolution:
+    def neh_constructive(self) -> PermFlowShop:
         """Constructive heuristic of Nawaz et al. (1983) based
         on best-insertion of jobs sorted according to total processing
         time in descending order.
 
         Returns
         -------
-        FlowSolution
+        PermFlowShop
             Solution to the problem
 
         Reference
@@ -152,12 +145,12 @@ class PermFlowShop:
         """
         ...
 
-    def local_search(self) -> Optional[FlowSolution]:
+    def local_search(self) -> Optional['PermFlowShop']:
         """Local search heuristic from a current solution based on insertion
 
         Returns
         -------
-        Optional[FlowSolution]
+        Optional[PermFlowShop]
             New solution (best improvement) if exists
         """
         ...

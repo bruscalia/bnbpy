@@ -29,8 +29,9 @@ class TestNaive:
     def test_milp(self, milp: MILP, bnb_class: type[BranchAndBound]) -> None:
         bnb = bnb_class(eval_node='in')
         bnb.solve(milp)
+        x_res = bnb.incumbent.problem.results.x
         self.assert_cost(bnb.solution.cost)
-        self.assert_sol(bnb.solution.x)
+        self.assert_sol(x_res)
 
     def assert_cost(self, cost: float) -> None:
         assert np.isclose(cost, self.cost, atol=1e-4), (
@@ -80,7 +81,8 @@ class TestKnapsack:
         bnb = bnb_class(eval_node='in')
         bnb.solve(milp)
         self.assert_cost(bnb.solution.cost)
-        self.assert_sol(bnb.solution.x)
+        x_res = bnb.incumbent.problem.results.x
+        self.assert_sol(x_res)
 
     @pytest.mark.parametrize(
         ('status', 'eval_node', 'maxiter', 'explored'),
@@ -88,7 +90,7 @@ class TestKnapsack:
             (OptStatus.OPTIMAL, 'in', 250, 125),
             (OptStatus.FEASIBLE, 'in', 11, 11),
             (OptStatus.RELAXATION, 'in', 0, 1),
-            (OptStatus.OPTIMAL, 'out', 250, 71),
+            (OptStatus.OPTIMAL, 'out', 250, 107),
             (OptStatus.FEASIBLE, 'out', 11, 11),
             (OptStatus.RELAXATION, 'out', 0, 1),
         ],
@@ -104,7 +106,8 @@ class TestKnapsack:
         bnb = DepthFirstBnB(eval_node=eval_node)
         bnb.solve(milp, maxiter=maxiter)
         assert bnb.solution.status == status, (
-            f'Wrong status for ks test {bnb.solution.status}, expected {status}'
+            f'Wrong status for ks test {bnb.solution.status},'
+            f' expected {status}'
         )
         assert bnb.explored == explored, (
             'Wrong number of nodes explored in ks test'

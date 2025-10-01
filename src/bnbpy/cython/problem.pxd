@@ -27,7 +27,7 @@ cdef class Problem:
 
     cpdef void set_solution(Problem self, Solution solution)
 
-    cpdef Solution warmstart(Problem self)
+    cpdef Problem warmstart(Problem self)
 
     cpdef Problem copy(self, bool deep=*)
 

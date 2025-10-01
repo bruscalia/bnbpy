@@ -16,6 +16,7 @@ from bnbpy.cython.priqueue cimport (
 )
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.status cimport OptStatus
 from bnbpy.logger import SearchLogger
 
 log = logging.getLogger(__name__)
@@ -112,7 +113,7 @@ cdef class BranchAndBound:
             start_time = time.time()
         log.info('Starting exploration of search tree')
         self._log_headers()
-        self._warmstart(solution=problem.warmstart())
+        self._warmstart(problem.warmstart())
         self._solve_root()
         # In case the root node is already the LB of a optimal warmstart
         self._check_termination(_mxiter)
@@ -157,14 +158,16 @@ cdef class BranchAndBound:
 
     cpdef void _warmstart(
         BranchAndBound self,
-        Solution solution
+        Problem warmstart_problem,
     ):
         cdef:
+            double lb
             Node node
 
-        if solution is not None:
-            node = init_node(self.problem.copy())
-            node.set_solution(solution)
+        if warmstart_problem is not None:
+            if warmstart_problem.solution.status == OptStatus.NO_SOLUTION:
+                warmstart_problem.compute_bound()
+            node = init_node(warmstart_problem)
             if node.lb < self.get_ub():
                 self._feasibility_check(node)
                 self.log_row('Warmstart')

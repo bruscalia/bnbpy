@@ -1,4 +1,5 @@
 import random
+from typing import Any, Type
 
 import pytest
 
@@ -14,11 +15,11 @@ from bnbpy.pypure.search import DepthFirstBnB as PyDFS
 
 @pytest.mark.pfssp
 class TestPFSSP:
-    J = 10
-    M = 4
-    p_choices = list(range(5, 25))
-    sol_value = 182
-    nodes = 11
+    J: int = 10
+    M: int = 4
+    p_choices: list[int] = list(range(5, 25))
+    sol_value: int = 182
+    nodes: int = 11
 
     @pytest.mark.parametrize(
         (
@@ -32,8 +33,8 @@ class TestPFSSP:
         [
             (DepthFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
-            (DepthFirstBnB, PermFlowShop, 'out', 182, 27, 'quick'),
-            (BestFirstBnB, PermFlowShop, 'out', 182, 17, 'quick'),
+            (DepthFirstBnB, PermFlowShop, 'out', 182, 46, 'quick'),
+            (BestFirstBnB, PermFlowShop, 'out', 182, 22, 'quick'),
             (DepthFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (DepthFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),
@@ -49,8 +50,14 @@ class TestPFSSP:
         ],
     )
     def test_res_pfssp(  # noqa: PLR0913, PLR0917
-        self, bnb_cls, prob_cls, eval_node, cost, explored, constructive
-    ):
+        self,
+        bnb_cls: Type[Any],
+        prob_cls: Type[Any],
+        eval_node: str,
+        cost: int,
+        explored: int,
+        constructive: str
+    ) -> None:
         problem = self.start_problem(prob_cls, constructive=constructive)
         print(problem)
         bnb = bnb_cls(eval_node=eval_node)
@@ -64,20 +71,20 @@ class TestPFSSP:
             f' {bnb.explored}, expected {explored}'
         )
 
-    def start_problem(self, cls, **kwargs):
+    def start_problem(self, cls: Type[Any], **kwargs: Any) -> Any:
         random.seed(42)
-        p = [
+        p: list[list[int]] = [
             [random.choice(self.p_choices) for _ in range(self.M)]
             for _ in range(self.J)
         ]
         problem = cls.from_p(p, **kwargs)
         return problem
 
-    def test_warmstart(self):
+    def test_warmstart(self) -> None:
         problem = self.start_problem(PermFlowShop2M, constructive='quick')
         bnb = DepthFirstBnB(eval_node='in')
         bnb.solve(problem)
-        cost = bnb.solution.cost
+        cost: int = bnb.solution.cost
         assert (
             bnb.solution.cost == self.sol_value
         ), f'Wrong solution for DFS {cost}, expected {self.sol_value}'
@@ -93,15 +100,20 @@ class TestPFSSP:
             (PyPermFlowShop, PyBnB, PyLazyBnB),
         ],
     )
-    def test_lazy(self, cls, bnb_cls, bnblazy_cls):
+    def test_lazy(
+        self,
+        cls: Type[Any],
+        bnb_cls: Type[Any],
+        bnblazy_cls: Type[Any]
+    ) -> None:
         problem = self.start_problem(cls, constructive='quick')
         bnb = bnblazy_cls(eval_node='in')
         bnb.solve(problem)
         bnblazy = bnb_cls(eval_node='in')
         problem_lazy = self.start_problem(cls)
         bnblazy.solve(problem_lazy)
-        base_cost = bnb.solution.cost
-        cb_cost = self.sol_value
+        base_cost: int = bnb.solution.cost
+        cb_cost: int = self.sol_value
         assert (
             bnb.solution.cost == bnblazy.solution.cost
         ), f'Wrong solution for CB {base_cost}, expected {cb_cost}'
@@ -111,38 +123,43 @@ class TestPFSSP:
         )
 
     @staticmethod
-    def test_neh():
-        p = [
+    def test_neh() -> None:
+        p: list[list[int]] = [
             [5, 9, 8, 10, 1],
             [9, 3, 10, 1, 8],
             [9, 4, 5, 8, 6],
             [4, 8, 8, 7, 2],
         ]
-        res = 54
+        res: int = 54
         problem = PermFlowShop.from_p(p, constructive='neh')
         sol = problem.warmstart()
-        cost = sol.calc_lb_1m()
+        cost: int = sol.calc_lb_1m()
         assert cost == res, f'Wrong result for neh {cost} vs 54 (expected)'
 
 
 @pytest.mark.pfssp
 class TestPFSSPBounds:
-    p = [[5, 9, 7, 4], [9, 3, 3, 8], [8, 10, 5, 6], [1, 8, 6, 2]]
+    p: list[list[int]] = [
+        [5, 9, 7, 4],
+        [9, 3, 3, 8],
+        [8, 10, 5, 6],
+        [1, 8, 6, 2]
+    ]
 
-    res_root = (39, 42)
-    res_first = [
+    res_root: tuple[int, int] = (39, 42)
+    res_first: list[tuple[int, int]] = [
         (43, 43),
         (47, 47),
         (46, 46),
         (42, 42),
     ]
 
-    res_final = 43
+    res_final: int = 43
 
-    def test_root(self):
+    def test_root(self) -> None:
         problem = PermFlowShop.from_p(self.p)
-        lb1 = problem.solution.lower_bound_1m()
-        lb5 = problem.solution.lower_bound_2m()
+        lb1: int = problem.lower_bound_1m()
+        lb5: int = problem.lower_bound_2m()
         assert (
             lb1,
             lb5,
@@ -152,12 +169,12 @@ class TestPFSSPBounds:
         )
 
     @pytest.mark.parametrize('j', [0, 1, 2, 3])
-    def test_first_level(self, j):
+    def test_first_level(self, j: int) -> None:
         problem = PermFlowShop.from_p(self.p)
-        problem.solution.push_job(j)
-        lb1 = problem.solution.lower_bound_1m()
-        lb5 = problem.solution.lower_bound_2m()
-        res = self.res_first[j]
+        problem.push_job(j)
+        lb1: int = problem.lower_bound_1m()
+        lb5: int = problem.lower_bound_2m()
+        res: tuple[int, int] = self.res_first[j]
         assert (
             lb1,
             lb5,

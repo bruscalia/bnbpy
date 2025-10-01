@@ -49,7 +49,7 @@ cdef class Problem:
         if self.solution.status == OptStatus.NO_SOLUTION:
             self.compute_bound()
 
-    cpdef Solution warmstart(Problem self):
+    cpdef Problem warmstart(Problem self):
         return None
 
     cpdef Problem copy(self, bool deep=True):

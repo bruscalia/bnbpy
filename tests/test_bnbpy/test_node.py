@@ -1,9 +1,9 @@
 import pytest
 from fixtures.myproblem import MyProblem
 
-from bnbpy.node import Node
-from bnbpy.solution import Solution
-from bnbpy.status import OptStatus
+from bnbpy.cython.node import Node
+from bnbpy.cython.solution import Solution
+from bnbpy.cython.status import OptStatus
 
 
 @pytest.mark.node

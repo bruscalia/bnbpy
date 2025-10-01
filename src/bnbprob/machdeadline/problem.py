@@ -15,7 +15,7 @@ class MachDeadlineProb(Problem):
 
     def __init__(self, jobs: List[Job]) -> None:
         super().__init__()
-        self.sequence = jobs
+        self.sequence = [job.model_copy() for job in jobs]
         self._set_job_attrs()
         self.jobs = {job.id: job for job in jobs}
 
@@ -47,6 +47,8 @@ class MachDeadlineProb(Problem):
         fixed.sort(
             key=lambda job: job.k if job.k is not None else -1, reverse=False
         )
+        self.sequence = unfixed + fixed
+        self._set_job_attrs()
         return self._calc_bound()
 
     def is_feasible(self) -> bool:

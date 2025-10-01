@@ -13,9 +13,11 @@ from bnbprob.pfssp.cpp.environ cimport (
     quick_constructive,
     intensification
 )
-from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbprob.pfssp.cpp.environ cimport Permutation
+from bnbprob.pfssp.cython.pyjob cimport PyJob, job_to_py
 from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
 
 
 cdef class PermFlowShop(Problem):
@@ -25,18 +27,24 @@ cdef class PermFlowShop(Problem):
         # Cannot override attribute `solution` in cdef class
         # due to Cython limitation
 
-    cdef inline FlowSolution get_solution(PermFlowShop self):
-        return <FlowSolution>self.solution
+    cdef:
+        Permutation perm
+
+    cdef inline void set_perm(PermFlowShop self, Permutation perm):
+        self.perm = perm
+
+    cdef inline Permutation get_perm(PermFlowShop self):
+        return self.perm
 
     cdef void ccleanup(PermFlowShop self)
 
-    cpdef FlowSolution warmstart(PermFlowShop self)
+    cpdef PermFlowShop warmstart(PermFlowShop self)
 
-    cpdef FlowSolution quick_constructive(PermFlowShop self)
+    cpdef PermFlowShop quick_constructive(PermFlowShop self)
 
-    cpdef FlowSolution neh_constructive(PermFlowShop self)
+    cpdef PermFlowShop neh_constructive(PermFlowShop self)
 
-    cpdef FlowSolution ils(
+    cpdef PermFlowShop ils(
         PermFlowShop self,
         int max_iter=*,
         int max_age=*,
@@ -44,24 +52,24 @@ cdef class PermFlowShop(Problem):
         unsigned int seed=*
     )
 
-    cpdef FlowSolution randomized_heur(
+    cpdef PermFlowShop randomized_heur(
         PermFlowShop self,
         int n_iter=*,
         unsigned int seed=*
     )
 
-    cpdef FlowSolution local_search(PermFlowShop self)
+    cpdef PermFlowShop local_search(PermFlowShop self)
 
-    cpdef FlowSolution intensification(PermFlowShop self)
+    cpdef PermFlowShop intensification(PermFlowShop self)
 
-    cpdef FlowSolution intensification_ref(
+    cpdef PermFlowShop intensification_ref(
         PermFlowShop self,
-        FlowSolution ref_solution
+        PermFlowShop reference
     )
 
-    cpdef FlowSolution path_relinking(
+    cpdef PermFlowShop path_relinking(
         PermFlowShop self,
-        FlowSolution ref_solution
+        PermFlowShop reference
     )
 
     cpdef double calc_bound(PermFlowShop self)
@@ -74,6 +82,20 @@ cdef class PermFlowShop(Problem):
 
     cpdef void bound_upgrade(PermFlowShop self)
 
+    cpdef int calc_lb_1m(PermFlowShop self)
+
+    cpdef int calc_lb_2m(PermFlowShop self)
+
+    cpdef int lower_bound_1m(PermFlowShop self)
+
+    cpdef int lower_bound_2m(PermFlowShop self)
+
+    cpdef void push_job(PermFlowShop self, int& j)
+
+    cdef void _push_job(PermFlowShop self, int& j)
+
+    cpdef void compute_starts(PermFlowShop self)
+
     cpdef int calc_idle_time(PermFlowShop self)
 
     cpdef int calc_tot_time(PermFlowShop self)
@@ -81,6 +103,14 @@ cdef class PermFlowShop(Problem):
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
+
+    cdef inline PermFlowShop fast_copy(PermFlowShop self):
+        cdef:
+            PermFlowShop child
+        child = type(self).__new__(type(self))
+        child.solution = Solution()
+        child.constructive = self.constructive
+        return child
 
 
 cdef class PermFlowShop2M(PermFlowShop):

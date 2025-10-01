@@ -21,7 +21,7 @@ cdef class PermFlowShop(Problem):
 
     cdef void ccleanup(PermFlowShop self)
 
-    cpdef FlowSolution warmstart(PermFlowShop self)
+    cpdef PermFlowShop warmstart(PermFlowShop self)
 
     cpdef FlowSolution local_search(PermFlowShop self)
 

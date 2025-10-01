@@ -55,7 +55,7 @@ cdef class BranchAndBound:
 
     cpdef Node dequeue(BranchAndBound self)
 
-    cpdef void _warmstart(BranchAndBound self, Solution solution)
+    cpdef void _warmstart(BranchAndBound self, Problem warmstart_problem)
 
     cpdef void branch(BranchAndBound self, Node node)
 

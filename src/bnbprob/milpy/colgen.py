@@ -7,7 +7,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.optimize import OptimizeResult, linprog
 
-from bnbprob.milpy.problem import MILP, MILPSol
+from bnbprob.milpy.problem import MILP, ScipyResults
 from bnbprob.milpy.utils import BoundType
 from bnbpy.colgen import (
     ColumnGenProblem,
@@ -164,7 +164,7 @@ class MILPMaster(Master):
             Solution o the master problem (with duals)
         """
         self.milp.compute_bound()
-        sol = self.milp.solution.scipy_res
+        sol = self.milp.results.scipy_res
         duals = MILPDuals(
             lower=sol.lower.marginals,  # type: ignore
             upper=sol.upper.marginals,  # type: ignore
@@ -200,7 +200,7 @@ class ColGenMILP(ColumnGenProblem):
     master: MILPMaster
     pricing: Pricing
     milp: MILP
-    solution: MILPSol
+    results: ScipyResults
 
     def __init__(  # noqa: PLR0913, PLR0917
         self,
@@ -272,6 +272,7 @@ class ColGenMILP(ColumnGenProblem):
         master = MILPMaster(self.milp)
         super().__init__(master, pricing, max_iter_price)
         self.solution = self.milp.solution
+        self.results = self.milp.results
 
     def set_solution(self, solution: Solution) -> None:
         self.milp.set_solution(solution)
@@ -282,13 +283,13 @@ class ColGenMILP(ColumnGenProblem):
 
     def branch(self) -> Optional[Sequence['ColGenMILP']]:
         # If not successful, just return
-        if not self.solution.valid:
+        if not self.results.valid:
             self.solution.set_infeasible()
             return None
 
         # Choose branch var to define new limits
         i = self.milp.choose_branch_var()
-        x_sol = self.solution.x
+        x_sol = self.results.x
         if x_sol is None:
             raise ValueError('Solution x is None, cannot branch on it.')
         xi_lb = math.ceil(x_sol[i])
@@ -304,7 +305,7 @@ class ColGenMILP(ColumnGenProblem):
     def calc_bound(self) -> float:
         sol_master = self._calc_bound()
         lb = float('inf')
-        if self.solution.valid:
+        if self.results.valid:
             lb = math.ceil(round(sol_master.cost, 4))
         log.debug(f'Price finished: {lb:.2f}')
         return lb
@@ -326,4 +327,5 @@ class ColGenMILP(ColumnGenProblem):
         child.milp = self.milp.copy()
         child.master = MILPMaster(child.milp)
         child.solution = child.milp.solution
+        child.results = child.milp.results
         return child

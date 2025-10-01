@@ -1,7 +1,7 @@
 import pytest
 
-from bnbpy.solution import Solution
-from bnbpy.status import OptStatus
+from bnbpy.cython.solution import Solution
+from bnbpy.cython.status import OptStatus
 
 
 @pytest.mark.solution

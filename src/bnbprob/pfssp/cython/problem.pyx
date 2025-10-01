@@ -7,7 +7,7 @@ from libcpp.string cimport string
 
 import logging
 from collections import defaultdict
-from typing import List, Literal, Optional
+from typing import List, Literal
 
 from bnbprob.pfssp.cpp.environ cimport (
     JobPtr,
@@ -21,7 +21,7 @@ from bnbprob.pfssp.cpp.environ cimport (
     quick_constructive,
     randomized_heur
 )
-from bnbprob.pfssp.cython.solution cimport FlowSolution
+from bnbprob.pfssp.cython.pyjob cimport PyJob, job_to_py
 from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
@@ -44,10 +44,9 @@ cdef class PermFlowShop(Problem):
 
     def __init__(
         self,
-        solution: FlowSolution,
         constructive: Literal['neh', 'quick'] = 'neh',
     ) -> None:
-        self.solution = solution
+        self.solution = Solution()
         self.constructive = <string> constructive.encode("utf-8")
 
     def __del__(self):
@@ -64,43 +63,70 @@ cdef class PermFlowShop(Problem):
     ) -> 'PermFlowShop':
         cdef:
             Permutation perm
-            FlowSolution solution
+            PermFlowShop problem
         perm = Permutation(p)
-        solution = FlowSolution()
-        solution.perm = perm
-        return cls(
-            solution,
+        problem = cls(
             constructive=constructive,
         )
+        problem.set_perm(perm)
+        return problem
 
-    cpdef FlowSolution warmstart(PermFlowShop self):
+    @property
+    def sequence(self):
+        cdef:
+            int i
+            vector[JobPtr] seq
+            PyJob job
+        out = []
+        seq = self.perm.get_sequence()
+        for i in range(seq.size()):
+            job = job_to_py(seq[i])
+            out.append(job)
+        return out
+
+    @property
+    def free_jobs(self):
+        cdef:
+            int i
+            vector[JobPtr] seq
+            PyJob job
+        out = []
+        seq = self.perm.get_free_jobs()[0]
+        for i in range(seq.size()):
+            job = job_to_py(seq[i])
+            out.append(job)
+        return out
+
+    cpdef PermFlowShop warmstart(PermFlowShop self):
         if self.constructive == 'neh':
             return self.neh_constructive()
         return self.quick_constructive()
 
-    cpdef FlowSolution quick_constructive(PermFlowShop self):
+    cpdef PermFlowShop quick_constructive(PermFlowShop self):
         cdef:
+            PermFlowShop child
             Permutation perm
-            FlowSolution solution
             vector[JobPtr] jobs
 
-        jobs = self.get_solution().perm.get_sequence_copy()
+        jobs = self.perm.get_sequence_copy()
         perm = quick_constructive(jobs)
-        solution = FlowSolution()
-        solution.perm = perm
-        return solution
+        child = self.fast_copy()
+        child.perm = perm
+        return child
 
-    cpdef FlowSolution neh_constructive(PermFlowShop self):
+    cpdef PermFlowShop neh_constructive(PermFlowShop self):
         cdef:
-            FlowSolution solution
+            PermFlowShop child
+            Permutation perm
             vector[JobPtr] jobs
 
-        jobs = self.get_solution().perm.get_sequence_copy()
-        solution = FlowSolution()
-        solution.perm = neh_constructive(jobs)
-        return solution
+        jobs = self.perm.get_sequence_copy()
+        perm = neh_constructive(jobs)
+        child = self.fast_copy()
+        child.perm = perm
+        return child
 
-    cpdef FlowSolution ils(
+    cpdef PermFlowShop ils(
         PermFlowShop self,
         int max_iter=1000,
         int max_age=1000,
@@ -108,127 +134,109 @@ cdef class PermFlowShop(Problem):
         unsigned int seed=0
     ):
         cdef:
-            FlowSolution solution
+            PermFlowShop child
             vector[JobPtr] jobs
 
-        jobs = self.get_solution().perm.get_sequence_copy()
-        solution = FlowSolution()
-        solution.perm = ils(jobs, max_iter, d, max_age, seed)
-        return solution
+        jobs = self.perm.get_sequence_copy()
+        child = self.fast_copy()
+        child.perm = ils(jobs, max_iter, d, max_age, seed)
+        return child
 
-    cpdef FlowSolution randomized_heur(
+    cpdef PermFlowShop randomized_heur(
         PermFlowShop self,
         int n_iter=10,
         unsigned int seed=0
     ):
         cdef:
-            FlowSolution solution
+            PermFlowShop child
             vector[JobPtr] jobs
 
-        jobs = self.get_solution().perm.get_sequence_copy()
-        solution = FlowSolution()
-        solution.perm = randomized_heur(jobs, n_iter, seed)
-        return solution
+        jobs = self.perm.get_sequence_copy()
+        child = self.fast_copy()
+        child.perm = randomized_heur(jobs, n_iter, seed)
+        return child
 
-        jobs = self.get_solution().perm.get_sequence_copy()
-        perm = randomized_heur(jobs)
-        solution = FlowSolution()
-        solution.perm = perm
-        return solution
-
-    cpdef FlowSolution local_search(PermFlowShop self):
+    cpdef PermFlowShop local_search(PermFlowShop self):
         cdef:
             double lb, new_cost
-            FlowSolution sol_alt
+            Permutation perm
+            PermFlowShop sol_alt
             vector[JobPtr] jobs
 
         lb = self.solution.lb
-        jobs = self.get_solution().perm.get_sequence_copy()
-        sol_alt = FlowSolution()
-        sol_alt.perm = local_search(jobs)
-        new_cost = sol_alt.perm.calc_lb_full()
+        jobs = self.perm.get_sequence_copy()
+        perm = local_search(jobs)
+        new_cost = perm.calc_lb_full()
         if new_cost < lb:
-            sol_alt.set_feasible()
-            sol_alt.set_lb(new_cost)
+            sol_alt = self.fast_copy()
+            sol_alt.perm = perm
+            sol_alt.solution.set_feasible()
+            sol_alt.solution.set_lb(new_cost)
             return sol_alt
         return None
 
-    cpdef FlowSolution intensification(PermFlowShop self):
+    cpdef PermFlowShop intensification(PermFlowShop self):
         cdef:
             double new_cost, lb
-            FlowSolution sol_alt, sol_ls
+            PermFlowShop sol_alt
             vector[JobPtr] jobs
 
-        sol_alt = FlowSolution()
-        sol_alt.perm = intensify(
-            self.get_solution().perm
-        )
+        sol_alt = self.fast_copy()
+        sol_alt.perm = intensify(self.perm)
         new_cost = sol_alt.perm.calc_lb_full()
-        sol_alt.set_lb(new_cost)
-        sol_alt.set_feasible()
+        sol_alt.solution.set_lb(new_cost)
+        sol_alt.solution.set_feasible()
 
         return sol_alt
 
-    cpdef FlowSolution intensification_ref(
+    cpdef PermFlowShop intensification_ref(
         PermFlowShop self,
-        FlowSolution ref_solution
+        PermFlowShop reference
     ):
         cdef:
             double new_cost, lb
-            FlowSolution sol_alt, sol_ls
+            PermFlowShop sol_alt
             vector[JobPtr] jobs
 
-        sol_alt = FlowSolution()
+        sol_alt = self.fast_copy()
         sol_alt.perm = intensify_ref(
-            self.get_solution().perm,
-            ref_solution.perm
+            self.perm,
+            reference.perm
         )
         new_cost = sol_alt.perm.calc_lb_full()
-        sol_alt.set_lb(new_cost)
-        sol_alt.set_feasible()
+        sol_alt.solution.set_lb(new_cost)
+        sol_alt.solution.set_feasible()
 
         return sol_alt
 
-
-        perm = intensify(
-            self.get_solution().perm
-        )
-        sol_alt = FlowSolution()
-        sol_alt.perm = perm
-        new_cost = perm.calc_lb_full()
-        sol_alt.set_lb(new_cost)
-        sol_alt.set_feasible()
-
-        return sol_alt
-
-    cpdef FlowSolution path_relinking(
+    cpdef PermFlowShop path_relinking(
         PermFlowShop self,
-        FlowSolution ref_solution
+        PermFlowShop reference
     ):
         cdef:
             double new_cost, lb
-            FlowSolution sol_alt
+            PermFlowShop sol_alt
 
-        sol_alt = FlowSolution()
+        sol_alt = self.fast_copy()
         sol_alt.perm = intensify(
             path_relinking(
-                self.get_solution().perm,
-                ref_solution.perm
+                self.perm,
+                reference.perm
             )
         )
         new_cost = sol_alt.perm.calc_lb_full()
-        print(f"Current cost: {self.get_solution().perm.calc_lb_full()}")
+        print(f"Current cost: {self.perm.calc_lb_full()}")
         print(f"Path relinking cost: {new_cost}")
-        sol_alt.set_lb(new_cost)
-        sol_alt.set_feasible()
+        sol_alt.solution.set_lb(new_cost)
+        sol_alt.solution.set_feasible()
 
         return sol_alt
 
     cpdef double calc_bound(PermFlowShop self):
-        return self.get_solution().perm.calc_lb_1m()
+        return self.perm.calc_lb_1m()
 
     cpdef bool is_feasible(PermFlowShop self):
-        return self.get_solution().perm.is_feasible()
+        return self.perm.is_feasible()
 
     cpdef list[PermFlowShop] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
@@ -236,7 +244,7 @@ cdef class PermFlowShop(Problem):
             int j, J
             list[PermFlowShop] out
 
-        J = self.get_solution().perm.free_jobs.size()
+        J = self.perm.free_jobs.size()
         out = [None] * J
         for j in range(J):
             out[j] = self._child_push(j)
@@ -246,28 +254,47 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child = self._copy()
 
-        child.get_solution().push_job(j)
+        child._push_job(j)
         return child
 
     cpdef void bound_upgrade(PermFlowShop self):
         cdef:
             double lb5, lb
-            FlowSolution current
 
-        current = self.get_solution()
-        if current.perm.free_jobs.size() == 0:
-            lb5 = <double>current.perm.calc_lb_full()
+        if self.perm.free_jobs.size() == 0:
+            lb5 = <double>self.perm.calc_lb_full()
         else:
-            lb5 = <double>current.lower_bound_2m()
+            lb5 = <double>self.lower_bound_2m()
 
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
 
+    cpdef int calc_lb_1m(PermFlowShop self):
+        return self.perm.calc_lb_1m()
+
+    cpdef int calc_lb_2m(PermFlowShop self):
+        return self.perm.calc_lb_2m()
+
+    cpdef int lower_bound_1m(PermFlowShop self):
+        return self.perm.lower_bound_1m()
+
+    cpdef int lower_bound_2m(PermFlowShop self):
+        return self.perm.lower_bound_2m()
+
+    cpdef void push_job(PermFlowShop self, int& j):
+        self.perm.push_job(j)
+
+    cdef void _push_job(PermFlowShop self, int& j):
+        self.perm.push_job(j)
+
+    cpdef void compute_starts(PermFlowShop self):
+        self.perm.compute_starts()
+
     cpdef int calc_idle_time(PermFlowShop self):
-        return self.get_solution().perm.calc_idle_time()
+        return self.perm.calc_idle_time()
 
     cpdef int calc_tot_time(PermFlowShop self):
-        return self.get_solution().perm.calc_tot_time()
+        return self.calc_tot_time()
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=False):
         return self._copy()
@@ -276,15 +303,16 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child
         child = type(self).__new__(type(self))
-        child.solution = self.solution._copy()
+        child.solution = Solution()
         child.constructive = self.constructive
+        child.perm = self.perm.copy()
         return child
 
 
 cdef class PermFlowShop1M(PermFlowShop):
 
     cpdef double calc_bound(PermFlowShop1M self):
-        return self.get_solution().perm.calc_lb_1m()
+        return self.perm.calc_lb_1m()
 
     cpdef void bound_upgrade(PermFlowShop1M self):
         return
@@ -293,7 +321,7 @@ cdef class PermFlowShop1M(PermFlowShop):
 cdef class PermFlowShop2MHalf(PermFlowShop):
 
     cpdef void bound_upgrade(PermFlowShop2MHalf self):
-        if self.get_solution().perm.level < (self.get_solution().perm.n // 3) + 1:
+        if self.perm.level < (self.perm.n // 3) + 1:
             return
         super(PermFlowShop2MHalf, self).bound_upgrade()
 
@@ -301,7 +329,7 @@ cdef class PermFlowShop2MHalf(PermFlowShop):
 cdef class PermFlowShop2M(PermFlowShop):
 
     cpdef double calc_bound(PermFlowShop2M self):
-        return self.get_solution().perm.calc_lb_2m()
+        return self.perm.calc_lb_2m()
 
 
 cdef class PermFlowShopLevelCount(PermFlowShop):
@@ -317,18 +345,16 @@ cdef class PermFlowShopLevelCount(PermFlowShop):
     cpdef void bound_upgrade(PermFlowShopLevelCount self):
         cdef:
             double lb5, lb
-            FlowSolution current
 
-        current = self.get_solution()
-        if current.perm.free_jobs.size() == 0:
-            lb5 = <double>current.perm.calc_lb_full()
+        if self.perm.free_jobs.size() == 0:
+            lb5 = <double>self.perm.calc_lb_full()
         else:
-            lb5 = <double>current.lower_bound_2m()
+            lb5 = <double>self.lower_bound_2m()
 
         if lb5 >= self.solution.lb:
-            self.lb_counter[current.perm.level, 'lb5'].pynext()
+            self.lb_counter[self.perm.level, 'lb5'].pynext()
         else:
-            self.lb_counter[current.perm.level, 'lb1'].pynext()
+            self.lb_counter[self.perm.level, 'lb1'].pynext()
 
         lb = max(self.solution.lb, lb5)
         self.solution.set_lb(lb)
@@ -359,18 +385,14 @@ cdef class PermFlowShopQuit(PermFlowShop):
     cpdef void bound_upgrade(PermFlowShopQuit self):
         cdef:
             double lb5, lb
-            FlowSolution current
 
         if not self.do_lb5:
             return
-            # if self.get_solution().perm.level < (self.get_solution().perm.n // 2) + 1:
-            #     return
 
-        current = self.get_solution()
-        if current.perm.free_jobs.size() == 0:
-            lb5 = <double>current.perm.calc_lb_full()
+        if self.perm.free_jobs.size() == 0:
+            lb5 = <double>self.perm.calc_lb_full()
         else:
-            lb5 = <double>current.lower_bound_2m()
+            lb5 = <double>self.lower_bound_2m()
 
         if lb5 < self.solution.lb:
             self.do_lb5 = False
@@ -421,13 +443,11 @@ cdef class PermFlowShopCounter(PermFlowShopQuit):
     cpdef void bound_upgrade(PermFlowShopCounter self):
         cdef:
             double lb5, lb
-            FlowSolution current
 
-        current = self.get_solution()
-        if current.perm.free_jobs.size() == 0:
-            lb5 = <double>current.perm.calc_lb_full()
+        if self.perm.free_jobs.size() == 0:
+            lb5 = <double>self.perm.calc_lb_full()
         else:
-            lb5 = <double>current.lower_bound_2m()
+            lb5 = <double>self.lower_bound_2m()
 
         # Here the lb5 outperformed, so either
         # stay or switch to two machines

@@ -1,8 +1,8 @@
 __all__ = [
     "MILP",
-    "MILPSol",
+    "ScipyResults",
     "ColGenMILP"
 ]
 
 from bnbprob.milpy.colgen import ColGenMILP
-from bnbprob.milpy.problem import MILP, MILPSol
+from bnbprob.milpy.problem import MILP, ScipyResults

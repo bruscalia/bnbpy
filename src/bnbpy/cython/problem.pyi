@@ -78,15 +78,19 @@ class Problem:
         """
         ...
 
-    def warmstart(self) -> Optional[Solution]:
+    def warmstart(self) -> Optional['Problem']:
         """This is a white label for warmstart
-        If the problem has a warmstart function that returns a valid
-        solution, it will be used at the begining of the search tree.
+        If the problem has a warmstart function that returns a feasible
+        problem state, it will be used at the begining of the search tree.
+
+        Be careful not to modify the current problem instance,
+        but return a new one.
 
         Returns
         -------
-        Optional[Solution]
-            Solution to the problem, or None (in case not implemented)
+        Optional[Problem]
+            Problem modified in a warmstart form, or None
+            (in case not implemented)
         """
         ...
 

@@ -17,7 +17,6 @@ try:
         PermFlowShop,
         PermFlowShop2M,
     )
-    from bnbprob.pfssp.cython.solution import FlowSolution
 except (ModuleNotFoundError, ImportError) as e:
     print('Cython imports failed')
     print(e)

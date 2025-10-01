@@ -7,7 +7,7 @@ from scipy.optimize import linprog
 from bnbprob.gcol.coloring import ColorGraph, ColorHeuristic, DSatur
 from bnbprob.gcol.indset import IndepGraph, IndepSetHeur
 from bnbprob.milpy.colgen import ColGenMILP, MILPColumn, MILPDuals
-from bnbprob.milpy.problem import MILPSol
+from bnbprob.milpy.problem import ScipyResults
 from bnbpy.colgen import PriceSol, Pricing
 
 log = logging.getLogger(__name__)
@@ -285,7 +285,7 @@ class ColGenColor(ColGenMILP):
             color_heur = DSatur()
         self.color_heur = color_heur
 
-    def warmstart(self) -> MILPSol:
+    def warmstart(self) -> 'ColGenMILP':
         self.color_heur.solve(self.color_graph)
         A = self.columns_from_heur()
         self.milp.A_ub = -A
@@ -294,7 +294,7 @@ class ColGenColor(ColGenMILP):
 
         heur = self.copy()
         heur.milp.compute_bound()
-        return heur.solution
+        return heur
 
     def columns_from_heur(self) -> np.ndarray:
         columns = []
@@ -306,7 +306,7 @@ class ColGenColor(ColGenMILP):
         return np.column_stack(columns)
 
 
-def graph_from_solution(graph: ColorGraph, sol: MILPSol) -> None:
+def graph_from_solution(graph: ColorGraph, res: ScipyResults) -> None:
     """From a instance of `ColorGraph`, uses the solution of the MILP
     master problem to set node colors
 
@@ -315,18 +315,18 @@ def graph_from_solution(graph: ColorGraph, sol: MILPSol) -> None:
     graph : ColorGraph
         Instance of color graph
 
-    sol : MILPSol
-        Solution to MILP problem in which columns of A_ub are valid
+    res : ScipyResults
+        Results of MILP problem in which columns of A_ub are valid
         independent sets of the graph
     """
     tol = 0.5
     graph.clean()
-    if sol.x is None:
+    if res.x is None:
         raise ValueError('Solution must be computed before coloring graph')
-    if sol.problem.A_ub is None:
+    if res.problem.A_ub is None:
         raise ValueError('Problem A_ub must be defined before coloring graph')
     cols = [
-        -sol.problem.A_ub[:, j] for j, x in enumerate(sol.x) if x > tol
+        -res.problem.A_ub[:, j] for j, x in enumerate(res.x) if x > tol
     ]
     colors = [
         set((int(i) for i in np.nonzero(c > tol)[0].astype(int)))  # noqa: C401
