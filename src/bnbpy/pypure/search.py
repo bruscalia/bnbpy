@@ -7,12 +7,51 @@ from bnbpy.logger import SearchLogger
 from bnbpy.pypure.node import Node
 from bnbpy.pypure.problem import Problem
 from bnbpy.pypure.solution import Solution
+from bnbpy.pypure.status import OptStatus
 
 log = logging.getLogger(__name__)
 
 LARGE_INT = 100000000
 LARGE_POS = float('inf')
 LOW_NEG = -float('inf')
+
+
+class SearchResults:
+    """Results container for Branch & Bound search"""
+
+    def __init__(self, solution: Solution, problem: Problem) -> None:
+        """Initialize SearchResults
+
+        Parameters
+        ----------
+        solution : Solution
+            The best solution found
+        problem : Problem
+            The problem instance corresponding to the solution
+        """
+        self.solution = solution
+        self.problem = problem
+
+    def __repr__(self) -> str:
+        return str(self.solution)
+
+    def __str__(self) -> str:
+        return str(self.solution)
+
+    @property
+    def cost(self) -> float:
+        """Cost of the best solution found"""
+        return self.solution.cost
+
+    @property
+    def lb(self) -> float:
+        """Lower bound of the search"""
+        return self.solution.lb
+
+    @property
+    def status(self) -> OptStatus:
+        """Optimization status"""
+        return self.solution.status
 
 
 class BranchAndBound:
@@ -24,22 +63,26 @@ class BranchAndBound:
     """Root node (after initialized)"""
     gap: float
     """Feasibility gap between lb and ub"""
-    queue: List[Tuple[Any, Node]]
-    """Queue of nodes to be explored in pairs `(priority, node)`"""
     rtol: float
     """Relative tolerance for termination"""
     atol: float
     """Absolute tolerance for termination"""
     explored: int
     """Number of nodes already explored"""
+    eval_node: str
+    """Node evaluation strategy"""
     eval_in: bool
     """Either or not nodes as evaluated as enqueued"""
     eval_out: bool
     """Either or not nodes are evaluated as dequeued"""
+    save_tree: bool
+    """Whether to save node relationships"""
     incumbent: Optional[Node]
     """Node with the current best feasible solution"""
     bound_node: Optional[Node]
     """Node currently holding best bound"""
+    queue: List[Tuple[Any, Node]]
+    """Queue of nodes to be explored in pairs `(priority, node)`"""
     __logger = SearchLogger(log)
 
     def __init__(
@@ -68,7 +111,6 @@ class BranchAndBound:
         """
         self.problem = None
         self.root = None
-        self._restart_search()
         self.rtol = rtol
         self.atol = atol
         self.eval_node = eval_node
@@ -78,10 +120,15 @@ class BranchAndBound:
         self.save_tree = save_tree
         self.incumbent = None
         self.bound_node = None
+        self.queue: List[Tuple[Any, Node]] = []  # Priority queue behavior
+        self.gap = float('inf')
 
     @property
     def ub(self) -> float:
         """Upper bound, or best feasible solution found so far"""
+        return self.get_ub()
+
+    def get_ub(self) -> float:
         if self.incumbent is not None:
             return self.incumbent.lb
         return LARGE_POS
@@ -89,17 +136,23 @@ class BranchAndBound:
     @property
     def lb(self) -> float:
         """Lower bound, or best possible solution proven so far"""
+        return self.get_lb()
+
+    def get_lb(self) -> float:
         if self.bound_node is not None:
-            return min(self.bound_node.lb, self.ub)
+            return min(self.bound_node.lb, self.get_ub())
         return LOW_NEG
 
     @property
     def solution(self) -> Solution:
         """Best feasible solution found so far"""
+        return self.get_solution()
+
+    def get_solution(self) -> Solution:
         if self.incumbent is not None:
-            return self.incumbent.solution
+            return self.incumbent.get_solution()
         elif self.bound_node is not None:
-            return self.bound_node.solution
+            return self.bound_node.get_solution()
         return Solution()
 
     def _set_problem(self, problem: Problem) -> None:
@@ -109,14 +162,14 @@ class BranchAndBound:
         self.incumbent = None
         self.bound_node = None
         self.gap = float('inf')
-        self.queue = []
+        self.queue.clear()
 
     def solve(
         self,
         problem: Problem,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Optional[Solution]:
+    ) -> SearchResults:
         """Solves optimization problem using Branch & Bound
 
         Parameters
@@ -132,7 +185,7 @@ class BranchAndBound:
 
         Returns
         -------
-        Optional[Solution]
+        SearchResults
             Best feasible solution found
         """
         self._set_problem(problem)
@@ -142,13 +195,16 @@ class BranchAndBound:
             start_time = time.time()
         log.info('Starting exploration of search tree')
         self._log_headers()
-        self._warmstart(solution=problem.warmstart())
+        self._warmstart(problem.warmstart())
         self._solve_root()
+        # In case the root node is already the LB of a optimal warmstart
+        self._check_termination(maxiter)
         while self.queue:
             # Check for time termination
             if timelimit is not None:
                 current_time = time.time()
                 if current_time - start_time >= timelimit:
+                    self.log_row('Time Limit')
                     break
             node = self._dequeue_core()
             # Avoid node with poor parents in case ub was updated meanwhile
@@ -161,8 +217,15 @@ class BranchAndBound:
             # Termination by optimality
             if self._check_termination(maxiter):
                 break
-        self.solution.set_lb(self.lb)
-        return self.solution
+
+        sol = self.get_solution()
+        sol.set_lb(self.get_lb())
+
+        inc_problem = problem
+        if self.incumbent is not None:
+            inc_problem = self.incumbent.problem
+
+        return SearchResults(sol, inc_problem)
 
     def _do_iter(self, node: Node) -> None:
         """Do loop iteration using a reference node just dequeued
@@ -172,10 +235,10 @@ class BranchAndBound:
         node : Node
             Candidate node
         """
-        # Node is valid for evaluation
-        self.explored += 1
         # Lower bound is accepted
-        if node.lb < self.ub:
+        if node.lb < self.get_ub():
+            # Node is valid for evaluation
+            self.explored += 1
             # Node satisfies all constraints
             self._feasibility_check(node)
         else:
@@ -189,6 +252,7 @@ class BranchAndBound:
         node : Node
             Node to be included
         """
+        # DFS behavior: use negative level as priority (deeper nodes first)
         heapq.heappush(self.queue, ((-node.level, node.lb), node))
 
     def dequeue(self) -> Node:
@@ -199,21 +263,23 @@ class BranchAndBound:
         Node
             Node to be evaluated
         """
+        # Extract node from priority tuple
         _, node = heapq.heappop(self.queue)
         return node
 
-    def _warmstart(self, solution: Optional[Solution] = None) -> None:
+    def _warmstart(self, warmstart_problem: Optional[Problem]) -> None:
         """If a warmstart is available, use it to set an upper bound
 
         Parameters
         ----------
-        solution : Optional[Solution], optional
-            Initial solution, by default None
+        warmstart_problem : Optional[Problem]
+            Warmstart problem instance, by default None
         """
-        if solution and self.problem is not None:
-            node = Node(self.problem.copy())
-            node.set_solution(solution)
-            if node.lb < self.ub:
+        if warmstart_problem is not None:
+            if warmstart_problem.solution.status.value == 0:  # NO_SOLUTION
+                warmstart_problem.compute_bound()
+            node = Node(warmstart_problem)
+            if node.lb < self.get_ub():
                 self._feasibility_check(node)
                 self.log_row('Warmstart')
 
@@ -232,6 +298,7 @@ class BranchAndBound:
         else:
             self.log_row('Cutoff')
         if not self.save_tree and node is not self.root:
+            node.cleanup()
             del node
 
     def fathom(self, node: Node) -> None:  # noqa: PLR6301
@@ -247,6 +314,7 @@ class BranchAndBound:
         """
         node.fathom()
         if not self.save_tree and node is not self.root:
+            node.cleanup()
             del node
 
     def pre_eval_callback(self, node: Node) -> None:
@@ -312,8 +380,11 @@ class BranchAndBound:
     def _enqueue_core(self, node: Node) -> None:
         if self.eval_in:
             self._node_eval(node)
-        self.enqueue_callback(node)
-        self.enqueue(node)
+        if node.lb < self.get_ub():
+            self.enqueue_callback(node)
+            self.enqueue(node)
+        else:
+            self.fathom(node)
 
     def _dequeue_core(self) -> Optional[Node]:
         node = self.dequeue()
@@ -345,7 +416,8 @@ class BranchAndBound:
             self._update_gap()
             return
         old_bound = self.bound_node
-        self.bound_node = min(self.queue, key=lambda x: x[-1].lb)[-1]
+        # Find node with minimum lb from priority queue tuples
+        self.bound_node = min(self.queue, key=lambda x: x[1].lb)[1]
         if (
             old_bound is None
             or old_bound is self.root
@@ -357,22 +429,36 @@ class BranchAndBound:
     def _log_headers(self) -> None:
         self.__logger.log_headers()
 
-    def log_row(self, message: str) -> None:
+    def log_row(self, message: object) -> None:
         gap = f'{(100 * self.gap):.2f}%'
-        ub = f'{float(self.ub):^6.4}'
-        lb = f'{float(self.lb):^6.4}'
+        ub = f'{float(self.get_ub()):^6.4}'
+        lb = f'{float(self.get_lb()):^6.4}'
         self.__logger.log_row(self.explored, ub, lb, gap, message)
 
     def _update_gap(self) -> None:
-        if self.ub != float('inf'):
-            self.gap = abs(self.ub - self.lb) / abs(self.ub)
+        if self.get_ub() != float('inf'):
+            self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
 
     def _optimality_check(self) -> bool:
-        return self.ub <= self.lb + self.atol or self.gap <= self.rtol
+        if self.incumbent is not None and len(self.queue) == 0:
+            return True
+        return (
+            self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol
+        )
 
 
 class BreadthFirstBnB(BranchAndBound):
     """Breadth-first Branch & Bound algorithm"""
+
+    def __init__(
+        self,
+        rtol: float = 0.0001,
+        atol: float = 0.0001,
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
+    ) -> None:
+        super().__init__(rtol, atol, eval_node, save_tree)
+        self.queue: List[Tuple[Any, Node]] = []  # BFS priority queue
 
     def enqueue(self, node: Node) -> None:
         """Include new node into queue
@@ -382,6 +468,7 @@ class BreadthFirstBnB(BranchAndBound):
         node : Node
             Node to be included
         """
+        # BFS behavior: use level as priority (shallower nodes first)
         heapq.heappush(self.queue, ((node.level, node.lb), node))
 
 
@@ -393,20 +480,29 @@ class DepthFirstBnB(BranchAndBound):
 
 
 class BestFirstBnB(BranchAndBound):
-    """Relation priority Branch & Bound algorithm"""
-
-    queue: List[Tuple[Any, Node]]
+    """Best-first Branch & Bound algorithm"""
 
     def __init__(
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
-        eval_node: Literal['in', 'out', 'both'] = 'in',
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node)
+        super().__init__(rtol, atol, eval_node, save_tree)
+        # Will use best-first behavior with heap tuples
+        self.queue: List[Tuple[Any, Node]] = []
 
     def enqueue(self, node: Node) -> None:
-        return heapq.heappush(self.queue, ((node.lb, -node.level), node))
+        """Include new node into queue
+
+        Parameters
+        ----------
+        node : Node
+            Node to be included
+        """
+        # Best-first behavior: use heap with lb as priority
+        heapq.heappush(self.queue, ((node.lb, -node.level), node))
 
 
 def configure_logfile(

@@ -2,21 +2,43 @@ import logging
 from typing import Dict, Hashable, List, Optional
 
 from bnbprob.machdeadline.job import Job
-from bnbprob.machdeadline.solution import MachSolution
 from bnbpy import Problem
 
 log = logging.getLogger(__name__)
 
 
 class MachDeadlineProb(Problem):
-    solution: MachSolution
+    sequence: List[Job]
     jobs: Dict[Hashable, Job]
     lb: int
     cost: Optional[int]
 
     def __init__(self, jobs: List[Job]) -> None:
-        self.solution = MachSolution([])
+        super().__init__()
+        self.sequence = [job.model_copy() for job in jobs]
+        self._set_job_attrs()
         self.jobs = {job.id: job for job in jobs}
+
+    def _set_job_attrs(self) -> None:
+        for k, job in enumerate(self.sequence):
+            job.set_position(k)
+            if k == 0:
+                job.set_completion(job.p)
+            else:
+                last_c = self.sequence[k - 1].c
+                if last_c is None:
+                    raise ValueError('Last job completion time is not set.')
+                job.set_completion(last_c + job.p)
+
+    def write(self) -> str:
+        return '\n'.join([
+            f'Job: {job.id} - Completion: {job.c}' for job in self.sequence
+        ])
+
+    def _calc_bound(self) -> int:
+        return sum(
+            job.w * job.c for job in self.sequence if job.c is not None
+        )
 
     def calc_bound(self) -> int:
         fixed = self.get_fixed()
@@ -25,18 +47,20 @@ class MachDeadlineProb(Problem):
         fixed.sort(
             key=lambda job: job.k if job.k is not None else -1, reverse=False
         )
-        self.solution = MachSolution(unfixed + fixed)
-        return self.solution.calc_bound()
+        self.sequence = unfixed + fixed
+        self._set_job_attrs()
+        return self._calc_bound()
 
     def is_feasible(self) -> bool:
-        return self.solution.check_feasible()
+        valid = all(job.feasible for job in self.sequence)
+        return valid
 
-    def branch(self) -> Optional[List['MachDeadlineProb']]:
+    def branch(self) -> List['MachDeadlineProb']:
         # Get fixed and unfixed job lists to create new solution
         fixed_jobs = self.get_fixed()
         unfixed_jobs = self.get_unfixed()
         if len(unfixed_jobs) == 0:
-            return None
+            return []
         # Find next position to fix and iterate creating children
         next_k = self._find_next_pos(fixed_jobs, unfixed_jobs)
         children = []

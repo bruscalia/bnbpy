@@ -3,8 +3,6 @@ from typing import Union
 
 from bnbpy.pypure.status import OptStatus
 
-LOW_NEG = -float('inf')
-
 
 class Solution:
     """Abstraction for a solution representation"""
@@ -13,9 +11,9 @@ class Solution:
     lb: Union[int, float]
     status: OptStatus
 
-    def __init__(self, lb: float = LOW_NEG) -> None:
-        self.cost = float('inf')
-        self.lb = lb
+    def __init__(self) -> None:
+        self.cost = float('inf')  # HUGE_VAL equivalent
+        self.lb = -float('inf')   # -HUGE_VAL equivalent
         self.status = OptStatus.NO_SOLUTION
 
     def __repr__(self) -> str:
@@ -29,13 +27,6 @@ class Solution:
         return (
             f'Status: {self.status.name} | Cost: {self.cost} | LB: {self.lb}'
         )
-
-    def get_status_cls(self) -> type:
-        return self.status.__class__
-
-    def get_status_options(self) -> dict[str, int]:
-        status_cls: type[OptStatus] = self.get_status_cls()
-        return {status.name: status.value for status in status_cls}
 
     def set_optimal(self) -> None:
         self.status = OptStatus.OPTIMAL
@@ -59,13 +50,13 @@ class Solution:
 
     def copy(self, deep: bool = True) -> 'Solution':
         if deep:
-            return self.deep_copy()
-        return self.shallow_copy()
+            return copy.deepcopy(self)
+        return self._copy()
 
-    def deep_copy(self) -> 'Solution':
-        other = copy.deepcopy(self)
-        return other
-
-    def shallow_copy(self) -> 'Solution':
-        other = copy.copy(self)
+    def _copy(self) -> 'Solution':
+        """Internal shallow copy method matching Cython implementation"""
+        other = Solution.__new__(Solution)
+        other.cost = self.cost
+        other.lb = self.lb
+        other.status = self.status
         return other

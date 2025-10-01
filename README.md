@@ -15,6 +15,7 @@ See more examples in the [notebooks folder](./notebooks/):
 
 - [Single Machine Scheduling](./notebooks/single-machine.ipynb)
 - [Permutation Flow Shop](./notebooks/pfssp.ipynb) (main focus so far)
+- [Permutation Assembly Flow Shop](./notebooks/pafssp.ipynb) (main focus so far)
 - [MILP](./notebooks/milp.ipynb)
 - [Cutting Stock](./notebooks/cutting-stock.ipynb)
 - [Graph Coloring](./notebooks/graph-coloring-bak.ipynb)
@@ -267,6 +268,8 @@ To track code coverage of the main package `bnbpy`, run:
 ```
 pytest --cov=bnbpy --cov-report=html
 ```
+
+Most of the package is already cythonized, so the coverage loses its meaning when raw.
 
 ## Contact
 

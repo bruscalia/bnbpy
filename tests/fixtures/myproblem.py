@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from bnbpy.problem import Problem
+from bnbpy.cython.problem import Problem
 
 
 class MyProblem(Problem):  # type: ignore

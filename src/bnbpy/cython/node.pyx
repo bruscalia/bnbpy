@@ -4,8 +4,8 @@
 from libcpp cimport bool
 
 import copy
-import itertools
 
+from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
@@ -21,14 +21,14 @@ cdef class Node:
         self.parent = parent
         self.children = []
         if parent is None:
-            self._counter = itertools.count()
+            self._counter = Counter()
             self.level = 0
             self.lb = self.problem.get_lb()
         else:
             self._counter = self.parent._counter
             self.lb = self.parent.lb
             self.level = parent.level + 1
-        self._sort_index = next(self._counter)
+        self._sort_index = self._counter.next()
 
     def __del__(self):
         self.cleanup()
@@ -42,6 +42,7 @@ cdef class Node:
         if self.children is not None:
             for child in self.children:
                 child.parent = None
+            self.children = None
         if self.parent:
             self.parent = None
 
@@ -97,7 +98,7 @@ cdef class Node:
         other._counter = self._counter
         other.lb = self.lb
         other.level = self.level + 1
-        other._sort_index = next(other._counter)
+        other._sort_index = other._counter.next()
         return other
 
     cdef Node shallow_copy(Node self):
@@ -110,7 +111,7 @@ cdef class Node:
         other._counter = self._counter
         other.lb = self.lb
         other.level = self.level + 1
-        other._sort_index = next(other._counter)
+        other._sort_index = other._counter.next()
         return other
 
 
@@ -122,12 +123,12 @@ cdef Node init_node(Problem problem, Node parent=None):
     node.parent = parent
     node.children = []
     if parent is None:
-        node._counter = itertools.count()
+        node._counter = Counter()
         node.level = 0
         node.lb = node.problem.get_lb()
     else:
         node._counter = parent._counter
         node.lb = parent.lb
         node.level = parent.level + 1
-    node._sort_index = next(node._counter)
+    node._sort_index = node._counter.next()
     return node

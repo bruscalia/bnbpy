@@ -1,6 +1,5 @@
 __all__ = [
     "CallbackBnB",
-    "CallbackBnBAge",
     "LazyBnB",
     "PermFlowShop",
     "PermFlowShop2M",
@@ -9,7 +8,6 @@ __all__ = [
 
 from bnbprob.pfssp.environ import (
     CallbackBnB,
-    CallbackBnBAge,
     LazyBnB,
     PermFlowShop,
     PermFlowShop2M,

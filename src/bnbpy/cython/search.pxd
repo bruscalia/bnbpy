@@ -10,6 +10,7 @@ from bnbpy.cython.node cimport Node
 from typing import Optional
 
 from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
 
 
@@ -19,6 +20,12 @@ cdef:
     int LARGE_INT = 100000000
 
 
+cdef class SearchResults:
+    cdef public:
+        Solution solution
+        Problem problem
+
+
 cdef class BranchAndBound:
     """Class for solving optimization problems via Branch & Bound"""
 
@@ -26,7 +33,7 @@ cdef class BranchAndBound:
         Problem problem
         Node root
         double gap
-        object queue
+        BasePriQueue queue
         double rtol
         double atol
         int explored
@@ -44,14 +51,9 @@ cdef class BranchAndBound:
 
     cdef Solution get_solution(BranchAndBound self)
 
-    cdef inline void _set_problem(BranchAndBound self, Problem problem):
-        self.problem = problem
+    cdef void _set_problem(BranchAndBound self, Problem problem)
 
-    cdef inline void _restart_search(BranchAndBound self):
-        self.incumbent = None
-        self.bound_node = None
-        self.gap = INFINITY
-        self.queue = []
+    cdef void _restart_search(BranchAndBound self)
 
     cdef void _do_iter(BranchAndBound self, Node node)
 
@@ -59,7 +61,7 @@ cdef class BranchAndBound:
 
     cpdef Node dequeue(BranchAndBound self)
 
-    cpdef void _warmstart(BranchAndBound self, Solution solution)
+    cpdef void _warmstart(BranchAndBound self, Problem warmstart_problem)
 
     cpdef void branch(BranchAndBound self, Node node)
 

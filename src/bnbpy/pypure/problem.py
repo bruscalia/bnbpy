@@ -1,47 +1,46 @@
 import copy
-from abc import ABC, abstractmethod
-from typing import Optional, Sequence, Union
+from typing import Optional, Union
 
 from bnbpy.pypure.solution import Solution
 from bnbpy.pypure.status import OptStatus
 
 
-class Problem(ABC):
+class Problem:
     """Abstraction for an optimization problem"""
 
     solution: Solution
     """Solution of the (sub)problem (if any)"""
 
     def __init__(self) -> None:
-        super().__init__()
         self.solution = Solution()
 
     def __del__(self) -> None:
         self.cleanup()
 
     def cleanup(self) -> None:
-        del self.solution
+        self.solution = None  # type: ignore
 
-    @abstractmethod
     def calc_bound(self) -> Union[int, float]:
         """Returns a lower bound of the (sub)problem."""
-        pass
+        raise NotImplementedError("Must implement `calc_bound` method")
 
-    @abstractmethod
     def is_feasible(self) -> bool:
         """
         Returns `True` if the problem in its complete
         form has a feasible solution.
         """
-        pass
+        raise NotImplementedError("Must implement `is_feasible` method")
 
-    @abstractmethod
-    def branch(self) -> Optional[Sequence['Problem']]:
+    def branch(self) -> list['Problem']:
         """Generates child nodes (problems) by branching."""
-        pass
+        raise NotImplementedError("Must implement `branch` method")
 
     @property
     def lb(self) -> Union[int, float]:
+        return self.get_lb()
+
+    def get_lb(self) -> Union[int, float]:
+        """Get lower bound from solution."""
         return self.solution.lb
 
     def compute_bound(self) -> None:
@@ -84,27 +83,19 @@ class Problem(ABC):
         if self.solution.status == OptStatus.NO_SOLUTION:
             self.compute_bound()
 
-    def warmstart(self) -> Optional[Solution]:  # noqa: PLR6301
+    def warmstart(self) -> Optional['Problem']:  # noqa: PLR6301
         """This is a white label for warmstart
         If the problem has a warmstart function that returns a valid
         solution, it will be used at the begining of the search tree.
 
         Returns
         -------
-        Optional[Solution]
-            Solution to the problem, or None (in case not implemented)
+        Optional[Problem]
+            Problem with solution, or None (in case not implemented)
         """
         return None
 
     def copy(self, deep: bool = True) -> 'Problem':
         if deep:
-            return self.deep_copy()
-        return self.shallow_copy()
-
-    def deep_copy(self) -> 'Problem':
-        other = copy.deepcopy(self)
-        return other
-
-    def shallow_copy(self) -> 'Problem':
-        other = copy.copy(self)
-        return other
+            return copy.deepcopy(self)
+        return copy.copy(self)

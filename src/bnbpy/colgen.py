@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Optional, Set, cast
 
-from bnbpy.problem import Problem
+from bnbpy.cython.problem import Problem
 
 log = logging.getLogger(__name__)
 
@@ -171,7 +171,6 @@ class ColumnGenProblem(Problem):
         self.pricing = pricing
 
     def cleanup(self) -> None:
-        super().cleanup()
         del self.master
         del self.pricing
 

@@ -1,6 +1,6 @@
 # mypy: ignore-errors
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Generic, List, Optional, Tuple, TypeVar
 
 import gif
 import matplotlib.pyplot as plt
@@ -11,10 +11,33 @@ from matplotlib.colors import ListedColormap
 
 from bnbprob.gcol.coloring import ColorNode
 from bnbprob.gcol.indset import IndepSetNode
-from bnbprob.milpy import MILPSol
+from bnbprob.milpy import ScipyResults
 
 INT_TOL = 0.5
 SMALL = 1e-6
+
+
+class A:
+    pass
+
+
+T = TypeVar('T', bound=A)
+
+
+class MyClass(Generic[T]):
+
+    def foo(self, arg: list[T]) -> None:
+        pass
+
+
+class SubA(A):
+    pass
+
+
+class SubMyClass(MyClass[SubA]):
+
+    def foo(self, arg: list[SubA]) -> None:
+        pass
 
 
 def draw_gc_from_nodes(nodes: Dict[int, ColorNode], **kwargs: Any) -> None:
@@ -236,7 +259,7 @@ def _draw_colored_graph(  # noqa: PLR0913, PLR0917
 
 
 def plot_columns_gcol(
-    sol: MILPSol,
+    res: ScipyResults,
     figsize: Optional[tuple[int, int]] = None,
     dpi: int = 100,
     plot_colors: Optional[list[Any]] = None,
@@ -245,14 +268,14 @@ def plot_columns_gcol(
         figsize = (7, 3)
 
     # Create a mask for all columns
-    if sol.problem.A_ub is None:
+    if res.problem.A_ub is None:
         raise ValueError(
             'The problem does not have an upper bound matrix A_ub.'
         )
-    if sol.x is None:
+    if res.x is None:
         raise ValueError('The solution does not have a variable vector x.')
-    columns = (-sol.problem.A_ub > INT_TOL).astype(int)
-    cols_x = np.nonzero(sol.x > INT_TOL)[0]
+    columns = (-res.problem.A_ub > INT_TOL).astype(int)
+    cols_x = np.nonzero(res.x > INT_TOL)[0]
 
     # Create a list of colors base on two colormaps
     if plot_colors is None:
@@ -274,7 +297,7 @@ def plot_columns_gcol(
         # Create a mask for the current selected column
         columns[:, i] = (k + 2) * columns[:, i]
 
-    columns[-sol.problem.A_ub < SMALL] = 0
+    columns[-res.problem.A_ub < SMALL] = 0
     _ = ax.matshow(columns - 0.5, cmap=cmap, vmin=0.1)
 
     # Turn off axis

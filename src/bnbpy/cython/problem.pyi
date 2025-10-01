@@ -24,23 +24,22 @@ class Problem:
         """
         ...
 
-    def cleanup(self) -> None:
-        ...
+    def __del__(self) -> None: ...
 
     def calc_bound(self) -> Union[int, float]:
         """Returns a lower bound of the (sub)problem."""
-        pass
+        ...
 
     def is_feasible(self) -> bool:
         """
         Returns `True` if the problem in its complete
         form has a feasible solution.
         """
-        pass
+        ...
 
-    def branch(self) -> Optional[Sequence['Problem']]:
+    def branch(self) -> Sequence['Problem']:
         """Generates child nodes (problems) by branching."""
-        pass
+        ...
 
     @property
     def lb(self) -> Union[int, float]:
@@ -78,17 +77,20 @@ class Problem:
         """
         ...
 
-    def warmstart(self) -> Optional[Solution]:
+    def warmstart(self) -> Optional['Problem']:
         """This is a white label for warmstart
-        If the problem has a warmstart function that returns a valid
-        solution, it will be used at the begining of the search tree.
+        If the problem has a warmstart function that returns a feasible
+        problem state, it will be used at the begining of the search tree.
+
+        Be careful not to modify the current problem instance,
+        but return a new one.
 
         Returns
         -------
-        Optional[Solution]
-            Solution to the problem, or None (in case not implemented)
+        Optional[Problem]
+            Problem modified in a warmstart form, or None
+            (in case not implemented)
         """
         ...
 
-    def copy(self, deep: bool = True) -> 'Problem':
-        ...
+    def copy(self, deep: bool = True) -> 'Problem': ...

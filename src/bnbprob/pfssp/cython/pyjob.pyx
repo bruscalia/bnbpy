@@ -104,7 +104,7 @@ cdef class PyJob:
             out.append(qi)
         return out
 
-    cpdef list[int] get_lat(self):
+    cpdef list[list[int]] get_lat(self):
         cdef:
             int i, j, li
             list[int] lati

@@ -16,14 +16,20 @@ inline bool desc_T(const JobPtr& a, const JobPtr& b)
 
 Permutation neh_constructive(std::vector<JobPtr>& jobs)
 {
+    // Find best order of two jobs with longest processing times
+    std::sort(jobs.begin(), jobs.end(), desc_T);
+
+    return neh_core(jobs);
+}
+
+Permutation neh_core(std::vector<JobPtr>& jobs)
+{
     int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec;
     Sigma s1, s2, sol, best_sol;
 
-    // Find best order of two jobs with longest processing times
-    std::sort(jobs.begin(), jobs.end(), desc_T);
     M = jobs[0]->p->size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs
@@ -60,8 +66,29 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs)
     }
 
     // Find best insert for every other job
-    seq_size = 2;
-    for (j = 2; j < jobs.size(); ++j)
+    std::vector<JobPtr> free_jobs = std::vector<JobPtr>(jobs.begin() + 2, jobs.end());
+    sol = neh_body(sol, free_jobs);
+
+    // Prepare as a permutation
+    Permutation perm = Permutation(sol.m, jobs.size(), jobs.size(), sol,
+                                   std::vector<JobPtr>{}, Sigma(sol.m));
+    return perm;
+}
+
+
+Sigma neh_body(Sigma sol, std::vector<JobPtr> &jobs)
+{
+    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
+    // Sigma s1, s2, sol, best_sol, s_alt;
+    JobPtr job;
+    std::vector<JobPtr> vec;
+    Sigma best_sol;
+
+    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+
+    // Find best insert for every other job
+    seq_size = sol.jobs.size();
+    for (j = 0; j < jobs.size(); ++j)
     {
         Sigma base_sig(M);
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
@@ -98,7 +125,5 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs)
         seq_size += 1;
         sol = std::move(best_sol);
     }
-    Permutation perm = Permutation(sol.m, jobs.size(), jobs.size(), sol,
-                                   std::vector<JobPtr>{}, Sigma(sol.m));
-    return perm;
+    return sol;
 }

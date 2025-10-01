@@ -1,4 +1,4 @@
-from typing import Iterator, Optional
+from typing import Optional
 
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
@@ -11,7 +11,6 @@ class Node:
     lb: float
     children: list[Node]
     _sort_index: int
-    _counter: Iterator[int]
 
     def __init__(
         self, problem: Problem, parent: Optional['Node'] = None
@@ -29,29 +28,30 @@ class Node:
         """
         ...
 
-    def cleanup(self) -> None:
-        ...
+    def __del__(self) -> None: ...
 
-    def __lt__(self, other: 'Node') -> bool:
-        ...
+    def __lt__(self, other: 'Node') -> bool: ...
 
     @property
-    def solution(self) -> Solution:
-        ...
+    def solution(self) -> Solution: ...
 
     @property
-    def index(self) -> int:
-        ...
+    def index(self) -> int: ...
 
     def compute_bound(self) -> None:
-        """
-        Computes the lower bound of the problem and sets it to
+        """Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
         """
         ...
 
     def check_feasible(self) -> bool:
-        """Calls `problem` `check_feasible()` method"""
+        """Calls `problem` `check_feasible()` method
+
+        Returns
+        -------
+        bool
+            Feasibility check result
+        """
         ...
 
     def set_solution(self, solution: Solution) -> None:
@@ -69,11 +69,7 @@ class Node:
         """Sets solution status of node as 'FATHOMED'"""
         ...
 
-    def copy(self, deep: bool = True) -> 'Node':
-        ...
-
-    def deep_copy(self) -> 'Node':
-        ...
+    def copy(self, deep: bool = True) -> 'Node': ...
 
     def branch(self) -> list['Node']:
         """Calls `problem` `branch()` method to create derived sub-problems.
@@ -83,13 +79,7 @@ class Node:
 
         Returns
         -------
-        Optional[List['Node']]
+        list[Node]
             List of child nodes, if any
         """
-        ...
-
-    def child_problem(self, problem: Problem) -> 'Node':
-        ...
-
-    def shallow_copy(self) -> 'Node':
         ...

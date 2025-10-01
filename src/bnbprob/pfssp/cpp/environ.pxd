@@ -19,19 +19,19 @@ cdef extern from "job.hpp":
 
         # Declare the constructors
         # Default constructor
-        inline Job()
+        Job()
 
         # Constructor with job ID and shared_ptr for processing times
-        inline Job(
+        Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_
         )
 
         # Constructor with job ID and vector for processing times (creates shared_ptr internally)
-        inline Job(const int &j_, const vector[int] &p_)
+        Job(const int &j_, const vector[int] &p_)
 
         # Parameterized constructor
-        inline Job(
+        Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_,
             const vector[int] &r_,
@@ -65,22 +65,49 @@ cdef extern from "sigma.hpp":
         vector[int] C
 
         # Default constructor
-        inline Sigma()
+        Sigma()
 
         # Constructor with empty instance
-        inline Sigma(const int &m_)
+        Sigma(const int &m_)
 
         # Constructor with only jobs
-        inline Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_)
+        Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_)
 
         # Full constructor
-        inline Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_, const vector[int] &C_)
+        Sigma(const int &m_, const vector[shared_ptr[Job]] &jobs_, const vector[int] &C_)
 
         # Push job to the bottom of the sequence
         void job_to_bottom(const shared_ptr[Job] &job)
 
         # Push job to the top of the sequence
         void job_to_top(const shared_ptr[Job] &job)
+
+
+cdef extern from "job_times.hpp":
+    cdef cppclass JobTimes:
+        int t1
+        int t2
+        const int* p1
+        const int* p2
+        const int* lat
+        const Job* jobptr
+
+        JobTimes(const int& t1_, const int& t2_, const int*& p1_, const int*& p2_,
+                 const int*& lat_, const JobPtr& jobptr_)
+
+        JobTimes(const int& t1_, const int& t2_, const int& p1_, const int& p2_,
+                 const int& lat_, const JobPtr& jobptr_)
+
+        JobTimes(const int& m1, const int& m2, const JobPtr& jobptr_)
+
+
+cdef extern from "two_mach.hpp":
+    cdef cppclass TwoMach:
+        TwoMach()
+        TwoMach(const int& m, const vector[JobPtr]& jobs)
+
+        void erase_job(const JobPtr& job)
+        const vector[JobTimes]& get_seq(const int& m1, const int& m2)
 
 
 cdef extern from "permutation.hpp":
@@ -94,32 +121,35 @@ cdef extern from "permutation.hpp":
         Sigma sigma2
 
         # Default constructor
-        inline Permutation()
+        Permutation()
 
         # Constructor from processing times
         Permutation(const vector[vector[int]]& p_)
 
         # Constructor from free jobs
-        inline Permutation(const int &m_, const vector[shared_ptr[Job]] &jobs_)
+        Permutation(const int &m_, const vector[shared_ptr[Job]] &jobs_)
 
         # Constructor given all desired attributes
-        inline Permutation(
+        Permutation(
             const int &m_, const int &n_, const int &level_,
             const Sigma &sigma1_, const vector[shared_ptr[Job]] &free_jobs_,
-            const Sigma &sigma2_
+            const Sigma &sigma2_,
+            const TwoMach &two_mach_cache_
         )
 
         # Accessor methods
         vector[shared_ptr[Job]] *get_free_jobs()
         Sigma *get_sigma1()
         Sigma *get_sigma2()
-        vector[shared_ptr[Job]] get_sequence()
-        vector[shared_ptr[Job]] get_sequence_copy()
-        vector[int] get_r()
-        vector[int] get_q()
+        vector[shared_ptr[Job]] get_sequence() const
+        vector[shared_ptr[Job]] get_sequence_copy() const
+        vector[shared_ptr[Job]] get_free_jobs_copy() const
+        vector[int] get_r() const
+        vector[int] get_q() const
 
         # Modification methods
         void push_job(const int &j)
+        void push_job_dyn(const int &j)
         void update_params()
         void front_updates()
         void back_updates()
@@ -134,6 +164,8 @@ cdef extern from "permutation.hpp":
         int calc_lb_full()
         int lower_bound_1m()
         int lower_bound_2m()
+        int calc_idle_time()
+        int calc_tot_time()
 
         # Copy method
         inline Permutation copy() const
@@ -145,7 +177,8 @@ cdef extern from "permutation.hpp":
             int level_,
             const Sigma &sigma1_,
             vector[shared_ptr[Job]] &&free_jobs_,
-            const Sigma &sigma2_
+            const Sigma &sigma2_,
+            const TwoMach &two_mach_cache_
         )
 
     cdef cppclass JobParams:
@@ -156,8 +189,8 @@ cdef extern from "permutation.hpp":
         const int* lat
 
         # Constructors
-        inline JobParams(const int &t1_, const int &t2_, const int* &p1_, const int* &p2_, const int* &lat_)
-        inline JobParams(const int &t1_, const int &t2_, const int &p1_, const int &p2_, const int &lat_)
+        JobParams(const int &t1_, const int &t2_, const int* &p1_, const int* &p2_, const int* &lat_)
+        JobParams(const int &t1_, const int &t2_, const int &p1_, const int &p2_, const int &lat_)
 
     # Two machine problem definition
     int two_mach_problem(const vector[shared_ptr[Job]] &jobs, const int &m1, const int &m2)
@@ -183,3 +216,73 @@ cdef extern from "neh.hpp":
 cdef extern from "quick_constructive.hpp":
 
     cdef Permutation quick_constructive(vector[shared_ptr[Job]] &jobs)
+
+
+cdef extern from "randomized_heur.hpp":
+
+    cdef Permutation randomized_heur(
+        vector[shared_ptr[Job]] &jobs,
+        int n_iter,
+        unsigned int seed
+    )
+
+
+cdef extern from "intensify.hpp":
+
+    cdef Permutation intensification(
+        const Sigma &sigma1,
+        const vector[shared_ptr[Job]] &jobs,
+        const Sigma &sigma2
+    )
+
+    cdef Permutation intensify(
+        const Sigma &sigma1,
+        const vector[shared_ptr[Job]] &jobs,
+        const Sigma &sigma2
+    )
+
+    cdef Permutation intensify(
+        const Permutation &perm
+    )
+
+    cdef Permutation intensify_ref(
+        const Permutation &perm,
+        const Permutation &ref_perm
+    )
+
+
+cdef extern from "path_relinking.hpp":
+
+    cdef Permutation path_relinking(
+        const Permutation &a,
+        const Permutation &b
+    )
+
+
+cdef extern from "ils.hpp":
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        int max_iter
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &seed
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &d,
+        const int &seed
+    )
+
+    cdef Permutation ils(
+        vector[shared_ptr[Job]] &jobs,
+        const int &max_iter,
+        const int &d,
+        const int &max_age,
+        const int &seed
+    )

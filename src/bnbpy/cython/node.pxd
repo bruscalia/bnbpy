@@ -5,6 +5,7 @@ from libcpp cimport bool
 
 import copy
 
+from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
@@ -18,7 +19,9 @@ cdef class Node:
         double lb
         list[Node] children
         int _sort_index
-        object _counter
+
+    cdef:
+        Counter _counter
 
     cdef void cleanup(Node self)
 

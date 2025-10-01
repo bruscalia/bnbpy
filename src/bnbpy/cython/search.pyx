@@ -11,8 +11,12 @@ import time
 from typing import Any, List, Literal, Optional, Tuple, Union
 
 from bnbpy.cython.node cimport Node, init_node
+from bnbpy.cython.priqueue cimport (
+    BasePriQueue, BFSPriQueue, BestPriQueue, DFSPriQueue
+)
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.status cimport OptStatus
 from bnbpy.logger import SearchLogger
 
 log = logging.getLogger(__name__)
@@ -22,6 +26,35 @@ cdef:
     double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
     int LARGE_INT = 100000000
+
+
+cdef class SearchResults:
+
+    def __init__(
+        self,
+        Solution solution,
+        Problem problem
+    ) -> None:
+        self.solution = solution
+        self.problem = problem
+
+    def __repr__(self) -> str:
+        return str(self.solution)
+
+    def __str__(self) -> str:
+        return str(self.solution)
+
+    @property
+    def cost(self) -> float:
+        return self.solution.cost
+
+    @property
+    def lb(self) -> float:
+        return self.solution.lb
+
+    @property
+    def status(self) -> OptStatus:
+        return self.solution.status
 
 
 cdef class BranchAndBound:
@@ -36,7 +69,6 @@ cdef class BranchAndBound:
 
         self.problem = None
         self.root = None
-        self._restart_search()
         self.rtol = rtol
         self.atol = atol
         self.eval_node = <string> eval_node.encode("utf-8")
@@ -46,6 +78,8 @@ cdef class BranchAndBound:
         self.save_tree = save_tree
         self.incumbent = None
         self.bound_node = None
+        self.queue = DFSPriQueue()
+        self.gap = INFINITY
         self.__logger = SearchLogger(log)
 
     @property
@@ -77,18 +111,28 @@ cdef class BranchAndBound:
             return self.bound_node.get_solution()
         return Solution()
 
+    cdef void _set_problem(BranchAndBound self, Problem problem):
+        self.problem = problem
+
+    cdef void _restart_search(BranchAndBound self):
+        self.incumbent = None
+        self.bound_node = None
+        self.gap = INFINITY
+        self.queue.clear()
+
     def solve(
         self,
         problem: Problem,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
-    ) -> Solution:
+    ) -> SearchResults:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
             int _mxiter = LARGE_INT
             Node node
             Solution sol
+            Problem inc_problem
 
         self._set_problem(problem)
         self._restart_search()
@@ -99,13 +143,16 @@ cdef class BranchAndBound:
             start_time = time.time()
         log.info('Starting exploration of search tree')
         self._log_headers()
-        self._warmstart(solution=problem.warmstart())
+        self._warmstart(problem.warmstart())
         self._solve_root()
-        while self.queue:
+        # In case the root node is already the LB of a optimal warmstart
+        self._check_termination(_mxiter)
+        while self.queue.not_empty():
             # Check for time termination
             if timelimit is not None:
                 current_time = time.time()
                 if current_time - start_time >= _tlim:
+                    self.log_row('Time Limit')
                     break
             node = self._dequeue_core()
             # Avoid node with poor parents in case ub was updated meanwhile
@@ -121,40 +168,42 @@ cdef class BranchAndBound:
 
         sol = self.get_solution()
         sol.set_lb(self.get_lb())
-        return sol
+
+        inc_problem = self.problem
+        if self.incumbent is not None:
+            inc_problem = self.incumbent.problem
+
+        res = SearchResults(sol, inc_problem)
+        return res
 
     cdef void _do_iter(BranchAndBound self, Node node):
-        # Node is valid for evaluation
-        self.explored += 1
         # Lower bound is accepted
         if node.lb < self.get_ub():
+            # Node is valid for evaluation
+            self.explored += 1
             # Node satisfies all constraints
             self._feasibility_check(node)
         else:
             self.fathom(node)
 
     cpdef void enqueue(BranchAndBound self, Node node):
-        heapq.heappush(self.queue, ((-node.level, node.lb), node))
+        self.queue.enqueue(node)
 
     cpdef Node dequeue(BranchAndBound self):
-        cdef:
-            Node node
-            tuple[object, Node] next_item
-
-        next_item = heapq.heappop(self.queue)
-        node = next_item[1]
-        return node
+        return self.queue.dequeue()
 
     cpdef void _warmstart(
         BranchAndBound self,
-        Solution solution
+        Problem warmstart_problem,
     ):
         cdef:
+            double lb
             Node node
 
-        if solution is not None:
-            node = init_node(self.problem.copy())
-            node.set_solution(solution)
+        if warmstart_problem is not None:
+            if warmstart_problem.solution.status == OptStatus.NO_SOLUTION:
+                warmstart_problem.compute_bound()
+            node = init_node(warmstart_problem)
             if node.lb < self.get_ub():
                 self._feasibility_check(node)
                 self.log_row('Warmstart')
@@ -223,6 +272,7 @@ cdef class BranchAndBound:
 
     cpdef void set_solution(BranchAndBound self, Node node):
         self.incumbent = node
+        self.queue.filter_by_lb(node.lb)
         self._update_gap()
         self.log_row('New incumbent')
         self.solution_callback(node)
@@ -230,8 +280,11 @@ cdef class BranchAndBound:
     cdef void _enqueue_core(BranchAndBound self, Node node):
         if self.eval_in:
             self._node_eval(node)
-        self.enqueue_callback(node)
-        self.enqueue(node)
+        if node.lb < self.get_ub():
+            self.enqueue_callback(node)
+            self.enqueue(node)
+        else:
+            self.fathom(node)
 
     cdef Node _dequeue_core(BranchAndBound self):
         node = self.dequeue()
@@ -260,13 +313,13 @@ cdef class BranchAndBound:
         return False
 
     cdef void _update_bound(BranchAndBound self):
-        if len(self.queue) == 0:
+        if not self.queue.not_empty():
             if self.incumbent:
                 self.bound_node = self.incumbent
             self._update_gap()
             return
         cdef Node old_bound = self.bound_node
-        self.bound_node = min(self.queue, key=_first_element_lb)[1]
+        self.bound_node = self.queue.get_lower_bound()
         if (
             old_bound is None
             or old_bound is self.root
@@ -289,6 +342,8 @@ cdef class BranchAndBound:
             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
 
     cdef bool _optimality_check(BranchAndBound self):
+        if self.incumbent is not None and not self.queue.not_empty():
+            return True
         return (
             self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol
         )
@@ -300,8 +355,15 @@ cpdef _first_element_lb(tuple[object, Node] x):
 
 cdef class BreadthFirstBnB(BranchAndBound):
 
-    cpdef void enqueue(self, Node node):
-        heapq.heappush(self.queue, ((node.level, node.lb), node))
+    def __init__(
+        self,
+        rtol: float = 0.0001,
+        atol: float = 0.0001,
+        eval_node = 'out',
+        save_tree: bool = False,
+    ) -> None:
+        super().__init__(rtol, atol, eval_node, save_tree)
+        self.queue = BFSPriQueue()
 
 
 cdef class DepthFirstBnB(BranchAndBound):
@@ -315,13 +377,11 @@ cdef class BestFirstBnB(BranchAndBound):
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
-        eval_node: Literal['in', 'out', 'both'] = 'in',
+        eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
         super().__init__(rtol, atol, eval_node, save_tree)
-
-    cpdef void enqueue(BestFirstBnB self, Node node):
-        heapq.heappush(self.queue, ((node.lb, -node.level), node))
+        self.queue = BestPriQueue()
 
 
 def configure_logfile(
