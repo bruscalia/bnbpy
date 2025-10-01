@@ -33,7 +33,8 @@ Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
         // Local search until no improvement
         for (int k = 0; k < 10000; k++)
         {
-            Permutation new_perm = local_search(perm.get_sequence_copy());
+            std::vector<JobPtr> sequence_copy = perm.get_sequence_copy();
+            Permutation new_perm = local_search(sequence_copy);
             int new_cost = new_perm.calc_lb_full();
             if (new_cost < cost)
             {
