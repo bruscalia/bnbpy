@@ -13,11 +13,11 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs)
     int M = jobs[0]->p->size();
     SearchState best(Sigma(M), INT_MAX);
 
-    for (int i = 0; i < jobs.size(); ++i)
+    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         Sigma base_sig(M);
         base_sig.jobs.reserve(jobs.size());
-        for (int j = 0; j < jobs.size(); ++j)
+        for (int j = 0; j < static_cast<int>(jobs.size()); ++j)
         {
             std::vector<JobPtr> free_jobs = jobs;
             JobPtr job = std::move(free_jobs[i]);
@@ -38,7 +38,7 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs)
                 continue;
             }
             Sigma s_alt = base_sig;
-            for (int k = j; k < free_jobs.size(); ++k)
+            for (int k = j; k < static_cast<int>(free_jobs.size()); ++k)
             {
                 s_alt.job_to_bottom(free_jobs[k]);
             }
@@ -61,7 +61,7 @@ Permutation local_search(std::vector<JobPtr>& jobs_)
 
     // Initial state
     Sigma best_move_sigma(M);
-    for (int i = 0; i < jobs.size(); ++i)
+    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         best_move_sigma.job_to_bottom(jobs[i]);
     }

@@ -21,7 +21,6 @@ Permutation intensification(const Sigma &sigma1,
                             const Sigma &sigma2)
 {
     int j, j0, i, best_cost, seq_size, cost_alt, best_pos;
-    int M = static_cast<int>(jobs_.size());
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec, base_vec, jobs;

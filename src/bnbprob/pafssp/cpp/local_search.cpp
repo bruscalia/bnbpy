@@ -1,5 +1,6 @@
 #include "local_search.hpp"
 
+#include <climits>
 #include <vector>
 
 #include "job.hpp"
@@ -16,12 +17,12 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs,
     // MachineGraph
     SearchState best(Sigma(M, mach_graph), INT_MAX);
 
-    for (int i = 0; i < jobs.size(); ++i)
+    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         // TODO: Update Sigma to support initialization from MachineGraph
         Sigma base_sig(M, mach_graph);
         base_sig.jobs.reserve(jobs.size());
-        for (int j = 0; j < jobs.size(); ++j)
+        for (int j = 0; j < static_cast<int>(jobs.size()); ++j)
         {
             std::vector<JobPtr> free_jobs = jobs;
             JobPtr job = std::move(free_jobs[i]);
@@ -70,7 +71,7 @@ Permutation local_search(std::vector<JobPtr>& jobs_,
     // Initial state
     // TODO: Update Sigma to support initialization from MachineGraph
     Sigma best_move_sigma(M, mach_graph);
-    for (int i = 0; i < jobs.size(); ++i)
+    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         best_move_sigma.job_to_bottom(jobs[i]);
     }

@@ -84,7 +84,7 @@ std::vector<std::shared_ptr<Job>> copy_jobs(
     const std::vector<std::shared_ptr<Job>> &jobs)
 {
     std::vector<std::shared_ptr<Job>> out(jobs.size());
-    for (int i = 0; i < jobs.size(); ++i)
+    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         out[i] = make_shared<Job>(*jobs[i]);
     }
