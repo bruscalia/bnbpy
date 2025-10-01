@@ -226,7 +226,7 @@ private:
         // Sort free jobs according to
         // corresponding order in incumbent solution
         std::unordered_map<int, int> job_pos;
-        for (int i = 0; i < ref_solution.size(); ++i)
+        for (int i = 0; i < static_cast<int>(ref_solution.size()); ++i)
         {
             job_pos[ref_solution[i]->j] = i;
         }

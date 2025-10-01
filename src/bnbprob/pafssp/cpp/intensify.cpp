@@ -109,7 +109,8 @@ Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
     best_sol = intensification(sigma1, jobs, sigma2, mach_graph);
 
     // Local search iterations
-    best_sol = local_search(best_sol.get_sequence_copy(), mach_graph);
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence_copy();
+    best_sol = local_search(sequence_copy, mach_graph);
     return best_sol;
 }
 
@@ -124,6 +125,7 @@ Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm)
     Permutation best_sol = perm.copy();
     // Initialize
     best_sol.emplace_from_ref_solution(ref_perm.get_sequence_copy());
-    best_sol = local_search(best_sol.get_sequence_copy(), perm.mach_graph);
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence_copy();
+    best_sol = local_search(sequence_copy, perm.mach_graph);
     return best_sol;
 }

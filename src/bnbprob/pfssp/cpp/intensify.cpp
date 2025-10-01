@@ -20,7 +20,8 @@ Permutation intensification(const Sigma &sigma1,
                             const std::vector<JobPtr> &jobs_,
                             const Sigma &sigma2)
 {
-    int j, j0, i, k, M, c1, c2, best_cost, seq_size, cost_alt, best_pos;
+    int j, j0, i, best_cost, seq_size, cost_alt, best_pos;
+    int M = static_cast<int>(jobs_.size());
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec, base_vec, jobs;
@@ -40,7 +41,7 @@ Permutation intensification(const Sigma &sigma1,
 
     // Find best insert for every other job
     seq_size = base_vec.size();
-    for (j = 0; j < jobs.size(); ++j)
+    for (j = 0; j < static_cast<int>(jobs.size()); ++j)
     {
         Sigma base_sig = sigma1.deepcopy();
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
@@ -66,7 +67,7 @@ Permutation intensification(const Sigma &sigma1,
             // Here the insertion is performed
             Sigma s_alt = (base_sig);  // Shallow copy
             s_alt.jobs.reserve(vec.size() + j0);
-            for (int k = i; k < vec.size(); ++k)
+            for (int k = i; k < static_cast<int>(vec.size()); ++k)
             {
                 s_alt.job_to_bottom(vec[k]);
                 std::cout << "Job to bottom" << k << std::endl;
@@ -103,7 +104,8 @@ Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
     best_sol = intensification(sigma1, jobs, sigma2);
 
     // Local search iterations
-    best_sol = local_search(best_sol.get_sequence_copy());
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence_copy();
+    best_sol = local_search(sequence_copy);
     return best_sol;
 }
 
@@ -114,10 +116,10 @@ Permutation intensify(const Permutation &perm)
 
 Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm)
 {
-    int best_cost;
     Permutation best_sol = perm.copy();
     // Initialize
     best_sol.emplace_from_ref_solution(ref_perm.get_sequence_copy());
-    best_sol = local_search(best_sol.get_sequence_copy());
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence_copy();
+    best_sol = local_search(sequence_copy);
     return best_sol;
 }
