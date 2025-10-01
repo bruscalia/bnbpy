@@ -14,6 +14,7 @@ __all__ = [
     'MasterSol',
     'PriceSol',
     'Pricing',
+    'Node',
 ]
 
 from logging import getLogger
