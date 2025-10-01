@@ -20,7 +20,7 @@ Permutation intensification(const Sigma &sigma1,
                             const std::vector<JobPtr> &jobs_,
                             const Sigma &sigma2)
 {
-    int j, j0, i, best_cost, seq_size, cost_alt, best_pos;
+    int j, j0, i, M, best_cost, seq_size, cost_alt, best_pos;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec, base_vec, jobs;
@@ -97,7 +97,6 @@ Permutation intensification(const Sigma &sigma1,
 Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
                       const Sigma &sigma2)
 {
-    int best_cost;
     Permutation best_sol;
     // Initialize
     best_sol = intensification(sigma1, jobs, sigma2);

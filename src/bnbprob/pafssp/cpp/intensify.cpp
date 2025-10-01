@@ -21,7 +21,7 @@ Permutation intensification(const Sigma &sigma1,
                             const Sigma &sigma2,
                             const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int j, j0, i, k, M, c1, c2, best_cost, seq_size, cost_alt, best_pos;
+    int j, j0, i, k, M, best_cost, seq_size, cost_alt, best_pos;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec, base_vec, jobs;
@@ -42,7 +42,7 @@ Permutation intensification(const Sigma &sigma1,
 
     // Find best insert for every other job
     seq_size = base_vec.size();
-    for (j = 0; j < jobs.size(); ++j)
+    for (j = 0; j < static_cast<int>(jobs.size()); ++j)
     {
         // TODO: Update Sigma to support initialization from MachineGraph
         Sigma base_sig = sigma1.deepcopy();
@@ -70,7 +70,7 @@ Permutation intensification(const Sigma &sigma1,
             // TODO: Update Sigma to support initialization from MachineGraph
             Sigma s_alt = (base_sig);  // Shallow copy
             s_alt.jobs.reserve(vec.size() + j0);
-            for (int k = i; k < vec.size(); ++k)
+            for (int k = i; k < static_cast<int>(vec.size()); ++k)
             {
                 s_alt.job_to_bottom(vec[k]);
                 std::cout << "Job to bottom" << k << std::endl;
@@ -103,7 +103,6 @@ Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs,
                       const Sigma &sigma2,
                       const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int best_cost;
     Permutation best_sol;
     // Initialize
     best_sol = intensification(sigma1, jobs, sigma2, mach_graph);
@@ -121,7 +120,6 @@ Permutation intensify(const Permutation &perm)
 
 Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm)
 {
-    int best_cost;
     Permutation best_sol = perm.copy();
     // Initialize
     best_sol.emplace_from_ref_solution(ref_perm.get_sequence_copy());
