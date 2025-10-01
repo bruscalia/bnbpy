@@ -78,7 +78,8 @@ Permutation ils(std::vector<JobPtr> &jobs, const int &max_iter, const int &d, co
 {
     // Initial solution with NEH + best move local search
     Permutation perm = neh_constructive(jobs);
-    perm = local_search(perm.get_sequence_copy());
+    std::vector<JobPtr> sequence_copy = perm.get_sequence_copy();
+    perm = local_search(sequence_copy);
 
     // Initialize variables for ILS
     int age_improv = 0; // Age of improvement
