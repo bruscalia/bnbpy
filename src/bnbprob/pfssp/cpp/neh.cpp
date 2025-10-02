@@ -24,7 +24,7 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs)
 
 Permutation neh_core(std::vector<JobPtr>& jobs)
 {
-    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
+    int M, c1, c2;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec;
@@ -78,7 +78,7 @@ Permutation neh_core(std::vector<JobPtr>& jobs)
 
 Sigma neh_body(Sigma sol, std::vector<JobPtr> &jobs)
 {
-    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
+    int j, i, M, best_cost, seq_size, cost_alt;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec;
