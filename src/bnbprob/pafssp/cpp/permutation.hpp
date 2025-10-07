@@ -4,15 +4,12 @@
 #include <algorithm>
 #include <memory>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "sigma.hpp"
 #include "two_mach.hpp"
-
-const int LARGE = 1000000000;
 
 class Permutation
 {
@@ -27,7 +24,7 @@ public:
     std::shared_ptr<MachineGraph> mach_graph;
 
     // Default constructor
-    Permutation() : m(0), n(0), level(0) {}
+    Permutation() : m(0), n(0), level(0), scheduled_jobs() {}
 
     // Constructor from processing times
     Permutation(const std::vector<std::vector<int>> &p_,
@@ -43,7 +40,8 @@ public:
           free_jobs(jobs_),
           sigma2(m_, mach_graph_),
           mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(m, free_jobs))
+          two_mach_cache(std::make_shared<TwoMach>(m, free_jobs)),
+          scheduled_jobs(n, false)
     {
         // Constructor implementation here
         update_params();
@@ -63,7 +61,8 @@ public:
           free_jobs(free_jobs_),
           sigma2(sigma2_),
           mach_graph(mach_graph_),
-          two_mach_cache(two_mach_cache_)
+          two_mach_cache(two_mach_cache_),
+          scheduled_jobs(n_, false)
     {
         // Constructor implementation here
         update_params();
@@ -82,7 +81,8 @@ public:
           free_jobs(free_jobs_),
           sigma2(sigma2_),
           mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_))
+          two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_)),
+          scheduled_jobs(n_, false)
     {
         // Constructor implementation here
         update_params();
@@ -242,7 +242,7 @@ public:
                 vector<shared_ptr<Job>> &&free_jobs_, const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_,
-                const std::unordered_set<int> &scheduled_jobs_)
+                const std::vector<bool> &scheduled_jobs_)
         : m(m_),
           n(n_),
           level(level_),
@@ -257,18 +257,18 @@ public:
 
 private:
     std::shared_ptr<TwoMach> two_mach_cache;
-    std::unordered_set<int> scheduled_jobs;
+    std::vector<bool> scheduled_jobs;
 
     // Complete prescheduled
     void complete_prescheduled()
     {
         for (const auto &job : sigma1.jobs)
         {
-            this->scheduled_jobs.emplace(job->j);
+            this->scheduled_jobs[job->j] = true;
         }
         for (const auto &job : sigma2.jobs)
         {
-            this->scheduled_jobs.emplace(job->j);
+            this->scheduled_jobs[job->j] = true;
         }
     }
 

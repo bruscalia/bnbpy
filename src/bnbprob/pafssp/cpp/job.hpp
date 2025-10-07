@@ -14,8 +14,8 @@ public:
     // Attributes
     int j;
     std::shared_ptr<std::vector<int>> p;
-    std::vector<int> r;
-    std::vector<int> q;
+    std::vector<short> r;
+    std::vector<short> q;
     shared_ptr<vector<vector<int>>> lat;
 
     // Default constructor
@@ -48,7 +48,7 @@ public:
 
     // Parameterized constructor -> deepcopy of arrays
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
-        const vector<int> &r_, const vector<int> &q_,
+        const vector<short> &r_, const vector<short> &q_,
         const std::shared_ptr<std::vector<std::vector<int>>> &lat_)
         : j(j_), p(p_), r(r_), q(q_), lat(lat_)
     {

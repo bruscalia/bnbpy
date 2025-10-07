@@ -15,6 +15,9 @@ cdef:
     int HEUR_BASE = 100
 
 
+EVAL_NODE: str = "in"
+
+
 cdef class DFSPriQueueFS(HeapPriQueue):
     cpdef void enqueue(self, Node node):
         cdef:
@@ -34,11 +37,10 @@ cdef class LazyBnB(BranchAndBound):
         self,
         rtol=0.0001,
         atol=0.0001,
-        eval_node='in',
         save_tree=False,
         queue_mode='dfs',
     ):
-        super(LazyBnB, self).__init__(rtol, atol, eval_node, save_tree)
+        super(LazyBnB, self).__init__(rtol, atol, EVAL_NODE, save_tree)
         self.queue = self.queue_factory(queue_mode)
 
     @staticmethod
@@ -68,11 +70,10 @@ cdef class CutoffBnB(LazyBnB):
         float ub_value,
         rtol=0.0001,
         atol=0.0001,
-        eval_node='in',
         save_tree=False,
         queue_mode='dfs',
     ):
-        super(CutoffBnB, self).__init__(rtol, atol, eval_node, save_tree)
+        super(CutoffBnB, self).__init__(rtol, atol, save_tree)
         self.queue = self.queue_factory(queue_mode)
         self.ub_value = ub_value
 
@@ -107,12 +108,11 @@ cdef class CallbackBnB(LazyBnB):
         self,
         rtol=0.0001,
         atol=0.0001,
-        eval_node='in',
         save_tree=False,
         queue_mode='dfs',
         heur_factor=HEUR_BASE
     ):
-        super(CallbackBnB, self).__init__(rtol, atol, eval_node, save_tree)
+        super(CallbackBnB, self).__init__(rtol, atol, save_tree)
         self.queue = self.queue_factory(queue_mode)
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor

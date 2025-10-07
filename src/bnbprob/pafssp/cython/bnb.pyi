@@ -11,7 +11,6 @@ class LazyBnB(BranchAndBound):
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
-        eval_node: str = 'in',
         save_tree: bool = False,
         queue_mode: str = 'dfs',
     ) -> None:
@@ -24,9 +23,6 @@ class LazyBnB(BranchAndBound):
 
         atol : float, optional
             Absolute tolerance, by default 0.0001
-
-        eval_node : str, optional
-            Node evaluation strategy, by default 'in'
 
         save_tree : bool, optional
             Whether to save tree structure, by default False
@@ -79,7 +75,6 @@ class CutoffBnB(LazyBnB):
         ub_value: float,
         rtol: float = 0.0001,
         atol: float = 0.0001,
-        eval_node: str = 'in',
         save_tree: bool = False,
         queue_mode: str = 'dfs',
     ) -> None:
@@ -95,9 +90,6 @@ class CutoffBnB(LazyBnB):
 
         atol : float, optional
             Absolute tolerance, by default 0.0001
-
-        eval_node : str, optional
-            Node evaluation strategy, by default 'in'
 
         save_tree : bool, optional
             Whether to save tree structure, by default False
@@ -123,7 +115,6 @@ class CallbackBnB(LazyBnB):
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
-        eval_node: str = 'in',
         save_tree: bool = False,
         queue_mode: str = 'dfs',
         heur_factor: int = HEUR_BASE,
@@ -137,9 +128,6 @@ class CallbackBnB(LazyBnB):
 
         atol : float, optional
             Absolute tolerance, by default 0.0001
-
-        eval_node : str, optional
-            Node evaluation strategy, by default 'in'
 
         save_tree : bool, optional
             Whether to save tree structure, by default False

@@ -4,7 +4,6 @@
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.memory cimport shared_ptr
-from libcpp.unordered_set cimport unordered_set
 
 
 cdef extern from "job.hpp":
@@ -12,8 +11,8 @@ cdef extern from "job.hpp":
     cdef cppclass Job:
         int j
         shared_ptr[vector[int]] p
-        vector[int] r
-        vector[int] q
+        vector[short] r
+        vector[short] q
         shared_ptr[vector[vector[int]]] lat
         int slope
         int T
@@ -36,8 +35,8 @@ cdef extern from "job.hpp":
         Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_,
-            const vector[int] &r_,
-            const vector[int] &q_,
+            const vector[short] &r_,
+            const vector[short] &q_,
             const shared_ptr[vector[vector[int]]] &lat_,
             const int &slope_,
             const int &T_
@@ -275,7 +274,7 @@ cdef extern from "permutation.hpp":
             const Sigma &sigma2_,
             const shared_ptr[MachineGraph]& mach_graph_,
             const shared_ptr[TwoMach]& two_mach_cache_,
-            const unordered_set[int]& scheduled_jobs_
+            const vector[bool]& scheduled_jobs_
         )
 
     cdef cppclass JobParams:
