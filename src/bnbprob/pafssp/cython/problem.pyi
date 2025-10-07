@@ -1,6 +1,9 @@
 import logging
 from typing import List, Literal, Optional, Tuple
 
+from bnbprob.pafssp.cython.pyjob import PyJob
+from bnbprob.pafssp.cython.pysigma import PySigma
+from bnbprob.pafssp.machinegraph import MachineGraph
 from bnbpy.cython.counter import Counter
 
 log = logging.getLogger(__name__)
@@ -55,24 +58,34 @@ class PermFlowShop:
         ...
 
     @property
-    def sequence(self) -> List[object]:
+    def sequence(self) -> List[PyJob]:
         """Get the current job sequence"""
         ...
 
     @property
-    def free_jobs(self) -> List[object]:
+    def free_jobs(self) -> List[PyJob]:
         """Get the list of free (unscheduled) jobs"""
         ...
 
-    def get_mach_graph(self) -> object:
+    @property
+    def sigma1(self) -> PySigma:
+        """Get the current sigma1 (partial permutation of jobs)"""
+        ...
+
+    @property
+    def sigma2(self) -> PySigma:
+        """Get the current sigma2 (partial permutation of jobs)"""
+        ...
+
+    def get_mach_graph(self) -> MachineGraph:
         """Get the machine graph for the problem"""
         ...
 
-    def get_sigma1_mach_graph(self) -> object:
+    def get_sigma1_mach_graph(self) -> MachineGraph:
         """Get the sigma1 machine graph"""
         ...
 
-    def get_sigma2_mach_graph(self) -> object:
+    def get_sigma2_mach_graph(self) -> MachineGraph:
         """Get the sigma2 machine graph"""
         ...
 

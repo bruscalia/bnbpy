@@ -81,6 +81,11 @@ cdef class PyJob:
         out.job = make_shared[Job](j, p_shared, mach_graph)
         return out
 
+    cdef JobPtr get_jobptr(self):
+        if self.job == NULL:
+            raise ReferenceError(INIT_ERROR)
+        return self.job
+
     cpdef int get_j(self):
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)

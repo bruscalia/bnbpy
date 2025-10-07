@@ -21,6 +21,7 @@ from bnbprob.pafssp.cpp.environ cimport (
     randomized_heur
 )
 from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
+from bnbprob.pafssp.cython.pysigma cimport PySigma, sigma_to_py
 from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
 from bnbpy.cython.problem cimport Problem
@@ -103,27 +104,25 @@ cdef class PermFlowShop(Problem):
             out.append(job)
         return out
 
+    @property
+    def sigma1(self):
+        cdef:
+            PySigma py_sigma
+        py_sigma = sigma_to_py(self.perm.sigma1)
+        return py_sigma
+
+    @property
+    def sigma2(self):
+        cdef:
+            PySigma py_sigma
+        py_sigma = sigma_to_py(self.perm.sigma2)
+        return py_sigma
+
     cpdef object get_mach_graph(PermFlowShop self):
         cdef:
             MachineGraph mg_cpp
             object mg
         mg_cpp = self.perm.get_mach_graph()
-        mg = get_mach_graph(mg_cpp)
-        return mg
-
-    cpdef object get_sigma1_mach_graph(PermFlowShop self):
-        cdef:
-            MachineGraph mg_cpp
-            object mg
-        mg_cpp = self.perm.sigma1.get_mach_graph()
-        mg = get_mach_graph(mg_cpp)
-        return mg
-
-    cpdef object get_sigma2_mach_graph(PermFlowShop self):
-        cdef:
-            MachineGraph mg_cpp
-            object mg
-        mg_cpp = self.perm.sigma2.get_mach_graph()
         mg = get_mach_graph(mg_cpp)
         return mg
 

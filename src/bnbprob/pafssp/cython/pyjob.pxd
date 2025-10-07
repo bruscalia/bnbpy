@@ -10,6 +10,8 @@ cdef class PyJob:
     cdef:
         JobPtr job
 
+    cdef JobPtr get_jobptr(self)
+
     cpdef int get_j(self) except *
 
     cpdef list[int] get_p(self) except *

@@ -35,10 +35,6 @@ cdef class PermFlowShop(Problem):
 
     cpdef object get_mach_graph(PermFlowShop self)
 
-    cpdef object get_sigma1_mach_graph(PermFlowShop self)
-
-    cpdef object get_sigma2_mach_graph(PermFlowShop self)
-
     cdef void ccleanup(PermFlowShop self)
 
     cpdef PermFlowShop warmstart(PermFlowShop self)
