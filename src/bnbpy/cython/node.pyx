@@ -30,9 +30,6 @@ cdef class Node:
             self.level = parent.level + 1
         self._sort_index = self._counter.next()
 
-    def __del__(self):
-        self.cleanup()
-
     cdef void cleanup(Node self):
         cdef:
             Node child
