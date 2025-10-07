@@ -160,7 +160,6 @@ cdef extern from "two_mach.hpp":
         TwoMach()
         TwoMach(const int& m, const vector[JobPtr]& jobs)
 
-        void erase_job(const JobPtr& job)
         const vector[JobTimes]& get_seq(const int& m1, const int& m2)
 
 
@@ -239,10 +238,10 @@ cdef extern from "permutation.hpp":
         MachineGraph get_mach_graph() const
 
         # Modification methods
-        void push_job(const int &j)
-        void push_job_forward(const int &j)
-        void push_job_backward(const int &j)
-        void push_job_dyn(const int &j)
+        void push_job(const unsigned int &j)
+        void push_job_forward(const unsigned int &j)
+        void push_job_backward(const unsigned int &j)
+        void push_job_dyn(const unsigned int &j)
         void update_params()
         void front_updates()
         void back_updates()
@@ -311,6 +310,13 @@ cdef extern from "neh.hpp":
 
     cdef Permutation neh_constructive(vector[shared_ptr[Job]] &jobs,
                                       const shared_ptr[MachineGraph]& mach_graph)
+
+
+cdef extern from "randomized_heur.hpp":
+
+    cdef Permutation randomized_heur(vector[shared_ptr[Job]] jobs_, int n_iter,
+                                     unsigned int seed,
+                                     const shared_ptr[MachineGraph]& mach_graph)
 
 
 cdef extern from "quick_constructive.hpp":

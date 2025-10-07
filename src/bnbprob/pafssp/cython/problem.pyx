@@ -17,7 +17,8 @@ from bnbprob.pafssp.cpp.environ cimport (
     intensify_ref,
     local_search,
     neh_constructive,
-    quick_constructive
+    quick_constructive,
+    randomized_heur
 )
 from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
 from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
@@ -173,6 +174,20 @@ cdef class PermFlowShop(Problem):
             sol_alt.solution.set_lb(new_cost)
             return sol_alt
         return None
+
+    cpdef PermFlowShop randomized_heur(PermFlowShop self, int n_iter, unsigned int seed=0):
+        cdef:
+            Permutation perm
+            PermFlowShop sol_alt
+            vector[JobPtr] jobs
+
+        jobs = self.perm.get_sequence_copy()
+        perm = randomized_heur(jobs, n_iter, seed, self.perm.mach_graph)
+        sol_alt = self.fast_copy()
+        sol_alt.perm = perm
+        sol_alt.solution.set_feasible()
+        sol_alt.solution.set_lb(perm.calc_lb_full())
+        return sol_alt
 
     cpdef PermFlowShop intensification(PermFlowShop self):
         cdef:

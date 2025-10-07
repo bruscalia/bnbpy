@@ -18,7 +18,6 @@ class TwoMach
 public:
     TwoMach() {}
     TwoMach(const int &m, const std::vector<JobPtr> &jobs);
-    void erase_job(const JobPtr &job);
     const JobTimes1D& get_seq(const int &m1, const int &m2){
         return this->sorted_maps[std::make_tuple(m1, m2)];
     }

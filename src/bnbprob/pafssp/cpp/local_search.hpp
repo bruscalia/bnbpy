@@ -11,20 +11,22 @@
 
 struct SearchState
 {
-    Sigma sigma;
+    std::vector<JobPtr> jobs;
     int cost;
 
     // Move constructor from Sigma
-    SearchState(Sigma&& s, int c) : sigma(std::move(s)), cost(c) {}
+    SearchState(std::vector<JobPtr>&& jobs_, int c) : jobs(jobs_), cost(c) {}
 
     // Copy constructor from Sigma
-    SearchState(const Sigma& s, int c) : sigma(s), cost(c) {}
+    SearchState(const std::vector<JobPtr>& jobs_, int c) : jobs(jobs_), cost(c)
+    {
+    }
 
     // Default constructor
-    SearchState() : sigma(), cost(0) {}
+    SearchState() : jobs(), cost(0) {}
 };
 
-SearchState ls_best_move(const std::vector<JobPtr>& jobs,
+SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
                          const std::shared_ptr<MachineGraph>& mach_graph);
 
 Permutation local_search(std::vector<JobPtr>& jobs_,

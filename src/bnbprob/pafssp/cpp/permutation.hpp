@@ -140,10 +140,10 @@ public:
     }
 
     // Modification methods
-    void push_job(const int &j);
-    void push_job_forward(const int &j);
-    void push_job_backward(const int &j);
-    void push_job_dyn(const int &j);
+    void push_job(const unsigned int &j);
+    void push_job_forward(const unsigned int &j);
+    void push_job_backward(const unsigned int &j);
+    void push_job_dyn(const unsigned int &j);
     void update_params();
     void front_updates();
     void back_updates();

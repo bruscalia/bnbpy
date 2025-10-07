@@ -129,7 +129,7 @@ std::vector<JobTimes *> Permutation::get_job_times(const int &m1,
 }
 
 // Modification methods
-void Permutation::push_job(const int &j)
+void Permutation::push_job(const unsigned int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
     this->scheduled_jobs.emplace(jobptr->j);
@@ -159,7 +159,7 @@ void Permutation::push_job(const int &j)
     this->level += 1;
 }
 
-void Permutation::push_job_forward(const int &j)
+void Permutation::push_job_forward(const unsigned int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
     this->scheduled_jobs.emplace(jobptr->j);
@@ -174,7 +174,7 @@ void Permutation::push_job_forward(const int &j)
     this->level += 1;
 }
 
-void Permutation::push_job_backward(const int &j)
+void Permutation::push_job_backward(const unsigned int &j)
 {
     JobPtr &jobptr = this->free_jobs[j];
     this->scheduled_jobs.emplace(jobptr->j);
@@ -189,7 +189,7 @@ void Permutation::push_job_backward(const int &j)
     this->level += 1;
 }
 
-void Permutation::push_job_dyn(const int &j)
+void Permutation::push_job_dyn(const unsigned int &j)
 {
     // Implementation here
     int loss1 = 0;
@@ -404,7 +404,7 @@ int two_mach_makespan(const std::vector<JobTimes *> &job_times, int rho1,
 {
     // Implementation here
     int time_m1 = 0;
-    int time_m2 = rho1;
+    int time_m2 = 0;
 
     const size_t job_times_size = job_times.size();
     for (size_t j = 0; j < job_times_size; ++j)
@@ -413,7 +413,7 @@ int two_mach_makespan(const std::vector<JobTimes *> &job_times, int rho1,
         time_m2 =
             std::max(time_m1 + *job_times[j]->lat, time_m2) + *job_times[j]->p2;
     }
-    time_m1 += rho2;
+    time_m1 += 0;
 
     return std::max(time_m1, time_m2);
 }

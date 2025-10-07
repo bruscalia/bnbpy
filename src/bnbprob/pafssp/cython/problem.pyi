@@ -181,6 +181,24 @@ class PermFlowShop:
         """
         ...
 
+    def randomized_heur(self, n_iter: int, seed: int = 0) -> 'PermFlowShop':
+        """Multistart randomized heuristic: shuffle jobs, neh_core,
+        local search
+
+        Parameters
+        ----------
+        n_iter : int
+            Number of iterations for the randomized heuristic
+        seed : int, optional
+            Random seed for reproducibility. If 0 (default), uses random device
+
+        Returns
+        -------
+        PermFlowShop
+            Best solution found across all iterations
+        """
+        ...
+
     def intensification(self) -> 'PermFlowShop':
         """Apply intensification to improve current solution
 

@@ -21,8 +21,10 @@ public:
     // Default constructor
     Job() : j(0), p(nullptr), r(), q(), lat(nullptr) {}
 
-    // Constructor with job ID, shared pointer to processing times, and MachineGraph
-    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_, const MachineGraph &mach_graph)
+    // Constructor with job ID, shared pointer to processing times, and
+    // MachineGraph
+    Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
+        const MachineGraph &mach_graph)
         : j(j_),
           p(p_),
           r(p_->size(), 0),
@@ -33,7 +35,8 @@ public:
     }
 
     // Constructor with job ID, vector for processing times, and MachineGraph
-    Job(const int &j_, const std::vector<int> &p_, const MachineGraph &mach_graph)
+    Job(const int &j_, const std::vector<int> &p_,
+        const MachineGraph &mach_graph)
         : j(j_),
           p(std::make_shared<std::vector<int>>(p_)),
           r(p_.size(), 0),
@@ -60,8 +63,12 @@ public:
     // Get slope
     int get_slope() const;
 
+    // Recompute only r and q for the job given machine graph
+    void recompute_r_q(const MachineGraph &mach_graph);
+
 private:
-    void initialize(const std::shared_ptr<std::vector<int>> &p_, const MachineGraph &mach_graph);
+    void initialize(const std::shared_ptr<std::vector<int>> &p_,
+                    const MachineGraph &mach_graph);
 };
 
 // Function to copy a job
@@ -70,6 +77,11 @@ inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr);
 // Function to copy a vector of jobs
 std::vector<std::shared_ptr<Job>> copy_jobs(
     const std::vector<std::shared_ptr<Job>> &jobs);
+
+// Function to copy a vector of jobs with reinitialization from j and p
+std::vector<std::shared_ptr<Job>> copy_reset(
+    const std::vector<std::shared_ptr<Job>> &jobs,
+    const MachineGraph &mach_graph);
 
 // Type definition for shared pointer
 typedef std::shared_ptr<Job> JobPtr;

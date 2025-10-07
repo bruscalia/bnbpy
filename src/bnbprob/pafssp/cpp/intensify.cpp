@@ -53,11 +53,9 @@ Permutation intensification(const Sigma &sigma1,
             std::cout << "Looping for i" << i << std::endl;
             // Insert job in position i
             job = jobs[j];
-            vec = copy_jobs(base_vec);
+            vec = copy_reset(base_vec, *mach_graph);
             vec.insert(vec.begin() + i, job);
             std::cout << "Insert i OK" << i << std::endl;
-            // TODO: new function to compute r0
-            recompute_r0(vec);
 
             // Recompute release dates only of necessary jobs
             if (i > 0)

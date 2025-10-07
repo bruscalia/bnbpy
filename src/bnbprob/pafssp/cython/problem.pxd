@@ -49,6 +49,8 @@ cdef class PermFlowShop(Problem):
 
     cpdef PermFlowShop local_search(PermFlowShop self)
 
+    cpdef PermFlowShop randomized_heur(PermFlowShop self, int n_iter, unsigned int seed=*)
+
     cpdef PermFlowShop intensification(PermFlowShop self)
 
     cpdef PermFlowShop intensification_ref(

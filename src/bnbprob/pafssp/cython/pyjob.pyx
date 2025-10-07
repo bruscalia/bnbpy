@@ -88,7 +88,8 @@ cdef class PyJob:
 
     cpdef list[int] get_p(self):
         cdef:
-            int i, pi
+            unsigned int i
+            int pi
             list[int] out
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
@@ -100,7 +101,8 @@ cdef class PyJob:
 
     cpdef list[int] get_r(self):
         cdef:
-            int i, ri
+            unsigned int i
+            int ri
             list[int] out
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
@@ -112,7 +114,8 @@ cdef class PyJob:
 
     cpdef list[int] get_q(self):
         cdef:
-            int i, qi
+            unsigned int i
+            int qi
             list[int] out
         if self.job == NULL:
             raise ReferenceError(INIT_ERROR)
@@ -124,7 +127,8 @@ cdef class PyJob:
 
     cpdef list[list[int]] get_lat(self):
         cdef:
-            int i, j, li
+            unsigned int i, j
+            int li
             list[int] lati
             list[list[int]] out
         if self.job == NULL:

@@ -42,7 +42,7 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
 
     for (const auto &job : jobs)
     {
-        int &lat = job->lat->at(m2)[m1];
+        int &lat = job->lat->at(m1)[m2];
         // The extrapolation below is invalid, preserving the attempt
         // int lat = job->r[m2] - job->r[m1] - job->p->at(m1);
         int t1 = job->p->at(m1) + lat;
@@ -79,16 +79,5 @@ TwoMach::TwoMach(const int &m, const std::vector<JobPtr> &jobs)
             this->sorted_maps[std::make_tuple(m1, m2)] =
                 create_pair_seq(m1, m2, jobs);
         }
-    }
-}
-
-void TwoMach::erase_job(const JobPtr &jobptr)
-{
-    for (auto it = sorted_maps.begin(); it != sorted_maps.end(); ++it)
-    {
-        std::vector<JobTimes> &vec = it->second;
-        vec.erase(
-            std::remove_if(vec.begin(), vec.end(), JobTimesPredicate(jobptr)),
-            vec.end());
     }
 }
