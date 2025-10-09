@@ -9,7 +9,7 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-Permutation neh_constructive(std::vector<JobPtr>& jobs,
+Permutation neh_constructive(std::vector<Job>& jobs,
                              const std::shared_ptr<MachineGraph>& mach_graph)
 {
     // Find best order of two jobs with longest processing times
@@ -18,17 +18,17 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs,
     return neh_core(jobs, mach_graph);
 }
 
-Permutation neh_core(std::vector<JobPtr>& jobs_,
+Permutation neh_core(std::vector<Job>& jobs_,
                      const std::shared_ptr<MachineGraph>& mach_graph)
 {
     int M, c1, c2;
     // Sigma s1, s2, sol, best_sol, s_alt;
-    JobPtr job;
-    std::vector<JobPtr> vec;
+    Job job;
+    std::vector<Job> vec;
     Sigma s1, s2, sol, best_sol;
-    std::vector<JobPtr> jobs = copy_reset(jobs_, *mach_graph);
+    std::vector<Job> jobs = copy_reset(jobs_, *mach_graph);
 
-    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+    M = jobs[0].p->size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs
     vec.resize(2);
@@ -62,31 +62,31 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
     }
 
     // Find best insert for every other job
-    std::vector<JobPtr> free_jobs =
-        std::vector<JobPtr>(jobs.begin() + 2, jobs.end());
-    std::vector<JobPtr> solution_jobs = neh_body(sol.jobs, free_jobs, mach_graph);
+    std::vector<Job> free_jobs =
+        std::vector<Job>(jobs.begin() + 2, jobs.end());
+    std::vector<Job> solution_jobs = neh_body(sol.get_jobs(), free_jobs, mach_graph);
 
     // Create final Sigma from solution jobs
     Sigma final_sol(M, mach_graph);
-    for (JobPtr& job : solution_jobs) {
+    for (Job& job : solution_jobs) {
         final_sol.job_to_bottom(job);
     }
 
     // Prepare as a permutation
     Permutation perm =
-        Permutation(final_sol.m, jobs.size(), jobs.size(), final_sol, std::vector<JobPtr>{},
+        Permutation(final_sol.m, jobs.size(), jobs.size(), final_sol, std::vector<Job>{},
                     Sigma(final_sol.m, mach_graph), mach_graph);
     return perm;
 }
 
-std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &jobs,
+std::vector<Job> neh_body(std::vector<Job> sol_jobs, std::vector<Job> &jobs,
                              const std::shared_ptr<MachineGraph> &mach_graph)
 {
     unsigned int j, i, best_cost, seq_size, cost_alt;
-    const int M = jobs[0]->p->size();  // Assume r is the same size for all jobs
-    JobPtr job;
-    std::vector<JobPtr> vec;
-    std::vector<JobPtr> best_sol_jobs;
+    const int M = jobs[0].p->size();  // Assume r is the same size for all jobs
+    Job job;
+    std::vector<Job> vec;
+    std::vector<Job> best_sol_jobs;
 
     // Find best insert for every other job
     seq_size = sol_jobs.size();
@@ -125,9 +125,9 @@ std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &
             cost_alt = get_max_value(sigma_fwd[i].C, sigma_bwd[i].C);
             if (cost_alt < best_cost)
             {
-                best_sol_jobs = sigma_fwd[i].jobs;
+                best_sol_jobs = sigma_fwd[i].get_jobs();  // Shallow copy
 
-                for (JobPtr& j2 : sigma_bwd[i].jobs)
+                for (Job& j2 : sigma_bwd[i].get_jobs())
                 {
                     best_sol_jobs.push_back(j2);
                 }

@@ -10,7 +10,7 @@
 
 // Multistart randomized heuristic: shuffle jobs, neh_core, local search, with
 // optional seed
-Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
+Permutation randomized_heur(std::vector<Job> jobs_, int n_iter,
                             unsigned int seed,
                             const std::shared_ptr<MachineGraph> &mach_graph);
 

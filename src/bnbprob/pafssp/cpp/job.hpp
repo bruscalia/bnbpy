@@ -14,8 +14,8 @@ public:
     // Attributes
     int j;
     std::shared_ptr<std::vector<int>> p;
-    std::vector<short> r;
-    std::vector<short> q;
+    std::vector<int> r;
+    std::vector<int> q;
     shared_ptr<vector<vector<int>>> lat;
 
     // Default constructor
@@ -48,7 +48,7 @@ public:
 
     // Parameterized constructor -> deepcopy of arrays
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
-        const vector<short> &r_, const vector<short> &q_,
+        const vector<int> &r_, const vector<int> &q_,
         const std::shared_ptr<std::vector<std::vector<int>>> &lat_)
         : j(j_), p(p_), r(r_), q(q_), lat(lat_)
     {
@@ -71,16 +71,17 @@ private:
                     const MachineGraph &mach_graph);
 };
 
-// Function to copy a job
-inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr);
-
 // Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(
-    const std::vector<std::shared_ptr<Job>> &jobs);
+inline std::vector<Job> copy_jobs(
+    const std::vector<Job> &jobs)
+{
+    std::vector<Job> out = jobs;
+    return out;  // Return the copied vector
+}
 
 // Function to copy a vector of jobs with reinitialization from j and p
-std::vector<std::shared_ptr<Job>> copy_reset(
-    const std::vector<std::shared_ptr<Job>> &jobs,
+std::vector<Job> copy_reset(
+    const std::vector<Job> &jobs,
     const MachineGraph &mach_graph);
 
 // Type definition for shared pointer

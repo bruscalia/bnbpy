@@ -7,7 +7,7 @@ from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pafssp.cpp.environ cimport Sigma, Job, JobPtr, MachineGraph
+from bnbprob.pafssp.cpp.environ cimport Sigma, Job, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
 from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
@@ -71,10 +71,9 @@ cdef class PySigma:
         """Create Sigma from list of PyJob objects."""
         cdef:
             MachineGraph mach_graph
-            vector[shared_ptr[Job]] job_ptrs
+            vector[Job] job_vector
             PySigma out
             PyJob py_job
-            JobPtr job_ptr
 
         out = PySigma.__new__(PySigma)
 
@@ -87,17 +86,13 @@ cdef class PySigma:
         out.mach_graph = mach_graph
 
         # Create sigma and later push jobs
-        out.sigma = Sigma(m, job_ptrs, &out.mach_graph)
+        out.sigma = Sigma(m, &out.mach_graph)
 
-        # Convert PyJob objects to C++ Job shared_ptrs
+        # Convert PyJob objects to C++ Jobs and push them
         for job in jobs:
             if isinstance(job, PyJob):
                 py_job = <PyJob>job
-                job_ptr = py_job.get_jobptr()
-                if job_ptr != NULL:
-                    out.sigma.job_to_bottom(job_ptr)
-                else:
-                    raise ValueError("PyJob not properly initialized")
+                out.sigma.job_to_bottom(py_job.get_job())
             else:
                 raise TypeError("All jobs must be PyJob instances")
 
@@ -106,16 +101,10 @@ cdef class PySigma:
         return out
 
     cdef void _push_to_bottom(self, PyJob job):
-        cdef JobPtr job_ptr = job.get_jobptr()
-        if job_ptr == NULL:
-            raise ValueError("PyJob not properly initialized")
-        self.sigma.job_to_bottom(job_ptr)
+        self.sigma.job_to_bottom(job.get_job())
 
     cdef void _push_to_top(self, PyJob job):
-        cdef JobPtr job_ptr = job.get_jobptr()
-        if job_ptr == NULL:
-            raise ValueError("PyJob not properly initialized")
-        self.sigma.job_to_top(job_ptr)
+        self.sigma.job_to_top(job.get_job())
 
     cpdef void push_to_bottom(self, PyJob job):
         if not self._initialized:
@@ -136,14 +125,16 @@ cdef class PySigma:
         cdef:
             list[PyJob] out
             unsigned int i
+            vector[Job] job_vector
 
         if not self._initialized:
             raise ReferenceError(INIT_ERROR)
 
+        # Get raw Job copies from Sigma
+        job_vector = self.sigma.get_jobs()
         out = []
-        for i in range(self.sigma.jobs.size()):
-            if self.sigma.jobs[i] != NULL:
-                out.append(job_to_py(self.sigma.jobs[i]))
+        for i in range(job_vector.size()):
+            out.append(job_to_py(job_vector[i]))
         return out
 
     cpdef list[int] get_C(self):

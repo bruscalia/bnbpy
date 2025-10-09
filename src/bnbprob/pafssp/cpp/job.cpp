@@ -83,24 +83,6 @@ int Job::get_slope() const
     return slope;
 }
 
-// Function to copy a job
-inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr)
-{
-    return std::make_shared<Job>(*jobptr);
-}
-
-// Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(
-    const std::vector<std::shared_ptr<Job>> &jobs)
-{
-    std::vector<std::shared_ptr<Job>> out(jobs.size());
-    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
-    {
-        out[i] = make_shared<Job>(*jobs[i]);
-    }
-    return out;  // Return the copied vector
-}
-
 // Method to recompute only r and q for the job given machine graph
 void Job::recompute_r_q(const MachineGraph &mach_graph)
 {
@@ -136,18 +118,15 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
 }
 
 // Function to copy a vector of jobs with reinitialization from j and p
-std::vector<std::shared_ptr<Job>> copy_reset(
-    const std::vector<std::shared_ptr<Job>> &jobs,
+std::vector<Job> copy_reset(
+    const std::vector<Job> &jobs,
     const MachineGraph &mach_graph)
 {
-    std::vector<std::shared_ptr<Job>> out(jobs.size());
+    std::vector<Job> out = jobs;
     for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
-        // Create new job using copy constructor
-        out[i] = make_shared<Job>(*jobs[i]);
-
         // Only recompute r and q (cheap operations)
-        out[i]->recompute_r_q(mach_graph);
+        out[i].recompute_r_q(mach_graph);
     }
     return out;  // Return the reinitialized vector
 }

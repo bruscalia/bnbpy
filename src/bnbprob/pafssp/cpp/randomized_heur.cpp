@@ -8,7 +8,7 @@
 #include "local_search.hpp"
 #include "neh.hpp"
 
-Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
+Permutation randomized_heur(std::vector<Job> jobs_, int n_iter,
                             unsigned int seed,
                             const std::shared_ptr<MachineGraph> &mach_graph)
 {
@@ -30,7 +30,7 @@ Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
 
     for (int iter = 0; iter < n_iter; ++iter)
     {
-        std::vector<JobPtr> jobs = jobs_;  // Shallow copy
+        std::vector<Job> jobs = jobs_;  // Deep copy
         if (iter > 0)
         {
             std::shuffle(jobs.begin(), jobs.end(), g);
@@ -43,7 +43,7 @@ Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
         // Best insertion from presorted jobs in O(m n2)
         Permutation perm = neh_core(jobs, mach_graph);
         // Local search until no improvement (sequence will be copied inside)
-        std::vector<JobPtr> sequence_copy = perm.get_sequence();
+        std::vector<Job> sequence_copy = perm.get_sequence();
         Permutation new_perm = local_search(sequence_copy, mach_graph);
         int new_cost = new_perm.calc_lb_full();
         if (new_cost < best_cost)

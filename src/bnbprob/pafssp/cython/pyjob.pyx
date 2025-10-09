@@ -6,11 +6,11 @@ from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pafssp.cpp.environ cimport Job, JobPtr, MachineGraph
+from bnbprob.pafssp.cpp.environ cimport Job, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
 
-INIT_ERROR = 'C++ Job shared pointer not initialized'
+INIT_ERROR = 'C++ Job not initialized'
 
 
 cdef class PyJob:
@@ -78,29 +78,23 @@ cdef class PyJob:
         mach_graph = create_machine_graph(mi)
 
         # Create Job with MachineGraph
-        out.job = make_shared[Job](j, p_shared, mach_graph)
+        out.job = Job(j, p_shared, mach_graph)
         return out
 
-    cdef JobPtr get_jobptr(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
+    cdef Job get_job(self):
         return self.job
 
     cpdef int get_j(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).j
+        return self.job.j
 
     cpdef list[int] get_p(self):
         cdef:
             unsigned int i
             int pi
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(deref(self.job).p).size()):
-            pi = deref(deref(self.job).p)[i]
+        for i in range(self.job.p.get().size()):
+            pi = self.job.p.get()[0][i]
             out.append(pi)
         return out
 
@@ -109,11 +103,9 @@ cdef class PyJob:
             unsigned int i
             int ri
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).r.size()):
-            ri = deref(self.job).r[i]
+        for i in range(self.job.r.size()):
+            ri = self.job.r[i]
             out.append(ri)
         return out
 
@@ -122,11 +114,9 @@ cdef class PyJob:
             unsigned int i
             int qi
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).q.size()):
-            qi = deref(self.job).q[i]
+        for i in range(self.job.q.size()):
+            qi = self.job.q[i]
             out.append(qi)
         return out
 
@@ -136,32 +126,24 @@ cdef class PyJob:
             int li
             list[int] lati
             list[list[int]] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(deref(self.job).lat).size()):
+        for i in range(self.job.lat.get().size()):
             out.append([])
-            for j in range(deref(deref(self.job).lat)[i].size()):
-                li = deref(deref(self.job).lat)[i][j]
+            for j in range(self.job.lat.get()[0][i].size()):
+                li = self.job.lat.get()[0][i][j]
                 out[i].append(li)
         return out
 
     cpdef int get_slope(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).get_slope()
+        return self.job.get_slope()
 
     cpdef int get_T(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).get_T()
+        return self.job.get_T()
 
 
-cdef PyJob job_to_py(JobPtr& jobptr):
+cdef PyJob job_to_py(Job& job_ref):
     cdef:
         PyJob out
-    if jobptr == NULL:
-        raise ReferenceError(INIT_ERROR)
     out = PyJob.__new__(PyJob)
-    out.job = jobptr
+    out.job = job_ref
     return out

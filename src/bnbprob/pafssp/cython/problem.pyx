@@ -10,7 +10,7 @@ import logging
 from typing import List, Literal, Optional, Tuple
 
 from bnbprob.pafssp.cpp.environ cimport (
-    JobPtr,
+    Job,
     MachineGraph,
     Permutation,
     intensify,
@@ -82,7 +82,7 @@ cdef class PermFlowShop(Problem):
     def sequence(self):
         cdef:
             int i
-            vector[JobPtr] seq
+            vector[Job] seq
             PyJob job
         out = []
         seq = self.perm.get_sequence()
@@ -95,10 +95,10 @@ cdef class PermFlowShop(Problem):
     def free_jobs(self):
         cdef:
             int i
-            vector[JobPtr] seq
+            vector[Job] seq
             PyJob job
         out = []
-        seq = self.perm.get_free_jobs()[0]
+        seq = self.perm.get_free_jobs()
         for i in range(seq.size()):
             job = job_to_py(seq[i])
             out.append(job)
@@ -135,9 +135,9 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child
             Permutation perm
-            vector[JobPtr] jobs
+            vector[Job] jobs
 
-        jobs = self.perm.get_sequence_copy()
+        jobs = self.perm.get_sequence()
         perm = quick_constructive(jobs, self.perm.mach_graph)
         child = self.fast_copy()
         child.perm = perm
@@ -147,9 +147,9 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child
             Permutation perm
-            vector[JobPtr] jobs
+            vector[Job] jobs
 
-        jobs = self.perm.get_sequence_copy()
+        jobs = self.perm.get_sequence()
         perm = neh_constructive(jobs, self.perm.mach_graph)
         child = self.fast_copy()
         child.perm = perm
@@ -160,10 +160,10 @@ cdef class PermFlowShop(Problem):
             double lb, new_cost
             Permutation perm
             PermFlowShop sol_alt
-            vector[JobPtr] jobs
+            vector[Job] jobs
 
         lb = self.solution.lb
-        jobs = self.perm.get_sequence_copy()
+        jobs = self.perm.get_sequence()
         perm = local_search(jobs, self.perm.mach_graph)
         new_cost = perm.calc_lb_full()
         if new_cost < lb:
@@ -178,9 +178,9 @@ cdef class PermFlowShop(Problem):
         cdef:
             Permutation perm
             PermFlowShop sol_alt
-            vector[JobPtr] jobs
+            vector[Job] jobs
 
-        jobs = self.perm.get_sequence_copy()
+        jobs = self.perm.get_sequence()
         perm = randomized_heur(jobs, n_iter, seed, self.perm.mach_graph)
         sol_alt = self.fast_copy()
         sol_alt.perm = perm
@@ -192,7 +192,6 @@ cdef class PermFlowShop(Problem):
         cdef:
             double new_cost, lb
             PermFlowShop sol_alt
-            vector[JobPtr] jobs
 
         sol_alt = self.fast_copy()
         sol_alt.perm = intensify(self.perm)
@@ -209,7 +208,6 @@ cdef class PermFlowShop(Problem):
         cdef:
             double new_cost, lb
             PermFlowShop sol_alt
-            vector[JobPtr] jobs
 
         sol_alt = self.fast_copy()
         sol_alt.perm = intensify_ref(
@@ -295,7 +293,7 @@ cdef class PermFlowShop(Problem):
         child = type(self).__new__(type(self))
         child.solution = Solution()
         child.constructive = self.constructive
-        child.perm = self.perm.copy()
+        child.perm = self.perm
         return child
 
 
