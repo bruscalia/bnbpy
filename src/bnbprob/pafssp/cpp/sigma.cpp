@@ -11,6 +11,9 @@ using namespace std;
 // Push job to bottom sequence
 void Sigma::job_to_bottom(Job job)
 {
+    // Cache pointer dereference for efficiency
+    const std::vector<int>& jp = *job.p;
+
     // Update completion times using the job data
     for (const int &k : this->mach_graph->get_topo_order()) {
         const std::vector<int> &prev_k = this->mach_graph->get_prec(k);
@@ -23,7 +26,7 @@ void Sigma::job_to_bottom(Job job)
         for (const int &pk : prev_k) {
             max_prev = std::max(max_prev, this->C[pk]);
         }
-        this->C[k] = std::max(this->C[k], max_prev) + job.p->at(k);
+        this->C[k] = std::max(this->C[k], max_prev) + jp[k];
     }
     // Create shared_ptr and add to jobs vector
     this->jobs.push_back(std::make_shared<Job>(std::move(job)));
@@ -32,6 +35,9 @@ void Sigma::job_to_bottom(Job job)
 // Push job to top sequence
 void Sigma::job_to_top(Job job)
 {
+    // Cache pointer dereference for efficiency
+    const std::vector<int>& jp = *job.p;
+
     // Update completion times using the job data
     for (const int &k : this->mach_graph->get_rev_topo_order()) {
         const std::vector<int> &succ_k = this->mach_graph->get_succ(k);
@@ -44,7 +50,7 @@ void Sigma::job_to_top(Job job)
         for (const int &sk : succ_k) {
             max_succ = std::max(max_succ, this->C[sk]);
         }
-        this->C[k] = std::max(this->C[k], max_succ) + job.p->at(k);
+        this->C[k] = std::max(this->C[k], max_succ) + jp[k];
     }
     // Create shared_ptr and add to jobs vector
     this->jobs.insert(this->jobs.begin(), std::make_shared<Job>(std::move(job)));

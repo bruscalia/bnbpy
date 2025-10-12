@@ -297,6 +297,8 @@ void Permutation::compute_starts()
     for (size_t j = 0; j < seq_size; ++j)
     {
         Job *job = seq[j];
+        // Cache pointer dereference for efficiency
+        const std::vector<int>& jp = *job->p;
 
         // Process machines in topological order to respect precedence
         for (const int &k : this->mach_graph->get_topo_order())
@@ -309,15 +311,17 @@ void Permutation::compute_starts()
             for (const int &prev_k : prev_machines)
             {
                 earliest_start = std::max(earliest_start,
-                                          job->r[prev_k] + job->p->at(prev_k));
+                                          job->r[prev_k] + jp[prev_k]);
             }
 
             // Check previous jobs on the same machine
             if (j > 0)
             {
                 Job *prev_job = seq[j - 1];
+                // Cache pointer dereference for previous job
+                const std::vector<int>& prev_jp = *prev_job->p;
                 earliest_start = std::max(earliest_start,
-                                          prev_job->r[k] + prev_job->p->at(k));
+                                          prev_job->r[k] + prev_jp[k]);
             }
 
             job->r[k] = earliest_start;
@@ -351,6 +355,8 @@ int Permutation::lower_bound_1m()
         for (size_t j = 0; j < free_jobs_size; ++j)
         {
             Job &job = this->free_jobs[j];
+            // Cache pointer dereference for efficiency
+            const std::vector<int>& jp = *job.p;
             if (job.r[k] < min_r)
             {
                 min_r = job.r[k];
@@ -359,7 +365,7 @@ int Permutation::lower_bound_1m()
             {
                 min_q = job.q[k];
             }
-            sum_p += job.p->at(k);
+            sum_p += jp[k];
         }
         int temp_value = min_r + sum_p + min_q;
         if (temp_value > max_value)
