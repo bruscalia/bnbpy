@@ -11,18 +11,18 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-inline bool desc_T(const Job &a, const Job &b)
+inline bool desc_T(const JobPtr &a, const JobPtr &b)
 {
-    return b.get_T() < a.get_T();
+    return b->get_T() < a->get_T();
 }
 
-Permutation neh_constructive(std::vector<Job> &jobs,
+Permutation neh_constructive(std::vector<JobPtr> &jobs,
                              const std::shared_ptr<MachineGraph> &mach_graph);
 
-Permutation neh_core(std::vector<Job> &jobs_,
+Permutation neh_core(std::vector<JobPtr> &jobs_,
                      const std::shared_ptr<MachineGraph> &mach_graph);
 
-std::vector<Job> neh_body(std::vector<Job> sol_jobs, std::vector<Job> &jobs,
+std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &jobs,
                             const std::shared_ptr<MachineGraph> &mach_graph);
 
 #endif  // NEH_HPP

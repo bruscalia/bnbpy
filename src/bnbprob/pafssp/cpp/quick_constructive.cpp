@@ -8,14 +8,14 @@
 #include "sigma.hpp"
 #include "mach_graph.hpp"
 
-inline bool desc_slope(const Job& a, const Job& b)
+inline bool desc_slope(const JobPtr& a, const JobPtr& b)
 {
-    return b.get_slope() < a.get_slope();
+    return b->get_slope() < a->get_slope();
 }
 
-Permutation quick_constructive(std::vector<Job>& jobs, const std::shared_ptr<MachineGraph>& mach_graph)
+Permutation quick_constructive(std::vector<JobPtr>& jobs, const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int M = jobs[0].p->size();
+    int M = jobs[0]->p->size();
     std::sort(jobs.begin(), jobs.end(), desc_slope);
     Permutation sol = Permutation(M, jobs, mach_graph);
     for (unsigned int i = 0; i < sol.free_jobs.size(); ++i)

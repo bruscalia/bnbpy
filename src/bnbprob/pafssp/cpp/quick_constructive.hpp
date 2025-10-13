@@ -9,8 +9,8 @@
 #include "sigma.hpp"
 #include "mach_graph.hpp"
 
-inline bool desc_slope(const Job& a, const Job& b);
+inline bool desc_slope(const JobPtr& a, const JobPtr& b);
 
-Permutation quick_constructive(std::vector<Job>& jobs, const std::shared_ptr<MachineGraph>& mach_graph);
+Permutation quick_constructive(std::vector<JobPtr>& jobs, const std::shared_ptr<MachineGraph>& mach_graph);
 
 #endif  // QUICK_CONSTRUCTIVE_HPP

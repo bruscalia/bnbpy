@@ -29,7 +29,7 @@ struct SingleMach
     }
 
     // Constructor from jobs - computes min r, min q, and sum p for each machine
-    SingleMach(const int& m, const std::vector<Job>& jobs)
+    SingleMach(const int& m, const std::vector<JobPtr>& jobs)
         : r(m, SHRT_MAX), q(m, SHRT_MAX), p(m, 0)
     {
         const size_t jobs_size = jobs.size();
@@ -43,17 +43,17 @@ struct SingleMach
 
         for (int k = 0; k < m; ++k)
         {
-            for (const Job& job : jobs)
+            for (const JobPtr& job : jobs)
             {
-                if ((*job.r)[k] < r[k])
+                if ((*job->r)[k] < r[k])
                 {
-                    r[k] = (*job.r)[k];
+                    r[k] = (*job->r)[k];
                 }
-                if ((*job.q)[k] < q[k])
+                if ((*job->q)[k] < q[k])
                 {
-                    q[k] = (*job.q)[k];
+                    q[k] = (*job->q)[k];
                 }
-                p[k] += job.p->at(k);
+                p[k] += job->p->at(k);
             }
         }
     }
@@ -79,12 +79,12 @@ struct SingleMach
     }
 
     // Update p from deleted job
-    void update_p(const Job& job)
+    void update_p(const JobPtr& job)
     {
         const size_t m = p.size();
         for (size_t k = 0; k < m; ++k)
         {
-            p[k] -= job.p->at(k);
+            p[k] -= job->p->at(k);
         }
     }
 };

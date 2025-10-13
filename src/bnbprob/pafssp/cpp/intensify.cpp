@@ -11,20 +11,20 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-inline bool desc_T(const Job &a, const Job &b)
+inline bool desc_T(const JobPtr &a, const JobPtr &b)
 {
-    return b.get_T() < a.get_T();
+    return b->get_T() < a->get_T();
 }
 
 Permutation intensification(const Sigma &sigma1,
-                            const std::vector<Job> &jobs_,
+                            const std::vector<JobPtr> &jobs_,
                             const Sigma &sigma2,
                             const std::shared_ptr<MachineGraph>& mach_graph)
 {
     int j, j0, i, best_cost, seq_size, cost_alt, best_pos;
     // Sigma s1, s2, sol, best_sol, s_alt;
-    Job job;
-    std::vector<Job> vec, base_vec, jobs;
+    JobPtr job;
+    std::vector<JobPtr> vec, base_vec, jobs;
     Sigma s1, s2, sol, best_sol;
 
     jobs = jobs_;  // Copy jobs to non-const vector
@@ -34,17 +34,17 @@ Permutation intensification(const Sigma &sigma1,
 
     // Initial setup for two jobs
     // TODO: Update Sigma to support initialization from MachineGraph
-    sol = sigma1.deepcopy();
+    sol = sigma1;
     std::cout << "Deepcopy was ok" << std::endl;
     j0 = sigma1.jobs.size();
-    base_vec = std::vector<Job>();
+    base_vec = std::vector<JobPtr>();
 
     // Find best insert for every other job
     seq_size = base_vec.size();
     for (j = 0; j < static_cast<int>(jobs.size()); ++j)
     {
         // TODO: Update Sigma to support initialization from MachineGraph
-        Sigma base_sig = sigma1.deepcopy();
+        Sigma base_sig = sigma1;
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
         best_pos = 0;
         std::cout << "Looping for j" << j << std::endl;
@@ -92,11 +92,11 @@ Permutation intensification(const Sigma &sigma1,
     // TODO: return Permutation from sigmas and jobs
     Permutation perm = Permutation(
         sol.m, jobs.size(), jobs.size(), sol,
-        std::vector<Job>{}, sigma2.deepcopy(), mach_graph);
+        std::vector<JobPtr>{}, sigma2, mach_graph);
     return perm;
 }
 
-Permutation intensify(const Sigma &sigma1, const std::vector<Job> &jobs_,
+Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs_,
                       const Sigma &sigma2,
                       const std::shared_ptr<MachineGraph>& mach_graph)
 {
@@ -105,7 +105,7 @@ Permutation intensify(const Sigma &sigma1, const std::vector<Job> &jobs_,
     best_sol = intensification(sigma1, jobs_, sigma2, mach_graph);
 
     // Local search iterations
-    std::vector<Job> sequence_copy = best_sol.get_sequence();
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence();
     best_sol = local_search(sequence_copy, mach_graph);
     return best_sol;
 }
@@ -120,9 +120,9 @@ Permutation intensify_ref(const Permutation &perm, const Permutation &ref_perm_)
     Permutation best_sol = perm;
     Permutation ref_perm = ref_perm_;
     // Initialize
-    std::vector<Job> jobs = ref_perm.get_sequence();
+    std::vector<JobPtr> jobs = ref_perm.get_sequence();
     best_sol.emplace_from_ref_solution(jobs);
-    std::vector<Job> sequence_copy = best_sol.get_sequence();
+    std::vector<JobPtr> sequence_copy = best_sol.get_sequence();
     best_sol = local_search(sequence_copy, perm.mach_graph);
     return best_sol;
 }

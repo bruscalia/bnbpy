@@ -3,7 +3,7 @@
 
 from libcpp.vector cimport vector
 
-from bnbprob.pafssp.cpp.environ cimport Job
+from bnbprob.pafssp.cpp.environ cimport Job, JobPtr
 
 cdef class PyJob:
 
@@ -27,4 +27,4 @@ cdef class PyJob:
     cpdef int get_T(self) except *
 
 
-cdef PyJob job_to_py(Job& jobptr) except *
+cdef PyJob job_to_py(JobPtr& jobptr) except *

@@ -20,7 +20,7 @@ public:
     int n;  // Number of jobs
     int level;
     Sigma sigma1;
-    std::vector<Job> free_jobs;
+    std::vector<JobPtr> free_jobs;
     Sigma sigma2;
     std::shared_ptr<MachineGraph> mach_graph;
 
@@ -32,7 +32,7 @@ public:
                 const std::shared_ptr<MachineGraph> &mach_graph_);
 
     // Constructor from free jobs
-    Permutation(const int &m_, const std::vector<Job> &jobs_,
+    Permutation(const int &m_, const std::vector<JobPtr> &jobs_,
                 const std::shared_ptr<MachineGraph> &mach_graph_)
         : m(m_),
           n(jobs_.size()),
@@ -52,7 +52,7 @@ public:
 
     // Constructor given all desired attributes
     Permutation(const int &m_, const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<Job> &free_jobs_,
+                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_)
@@ -74,7 +74,7 @@ public:
 
     // Constructor given all desired attributes but two_mach
     Permutation(const int &m_, const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<Job> &free_jobs_,
+                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_)
         : m(m_),
@@ -101,7 +101,7 @@ public:
     }
 
     // Constructor from free jobs with MachineGraph object
-    Permutation(const int &m_, const std::vector<Job> &jobs_,
+    Permutation(const int &m_, const std::vector<JobPtr> &jobs_,
                 const MachineGraph &mach_graph_)
         : Permutation(m_, jobs_, std::make_shared<MachineGraph>(mach_graph_))
     {
@@ -109,7 +109,7 @@ public:
 
     // Constructor given all desired attributes with MachineGraph object
     Permutation(const int &m_, const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<Job> &free_jobs_,
+                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_, const MachineGraph &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_)
         : Permutation(m_, n_, level_, sigma1_, free_jobs_, sigma2_,
@@ -121,7 +121,7 @@ public:
     // Constructor given all desired attributes but two_mach with MachineGraph
     // object
     Permutation(const int &m_, const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<Job> &free_jobs_,
+                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_, const MachineGraph &mach_graph_)
         : Permutation(m_, n_, level_, sigma1_, free_jobs_, sigma2_,
                       std::make_shared<MachineGraph>(mach_graph_))
@@ -129,11 +129,10 @@ public:
     }
 
     // Accessor methods
-    std::vector<Job> get_free_jobs();
+    std::vector<JobPtr> get_free_jobs();
     Sigma get_sigma1();
     Sigma get_sigma2();
-    std::vector<Job> get_sequence();
-    std::vector<Job *> get_sequence_ptrs();
+    std::vector<JobPtr> get_sequence();
     std::vector<int> get_r() const;
     std::vector<int> get_q() const;
     std::vector<JobTimes *> get_job_times(const int &m1, const int &m2) const;
@@ -141,10 +140,10 @@ public:
 
     // Modification methods
     void push_job(const unsigned int &j);
-    void push_job_forward(const unsigned int &j);
-    void push_job_backward(const unsigned int &j);
-    void push_job_dyn(const unsigned int &j);
     void update_params();
+    // TODO: revise to see if it currently doesn't break the logic
+    // when called.
+    // Create later a separate attribute for job starts if needed.
     void compute_starts();
 
     // Feasibility check
@@ -210,7 +209,7 @@ public:
         return idle_time;
     }
 
-    void emplace_from_ref_solution(const std::vector<Job> &ref_solution)
+    void emplace_from_ref_solution(const std::vector<JobPtr> &ref_solution)
     {
         // Sort free jobs according to
         // corresponding order in incumbent solution
@@ -218,40 +217,11 @@ public:
 
         while (!this->free_jobs.empty())
         {
-            Job job = this->free_jobs.back();
+            JobPtr job = this->free_jobs.back();
             this->sigma1.job_to_bottom(job);
             this->free_jobs.pop_back();
             update_params();
         }
-    }
-
-    // Deepcopy
-    Permutation copy() const
-    {
-        return Permutation(this->m, this->n, this->level, this->sigma1,
-                           this->free_jobs, this->sigma2, this->mach_graph,
-                           this->two_mach_cache, this->scheduled_jobs,
-                           this->single_mach_cache);
-    }
-
-    // Constructor for copy
-    Permutation(int m_, int n_, int level_, const Sigma &sigma1_,
-                const vector<Job> &free_jobs_, const Sigma &sigma2_,
-                const std::shared_ptr<MachineGraph> &mach_graph_,
-                const std::shared_ptr<TwoMach> &two_mach_cache_,
-                const std::vector<bool> &scheduled_jobs_,
-                const SingleMach &single_mach_cache_)
-        : m(m_),
-          n(n_),
-          level(level_),
-          sigma1(sigma1_),
-          free_jobs(free_jobs_),
-          sigma2(sigma2_),
-          mach_graph(mach_graph_),
-          two_mach_cache(two_mach_cache_),
-          scheduled_jobs(scheduled_jobs_),
-          single_mach_cache(single_mach_cache_)
-    {
     }
 
 private:
@@ -274,18 +244,18 @@ private:
         }
     }
 
-    void sort_free_jobs_reverse(const std::vector<Job> &ref_solution)
+    void sort_free_jobs_reverse(const std::vector<JobPtr> &ref_solution)
     {
         // Sort free jobs according to
         // corresponding order in incumbent solution
         std::unordered_map<int, int> job_pos;
         for (int i = 0; i < static_cast<int>(ref_solution.size()); ++i)
         {
-            job_pos[ref_solution[i].j] = i;
+            job_pos[ref_solution[i]->j] = i;
         }
         std::sort(this->free_jobs.begin(), this->free_jobs.end(),
-                  [&job_pos](const Job &a, const Job &b)
-                  { return job_pos[a.j] > job_pos[b.j]; });
+                  [&job_pos](const JobPtr &a, const JobPtr &b)
+                  { return job_pos[a->j] > job_pos[b->j]; });
     }
 };
 

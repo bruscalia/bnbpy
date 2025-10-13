@@ -128,15 +128,15 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
 }
 
 // Function to copy a vector of jobs with reinitialization from j and p
-std::vector<Job> copy_reset(
-    const std::vector<Job> &jobs,
+std::vector<std::shared_ptr<Job>> copy_reset(
+    const std::vector<std::shared_ptr<Job>> &jobs,
     const MachineGraph &mach_graph)
 {
-    std::vector<Job> out = jobs;
+    std::vector<std::shared_ptr<Job>> out = jobs;
     for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
     {
         // Only recompute r and q (cheap operations)
-        out[i].recompute_r_q(mach_graph);
+        out[i]->recompute_r_q(mach_graph);
     }
     return out;  // Return the reinitialized vector
 }

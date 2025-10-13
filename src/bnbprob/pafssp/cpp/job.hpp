@@ -72,8 +72,8 @@ private:
 };
 
 // Function to copy a vector of jobs with reinitialization from j and p
-std::vector<Job> copy_reset(
-    const std::vector<Job> &jobs,
+std::vector<std::shared_ptr<Job>> copy_reset(
+    const std::vector<std::shared_ptr<Job>> &jobs,
     const MachineGraph &mach_graph);
 
 // Type definition for shared pointer

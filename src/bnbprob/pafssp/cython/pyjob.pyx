@@ -6,7 +6,7 @@ from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pafssp.cpp.environ cimport Job, MachineGraph
+from bnbprob.pafssp.cpp.environ cimport Job, JobPtr, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
 
@@ -141,9 +141,9 @@ cdef class PyJob:
         return self.job.get_T()
 
 
-cdef PyJob job_to_py(Job& job_ref):
+cdef PyJob job_to_py(JobPtr& job_ref):
     cdef:
         PyJob out
     out = PyJob.__new__(PyJob)
-    out.job = job_ref
+    out.job = deref(job_ref)
     return out

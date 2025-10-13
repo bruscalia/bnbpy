@@ -10,7 +10,7 @@ import logging
 from typing import List, Literal, Optional, Tuple
 
 from bnbprob.pafssp.cpp.environ cimport (
-    Job,
+    JobPtr,
     MachineGraph,
     Permutation,
     intensify,
@@ -82,7 +82,7 @@ cdef class PermFlowShop(Problem):
     def sequence(self):
         cdef:
             int i
-            vector[Job] seq
+            vector[JobPtr] seq
             PyJob job
         out = []
         seq = self.perm.get_sequence()
@@ -95,7 +95,7 @@ cdef class PermFlowShop(Problem):
     def free_jobs(self):
         cdef:
             int i
-            vector[Job] seq
+            vector[JobPtr] seq
             PyJob job
         out = []
         seq = self.perm.get_free_jobs()
@@ -135,7 +135,7 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child
             Permutation perm
-            vector[Job] jobs
+            vector[JobPtr] jobs
 
         jobs = self.perm.get_sequence()
         perm = quick_constructive(jobs, self.perm.mach_graph)
@@ -147,7 +147,7 @@ cdef class PermFlowShop(Problem):
         cdef:
             PermFlowShop child
             Permutation perm
-            vector[Job] jobs
+            vector[JobPtr] jobs
 
         jobs = self.perm.get_sequence()
         perm = neh_constructive(jobs, self.perm.mach_graph)
@@ -160,7 +160,7 @@ cdef class PermFlowShop(Problem):
             double lb, new_cost
             Permutation perm
             PermFlowShop sol_alt
-            vector[Job] jobs
+            vector[JobPtr] jobs
 
         lb = self.solution.lb
         jobs = self.perm.get_sequence()
@@ -178,7 +178,7 @@ cdef class PermFlowShop(Problem):
         cdef:
             Permutation perm
             PermFlowShop sol_alt
-            vector[Job] jobs
+            vector[JobPtr] jobs
 
         jobs = self.perm.get_sequence()
         perm = randomized_heur(jobs, n_iter, seed, self.perm.mach_graph)

@@ -7,7 +7,7 @@ from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
-from bnbprob.pafssp.cpp.environ cimport Sigma, Job, MachineGraph
+from bnbprob.pafssp.cpp.environ cimport Sigma, Job, JobPtr, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
 from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
@@ -125,13 +125,13 @@ cdef class PySigma:
         cdef:
             list[PyJob] out
             unsigned int i
-            vector[Job] job_vector
+            vector[JobPtr] job_vector
 
         if not self._initialized:
             raise ReferenceError(INIT_ERROR)
 
         # Get raw Job copies from Sigma
-        job_vector = self.sigma.get_jobs()
+        job_vector = self.sigma.jobs
         out = []
         for i in range(job_vector.size()):
             out.append(job_to_py(job_vector[i]))

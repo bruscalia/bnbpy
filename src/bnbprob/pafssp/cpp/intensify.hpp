@@ -12,16 +12,16 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-inline bool desc_T(const Job &a, const Job &b);
+inline bool desc_T(const JobPtr &a, const JobPtr &b);
 
 // Constructive step in intensification heuristic
 Permutation intensification(const Sigma &sigma1,
-                            const std::vector<Job> &jobs_,
+                            const std::vector<JobPtr> &jobs_,
                             const Sigma &sigma2,
                             const std::shared_ptr<MachineGraph>& mach_graph);
 
 // Intensification heuristic with constructive and local search
-Permutation intensify(const Sigma &sigma1, const std::vector<Job> &jobs_,
+Permutation intensify(const Sigma &sigma1, const std::vector<JobPtr> &jobs_,
                       const Sigma &sigma2,
                       const std::shared_ptr<MachineGraph>& mach_graph);
 

@@ -14,8 +14,6 @@ cdef extern from "job.hpp":
         shared_ptr[vector[int]] r
         shared_ptr[vector[int]] q
         shared_ptr[vector[vector[int]]] lat
-        int slope
-        int T
 
         # Declare the constructors
         # Default constructor
@@ -37,9 +35,7 @@ cdef extern from "job.hpp":
             const shared_ptr[vector[int]] &p_,
             const shared_ptr[vector[int]] &r_,
             const shared_ptr[vector[int]] &q_,
-            const shared_ptr[vector[vector[int]]] &lat_,
-            const int &slope_,
-            const int &T_
+            const shared_ptr[vector[vector[int]]] &lat_
         )
 
         # Get slope
@@ -52,7 +48,7 @@ cdef extern from "job.hpp":
         void recompute_r_q(const MachineGraph &mach_graph)
 
     # Function to copy a vector of jobs with reinitialization from j and p
-    cdef vector[Job] copy_reset(const vector[Job]& jobs, const MachineGraph& mach_graph)
+    cdef vector[shared_ptr[Job]] copy_reset(const vector[shared_ptr[Job]]& jobs, const MachineGraph& mach_graph)
 
 
 ctypedef shared_ptr[Job] JobPtr
@@ -88,19 +84,19 @@ cdef extern from "sigma.hpp":
         Sigma(const int &m_, const vector[JobPtr] &jobs_, const vector[int] &C_, const MachineGraph* mach_graph_)
 
         # Push job to the bottom of the sequence
+        void job_to_bottom(JobPtr job)
+
+        # Push job to the top of the sequence
+        void job_to_top(JobPtr job)
+
+        # Push job to the bottom of the sequence
         void job_to_bottom(Job job)
 
         # Push job to the top of the sequence
         void job_to_top(Job job)
 
-        # Get jobs as raw Job copies
-        vector[Job] get_jobs() const
-
         # Get machine graph
         MachineGraph get_mach_graph() const
-
-        # Deepcopy method
-        Sigma deepcopy() const
 
 
 cdef extern from "job_times.hpp":
@@ -166,7 +162,7 @@ cdef extern from "mach_graph.hpp":
 cdef extern from "two_mach.hpp":
     cdef cppclass TwoMach:
         TwoMach()
-        TwoMach(const int& m, const vector[Job]& jobs)
+        TwoMach(const int& m, const vector[JobPtr]& jobs)
 
         const vector[JobTimes]& get_seq(const int& m1, const int& m2)
 
@@ -178,7 +174,7 @@ cdef extern from "permutation.hpp":
         int n
         int level
         Sigma sigma1
-        vector[Job] free_jobs
+        vector[JobPtr] free_jobs
         Sigma sigma2
         shared_ptr[MachineGraph] mach_graph
 
@@ -190,13 +186,13 @@ cdef extern from "permutation.hpp":
                     const shared_ptr[MachineGraph]& mach_graph_)
 
         # Constructor from free jobs
-        Permutation(const int &m_, const vector[Job] &jobs_,
+        Permutation(const int &m_, const vector[JobPtr] &jobs_,
                     const shared_ptr[MachineGraph]& mach_graph_)
 
         # Constructor given all desired attributes
         Permutation(
             const int &m_, const int &n_, const int &level_,
-            const Sigma &sigma1_, const vector[Job] &free_jobs_,
+            const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_,
             const shared_ptr[MachineGraph]& mach_graph_,
             const shared_ptr[TwoMach]& two_mach_cache_
@@ -205,7 +201,7 @@ cdef extern from "permutation.hpp":
         # Constructor given all desired attributes but two_mach
         Permutation(
             const int &m_, const int &n_, const int &level_,
-            const Sigma &sigma1_, const vector[Job] &free_jobs_,
+            const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_,
             const shared_ptr[MachineGraph]& mach_graph_
         )
@@ -215,13 +211,13 @@ cdef extern from "permutation.hpp":
                     const MachineGraph& mach_graph_)
 
         # Constructor from free jobs with MachineGraph object
-        Permutation(const int &m_, const vector[Job] &jobs_,
+        Permutation(const int &m_, const vector[JobPtr] &jobs_,
                     const MachineGraph& mach_graph_)
 
         # Constructor given all desired attributes with MachineGraph object
         Permutation(
             const int &m_, const int &n_, const int &level_,
-            const Sigma &sigma1_, const vector[Job] &free_jobs_,
+            const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_, const MachineGraph& mach_graph_,
             const shared_ptr[TwoMach]& two_mach_cache_
         )
@@ -229,15 +225,15 @@ cdef extern from "permutation.hpp":
         # Constructor given all desired attributes but two_mach with MachineGraph object
         Permutation(
             const int &m_, const int &n_, const int &level_,
-            const Sigma &sigma1_, const vector[Job] &free_jobs_,
+            const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_, const MachineGraph& mach_graph_
         )
 
         # Accessor methods
-        vector[Job] get_free_jobs()
+        vector[JobPtr] get_free_jobs()
         Sigma get_sigma1()
         Sigma get_sigma2()
-        vector[Job] get_sequence()
+        vector[JobPtr] get_sequence()
         vector[int] get_r() const
         vector[int] get_q() const
         vector[JobTimes*] get_job_times(const int& m1, const int& m2) const
@@ -245,9 +241,6 @@ cdef extern from "permutation.hpp":
 
         # Modification methods
         void push_job(const unsigned int &j)
-        void push_job_forward(const unsigned int &j)
-        void push_job_backward(const unsigned int &j)
-        void push_job_dyn(const unsigned int &j)
         void update_params()
         void compute_starts()
 
@@ -264,54 +257,49 @@ cdef extern from "permutation.hpp":
         int calc_tot_time()
 
         # Additional methods
-        void emplace_from_ref_solution(const vector[Job]& ref_solution)
-
-        # Copy method
-        Permutation copy() const
+        void emplace_from_ref_solution(const vector[JobPtr]& ref_solution)
 
     # Two machine problem definition
-    int two_mach_problem(const vector[Job] &jobs, const int &m1, const int &m2)
+    int two_mach_problem(const vector[JobPtr] &jobs, const int &m1, const int &m2)
 
 
 cdef extern from "local_search.hpp":
 
-    cdef Permutation local_search(vector[Job]& jobs_,
+    cdef Permutation local_search(vector[JobPtr]& jobs_,
                                   const shared_ptr[MachineGraph]& mach_graph)
 
 
 cdef extern from "neh.hpp":
 
-    cdef Permutation neh_constructive(vector[Job]& jobs,
+    cdef Permutation neh_constructive(vector[JobPtr]& jobs,
                                       const shared_ptr[MachineGraph]& mach_graph)
 
 
 cdef extern from "randomized_heur.hpp":
 
-    cdef Permutation randomized_heur(vector[Job] jobs_, int n_iter,
+    cdef Permutation randomized_heur(vector[JobPtr] jobs_, int n_iter,
                                      unsigned int seed,
                                      const shared_ptr[MachineGraph]& mach_graph)
 
 
 cdef extern from "quick_constructive.hpp":
 
-    cdef Permutation quick_constructive(vector[Job]& jobs,
+    cdef Permutation quick_constructive(vector[JobPtr]& jobs,
                                         const shared_ptr[MachineGraph]& mach_graph)
 
 
 cdef extern from "intensify.hpp":
 
-    cdef bool desc_T(const Job& a, const Job& b)
-
     cdef Permutation intensification(
         const Sigma &sigma1,
-        const vector[Job] &jobs_,
+        const vector[JobPtr] &jobs_,
         const Sigma &sigma2,
         const shared_ptr[MachineGraph]& mach_graph
     )
 
     cdef Permutation intensify(
         const Sigma &sigma1,
-        const vector[Job] &jobs_,
+        const vector[JobPtr] &jobs_,
         const Sigma &sigma2,
         const shared_ptr[MachineGraph]& mach_graph
     )
