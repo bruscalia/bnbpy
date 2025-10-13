@@ -269,6 +269,9 @@ cdef class PermFlowShop(Problem):
     cpdef int lower_bound_2m(PermFlowShop self):
         return self.perm.lower_bound_2m()
 
+    cpdef void update_params(PermFlowShop self):
+        self.perm.update_params()
+
     cpdef void push_job(PermFlowShop self, int& j):
         self.perm.push_job(j)
 
@@ -290,11 +293,16 @@ cdef class PermFlowShop(Problem):
     cdef PermFlowShop _copy(PermFlowShop self):
         cdef:
             PermFlowShop child
-        child = type(self).__new__(type(self))
+        child = PermFlowShop.__new__(PermFlowShop)
         child.solution = Solution()
         child.constructive = self.constructive
         child.perm = self.perm
         return child
+
+    cpdef void perm_copy(PermFlowShop self):
+        cdef:
+            Permutation perm
+        perm = self.perm
 
 
 cdef class PermFlowShop1M(PermFlowShop):
@@ -305,6 +313,15 @@ cdef class PermFlowShop1M(PermFlowShop):
     cpdef void bound_upgrade(PermFlowShop1M self):
         return
 
+    cdef PermFlowShop1M _copy(PermFlowShop1M self):
+        cdef:
+            PermFlowShop1M child
+        child = PermFlowShop1M.__new__(PermFlowShop1M)
+        child.solution = Solution()
+        child.constructive = self.constructive
+        child.perm = self.perm
+        return child
+
 
 cdef class PermFlowShop2MHalf(PermFlowShop):
 
@@ -313,8 +330,26 @@ cdef class PermFlowShop2MHalf(PermFlowShop):
             return
         super(PermFlowShop2MHalf, self).bound_upgrade()
 
+    cdef PermFlowShop2MHalf _copy(PermFlowShop2MHalf self):
+        cdef:
+            PermFlowShop2MHalf child
+        child = PermFlowShop2MHalf.__new__(PermFlowShop2MHalf)
+        child.solution = Solution()
+        child.constructive = self.constructive
+        child.perm = self.perm
+        return child
+
 
 cdef class PermFlowShop2M(PermFlowShop):
 
     cpdef double calc_bound(PermFlowShop2M self):
         return self.perm.calc_lb_2m()
+
+    cdef PermFlowShop2M _copy(PermFlowShop2M self):
+        cdef:
+            PermFlowShop2M child
+        child = PermFlowShop2M.__new__(PermFlowShop2M)
+        child.solution = Solution()
+        child.constructive = self.constructive
+        child.perm = self.perm
+        return child

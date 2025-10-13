@@ -11,8 +11,8 @@ cdef extern from "job.hpp":
     cdef cppclass Job:
         int j
         shared_ptr[vector[int]] p
-        vector[int] r
-        vector[int] q
+        shared_ptr[vector[int]] r
+        shared_ptr[vector[int]] q
         shared_ptr[vector[vector[int]]] lat
         int slope
         int T
@@ -35,8 +35,8 @@ cdef extern from "job.hpp":
         Job(
             const int &j_,
             const shared_ptr[vector[int]] &p_,
-            const vector[int] &r_,
-            const vector[int] &q_,
+            const shared_ptr[vector[int]] &r_,
+            const shared_ptr[vector[int]] &q_,
             const shared_ptr[vector[vector[int]]] &lat_,
             const int &slope_,
             const int &T_
@@ -50,9 +50,6 @@ cdef extern from "job.hpp":
 
         # Recompute only r and q for the job given machine graph
         void recompute_r_q(const MachineGraph &mach_graph)
-
-    # Function to copy a vector of jobs
-    cdef vector[Job] copy_jobs(const vector[Job]& jobs)
 
     # Function to copy a vector of jobs with reinitialization from j and p
     cdef vector[Job] copy_reset(const vector[Job]& jobs, const MachineGraph& mach_graph)
@@ -252,8 +249,6 @@ cdef extern from "permutation.hpp":
         void push_job_backward(const unsigned int &j)
         void push_job_dyn(const unsigned int &j)
         void update_params()
-        void front_updates()
-        void back_updates()
         void compute_starts()
 
         # Feasibility check

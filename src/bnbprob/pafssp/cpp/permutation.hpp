@@ -9,6 +9,7 @@
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "sigma.hpp"
+#include "single_mach.hpp"
 #include "two_mach.hpp"
 
 class Permutation
@@ -24,9 +25,7 @@ public:
     std::shared_ptr<MachineGraph> mach_graph;
 
     // Default constructor
-    Permutation() : m(0), n(0), level(0), scheduled_jobs()
-    {
-    }
+    Permutation() : m(0), n(0), level(0), scheduled_jobs(), single_mach_cache() {}
 
     // Constructor from processing times
     Permutation(const std::vector<std::vector<int>> &p_,
@@ -43,7 +42,8 @@ public:
           sigma2(m_, mach_graph_),
           mach_graph(mach_graph_),
           two_mach_cache(std::make_shared<TwoMach>(m, free_jobs)),
-          scheduled_jobs(n, false)
+          scheduled_jobs(n, false),
+          single_mach_cache(m_, jobs_)
     {
         // Constructor implementation here
         update_params();
@@ -64,7 +64,8 @@ public:
           sigma2(sigma2_),
           mach_graph(mach_graph_),
           two_mach_cache(two_mach_cache_),
-          scheduled_jobs(n_, false)
+          scheduled_jobs(n_, false),
+          single_mach_cache(m_, free_jobs_)
     {
         // Constructor implementation here
         update_params();
@@ -84,7 +85,8 @@ public:
           sigma2(sigma2_),
           mach_graph(mach_graph_),
           two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_)),
-          scheduled_jobs(n_, false)
+          scheduled_jobs(n_, false),
+          single_mach_cache(m_, free_jobs_)
     {
         // Constructor implementation here
         update_params();
@@ -143,8 +145,6 @@ public:
     void push_job_backward(const unsigned int &j);
     void push_job_dyn(const unsigned int &j);
     void update_params();
-    void front_updates();
-    void back_updates();
     void compute_starts();
 
     // Feasibility check
@@ -221,7 +221,7 @@ public:
             Job job = this->free_jobs.back();
             this->sigma1.job_to_bottom(job);
             this->free_jobs.pop_back();
-            front_updates();
+            update_params();
         }
     }
 
@@ -230,7 +230,8 @@ public:
     {
         return Permutation(this->m, this->n, this->level, this->sigma1,
                            this->free_jobs, this->sigma2, this->mach_graph,
-                           this->two_mach_cache, this->scheduled_jobs);
+                           this->two_mach_cache, this->scheduled_jobs,
+                           this->single_mach_cache);
     }
 
     // Constructor for copy
@@ -238,7 +239,8 @@ public:
                 const vector<Job> &free_jobs_, const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_,
-                const std::vector<bool> &scheduled_jobs_)
+                const std::vector<bool> &scheduled_jobs_,
+                const SingleMach &single_mach_cache_)
         : m(m_),
           n(n_),
           level(level_),
@@ -247,7 +249,8 @@ public:
           sigma2(sigma2_),
           mach_graph(mach_graph_),
           two_mach_cache(two_mach_cache_),
-          scheduled_jobs(scheduled_jobs_)
+          scheduled_jobs(scheduled_jobs_),
+          single_mach_cache(single_mach_cache_)
     {
     }
 
@@ -255,6 +258,8 @@ private:
     // Cache for two-machine sequences
     std::shared_ptr<TwoMach> two_mach_cache;
     std::vector<bool> scheduled_jobs;
+    // Cache for single-machine sequences
+    SingleMach single_mach_cache;
 
     // Complete prescheduled
     void complete_prescheduled()

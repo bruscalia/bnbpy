@@ -104,8 +104,8 @@ cdef class PyJob:
             int ri
             list[int] out
         out = []
-        for i in range(self.job.r.size()):
-            ri = self.job.r[i]
+        for i in range(self.job.r.get().size()):
+            ri = self.job.r.get()[0][i]
             out.append(ri)
         return out
 
@@ -115,8 +115,8 @@ cdef class PyJob:
             int qi
             list[int] out
         out = []
-        for i in range(self.job.q.size()):
-            qi = self.job.q[i]
+        for i in range(self.job.q.get().size()):
+            qi = self.job.q.get()[0][i]
             out.append(qi)
         return out
 

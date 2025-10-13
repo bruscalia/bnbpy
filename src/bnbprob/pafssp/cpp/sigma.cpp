@@ -19,7 +19,7 @@ void Sigma::job_to_bottom(Job job)
         const std::vector<int> &prev_k = this->mach_graph->get_prec(k);
         int max_prev;
         if (prev_k.size() == 0) {
-            max_prev = job.r[k];
+            max_prev = job.r->at(k);
         } else {
             max_prev = 0;
         }
@@ -43,7 +43,7 @@ void Sigma::job_to_top(Job job)
         const std::vector<int> &succ_k = this->mach_graph->get_succ(k);
         int max_succ;
         if (succ_k.size() == 0) {
-            max_succ = job.q[k];
+            max_succ = job.q->at(k);
         } else {
             max_succ = 0;
         }

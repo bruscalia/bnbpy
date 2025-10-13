@@ -66,7 +66,7 @@ int Job::get_T() const
     int T = 0;
     for (int i = 0; i < m; ++i)
     {
-        T += r[i] + (*p)[i] + q[i];
+        T += (*p)[i];
     }
     return T;
 }
@@ -88,9 +88,19 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
 {
     int m = p->size();
 
-    // Reset r and q vectors
-    r.assign(m, 0);
-    q.assign(m, 0);
+    // Create new vectors for r and q (copy-on-write behavior)
+    // Only create new shared_ptr if current ones are shared
+    if (r.use_count() > 1) {
+        r = std::make_shared<std::vector<int>>(m, 0);
+    } else {
+        r->assign(m, 0);
+    }
+
+    if (q.use_count() > 1) {
+        q = std::make_shared<std::vector<int>>(m, 0);
+    } else {
+        q->assign(m, 0);
+    }
 
     // Initialize release dates of the job on each machine
     for (int k : mach_graph.get_topo_order())
@@ -99,9 +109,9 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
         int max_release = 0;
         for (const int &pk : prev_k)
         {
-            max_release = std::max(max_release, r[pk] + p->at(pk));
+            max_release = std::max(max_release, (*r)[pk] + p->at(pk));
         }
-        r[k] = max_release;
+        (*r)[k] = max_release;
     }
 
     // Initialize wait times of the job on each machine
@@ -111,9 +121,9 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
         int max_wait = 0;
         for (const int &sk : succ_k)
         {
-            max_wait = std::max(max_wait, q[sk] + p->at(sk));
+            max_wait = std::max(max_wait, (*q)[sk] + p->at(sk));
         }
-        q[k] = max_wait;
+        (*q)[k] = max_wait;
     }
 }
 

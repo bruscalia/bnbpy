@@ -14,8 +14,8 @@ public:
     // Attributes
     int j;
     std::shared_ptr<std::vector<int>> p;
-    std::vector<int> r;
-    std::vector<int> q;
+    std::shared_ptr<std::vector<int>> r;
+    std::shared_ptr<std::vector<int>> q;
     shared_ptr<vector<vector<int>>> lat;
 
     // Default constructor
@@ -27,8 +27,8 @@ public:
         const MachineGraph &mach_graph)
         : j(j_),
           p(p_),
-          r(p_->size(), 0),
-          q(p_->size(), 0),
+          r(std::make_shared<std::vector<int>>(p_->size(), 0)),
+          q(std::make_shared<std::vector<int>>(p_->size(), 0)),
           lat(std::make_shared<std::vector<std::vector<int>>>(p_->size()))
     {
         initialize(p_, mach_graph);
@@ -39,16 +39,16 @@ public:
         const MachineGraph &mach_graph)
         : j(j_),
           p(std::make_shared<std::vector<int>>(p_)),
-          r(p_.size(), 0),
-          q(p_.size(), 0),
+          r(std::make_shared<std::vector<int>>(p_.size(), 0)),
+          q(std::make_shared<std::vector<int>>(p_.size(), 0)),
           lat(std::make_shared<std::vector<std::vector<int>>>(p_.size()))
     {
         initialize(p, mach_graph);
     }
 
-    // Parameterized constructor -> deepcopy of arrays
+    // Parameterized constructor -> shared pointers
     Job(const int &j_, const std::shared_ptr<std::vector<int>> &p_,
-        const vector<int> &r_, const vector<int> &q_,
+        const std::shared_ptr<std::vector<int>> &r_, const std::shared_ptr<std::vector<int>> &q_,
         const std::shared_ptr<std::vector<std::vector<int>>> &lat_)
         : j(j_), p(p_), r(r_), q(q_), lat(lat_)
     {
@@ -70,14 +70,6 @@ private:
     void initialize(const std::shared_ptr<std::vector<int>> &p_,
                     const MachineGraph &mach_graph);
 };
-
-// Function to copy a vector of jobs
-inline std::vector<Job> copy_jobs(
-    const std::vector<Job> &jobs)
-{
-    std::vector<Job> out = jobs;
-    return out;  // Return the copied vector
-}
 
 // Function to copy a vector of jobs with reinitialization from j and p
 std::vector<Job> copy_reset(

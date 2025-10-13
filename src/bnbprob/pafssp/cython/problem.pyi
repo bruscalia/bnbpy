@@ -202,6 +202,7 @@ class PermFlowShop:
         ----------
         n_iter : int
             Number of iterations for the randomized heuristic
+
         seed : int, optional
             Random seed for reproducibility. If 0 (default), uses random device
 
@@ -267,6 +268,11 @@ class PermFlowShop:
 
     def lower_bound_2m(self) -> int:
         """Get two-machine lower bound"""
+        ...
+
+    def update_params(self) -> None:
+        """Updates parameters `r` and `q` of instance based on partial
+        scheduling sigma1 and sigma2 and free jobs."""
         ...
 
     def push_job(self, j: int) -> None:

@@ -72,6 +72,8 @@ cdef class PermFlowShop(Problem):
 
     cpdef int lower_bound_2m(PermFlowShop self)
 
+    cpdef void update_params(PermFlowShop self)
+
     cpdef void push_job(PermFlowShop self, int& j)
 
     cdef void _push_job(PermFlowShop self, int& j)
@@ -93,6 +95,8 @@ cdef class PermFlowShop(Problem):
         child.solution = Solution()
         child.constructive = self.constructive
         return child
+
+    cpdef void perm_copy(PermFlowShop self)
 
 
 cdef class PermFlowShop2M(PermFlowShop):

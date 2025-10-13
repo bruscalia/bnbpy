@@ -72,18 +72,20 @@ cdef class Node:
 
     cpdef list[Node] branch(Node self):
         cdef:
+            int i
             list prob_children
             list[Node] children
 
         prob_children = self.problem.branch()
         if prob_children is None:
             return []
-        children = [
-            self.child_problem(prob_child)
-            for prob_child in prob_children
-        ]
+
+        children = [None] * len(prob_children)
+        for i in range(len(prob_children)):
+            prob_child = prob_children[i]
+            children[i] = self.child_problem(prob_child)
         self.children = children
-        return self.children
+        return children
 
     cdef Node child_problem(Node self, Problem problem):
         cdef:
