@@ -51,7 +51,6 @@ cdef class PermFlowShop(Problem):
         constructive: Literal['neh', 'quick'] = 'neh'
     ) -> 'PermFlowShop':
         cdef:
-            Permutation perm
             PermFlowShop problem
             MachineGraph mach_graph
             vector[vector[int]] pp
@@ -70,12 +69,11 @@ cdef class PermFlowShop(Problem):
 
         # Create Permutation with processing times and MachineGraph
         pp = p
-        perm = Permutation(pp, mach_graph)
 
         problem = cls(
             constructive=constructive,
         )
-        problem.set_perm(perm)
+        problem.set_perm(pp, mach_graph)
         return problem
 
     @property

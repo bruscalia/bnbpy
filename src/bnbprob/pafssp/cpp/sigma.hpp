@@ -37,22 +37,6 @@ public:
     {
     }
 
-    // Constructor with jobs and machine graph (from raw Job vector)
-    Sigma(const int &m_, const std::vector<Job> &jobs_,
-          const MachineGraph *mach_graph_)
-        : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs(), p(m_, 0)
-    {
-        // Convert raw Jobs to shared_ptr<Job>
-        for (const auto &job : jobs_)
-        {
-            jobs.push_back(std::make_shared<Job>(job));
-            for (int k = 0; k < m; ++k)
-            {
-                p[k] += job.p[k];
-            }
-        }
-    }
-
     // Constructor with jobs and machine graph (from JobPtr vector)
     Sigma(const int &m_, const std::vector<JobPtr> &jobs_,
           const MachineGraph *mach_graph_)
@@ -67,22 +51,6 @@ public:
             for (int k = 0; k < m; ++k)
             {
                 p[k] += (*job).p[k];
-            }
-        }
-    }
-
-    // Full constructor (from raw Job vector)
-    Sigma(const int &m_, const std::vector<Job> &jobs_,
-          const std::vector<int> &C_, const MachineGraph *mach_graph_)
-        : m(m_), C(C_), mach_graph(mach_graph_), jobs(), p(m_, 0)
-    {
-        // Convert raw Jobs to shared_ptr<Job>
-        for (const auto &job : jobs_)
-        {
-            jobs.push_back(std::make_shared<Job>(job));
-            for (int k = 0; k < m; ++k)
-            {
-                p[k] += job.p[k];
             }
         }
     }
@@ -117,17 +85,13 @@ public:
     // Push job to bottom sequence
     void job_to_bottom(Job job)
     {
-        // Create shared_ptr and call original method
-        std::shared_ptr<Job> job_ptr = std::make_shared<Job>(job);
-        job_to_bottom(job_ptr);
+        job_to_bottom(&job);
     }
 
     // Push job to top sequence
     void job_to_top(Job job)
     {
-        // Create shared_ptr and call original method
-        std::shared_ptr<Job> job_ptr = std::make_shared<Job>(job);
-        job_to_top(job_ptr);
+        job_to_top(&job);
     }
 
     // Get jobs as JobPtr vector

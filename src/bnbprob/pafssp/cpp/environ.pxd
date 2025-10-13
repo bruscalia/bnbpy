@@ -47,7 +47,7 @@ cdef extern from "job.hpp":
         void recompute_r_q(const MachineGraph &mach_graph)
 
 
-ctypedef shared_ptr[Job] JobPtr
+ctypedef Job* JobPtr
 
 
 cdef extern from "sigma.hpp":
@@ -66,14 +66,8 @@ cdef extern from "sigma.hpp":
         # Constructor with empty instance and shared_ptr<MachineGraph>
         Sigma(const int &m_, const shared_ptr[MachineGraph] &mach_graph_)
 
-        # Constructor with jobs and MachineGraph (from raw Job vector)
-        Sigma(const int &m_, const vector[Job] &jobs_, const MachineGraph* mach_graph_)
-
         # Constructor with jobs and MachineGraph (from JobPtr vector)
         Sigma(const int &m_, const vector[JobPtr] &jobs_, const MachineGraph* mach_graph_)
-
-        # Full constructor (from raw Job vector)
-        Sigma(const int &m_, const vector[Job] &jobs_, const vector[int] &C_, const MachineGraph* mach_graph_)
 
         # Full constructor (from JobPtr vector)
         Sigma(const int &m_, const vector[JobPtr] &jobs_, const vector[int] &C_, const MachineGraph* mach_graph_)

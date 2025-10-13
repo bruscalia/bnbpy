@@ -30,17 +30,118 @@ private:
     std::vector<bool> scheduled_jobs;
     // Cache for single-machine sequences
     SingleMach single_mach_cache;
+    // Check for ownership of jobs in free_jobs
+    bool owns_jobs = false;
 
 public:
-
     // Default constructor
-    Permutation() : m(0), n(0), level(0), scheduled_jobs(), single_mach_cache() {}
+    Permutation()
+        : m(0),
+          n(0),
+          level(0),
+          scheduled_jobs(),
+          single_mach_cache(),
+          owns_jobs(false)
+    {
+    }
+
+    // Destructor - clean up jobs if we own them
+    ~Permutation()
+    {
+        if (owns_jobs)
+        {
+            for (JobPtr job : free_jobs)
+            {
+                delete job;
+            }
+        }
+    }
+
+    // Copy constructor - shallow copy by default for performance
+    Permutation(const Permutation &other)
+        : m(other.m),
+          n(other.n),
+          level(other.level),
+          sigma1(other.sigma1),
+          free_jobs(other.free_jobs),
+          sigma2(other.sigma2),
+          mach_graph(other.mach_graph),
+          two_mach_cache(other.two_mach_cache),
+          scheduled_jobs(other.scheduled_jobs),
+          single_mach_cache(other.single_mach_cache),
+          owns_jobs(false)  // Copy never owns jobs - shared ownership
+    {
+    }
+
+    // Assignment operator - clean up and copy
+    Permutation &operator=(const Permutation &other)
+    {
+        if (this != &other)
+        {
+            // Clean up existing jobs if we own them
+            if (owns_jobs)
+            {
+                for (JobPtr job : free_jobs)
+                {
+                    delete job;
+                }
+            }
+
+            // Copy basic attributes
+            m = other.m;
+            n = other.n;
+            level = other.level;
+            sigma1 = other.sigma1;
+            free_jobs = other.free_jobs;  // Shallow copy
+            sigma2 = other.sigma2;
+            mach_graph = other.mach_graph;
+            two_mach_cache = other.two_mach_cache;
+            scheduled_jobs = other.scheduled_jobs;
+            single_mach_cache = other.single_mach_cache;
+            owns_jobs = false;  // Assignment never transfers ownership
+        }
+        return *this;
+    }
+
+    // Move assignment operator - transfer ownership
+    Permutation &operator=(Permutation &&other) noexcept
+    {
+        if (this != &other)
+        {
+            // Clean up existing jobs if we own them
+            if (owns_jobs)
+            {
+                for (JobPtr job : free_jobs)
+                {
+                    delete job;
+                }
+            }
+
+            // Move all attributes
+            m = other.m;
+            n = other.n;
+            level = other.level;
+            sigma1 = std::move(other.sigma1);
+            free_jobs = std::move(other.free_jobs);
+            sigma2 = std::move(other.sigma2);
+            mach_graph = std::move(other.mach_graph);
+            two_mach_cache = std::move(other.two_mach_cache);
+            scheduled_jobs = std::move(other.scheduled_jobs);
+            single_mach_cache = std::move(other.single_mach_cache);
+            owns_jobs = other.owns_jobs;
+
+            // Reset the moved-from object
+            other.owns_jobs = false;  // Transfer ownership
+            other.free_jobs.clear();
+        }
+        return *this;
+    }
 
     // Constructor from processing times
     Permutation(const std::vector<std::vector<int>> &p_,
                 const std::shared_ptr<MachineGraph> &mach_graph_);
 
-    // Constructor from free jobs
+    // Constructor from free jobs (assumes jobs are managed externally)
     Permutation(const int &m_, const std::vector<JobPtr> &jobs_,
                 const std::shared_ptr<MachineGraph> &mach_graph_)
         : m(m_),
@@ -52,7 +153,8 @@ public:
           mach_graph(mach_graph_),
           two_mach_cache(std::make_shared<TwoMach>(m, free_jobs)),
           scheduled_jobs(n, false),
-          single_mach_cache(m_, jobs_)
+          single_mach_cache(m_, jobs_),
+          owns_jobs(false)  // External job management
     {
         // Constructor implementation here
         update_params();
@@ -74,7 +176,8 @@ public:
           mach_graph(mach_graph_),
           two_mach_cache(two_mach_cache_),
           scheduled_jobs(n_, false),
-          single_mach_cache(m_, free_jobs_)
+          single_mach_cache(m_, free_jobs_),
+          owns_jobs(false)  // External job management
     {
         // Constructor implementation here
         update_params();
@@ -95,7 +198,8 @@ public:
           mach_graph(mach_graph_),
           two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_)),
           scheduled_jobs(n_, false),
-          single_mach_cache(m_, free_jobs_)
+          single_mach_cache(m_, free_jobs_),
+          owns_jobs(false)  // External job management
     {
         // Constructor implementation here
         update_params();

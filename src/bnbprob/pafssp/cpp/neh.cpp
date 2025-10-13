@@ -23,7 +23,6 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
 {
     int M, c1, c2;
     // Sigma s1, s2, sol, best_sol, s_alt;
-    JobPtr job;
     std::vector<JobPtr> vec;
     Sigma s1, s2, sol, best_sol;
     std::vector<JobPtr> jobs = jobs_;

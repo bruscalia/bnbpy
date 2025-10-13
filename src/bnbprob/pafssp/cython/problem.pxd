@@ -3,8 +3,10 @@
 
 from libcpp cimport bool
 from libcpp.string cimport string
+from libcpp.vector cimport vector
 
 from bnbprob.pafssp.cpp.environ cimport (
+    MachineGraph,
     Permutation,
     local_search,
     neh_constructive,
@@ -27,8 +29,8 @@ cdef class PermFlowShop(Problem):
     cdef:
         Permutation perm
 
-    cdef inline void set_perm(PermFlowShop self, Permutation perm):
-        self.perm = perm
+    cdef inline void set_perm(PermFlowShop self, vector[vector[int]] p_, MachineGraph mach_graph_):
+        self.perm = Permutation(p_, mach_graph_)
 
     cdef inline Permutation get_perm(PermFlowShop self):
         return self.perm

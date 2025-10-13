@@ -21,14 +21,15 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_,
       sigma2(m, mach_graph_),
       mach_graph(mach_graph_),
       scheduled_jobs(p_.size(), false),
-      single_mach_cache()
+      single_mach_cache(),
+      owns_jobs(true)  // We create and own these jobs
 {
     // Constructor implementation here
     // Create jobs used in permutation solution
     for (int j = 0; j < n; ++j)
     {
         const std::vector<int> &pj = p_[j];
-        this->free_jobs[j] = std::make_shared<Job>(j, pj, *mach_graph_);
+        this->free_jobs[j] = new Job(j, pj, *mach_graph_);
     }
 
     // Creates the cache 2M
@@ -260,8 +261,10 @@ int Permutation::lower_bound_2m()
             int r_k2 = std::max(r[m2], this->sigma1.C[m2]);
             int q_k1 = std::max(q[m1], this->sigma2.C[m1]);
             int q_k2 = std::max(q[m2], this->sigma2.C[m2]);
-            int temp_value = (r_k1 + two_mach_makespan(get_job_times(m1, m2), (r_k2 - r_k1),
-                                   (q_k1 - q_k2)) + q_k2);
+            int temp_value = (r_k1 +
+                              two_mach_makespan(get_job_times(m1, m2),
+                                                (r_k2 - r_k1), (q_k1 - q_k2)) +
+                              q_k2);
             lbs = std::max(lbs, temp_value);
         }
     }

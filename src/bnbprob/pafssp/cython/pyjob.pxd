@@ -10,7 +10,7 @@ cdef class PyJob:
     cdef:
         Job job
 
-    cdef Job get_job(self)
+    cdef JobPtr get_job(self)
 
     cpdef int get_j(self) except *
 

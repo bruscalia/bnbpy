@@ -60,7 +60,7 @@ private:
     void initialize(const std::vector<int> &p_, const MachineGraph &mach_graph);
 };
 
-// Type definition for shared pointer
-typedef std::shared_ptr<Job> JobPtr;
+// Type definition for raw pointer
+typedef Job *JobPtr;
 
 #endif  // JOB_HPP
