@@ -245,6 +245,17 @@ cdef class PermFlowShop(Problem):
         child._push_job(j)
         return child
 
+    cpdef void simple_bound_upgrade(PermFlowShop self):
+        cdef:
+            double lb
+
+        if self.perm.free_jobs.size() == 0:
+            lb = <double>self.perm.calc_lb_full()
+        else:
+            self.perm.update_params()
+            lb = <double>self.lower_bound_1m()
+        self.solution.set_lb(lb)
+
     cpdef void bound_upgrade(PermFlowShop self):
         cdef:
             double lb5, lb

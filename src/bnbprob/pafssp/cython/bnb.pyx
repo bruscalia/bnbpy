@@ -54,10 +54,16 @@ cdef class LazyBnB(BranchAndBound):
     cpdef void post_eval_callback(LazyBnB self, Node node):
         cdef:
             PermFlowShop problem
+        # Here the r and q values are not yet updated
         if node.lb < self.get_ub():
             problem = node.problem
-            problem.bound_upgrade()
+            # Update lower r and q values and recompute bound
+            problem.simple_bound_upgrade()
             node.lb = problem.get_lb()
+            if node.lb < self.get_ub():
+                # Two machine bound upgrade
+                problem.bound_upgrade()
+                node.lb = problem.get_lb()
 
 
 cdef class CutoffBnB(LazyBnB):

@@ -113,7 +113,6 @@ void Permutation::push_job(const unsigned int &j)
             std::swap(this->free_jobs[j], this->free_jobs.back());
         }
         this->free_jobs.pop_back();
-        this->update_params();
     }
     else
     {
@@ -124,7 +123,6 @@ void Permutation::push_job(const unsigned int &j)
             std::swap(this->free_jobs[j], this->free_jobs.back());
         }
         this->free_jobs.pop_back();
-        this->update_params();
     }
     this->level += 1;
 }
@@ -236,7 +234,15 @@ int Permutation::calc_lb_full()
 
 int Permutation::lower_bound_1m()
 {
-    return this->single_mach_cache.get_bound();
+    // Implementation here
+    int cost = 0;
+    for (int k = 0; k < this->m; ++k)
+    {
+        int r_k = std::max(this->single_mach_cache.r[k], this->sigma1.C[k]);
+        int q_k = std::max(this->single_mach_cache.q[k], this->sigma2.C[k]);
+        cost = std::max(cost, r_k + q_k + this->single_mach_cache.p[k]);
+    }
+    return cost;
 }
 
 int Permutation::lower_bound_2m()
@@ -250,11 +256,12 @@ int Permutation::lower_bound_2m()
     {
         for (const int &m2 : this->mach_graph->get_descendants()[m1])
         {
-            int temp_value =
-                (r[m1] +
-                 two_mach_makespan(get_job_times(m1, m2), (r[m2] - r[m1]),
-                                   (q[m1] - q[m2])) +
-                 q[m2]);
+            int r_k1 = std::max(r[m1], this->sigma1.C[m1]);
+            int r_k2 = std::max(r[m2], this->sigma1.C[m2]);
+            int q_k1 = std::max(q[m1], this->sigma2.C[m1]);
+            int q_k2 = std::max(q[m2], this->sigma2.C[m2]);
+            int temp_value = (r_k1 + two_mach_makespan(get_job_times(m1, m2), (r_k2 - r_k1),
+                                   (q_k1 - q_k2)) + q_k2);
             lbs = std::max(lbs, temp_value);
         }
     }

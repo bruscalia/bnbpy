@@ -62,6 +62,8 @@ cdef class PermFlowShop(Problem):
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
+    cpdef void simple_bound_upgrade(PermFlowShop self)
+
     cpdef void bound_upgrade(PermFlowShop self)
 
     cpdef int calc_lb_1m(PermFlowShop self)
