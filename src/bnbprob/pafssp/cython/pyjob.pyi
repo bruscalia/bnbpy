@@ -6,3 +6,4 @@ class PyJob:
     lat: list[list[int]]
     slope: int
     T: int
+    s: list[int]

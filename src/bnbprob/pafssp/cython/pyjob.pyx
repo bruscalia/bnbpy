@@ -42,6 +42,10 @@ cdef class PyJob:
         return self.get_q()
 
     @property
+    def s(self):
+        return self.get_s()
+
+    @property
     def lat(self):
         return self.get_lat()
 
@@ -58,16 +62,12 @@ cdef class PyJob:
         cdef:
             int m
             vector[int] p_
-            shared_ptr[vector[int]] p_shared
             MachineGraph mach_graph
             PyJob out
 
         out = PyJob.__new__(PyJob)
         p_ = p
         m = len(p)
-
-        # Create shared_ptr from vector
-        p_shared = make_shared[vector[int]](p_)
 
         # Create sequential MachineGraph using same pattern as problem.pyx
         if edges is None:
@@ -78,7 +78,7 @@ cdef class PyJob:
         mach_graph = create_machine_graph(mi)
 
         # Create Job with MachineGraph
-        out.job = Job(j, p_shared, mach_graph)
+        out.job = Job(j, p_, mach_graph)
         return out
 
     cdef Job get_job(self):
@@ -93,8 +93,8 @@ cdef class PyJob:
             int pi
             list[int] out
         out = []
-        for i in range(self.job.p.get().size()):
-            pi = self.job.p.get()[0][i]
+        for i in range(self.job.p.size()):
+            pi = self.job.p[i]
             out.append(pi)
         return out
 
@@ -104,8 +104,8 @@ cdef class PyJob:
             int ri
             list[int] out
         out = []
-        for i in range(self.job.r.get().size()):
-            ri = self.job.r.get()[0][i]
+        for i in range(self.job.r.size()):
+            ri = self.job.r[i]
             out.append(ri)
         return out
 
@@ -115,9 +115,20 @@ cdef class PyJob:
             int qi
             list[int] out
         out = []
-        for i in range(self.job.q.get().size()):
-            qi = self.job.q.get()[0][i]
+        for i in range(self.job.q.size()):
+            qi = self.job.q[i]
             out.append(qi)
+        return out
+
+    cpdef list[int] get_s(self):
+        cdef:
+            unsigned int i
+            int si
+            list[int] out
+        out = []
+        for i in range(self.job.s.size()):
+            si = self.job.s[i]
+            out.append(si)
         return out
 
     cpdef list[list[int]] get_lat(self):
@@ -127,10 +138,10 @@ cdef class PyJob:
             list[int] lati
             list[list[int]] out
         out = []
-        for i in range(self.job.lat.get().size()):
+        for i in range(self.job.lat.size()):
             out.append([])
-            for j in range(self.job.lat.get()[0][i].size()):
-                li = self.job.lat.get()[0][i][j]
+            for j in range(self.job.lat[i].size()):
+                li = self.job.lat[i][j]
                 out[i].append(li)
         return out
 

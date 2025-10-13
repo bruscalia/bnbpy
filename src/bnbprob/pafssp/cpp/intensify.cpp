@@ -53,7 +53,7 @@ Permutation intensification(const Sigma &sigma1,
             std::cout << "Looping for i" << i << std::endl;
             // Insert job in position i
             job = jobs[j];
-            vec = copy_reset(base_vec, *mach_graph);
+            vec = base_vec;  // Copy current best sequence
             vec.insert(vec.begin() + i, job);
             std::cout << "Insert i OK" << i << std::endl;
 

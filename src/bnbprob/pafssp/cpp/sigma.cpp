@@ -12,14 +12,14 @@ using namespace std;
 void Sigma::job_to_bottom(JobPtr job)
 {
     // Cache pointer dereference for efficiency
-    const std::vector<int>& jp = *job->p;
+    const std::vector<int>& jp = (*job).p;
 
     // Update completion times using the job data
     for (const int &k : this->mach_graph->get_topo_order()) {
         const std::vector<int> &prev_k = this->mach_graph->get_prec(k);
         int max_prev;
         if (prev_k.size() == 0) {
-            max_prev = job->r->at(k);
+            max_prev = (*job).r.at(k);
         } else {
             max_prev = 0;
         }
@@ -36,14 +36,14 @@ void Sigma::job_to_bottom(JobPtr job)
 void Sigma::job_to_top(JobPtr job)
 {
     // Cache pointer dereference for efficiency
-    const std::vector<int>& jp = *job->p;
+    const std::vector<int>& jp = (*job).p;
 
     // Update completion times using the job data
     for (const int &k : this->mach_graph->get_rev_topo_order()) {
         const std::vector<int> &succ_k = this->mach_graph->get_succ(k);
         int max_succ;
         if (succ_k.size() == 0) {
-            max_succ = job->q->at(k);
+            max_succ = (*job).q.at(k);
         } else {
             max_succ = 0;
         }

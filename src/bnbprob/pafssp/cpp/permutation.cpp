@@ -141,10 +141,10 @@ void Permutation::update_params()
     for (size_t j = 0; j < free_jobs_size; ++j)
     {
         JobPtr &job = this->free_jobs[j];
-        std::vector<int> &jp = *job->p;
+        std::vector<int> &jp = (*job).p;
         // Worst-case: copy-on-write if r or q are shared
-        std::vector<int> jr = *job->r;
-        std::vector<int> jq = *job->q;
+        std::vector<int> jr = (*job).r;
+        std::vector<int> jq = (*job).q;
         // For r it should go in topological order
         for (const int &k : this->mach_graph->get_topo_order())
         {
@@ -183,14 +183,8 @@ void Permutation::compute_starts()
     // Initialize all start times to 0
     for (size_t j = 0; j < seq_size; ++j)
     {
-        // Copy-on-write: create new r if it's shared
-        if (seq[j]->r.use_count() > 1) {
-            seq[j]->r = std::make_shared<std::vector<int>>(*seq[j]->r);
-        }
-        for (int i = 0; i < this->m; ++i)
-        {
-            (*seq[j]->r)[i] = 0;  // Set each element to 0
-        }
+        // Copy-on-write: create new s if it's shared
+        seq[j]->s = std::vector<int>(this->m, 0);
     }
 
     // Process jobs in sequence order
@@ -198,7 +192,7 @@ void Permutation::compute_starts()
     {
         JobPtr job = seq[j];
         // Cache pointer dereference for efficiency
-        const std::vector<int> &jp = *job->p;
+        const std::vector<int> &jp = (*job).p;
 
         // Process machines in topological order to respect precedence
         for (const int &k : this->mach_graph->get_topo_order())
@@ -211,7 +205,7 @@ void Permutation::compute_starts()
             for (const int &prev_k : prev_machines)
             {
                 earliest_start =
-                    std::max(earliest_start, (*job->r)[prev_k] + jp[prev_k]);
+                    std::max(earliest_start, (*job).s[prev_k] + jp[prev_k]);
             }
 
             // Check previous jobs on the same machine
@@ -219,12 +213,12 @@ void Permutation::compute_starts()
             {
                 JobPtr prev_job = seq[j - 1];
                 // Cache pointer dereference for previous job
-                const std::vector<int> &prev_jp = *prev_job->p;
+                const std::vector<int> &prev_jp = (*prev_job).p;
                 earliest_start =
-                    std::max(earliest_start, (*prev_job->r)[k] + prev_jp[k]);
+                    std::max(earliest_start, (*prev_job).s[k] + prev_jp[k]);
             }
 
-            (*job->r)[k] = earliest_start;
+            (*job).s[k] = earliest_start;
         }
     }
 }

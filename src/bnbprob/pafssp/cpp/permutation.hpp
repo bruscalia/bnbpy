@@ -189,11 +189,11 @@ public:
             idle_time += this->sigma1.C[k] + this->sigma2.C[k];
             for (const auto &job : this->sigma1.jobs)
             {
-                idle_time -= job->p->at(k);
+                idle_time -= job->p.at(k);
             }
             for (const auto &job : this->sigma2.jobs)
             {
-                idle_time -= job->p->at(k);
+                idle_time -= job->p.at(k);
             }
         }
         return idle_time;

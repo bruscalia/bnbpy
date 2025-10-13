@@ -140,7 +140,7 @@ def _plot_gantt(  # noqa: PLR0913, PLR0917
     for j, job in enumerate(jobs):
         color = colors(j % J)  # Get a unique color for each job
         for m in range(M):
-            start_time = job.r[m] if job.r and job.r[m] is not None else 0
+            start_time = job.s[m] if job.s and job.s[m] is not None else 0
             end_time = start_time + job.p[m]
 
             # Plot a bar for each job on each machine with consistent color

@@ -11,10 +11,10 @@ using namespace std;
 
 // Private helper function to initialize with MachineGraph precedence
 // relationships
-void Job::initialize(const std::shared_ptr<std::vector<int>> &p_,
+void Job::initialize(const std::vector<int> &p_,
                      const MachineGraph &mach_graph)
 {
-    int m = p_->size();
+    int m = p_.size();
 
     // Recompute release dates (r) and wait times (q)
     recompute_r_q(mach_graph);
@@ -26,7 +26,7 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_,
 
     for (int m1 = 0; m1 < m; ++m1)
     {
-        (*lat)[m1] = std::vector<int>(m, 0);
+        lat[m1] = std::vector<int>(m, 0);
 
         // Compute longest path from m1 to ALL destinations in a single pass
         // dist[k] = longest path from m1 to k
@@ -42,7 +42,7 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_,
             // Update distances to all successors
             for (int succ : mach_graph.get_succ(k))
             {
-                dist[succ] = std::max(dist[succ], dist[k] + p_->at(k));
+                dist[succ] = std::max(dist[succ], dist[k] + p_.at(k));
             }
         }
 
@@ -51,22 +51,22 @@ void Job::initialize(const std::shared_ptr<std::vector<int>> &p_,
         {
             if (dist[m2] != INT_MIN)
             {
-                (*lat)[m1][m2] = std::max(0, dist[m2] - p_->at(m1));
+                lat[m1][m2] = std::max(0, dist[m2] - p_.at(m1));
             }
             // If not reachable, latency remains 0 (already initialized)
         }
-        // Note: (*lat)[m1][m1] remains 0 as initialized, and non-descendants remain 0
+        // Note: lat[m1][m1] remains 0 as initialized, and non-descendants remain 0
     }
 }
 
 // Get total time
 int Job::get_T() const
 {
-    int m = p->size();
+    int m = p.size();
     int T = 0;
     for (int i = 0; i < m; ++i)
     {
-        T += (*p)[i];
+        T += p[i];
     }
     return T;
 }
@@ -75,10 +75,10 @@ int Job::get_T() const
 int Job::get_slope() const
 {
     int slope = 0;
-    int m = this->p->size() + 1;
+    int m = this->p.size() + 1;
     for (int k = 1; k < m; ++k)
     {
-        slope += (k - (m + 1) / 2) * (*this->p)[k - 1];
+        slope += (k - (m + 1) / 2) * this->p[k - 1];
     }
     return slope;
 }
@@ -86,21 +86,11 @@ int Job::get_slope() const
 // Method to recompute only r and q for the job given machine graph
 void Job::recompute_r_q(const MachineGraph &mach_graph)
 {
-    int m = p->size();
+    int m = p.size();
 
     // Create new vectors for r and q (copy-on-write behavior)
-    // Only create new shared_ptr if current ones are shared
-    if (r.use_count() > 1) {
-        r = std::make_shared<std::vector<int>>(m, 0);
-    } else {
-        r->assign(m, 0);
-    }
-
-    if (q.use_count() > 1) {
-        q = std::make_shared<std::vector<int>>(m, 0);
-    } else {
-        q->assign(m, 0);
-    }
+    r.assign(m, 0);
+    q.assign(m, 0);
 
     // Initialize release dates of the job on each machine
     for (int k : mach_graph.get_topo_order())
@@ -109,9 +99,9 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
         int max_release = 0;
         for (const int &pk : prev_k)
         {
-            max_release = std::max(max_release, (*r)[pk] + p->at(pk));
+            max_release = std::max(max_release, r[pk] + p.at(pk));
         }
-        (*r)[k] = max_release;
+        r[k] = max_release;
     }
 
     // Initialize wait times of the job on each machine
@@ -121,22 +111,8 @@ void Job::recompute_r_q(const MachineGraph &mach_graph)
         int max_wait = 0;
         for (const int &sk : succ_k)
         {
-            max_wait = std::max(max_wait, (*q)[sk] + p->at(sk));
+            max_wait = std::max(max_wait, q[sk] + p.at(sk));
         }
-        (*q)[k] = max_wait;
+        q[k] = max_wait;
     }
-}
-
-// Function to copy a vector of jobs with reinitialization from j and p
-std::vector<std::shared_ptr<Job>> copy_reset(
-    const std::vector<std::shared_ptr<Job>> &jobs,
-    const MachineGraph &mach_graph)
-{
-    std::vector<std::shared_ptr<Job>> out = jobs;
-    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
-    {
-        // Only recompute r and q (cheap operations)
-        out[i]->recompute_r_q(mach_graph);
-    }
-    return out;  // Return the reinitialized vector
 }

@@ -12,9 +12,9 @@
 SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
                          const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int M = jobs_[0]->p->size();
+    int M = jobs_[0]->p.size();
     // Safeguard
-    std::vector<JobPtr> jobs = copy_reset(jobs_, *mach_graph);
+    std::vector<JobPtr> jobs = jobs_;
     // Initialize search state
     SearchState best(jobs, INT_MAX);
 
@@ -68,8 +68,8 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
 Permutation local_search(std::vector<JobPtr>& jobs_,
                          const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    std::vector<JobPtr> jobs = copy_reset(jobs_, *mach_graph);
-    int M = jobs[0]->p->size();
+    std::vector<JobPtr> jobs = jobs_;
+    int M = jobs[0]->p.size();
     // Empty initialization
     SearchState state(jobs, INT_MAX);
 

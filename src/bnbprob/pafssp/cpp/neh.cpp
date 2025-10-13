@@ -26,9 +26,9 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
     JobPtr job;
     std::vector<JobPtr> vec;
     Sigma s1, s2, sol, best_sol;
-    std::vector<JobPtr> jobs = copy_reset(jobs_, *mach_graph);
+    std::vector<JobPtr> jobs = jobs_;
 
-    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+    M = jobs[0]->p.size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs
     vec.resize(2);
@@ -83,7 +83,7 @@ std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &
                              const std::shared_ptr<MachineGraph> &mach_graph)
 {
     unsigned int j, i, best_cost, seq_size, cost_alt;
-    const int M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+    const int M = jobs[0]->p.size();  // Assume r is the same size for all jobs
     JobPtr job;
     std::vector<JobPtr> vec;
     std::vector<JobPtr> best_sol_jobs;

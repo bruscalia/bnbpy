@@ -42,9 +42,9 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
 
     for (const auto &job : jobs)
     {
-        int &lat = job->lat->at(m1)[m2];
-        int t1 = job->p->at(m1) + lat;
-        int t2 = job->p->at(m2) + lat;
+        int &lat = job->lat.at(m1)[m2];
+        int t1 = job->p.at(m1) + lat;
+        int t2 = job->p.at(m2) + lat;
         JobTimes jt = JobTimes(m1, m2, *job);
         if (t1 <= t2)
         {

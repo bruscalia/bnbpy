@@ -10,32 +10,30 @@ cdef extern from "job.hpp":
 
     cdef cppclass Job:
         int j
-        shared_ptr[vector[int]] p
-        shared_ptr[vector[int]] r
-        shared_ptr[vector[int]] q
-        shared_ptr[vector[vector[int]]] lat
+        vector[int] p
+        vector[int] r
+        vector[int] q
+        vector[vector[int]] lat
+        vector[int] s
 
         # Declare the constructors
         # Default constructor
         Job()
 
-        # Constructor with job ID, shared_ptr for processing times, and MachineGraph
+        # Constructor with job ID, processing times, and MachineGraph
         Job(
             const int &j_,
-            const shared_ptr[vector[int]] &p_,
+            const vector[int] &p_,
             const MachineGraph &mach_graph
         )
-
-        # Constructor with job ID, vector for processing times, and MachineGraph
-        Job(const int &j_, const vector[int] &p_, const MachineGraph &mach_graph)
 
         # Parameterized constructor
         Job(
             const int &j_,
-            const shared_ptr[vector[int]] &p_,
-            const shared_ptr[vector[int]] &r_,
-            const shared_ptr[vector[int]] &q_,
-            const shared_ptr[vector[vector[int]]] &lat_
+            const vector[int] &p_,
+            const vector[int] &r_,
+            const vector[int] &q_,
+            const vector[vector[int]] &lat_
         )
 
         # Get slope
@@ -46,9 +44,6 @@ cdef extern from "job.hpp":
 
         # Recompute only r and q for the job given machine graph
         void recompute_r_q(const MachineGraph &mach_graph)
-
-    # Function to copy a vector of jobs with reinitialization from j and p
-    cdef vector[shared_ptr[Job]] copy_reset(const vector[shared_ptr[Job]]& jobs, const MachineGraph& mach_graph)
 
 
 ctypedef shared_ptr[Job] JobPtr

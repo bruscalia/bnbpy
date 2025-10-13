@@ -45,15 +45,15 @@ struct SingleMach
         {
             for (const JobPtr& job : jobs)
             {
-                if ((*job->r)[k] < r[k])
+                if ((*job).r[k] < r[k])
                 {
-                    r[k] = (*job->r)[k];
+                    r[k] = (*job).r[k];
                 }
-                if ((*job->q)[k] < q[k])
+                if ((*job).q[k] < q[k])
                 {
-                    q[k] = (*job->q)[k];
+                    q[k] = (*job).q[k];
                 }
-                p[k] += job->p->at(k);
+                p[k] += (*job).p[k];
             }
         }
     }
@@ -84,7 +84,7 @@ struct SingleMach
         const size_t m = p.size();
         for (size_t k = 0; k < m; ++k)
         {
-            p[k] -= job->p->at(k);
+            p[k] -= (*job).p[k];
         }
     }
 };
