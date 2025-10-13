@@ -81,8 +81,8 @@ cdef class PyJob:
         out.job = Job(j, p_, mach_graph)
         return out
 
-    cdef Job get_job(self):
-        return self.job
+    cdef JobPtr get_job(self):
+        return &self.job
 
     cpdef int get_j(self):
         return self.job.j
