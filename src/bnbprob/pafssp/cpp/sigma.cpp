@@ -32,6 +32,7 @@ void Sigma::job_to_bottom(JobPtr job)
             max_prev = std::max(max_prev, this->C[pk]);
         }
         this->C[k] = std::max(this->C[k], max_prev) + jp[k];
+        this->p[k] += jp[k];
     }
     // Create shared_ptr and add to jobs vector
     this->jobs.push_back(job);
@@ -61,6 +62,7 @@ void Sigma::job_to_top(JobPtr job)
             max_succ = std::max(max_succ, this->C[sk]);
         }
         this->C[k] = std::max(this->C[k], max_succ) + jp[k];
+        this->p[k] += jp[k];
     }
     // Add job to front of jobs vector (O(N) operation)
     this->jobs.insert(this->jobs.begin(), job);

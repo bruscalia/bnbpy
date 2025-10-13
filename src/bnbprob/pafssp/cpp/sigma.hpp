@@ -19,32 +19,37 @@ public:
 
 private:
     std::vector<JobPtr> jobs;
+    std::vector<int> p;
 
 public:
     // Default constructor
-    Sigma() : m(0), C(), mach_graph(nullptr), jobs() {}
+    Sigma() : m(0), C(), mach_graph(nullptr), jobs(), p() {}
 
     // Constructor with empty instance and machine graph
     Sigma(const int &m_, const MachineGraph *mach_graph_)
-        : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs()
+        : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs(), p(m_, 0)
     {
     }
 
     // Constructor with empty instance and machine graph
     Sigma(const int &m_, const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(m_), C(m_, 0), mach_graph(mach_graph_.get()), jobs()
+        : m(m_), C(m_, 0), mach_graph(mach_graph_.get()), jobs(), p(m_, 0)
     {
     }
 
     // Constructor with jobs and machine graph (from raw Job vector)
     Sigma(const int &m_, const std::vector<Job> &jobs_,
           const MachineGraph *mach_graph_)
-        : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs()
+        : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs(), p(m_, 0)
     {
         // Convert raw Jobs to shared_ptr<Job>
         for (const auto &job : jobs_)
         {
             jobs.push_back(std::make_shared<Job>(job));
+            for (int k = 0; k < m; ++k)
+            {
+                p[k] += job.p[k];
+            }
         }
     }
 
@@ -54,19 +59,31 @@ public:
         : m(m_),
           C(m_, 0),
           mach_graph(mach_graph_),
-          jobs(jobs_.begin(), jobs_.end())
+          jobs(jobs_.begin(), jobs_.end()),
+          p(m_, 0)
     {
+        for (const auto &job : jobs_)
+        {
+            for (int k = 0; k < m; ++k)
+            {
+                p[k] += (*job).p[k];
+            }
+        }
     }
 
     // Full constructor (from raw Job vector)
     Sigma(const int &m_, const std::vector<Job> &jobs_,
           const std::vector<int> &C_, const MachineGraph *mach_graph_)
-        : m(m_), C(C_), mach_graph(mach_graph_), jobs()
+        : m(m_), C(C_), mach_graph(mach_graph_), jobs(), p(m_, 0)
     {
         // Convert raw Jobs to shared_ptr<Job>
         for (const auto &job : jobs_)
         {
             jobs.push_back(std::make_shared<Job>(job));
+            for (int k = 0; k < m; ++k)
+            {
+                p[k] += job.p[k];
+            }
         }
     }
 
@@ -76,8 +93,16 @@ public:
         : m(m_),
           C(C_),
           mach_graph(mach_graph_),
-          jobs(jobs_.begin(), jobs_.end())
+          jobs(jobs_.begin(), jobs_.end()),
+          p(m_, 0)
     {
+        for (const auto &job : jobs_)
+        {
+            for (int k = 0; k < m; ++k)
+            {
+                p[k] += (*job).p[k];
+            }
+        }
     }
 
     // Destructor
@@ -106,13 +131,13 @@ public:
     }
 
     // Get jobs as JobPtr vector
-    inline std::vector<JobPtr> get_jobs() const
-    {
-        return jobs;
-    }
+    inline std::vector<JobPtr> get_jobs() const { return jobs; }
 
     // Get number of jobs
     inline size_t n_jobs() const { return jobs.size(); }
+
+    // Get total processing time on machine (idle time not considered)
+    inline int get_p(int machine_idx) const { return p[machine_idx]; }
 
     // Get machine graph
     MachineGraph get_mach_graph() const { return *this->mach_graph; }
