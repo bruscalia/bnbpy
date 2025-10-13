@@ -3,6 +3,7 @@
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
+from libcpp.deque cimport deque
 from libcpp.memory cimport shared_ptr
 
 
@@ -53,7 +54,6 @@ cdef extern from "sigma.hpp":
 
     cdef cppclass Sigma:
         int m
-        vector[JobPtr] jobs
         vector[int] C
         const MachineGraph* mach_graph
 
@@ -89,6 +89,12 @@ cdef extern from "sigma.hpp":
 
         # Push job to the top of the sequence
         void job_to_top(Job job)
+
+        # Get jobs as JobPtr vector
+        inline vector[JobPtr] get_jobs() const
+
+        # Get number of jobs
+        inline size_t n_jobs() const
 
         # Get machine graph
         MachineGraph get_mach_graph() const

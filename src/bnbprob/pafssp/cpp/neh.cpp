@@ -35,7 +35,6 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
     vec[0] = jobs[0];
     vec[1] = jobs[1];
     s1 = Sigma(M, mach_graph);
-    s1.jobs.reserve(2);
     for (unsigned int k = 0; k < vec.size(); ++k)
     {
         s1.job_to_bottom(vec[k]);
@@ -44,7 +43,6 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
     vec[0] = jobs[1];
     vec[1] = jobs[0];
     s2 = Sigma(M, mach_graph);
-    s2.jobs.reserve(2);
     for (unsigned int k = 0; k < vec.size(); ++k)
     {
         s2.job_to_bottom(vec[k]);
@@ -64,7 +62,7 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
     // Find best insert for every other job
     std::vector<JobPtr> free_jobs = std::vector<JobPtr>(jobs.begin() + 2, jobs.end());
 
-    std::vector<JobPtr> solution_jobs = neh_body(sol.jobs, free_jobs, mach_graph);
+    std::vector<JobPtr> solution_jobs = neh_body(sol.get_jobs(), free_jobs, mach_graph);
 
     // Create final Sigma from solution jobs
     Sigma final_sol(M, mach_graph);
@@ -125,9 +123,9 @@ std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &
             cost_alt = get_max_value(sigma_fwd[i].C, sigma_bwd[i].C);
             if (cost_alt < best_cost)
             {
-                best_sol_jobs = sigma_fwd[i].jobs;  // Shallow copy
+                best_sol_jobs = sigma_fwd[i].get_jobs();  // Shallow copy
 
-                for (JobPtr& j2 : sigma_bwd[i].jobs)
+                for (JobPtr& j2 : sigma_bwd[i].get_jobs())
                 {
                     best_sol_jobs.push_back(j2);
                 }

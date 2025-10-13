@@ -21,7 +21,7 @@ Permutation intensification(const Sigma &sigma1,
                             const Sigma &sigma2,
                             const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int j, j0, i, best_cost, seq_size, cost_alt, best_pos;
+    int j, i, best_cost, seq_size, cost_alt, best_pos;
     // Sigma s1, s2, sol, best_sol, s_alt;
     JobPtr job;
     std::vector<JobPtr> vec, base_vec, jobs;
@@ -36,7 +36,6 @@ Permutation intensification(const Sigma &sigma1,
     // TODO: Update Sigma to support initialization from MachineGraph
     sol = sigma1;
     std::cout << "Deepcopy was ok" << std::endl;
-    j0 = sigma1.jobs.size();
     base_vec = std::vector<JobPtr>();
 
     // Find best insert for every other job
@@ -66,7 +65,7 @@ Permutation intensification(const Sigma &sigma1,
             // Here the insertion is performed
             // TODO: Update Sigma to support initialization from MachineGraph
             Sigma s_alt = (base_sig);  // Shallow copy
-            s_alt.jobs.reserve(vec.size() + j0);
+            // s_alt.jobs.reserve(vec.size() + j0);
             for (int k = i; k < static_cast<int>(vec.size()); ++k)
             {
                 s_alt.job_to_bottom(vec[k]);

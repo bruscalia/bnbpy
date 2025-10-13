@@ -59,8 +59,8 @@ std::vector<JobPtr> Permutation::get_sequence()
 {
     // Implementation here
     std::vector<JobPtr> seq = {};
-    std::vector<JobPtr> sigma1_jobs = this->sigma1.jobs;
-    std::vector<JobPtr> sigma2_jobs = this->sigma2.jobs;
+    std::vector<JobPtr> sigma1_jobs = this->sigma1.get_jobs();
+    std::vector<JobPtr> sigma2_jobs = this->sigma2.get_jobs();
     seq.reserve(sigma1_jobs.size() + this->free_jobs.size() +
                 sigma2_jobs.size());
     seq.insert(seq.end(), sigma1_jobs.begin(), sigma1_jobs.end());

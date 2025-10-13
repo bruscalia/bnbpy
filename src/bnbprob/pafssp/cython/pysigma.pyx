@@ -131,7 +131,7 @@ cdef class PySigma:
             raise ReferenceError(INIT_ERROR)
 
         # Get raw Job copies from Sigma
-        job_vector = self.sigma.jobs
+        job_vector = self.sigma.get_jobs()
         out = []
         for i in range(job_vector.size()):
             out.append(job_to_py(job_vector[i]))
@@ -164,10 +164,10 @@ cdef class PySigma:
         return mg
 
     cdef bool _is_empty(self):
-        return self.sigma.jobs.size() == 0
+        return self.sigma.n_jobs() == 0
 
     cdef size_t _size(self):
-        return self.sigma.jobs.size()
+        return self.sigma.n_jobs()
 
     def is_empty(self):
         if not self._initialized:

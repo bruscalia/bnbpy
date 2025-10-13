@@ -24,6 +24,15 @@ public:
     Sigma sigma2;
     std::shared_ptr<MachineGraph> mach_graph;
 
+private:
+    // Cache for two-machine sequences
+    std::shared_ptr<TwoMach> two_mach_cache;
+    std::vector<bool> scheduled_jobs;
+    // Cache for single-machine sequences
+    SingleMach single_mach_cache;
+
+public:
+
     // Default constructor
     Permutation() : m(0), n(0), level(0), scheduled_jobs(), single_mach_cache() {}
 
@@ -187,11 +196,11 @@ public:
         for (int k = 0; k < this->m; ++k)
         {
             idle_time += this->sigma1.C[k] + this->sigma2.C[k];
-            for (const auto &job : this->sigma1.jobs)
+            for (const auto &job : this->sigma1.get_jobs())
             {
                 idle_time -= job->p.at(k);
             }
-            for (const auto &job : this->sigma2.jobs)
+            for (const auto &job : this->sigma2.get_jobs())
             {
                 idle_time -= job->p.at(k);
             }
@@ -224,21 +233,14 @@ public:
         }
     }
 
-private:
-    // Cache for two-machine sequences
-    std::shared_ptr<TwoMach> two_mach_cache;
-    std::vector<bool> scheduled_jobs;
-    // Cache for single-machine sequences
-    SingleMach single_mach_cache;
-
     // Complete prescheduled
     void complete_prescheduled()
     {
-        for (const auto &job : sigma1.jobs)
+        for (const auto &job : sigma1.get_jobs())
         {
             this->scheduled_jobs[job->j] = true;
         }
-        for (const auto &job : sigma2.jobs)
+        for (const auto &job : sigma2.get_jobs())
         {
             this->scheduled_jobs[job->j] = true;
         }

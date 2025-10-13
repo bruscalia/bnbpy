@@ -53,8 +53,9 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
             int new_cost = get_max_value(sigma_fwd[j].C, sigma_bwd[j].C);
             if (new_cost < best.cost)
             {
-                std::vector<JobPtr> s_alt = sigma_fwd[j].jobs;  // Shallow copy
-                for (JobPtr& j2 : sigma_bwd[j].jobs)
+                std::vector<JobPtr> s_alt = sigma_fwd[j].get_jobs();  // Shallow copy
+                s_alt.reserve(s_alt.size() + sigma_bwd[j].n_jobs());
+                for (JobPtr& j2 : sigma_bwd[j].get_jobs())
                 {
                     s_alt.push_back(j2);
                 }
