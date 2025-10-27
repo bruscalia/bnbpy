@@ -1,8 +1,8 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp cimport bool
 from libcpp.string cimport string
 
 import heapq
@@ -12,7 +12,10 @@ from typing import Any, List, Literal, Optional, Tuple, Union
 
 from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.priqueue cimport (
-    BasePriQueue, BFSPriQueue, BestPriQueue, DFSPriQueue
+    BasePriQueue,
+    BestPriQueue,
+    BFSPriQueue,
+    DFSPriQueue,
 )
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
@@ -133,17 +136,20 @@ cdef class BranchAndBound:
             Solution sol
             Problem inc_problem
 
-        self._set_problem(problem)
-        self._restart_search()
+        # Set limits
         if maxiter is not None:
             _mxiter = maxiter
         if timelimit is not None:
             _tlim = timelimit
         start_time = time.time()
+
+        # Core initialization
+        self._restart_search()
         log.info('Starting exploration of search tree')
         self._log_headers()
         self._warmstart(problem.warmstart())
-        self._solve_root()
+        self._enqueue_root(problem)
+
         # In case the root node is already the LB of a optimal warmstart
         self._check_termination(_mxiter)
         while self.queue.not_empty():
@@ -251,8 +257,9 @@ cdef class BranchAndBound:
         """
         pass
 
-    cpdef void _solve_root(BranchAndBound self):
-        self.root = init_node(self.problem)
+    cpdef void _enqueue_root(BranchAndBound self, Problem problem):
+        self.root = init_node(problem)
+        self._set_problem(problem)
         self._enqueue_core(self.root)
         self._update_bound()
         self.explored = 0
@@ -349,10 +356,6 @@ cdef class BranchAndBound:
         return (
             self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol
         )
-
-
-cpdef _first_element_lb(tuple[object, Node] x):
-    return x[1].lb
 
 
 cdef class BreadthFirstBnB(BranchAndBound):

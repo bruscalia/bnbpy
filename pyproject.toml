@@ -45,6 +45,7 @@ markers = [
     "solution: Mark test related to Solution class",
     "problem: Mark test related to Problem class",
     "node: Mark test related to Node class",
+    "search: Mark test related to B&B search module",
     "colgen: Mark test related to Column Generation",
     "gcol: Mark test related to the Graph Coloring module",
     "searchlogger: Mark test related to the SearchLogger class"

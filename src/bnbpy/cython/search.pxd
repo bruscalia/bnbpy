@@ -1,17 +1,16 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp cimport bool
 from libcpp.string cimport string
-
-from bnbpy.cython.node cimport Node
 
 from typing import Optional
 
-from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
 
 
 cdef extern from "limits.h":
@@ -80,7 +79,7 @@ cdef class BranchAndBound:
 
     cpdef void solution_callback(BranchAndBound self, Node node)
 
-    cpdef void _solve_root(BranchAndBound self)
+    cpdef void _enqueue_root(BranchAndBound self, Problem problem)
 
     cpdef void _node_eval(BranchAndBound self, Node node)
 
