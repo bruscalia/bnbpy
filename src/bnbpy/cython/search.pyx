@@ -25,7 +25,6 @@ log = logging.getLogger(__name__)
 cdef:
     double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
-    int LARGE_INT = 100000000
 
 
 cdef class SearchResults:
@@ -129,7 +128,7 @@ cdef class BranchAndBound:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
-            int _mxiter = LARGE_INT
+            unsigned long long _mxiter = ULLONG_MAX
             Node node
             Solution sol
             Problem inc_problem
@@ -140,7 +139,7 @@ cdef class BranchAndBound:
             _mxiter = maxiter
         if timelimit is not None:
             _tlim = timelimit
-            start_time = time.time()
+        start_time = time.time()
         log.info('Starting exploration of search tree')
         self._log_headers()
         self._warmstart(problem.warmstart())
@@ -298,7 +297,7 @@ cdef class BranchAndBound:
             return None
         return node
 
-    cdef bool _check_termination(BranchAndBound self, int maxiter):
+    cdef bool _check_termination(BranchAndBound self, unsigned long long maxiter):
         cdef:
             Solution sol
         if self._optimality_check():
@@ -313,12 +312,15 @@ cdef class BranchAndBound:
         return False
 
     cdef void _update_bound(BranchAndBound self):
+        cdef:
+            Node old_bound
+
         if not self.queue.not_empty():
             if self.incumbent:
                 self.bound_node = self.incumbent
             self._update_gap()
             return
-        cdef Node old_bound = self.bound_node
+        old_bound = self.bound_node
         self.bound_node = self.queue.get_lower_bound()
         if (
             old_bound is None

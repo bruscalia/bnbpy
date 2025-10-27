@@ -16,7 +16,7 @@ inline bool desc_T(const JobPtr &a, const JobPtr &b)
     return b->get_T() < a->get_T();
 }
 
-Permutation neh_constructive(std::vector<JobPtr> &jobs,
+Permutation neh_initialization(std::vector<JobPtr> &jobs,
                              const std::shared_ptr<MachineGraph> &mach_graph);
 
 Permutation neh_core(std::vector<JobPtr> &jobs_,

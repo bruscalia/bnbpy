@@ -14,10 +14,13 @@ from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
 
 
+cdef extern from "limits.h":
+    unsigned long long ULLONG_MAX
+
+
 cdef:
     double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
-    int LARGE_INT = 100000000
 
 
 cdef class SearchResults:
@@ -36,7 +39,7 @@ cdef class BranchAndBound:
         BasePriQueue queue
         double rtol
         double atol
-        int explored
+        unsigned long long explored
         string eval_node
         bool eval_in
         bool eval_out
@@ -89,7 +92,7 @@ cdef class BranchAndBound:
 
     cdef Node _dequeue_core(BranchAndBound self)
 
-    cdef bool _check_termination(BranchAndBound self, int maxiter)
+    cdef bool _check_termination(BranchAndBound self, unsigned long long maxiter)
 
     cdef void _update_bound(BranchAndBound self)
 

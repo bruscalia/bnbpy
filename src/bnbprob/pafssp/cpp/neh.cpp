@@ -9,7 +9,7 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-Permutation neh_constructive(std::vector<JobPtr>& jobs,
+Permutation neh_initialization(std::vector<JobPtr>& jobs,
                              const std::shared_ptr<MachineGraph>& mach_graph)
 {
     // Find best order of two jobs with longest processing times

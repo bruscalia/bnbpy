@@ -302,14 +302,6 @@ public:
             idle_time += this->sigma1.C[k] + this->sigma2.C[k];
             idle_time -= this->sigma1.get_p(k);
             idle_time -= this->sigma2.get_p(k);
-            // for (const auto &job : this->sigma1.get_jobs())
-            // {
-            //     idle_time -= job->p.at(k);
-            // }
-            // for (const auto &job : this->sigma2.get_jobs())
-            // {
-            //     idle_time -= job->p.at(k);
-            // }
         }
         return idle_time;
     }

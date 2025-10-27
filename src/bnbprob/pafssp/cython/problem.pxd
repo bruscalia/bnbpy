@@ -8,10 +8,11 @@ from libcpp.vector cimport vector
 from bnbprob.pafssp.cpp.environ cimport (
     MachineGraph,
     Permutation,
+    iga,
+    intensify,
     local_search,
-    neh_constructive,
-    quick_constructive,
-    intensification
+    neh_initialization,
+    quick_constructive
 )
 from bnbprob.pafssp.cpp.environ cimport Permutation
 from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
@@ -35,6 +36,9 @@ cdef class PermFlowShop(Problem):
     cdef inline Permutation get_perm(PermFlowShop self):
         return self.perm
 
+    cdef inline int get_n(PermFlowShop self):
+        return self.perm.n
+
     cpdef object get_mach_graph(PermFlowShop self)
 
     cdef void ccleanup(PermFlowShop self)
@@ -43,15 +47,19 @@ cdef class PermFlowShop(Problem):
 
     cpdef PermFlowShop quick_constructive(PermFlowShop self)
 
-    cpdef PermFlowShop neh_constructive(PermFlowShop self)
+    cpdef PermFlowShop neh_initialization(PermFlowShop self)
+
+    cpdef PermFlowShop multistart_initialization(PermFlowShop self)
+
+    cpdef PermFlowShop iga_initialization(PermFlowShop self)
 
     cpdef PermFlowShop local_search(PermFlowShop self)
 
     cpdef PermFlowShop randomized_heur(PermFlowShop self, int n_iter, unsigned int seed=*)
 
-    cpdef PermFlowShop intensification(PermFlowShop self)
+    cpdef PermFlowShop iga_heur(PermFlowShop self, int n_iter, int d, unsigned int seed=*)
 
-    cpdef PermFlowShop intensification_ref(
+    cpdef PermFlowShop intensify(
         PermFlowShop self,
         PermFlowShop reference
     )
@@ -66,7 +74,9 @@ cdef class PermFlowShop(Problem):
 
     cpdef void simple_bound_upgrade(PermFlowShop self)
 
-    cpdef void bound_upgrade(PermFlowShop self)
+    cpdef void double_bound_upgrade(PermFlowShop self)
+
+    cdef void _double_bound_upgrade(PermFlowShop self)
 
     cpdef int calc_lb_1m(PermFlowShop self)
 
@@ -92,17 +102,16 @@ cdef class PermFlowShop(Problem):
 
     cdef PermFlowShop _copy(PermFlowShop self)
 
-    cdef inline PermFlowShop fast_copy(PermFlowShop self):
-        cdef:
-            PermFlowShop child
-        child = type(self).__new__(type(self))
-        child.solution = Solution()
-        child.constructive = self.constructive
-        return child
-
     cpdef void perm_copy(PermFlowShop self)
 
 
-cdef class PermFlowShop2M(PermFlowShop):
+cdef class BenchPermFlowShop(PermFlowShop):
 
-    cpdef double calc_bound(PermFlowShop2M self)
+    cpdef double calc_bound(BenchPermFlowShop self)
+
+
+cdef class PermFlowShop1M(PermFlowShop):
+
+    cpdef double calc_bound(PermFlowShop1M self)
+
+    cpdef void double_bound_upgrade(PermFlowShop1M self)

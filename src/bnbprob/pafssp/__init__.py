@@ -3,17 +3,19 @@ __all__ = [
     'LazyBnB',
     'CutoffBnB',
     'PermFlowShop',
-    'PermFlowShop2M',
-    'PermFlowShop2MHalf',
-    'plot_gantt',
+    'PermFlowShop1M',
+    'BenchPermFlowShop',
+    'BenchCutoffBnB',
+    'plot_gantt'
 ]
 
 from bnbprob.pafssp.environ import (
+    BenchCutoffBnB,
+    BenchPermFlowShop,
     CallbackBnB,
     CutoffBnB,
     LazyBnB,
     PermFlowShop,
-    PermFlowShop2M,
-    PermFlowShop2MHalf,
+    PermFlowShop1M,
 )
 from bnbprob.pafssp.plot import plot_gantt

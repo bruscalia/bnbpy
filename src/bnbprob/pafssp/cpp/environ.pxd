@@ -115,19 +115,23 @@ cdef extern from "mach_graph.hpp":
         MachineGraph()
 
         # All arguments constructor
-        MachineGraph(int M,
-                     const vector[vector[int]]& prec,
-                     const vector[vector[int]]& succ,
-                     const vector[int]& topo_order,
-                     const vector[int]& rev_topo_order,
-                     const vector[vector[int]]& descendants)
+        MachineGraph(
+            int M,
+            const vector[vector[int]]& prec,
+            const vector[vector[int]]& succ,
+            const vector[int]& topo_order,
+            const vector[int]& rev_topo_order,
+            const vector[vector[int]]& descendants
+        )
 
         # Constructor without reverse topological order (computes it automatically)
-        MachineGraph(int M,
-                     const vector[vector[int]]& prec,
-                     const vector[vector[int]]& succ,
-                     const vector[int]& topo_order,
-                     const vector[vector[int]]& descendants)
+        MachineGraph(
+            int M,
+            const vector[vector[int]]& prec,
+            const vector[vector[int]]& succ,
+            const vector[int]& topo_order,
+            const vector[vector[int]]& descendants
+        )
 
         # Getters for precedence operations by index
         const vector[int]& get_prec(int machine_idx) const
@@ -177,12 +181,17 @@ cdef extern from "permutation.hpp":
         Permutation()
 
         # Constructor from processing times
-        Permutation(const vector[vector[int]]& p_,
-                    const shared_ptr[MachineGraph]& mach_graph_)
+        Permutation(
+            const vector[vector[int]]& p_,
+            const shared_ptr[MachineGraph]& mach_graph_
+        )
 
         # Constructor from free jobs
-        Permutation(const int &m_, const vector[JobPtr] &jobs_,
-                    const shared_ptr[MachineGraph]& mach_graph_)
+        Permutation(
+            const int &m_,
+            const vector[JobPtr] &jobs_,
+            const shared_ptr[MachineGraph]& mach_graph_
+        )
 
         # Constructor given all desired attributes
         Permutation(
@@ -260,50 +269,52 @@ cdef extern from "permutation.hpp":
 
 cdef extern from "local_search.hpp":
 
-    cdef Permutation local_search(vector[JobPtr]& jobs_,
-                                  const shared_ptr[MachineGraph]& mach_graph)
+    cdef Permutation local_search(
+        vector[JobPtr]& jobs_,
+        const shared_ptr[MachineGraph]& mach_graph
+    )
 
 
 cdef extern from "neh.hpp":
 
-    cdef Permutation neh_constructive(vector[JobPtr]& jobs,
-                                      const shared_ptr[MachineGraph]& mach_graph)
+    cdef Permutation neh_initialization(
+        vector[JobPtr]& jobs,
+        const shared_ptr[MachineGraph]& mach_graph
+    )
 
 
 cdef extern from "randomized_heur.hpp":
 
-    cdef Permutation randomized_heur(vector[JobPtr] jobs_, int n_iter,
-                                     unsigned int seed,
-                                     const shared_ptr[MachineGraph]& mach_graph)
+    cdef Permutation randomized_heur(
+        vector[JobPtr] jobs_,
+        int n_iter,
+        unsigned int seed,
+        const shared_ptr[MachineGraph]& mach_graph
+    )
+
+
+cdef extern from "iga.hpp":
+
+    cdef Permutation iga(
+        vector[JobPtr]& jobs_,
+        const shared_ptr[MachineGraph]& mach_graph,
+        const int& max_iter,
+        const int& d,
+        const int& seed
+    )
 
 
 cdef extern from "quick_constructive.hpp":
 
-    cdef Permutation quick_constructive(vector[JobPtr]& jobs,
-                                        const shared_ptr[MachineGraph]& mach_graph)
+    cdef Permutation quick_constructive(
+        vector[JobPtr]& jobs,
+        const shared_ptr[MachineGraph]& mach_graph
+    )
 
 
 cdef extern from "intensify.hpp":
 
-    cdef Permutation intensification(
-        const Sigma &sigma1,
-        const vector[JobPtr] &jobs_,
-        const Sigma &sigma2,
-        const shared_ptr[MachineGraph]& mach_graph
-    )
-
     cdef Permutation intensify(
-        const Sigma &sigma1,
-        const vector[JobPtr] &jobs_,
-        const Sigma &sigma2,
-        const shared_ptr[MachineGraph]& mach_graph
-    )
-
-    cdef Permutation intensify(
-        const Permutation &perm
-    )
-
-    cdef Permutation intensify_ref(
         const Permutation &perm,
         const Permutation &ref_perm
     )

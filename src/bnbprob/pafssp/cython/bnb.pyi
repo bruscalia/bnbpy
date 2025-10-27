@@ -1,3 +1,4 @@
+from bnbprob.pafssp.cython.problem import PermFlowShop
 from bnbpy.cython.node import Node
 from bnbpy.cython.search import BranchAndBound
 
@@ -5,14 +6,17 @@ HEUR_BASE: int = 100
 
 class LazyBnB(BranchAndBound):
     """Subclass derived from `BranchAndBound` with `post_eval_callback`
-    that solves a 2M lower bound (`problem.bound_upgrade`)."""
+    that solves a 2M lower bound (`problem.double_bound_upgrade`)."""
+
+    delay_lb5: bool
+    min_lb5_level: int
 
     def __init__(
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
         save_tree: bool = False,
-        queue_mode: str = 'dfs',
+        delay_lb5: bool = False
     ) -> None:
         """Initialize LazyBnB algorithm
 
@@ -27,30 +31,14 @@ class LazyBnB(BranchAndBound):
         save_tree : bool, optional
             Whether to save tree structure, by default False
 
-        queue_mode : str, optional
-            Queue mode ('dfs' or 'cycle'), by default 'dfs'
+        delay_lb5 : bool, optional
+            Whether to delay the two-machine lower bound computation,
+            by default False
         """
         ...
 
     @staticmethod
-    def queue_factory(mode: str) -> object:
-        """Factory method for creating queue instances
-
-        Parameters
-        ----------
-        mode : str
-            Queue mode ('dfs' or 'cycle')
-
-        Returns
-        -------
-        object
-            Queue instance
-
-        Raises
-        ------
-        ValueError
-            If mode is unknown
-        """
+    def delay_by_root(problem: PermFlowShop) -> bool:
         ...
 
     def post_eval_callback(self, node: Node) -> None:
@@ -66,7 +54,7 @@ class LazyBnB(BranchAndBound):
         ...
 
 class CutoffBnB(LazyBnB):
-    """Subclass derived from `BranchAndBound` with a cutoff value"""
+    """Subclass derived from `BranchAndBound` with a cutoff value."""
 
     ub_value: float
 
@@ -76,9 +64,9 @@ class CutoffBnB(LazyBnB):
         rtol: float = 0.0001,
         atol: float = 0.0001,
         save_tree: bool = False,
-        queue_mode: str = 'dfs',
+        delay_lb5: bool = False
     ) -> None:
-        """Initialize CutoffBnB algorithm with upper bound cutoff
+        """Initialize CutoffBnB algorithm with upper bound cutoff.
 
         Parameters
         ----------
@@ -94,14 +82,21 @@ class CutoffBnB(LazyBnB):
         save_tree : bool, optional
             Whether to save tree structure, by default False
 
-        queue_mode : str, optional
-            Queue mode ('dfs' or 'cycle'), by default 'dfs'
+        delay_lb5 : bool, optional
+            Whether to delay the two-machine lower bound computation,
+            by default False
         """
         ...
 
+class BenchCutoffBnB(LazyBnB):
+    """Subclass derived from `BranchAndBound` with a cutoff value.
+    In this variant the `update_params` is not
+    called in the `post_eval_callback`."""
+    ...
+
 class CallbackBnB(LazyBnB):
     """Subclass derived from `BranchAndBound` with `post_eval_callback`
-    that solves a 2M lower bound (`problem.bound_upgrade`).
+    that solves a 2M lower bound (`problem.double_bound_upgrade`).
 
     Additionally there's local search as a `solution_callback` and
     a best bound guided search restart at each `restart_freq` nodes."""
@@ -109,14 +104,13 @@ class CallbackBnB(LazyBnB):
     base_heur_factor: int
     heur_factor: int
     heur_calls: int
-    level_restart: int
 
     def __init__(
         self,
         rtol: float = 0.0001,
         atol: float = 0.0001,
         save_tree: bool = False,
-        queue_mode: str = 'dfs',
+        delay_lb5: bool = False,
         heur_factor: int = HEUR_BASE,
     ) -> None:
         """Initialize CallbackBnB algorithm with heuristic callbacks
@@ -132,32 +126,12 @@ class CallbackBnB(LazyBnB):
         save_tree : bool, optional
             Whether to save tree structure, by default False
 
-        queue_mode : str, optional
-            Queue mode ('dfs' or 'cycle'), by default 'dfs'
+        delay_lb5 : bool, optional
+            Whether to delay the two-machine lower bound computation,
+            by default False
 
         heur_factor : int, optional
             Heuristic factor for intensification, by default HEUR_BASE
-        """
-        ...
-
-    @staticmethod
-    def queue_factory(mode: str) -> object:
-        """Factory method for creating queue instances
-
-        Parameters
-        ----------
-        mode : str
-            Queue mode ('dfs' or 'cycle')
-
-        Returns
-        -------
-        object
-            Queue instance
-
-        Raises
-        ------
-        ValueError
-            If mode is unknown
         """
         ...
 
@@ -191,18 +165,3 @@ class CallbackBnB(LazyBnB):
             Node to intensify
         """
         ...
-
-def _node_lb(node: Node) -> float:
-    """Helper function to get node lower bound
-
-    Parameters
-    ----------
-    node : Node
-        Node to get lower bound from
-
-    Returns
-    -------
-    float
-        Node lower bound
-    """
-    ...

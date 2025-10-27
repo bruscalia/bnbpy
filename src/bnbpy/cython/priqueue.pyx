@@ -1,6 +1,8 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libc.math cimport INFINITY
+
 import heapq
 
 from bnbpy.cython.node cimport Node
@@ -43,6 +45,7 @@ cdef class BasePriQueue:
 cdef class HeapPriQueue(BasePriQueue):
     def __cinit__(self):
         self._queue = []
+        self.lb = -INFINITY
 
     cpdef bint not_empty(HeapPriQueue self):
         return bool(self._queue)
@@ -62,6 +65,9 @@ cdef class HeapPriQueue(BasePriQueue):
         for item in self._queue:
             if item.node.lb < node.lb:
                 node = item.node
+                if node.lb <= self.lb:
+                    break
+        self.lb = node.lb
         return node
 
     cpdef Node pop_lower_bound(HeapPriQueue self):
