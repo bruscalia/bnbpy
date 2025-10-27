@@ -1,7 +1,7 @@
 from typing import Literal
 
 import pytest
-from fixtures.myproblem import MyProblem, UnboundedProblem
+from myfixtures.myproblem import MyProblem, UnboundedProblem
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.search import BranchAndBound

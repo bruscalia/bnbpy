@@ -1,5 +1,5 @@
 import pytest
-from fixtures.myproblem import MyProblem
+from myfixtures.myproblem import MyProblem
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.solution import Solution

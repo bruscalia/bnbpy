@@ -20,13 +20,16 @@ def search_logger(mock_logger: Any) -> SearchLogger:
 
 @pytest.mark.searchlogger
 class TestLogger:
-
-    underscores = '------- | ---------- | ---------- | ------- | --------------'
+    underscores = (
+        '------- | ---------- | ---------- | ------- | --------------'
+    )
     header = ' Node   |  Best Sol  |     LB     |   Gap   |    Message    '
     ref_row = '   A    |    123     |  456.789   |   12%   |   Processing  '
     ref_args = ('A', '123', '456.789', '12%', 'Processing')
 
-    def test_log_headers(self, search_logger: SearchLogger, mock_logger: Any) -> None:
+    def test_log_headers(
+        self, search_logger: SearchLogger, mock_logger: Any
+    ) -> None:
         """
         Test that log_headers logs correctly formatted headers and underscores.
         """
@@ -46,7 +49,9 @@ class TestLogger:
         # Check the underscore line
         assert underscore_call[0][0] == self.underscores
 
-    def test_log_row(self, search_logger: SearchLogger, mock_logger: Any) -> None:
+    def test_log_row(
+        self, search_logger: SearchLogger, mock_logger: Any
+    ) -> None:
         """Test that log_row logs a correctly formatted row."""
         search_logger.log_row(*self.ref_args)
 

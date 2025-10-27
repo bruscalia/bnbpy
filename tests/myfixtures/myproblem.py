@@ -37,7 +37,6 @@ class MyProblem(Problem):
 
 
 class UnboundedProblem(Problem):
-
     def calc_bound(_) -> float:
         return float('-inf')
 

@@ -27,9 +27,9 @@ class TestMachDeadLine:
         bnb = DepthFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost
-        assert (
-            bnb.solution.cost == self.sol_value
-        ), f'Wrong solution for DFS {cost}, expected {self.sol_value}'
+        assert bnb.solution.cost == self.sol_value, (
+            f'Wrong solution for DFS {cost}, expected {self.sol_value}'
+        )
         assert bnb.explored == self.dfs_nodes, (
             f'Wrong number of explored nodes for DFS {bnb.explored},'
             f' expected {self.dfs_nodes}'
@@ -39,9 +39,9 @@ class TestMachDeadLine:
         bnb = BreadthFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost
-        assert (
-            bnb.solution.cost == self.sol_value
-        ), f'Wrong solution for BFS {cost}, expected {self.sol_value}'
+        assert bnb.solution.cost == self.sol_value, (
+            f'Wrong solution for BFS {cost}, expected {self.sol_value}'
+        )
         assert bnb.explored == self.bfs_nodes, (
             f'Wrong number of explored nodes for BFS {bnb.explored},'
             f' expected {self.bfs_nodes}'
@@ -51,9 +51,9 @@ class TestMachDeadLine:
         bnb = BestFirstBnB(eval_node='in')
         bnb.solve(problem)
         cost = bnb.solution.cost
-        assert (
-            bnb.solution.cost == self.sol_value
-        ), f'Wrong solution for lb priority {cost}, expected {self.sol_value}'
+        assert bnb.solution.cost == self.sol_value, (
+            f'Wrong solution for lb priority {cost}, expected {self.sol_value}'
+        )
         assert bnb.explored == self.bb_nodes, (
             f'Wrong number of explored nodes for lb priority'
             f' {bnb.explored}, expected {self.bb_nodes}'
