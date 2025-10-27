@@ -1,3 +1,5 @@
+from typing import Literal, cast
+
 import numpy as np
 import pytest
 
@@ -34,8 +36,15 @@ class TestNaive:
     def test_milp(self, milp: MILP, bnb_class: type[BranchAndBound]) -> None:
         bnb = bnb_class(eval_node='in')
         bnb.solve(milp)
-        x_res = bnb.incumbent.problem.results.x
+        assert bnb.incumbent is not None, 'No incumbent found'
+        if bnb.incumbent is None:
+            return
+        problem: MILP = cast(MILP, bnb.incumbent.problem)
+        x_res = problem.results.x
         self.assert_cost(bnb.solution.cost)
+        assert x_res is not None, 'No solution found'
+        if x_res is None:
+            return
         self.assert_sol(x_res)
 
     def assert_cost(self, cost: float) -> None:
@@ -86,7 +95,11 @@ class TestKnapsack:
         bnb = bnb_class(eval_node='in')
         bnb.solve(milp)
         self.assert_cost(bnb.solution.cost)
-        x_res = bnb.incumbent.problem.results.x
+        assert bnb.incumbent is not None, 'No incumbent found'
+        if bnb.incumbent is None:
+            return
+        problem: MILP = cast(MILP, bnb.incumbent.problem)
+        x_res = cast(np.ndarray, problem.results.x)
         self.assert_sol(x_res)
 
     @pytest.mark.parametrize(
@@ -104,7 +117,7 @@ class TestKnapsack:
         self,
         milp: MILP,
         status: OptStatus,
-        eval_node: str,
+        eval_node: Literal['in', 'out'],
         maxiter: int,
         explored: int,
     ) -> None:
