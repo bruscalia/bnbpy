@@ -183,7 +183,7 @@ It takes less than 1 second, which is an impressive performance even compared to
 
 ```python
 import json
-from bnbprob.pfssp import CallbackBnB, PermFlowShop, plot_gantt
+from bnbprob.pafssp import CallbackBnB, PermFlowShop, plot_gantt
 
 with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
     p = json.load(f)

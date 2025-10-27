@@ -74,25 +74,13 @@ class CompilingFailed(Exception):
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
-CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
-CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
 CY_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cython')
 CPP_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cpp')
-CPP_FILES_PFSSP = [
-    os.path.join(CPP_PATH_PFSSP, f)
-    for f in os.listdir(CPP_PATH_PFSSP)
-    if f.endswith('.cpp') and 'environ' not in f
-]
 CPP_FILES_PAFSSP = [
     os.path.join(CPP_PATH_PAFSSP, f)
     for f in os.listdir(CPP_PATH_PAFSSP)
     if f.endswith('.cpp') and 'environ' not in f
 ]
-HPP_PATH_PFSSP = os.path.join(ROOT, 'include')
-
-
-def get_ext_pfssp(f: str) -> list[str]:
-    return [os.path.join(CY_PATH_PFSSP, f)] + CPP_FILES_PFSSP
 
 
 def get_ext_pafssp(f: str) -> list[str]:
@@ -107,26 +95,9 @@ else:
         ext_modules_base = [
             Extension(
                 f'bnbpy.cython.{f[:-4]}',
-                [os.path.join(CY_PATH, f)],
+                [os.path.join(CY_PATH, f)]
             )
             for f in os.listdir(CY_PATH)
-            if f.endswith('.pyx')
-        ]
-        ext_modules_pfssp = [
-            Extension(
-                'bnbprob.pfssp.cpp.environ',
-                [os.path.join(CPP_PATH_PFSSP, 'environ.pyx')]
-                + CPP_FILES_PFSSP,
-                include_dirs=[CPP_PATH_PFSSP],
-                language='c++',
-            )
-        ] + [
-            Extension(
-                f'bnbprob.pfssp.cython.{f[:-4]}',
-                get_ext_pfssp(f),  # Mandatory to include all cpp files used
-                include_dirs=[CPP_PATH_PFSSP],
-            )
-            for f in os.listdir(CY_PATH_PFSSP)
             if f.endswith('.pyx')
         ]
         ext_modules_pafssp = [
@@ -135,13 +106,13 @@ else:
                 [os.path.join(CPP_PATH_PAFSSP, 'environ.pyx')]
                 + CPP_FILES_PAFSSP,
                 include_dirs=[CPP_PATH_PAFSSP],
-                language='c++',
+                language='c++'
             )
         ] + [
             Extension(
                 f'bnbprob.pafssp.cython.{f[:-4]}',
                 get_ext_pafssp(f),  # Mandatory to include all cpp files used
-                include_dirs=[CPP_PATH_PAFSSP],
+                include_dirs=[CPP_PATH_PAFSSP]
             )
             for f in os.listdir(CY_PATH_PAFSSP)
             if f.endswith('.pyx')
@@ -149,7 +120,6 @@ else:
 
         ext_modules_ = (
             ext_modules_base
-            + ext_modules_pfssp
             + ext_modules_pafssp
         )
         if params.nocython:

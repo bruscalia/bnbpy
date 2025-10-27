@@ -15,16 +15,14 @@ def delete_files(folder: str, extensions: list[str]) -> None:
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
-CY_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cython')
-CPP_PATH_PFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pfssp', 'cpp')
 CY_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cython')
 CPP_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cpp')
 
 
 def main() -> None:
     # Define the folders
-    cython_folders = [CY_PATH, CY_PATH_PFSSP, CY_PATH_PAFSSP]
-    cpp_folders = [CPP_PATH_PFSSP, CPP_PATH_PAFSSP]
+    cython_folders = [CY_PATH, CY_PATH_PAFSSP]
+    cpp_folders = [CPP_PATH_PAFSSP]
 
     # Define extensions to delete
     cython_extensions = ['cpp', 'pyd', 'so', 'html']
