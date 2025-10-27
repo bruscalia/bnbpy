@@ -60,6 +60,7 @@ class _WarmstartProblem(MyProblem):
         return _WarmstartProblem(lb_value=WARMSTART_LB, feasible=True)
 
 
+@pytest.mark.core
 @pytest.mark.search
 class TestBranchAndBoundBasic:
     """Test class for basic BranchAndBound functionality."""
@@ -155,6 +156,7 @@ class TestBranchAndBoundBasic:
         assert node.solution.status == OptStatus.FATHOM
 
 
+@pytest.mark.core
 @pytest.mark.search
 class TestBranchAndBoundSolve:
     """Test class for BranchAndBound solve functionality."""
@@ -230,6 +232,7 @@ class TestBranchAndBoundSolve:
         assert bnb.gap == (WARMSTART_LB - SIMPLE_LB) / WARMSTART_LB
 
 
+@pytest.mark.core
 @pytest.mark.search
 class TestBranchAndBoundCallbacks:
     """Test class for BranchAndBound callback functionality."""

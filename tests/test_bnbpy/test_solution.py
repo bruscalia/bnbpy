@@ -35,7 +35,9 @@ class TestSolution:
         assert sol.status == OptStatus.RELAXATION
 
     def test_set_feasible(self) -> None:
-        """Test setting the status to FEASIBLE and ensuring cost is set to lb."""
+        """
+        Test setting the status to FEASIBLE and ensuring cost is set to lb.
+        """
         sol = Solution()
         sol.set_lb(self.cost_value)
         sol.set_feasible()
