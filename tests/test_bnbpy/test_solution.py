@@ -4,6 +4,7 @@ from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
 
 
+@pytest.mark.core
 @pytest.mark.solution
 class TestSolution:
     lb_value = 100

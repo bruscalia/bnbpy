@@ -48,5 +48,7 @@ markers = [
     "search: Mark test related to B&B search module",
     "colgen: Mark test related to Column Generation",
     "gcol: Mark test related to the Graph Coloring module",
-    "searchlogger: Mark test related to the SearchLogger class"
+    "searchlogger: Mark test related to the SearchLogger class",
+    "core: Mark test for core functionality (solution, problem, node, search)",
+    "integration: Mark for integration tests (machdeadline, pfssp, milp, milpnaive, knapsack, gcol)"
 ]

@@ -6,6 +6,7 @@ from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
 
 
+@pytest.mark.core
 @pytest.mark.problem
 class TestProblem:
     @staticmethod

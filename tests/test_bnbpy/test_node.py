@@ -6,6 +6,7 @@ from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
 
 
+@pytest.mark.core
 @pytest.mark.node
 class TestNode:
     """Test class for the Node class."""
