@@ -28,8 +28,8 @@ class TestPFSSP:
         [
             (DepthFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
-            (DepthFirstBnB, PermFlowShop, 'out', 182, 59, 'quick'),
-            (BestFirstBnB, PermFlowShop, 'out', 182, 27, 'quick'),
+            (DepthFirstBnB, PermFlowShop, 'out', 182, 47, 'quick'),
+            (BestFirstBnB, PermFlowShop, 'out', 182, 22, 'quick'),
             (DepthFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (DepthFirstBnB, PermFlowShop, 'out', 182, 0, 'neh'),

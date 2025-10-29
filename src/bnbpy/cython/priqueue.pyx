@@ -103,16 +103,24 @@ cdef class HeapPriQueue(BasePriQueue):
 cdef class DFSPriQueue(HeapPriQueue):
     cpdef void enqueue(self, Node node):
         # DFS: (-level, lb)
-        heapq.heappush(self._queue, init_node_pri_queue((-node.level, node.lb), node))
+        heapq.heappush(
+            self._queue,
+            init_node_pri_queue((-node.level, node.lb, node.get_index()), node)
+        )
 
 
 cdef class BFSPriQueue(HeapPriQueue):
     cpdef void enqueue(BFSPriQueue self, Node node):
         # BFS: (level, lb)
-        heapq.heappush(self._queue, init_node_pri_queue((node.level, node.lb), node))
+        heapq.heappush(
+            self._queue, init_node_pri_queue((node.level, node.lb, node.get_index()), node)
+        )
 
 
 cdef class BestPriQueue(HeapPriQueue):
     cpdef void enqueue(self, Node node):
         # Best-first: (lb, -level)
-        heapq.heappush(self._queue, init_node_pri_queue((node.lb, -node.level), node))
+        heapq.heappush(
+            self._queue,
+            init_node_pri_queue((node.lb, -node.level, node.get_index()), node)
+        )
