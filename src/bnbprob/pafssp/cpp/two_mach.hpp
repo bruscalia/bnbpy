@@ -8,6 +8,7 @@
 
 #include "job.hpp"
 #include "job_times.hpp"
+#include "mach_graph.hpp"
 
 using JobTimes1D = std::vector<JobTimes>;
 using MachTuple = std::tuple<int, int>;
@@ -23,6 +24,7 @@ private:
 public:
     TwoMach() {}
     TwoMach(const int &m, const std::vector<JobPtr> &jobs);
+    TwoMach(const MachineGraph &mach_graph, const std::vector<JobPtr> &jobs);
     const JobTimes1D &get_seq(const int &m1, const int &m2)
     {
         return this->sorted_maps[std::make_tuple(m1, m2)];

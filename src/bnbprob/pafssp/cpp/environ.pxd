@@ -162,6 +162,7 @@ cdef extern from "two_mach.hpp":
     cdef cppclass TwoMach:
         TwoMach()
         TwoMach(const int& m, const vector[JobPtr]& jobs)
+        TwoMach(const MachineGraph& mach_graph, const vector[JobPtr]& jobs)
 
         const vector[JobTimes]& get_seq(const int& m1, const int& m2)
 

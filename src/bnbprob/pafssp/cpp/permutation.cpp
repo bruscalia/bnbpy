@@ -32,8 +32,8 @@ Permutation::Permutation(const std::vector<std::vector<int>> &p_,
         this->free_jobs[j] = new Job(j, pj, *mach_graph_);
     }
 
-    // Creates the cache 2M
-    this->two_mach_cache = std::make_shared<TwoMach>(this->m, this->free_jobs);
+    // Creates the cache 2M using MachineGraph
+    this->two_mach_cache = std::make_shared<TwoMach>(*mach_graph_, this->free_jobs);
     this->single_mach_cache = SingleMach(this->m, this->free_jobs);
 
     // Update parameters
@@ -253,7 +253,7 @@ int Permutation::lower_bound_2m()
     std::vector<int> r = this->get_r();
     std::vector<int> q = this->get_q();
 
-    for (int m1 = 0; m1 < this->m - 1; ++m1)
+    for (int m1 = 0; m1 < this->m; ++m1)
     {
         for (const int &m2 : this->mach_graph->get_descendants()[m1])
         {

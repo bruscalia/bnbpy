@@ -8,6 +8,7 @@
 
 #include "job.hpp"
 #include "job_times.hpp"
+#include "mach_graph.hpp"
 
 inline bool _asc_t1(const JobTimes &a, const JobTimes &b)
 {
@@ -73,6 +74,22 @@ TwoMach::TwoMach(const int &m, const std::vector<JobPtr> &jobs)
     for (int m1 = 0; m1 < m; ++m1)
     {
         for (int m2 = m1 + 1; m2 < m; ++m2)
+        {
+            this->sorted_maps[std::make_tuple(m1, m2)] =
+                create_pair_seq(m1, m2, jobs);
+        }
+    }
+}
+
+TwoMach::TwoMach(const MachineGraph &mach_graph, const std::vector<JobPtr> &jobs)
+{
+    int m = mach_graph.get_M();
+    const auto &descendants = mach_graph.get_descendants();
+
+    for (int m1 = 0; m1 < m; ++m1)
+    {
+        // Use descendants from the graph instead of assuming m2 > m1
+        for (int m2 : descendants[m1])
         {
             this->sorted_maps[std::make_tuple(m1, m2)] =
                 create_pair_seq(m1, m2, jobs);
