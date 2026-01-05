@@ -34,14 +34,14 @@ def run_experiment(
     name: str,
     p: list[list[int]],
     timelimit: int = 3600,
-    constructive: Literal['multistart', 'neh'] = 'multistart',
+    constructive: Literal['iga', 'neh'] = 'iga',
 ) -> Experiment | None:
     # Initialization
     problem = PermFlowShop.from_p(
         p, constructive=constructive
     )
     delay_lb5 = CallbackBnB.delay_by_root(problem)
-    bnb = CallbackBnB(rtol=0.0001, save_tree=False, delay_lb5=delay_lb5)
+    bnb = CallbackBnB(delay_lb5=delay_lb5)
     # Lower bounds and warmstart
     lb1_start = problem.calc_lb_1m()
     lb5_start = problem.calc_lb_2m()
@@ -93,11 +93,11 @@ if __name__ == '__main__':
         with open(os.path.join(input_path, file), 'r', encoding='utf8') as f:
             data = json.load(f)
         # Prevent from extra computational effort in simple instances
-        constructive: Literal['multistart', 'neh'] = 'neh'
+        constructive: Literal['iga', 'neh'] = 'neh'
         if mach_def != '7x7':
-            constructive = 'multistart'
+            constructive = 'iga'
         instance = AssemblyFlowShopInstance(data['p'], data['edges'])
-        if len(data['p']) > 20 and mach_def != '7x7':
+        if mach_def == '15x15':
             continue
         m = len(data['p'][0]) // 2
         p1 = [row[:m] for row in data['p']]

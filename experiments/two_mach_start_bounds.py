@@ -98,7 +98,13 @@ def run_experiment(  # noqa: PLR0913, PLR0917
     execution_time = time.time() - start_time
     # Results
     experiment = Experiment(
-        name, execution_time, int(sol.lb), lb1, lb5, str(sol.status), bnb.explored
+        name,
+        execution_time,
+        int(sol.lb),
+        lb1,
+        lb5,
+        str(sol.status),
+        bnb.explored,
     )
     gc.collect()
     time.sleep(0.2)
@@ -114,9 +120,7 @@ if __name__ == '__main__':
             f'./../data/flow-shop/{ed.name}.json', mode='r', encoding='utf8'
         ) as f:
             p = json.load(f)
-        experiment = run_experiment(
-            ed.name, p, ed.value, 3600
-        )
+        experiment = run_experiment(ed.name, p, ed.value, 3600)
         experiments.append(experiment)
         print(experiment)
 

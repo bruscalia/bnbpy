@@ -44,7 +44,7 @@ def run_experiment(
     name: str,
     instance_: AssemblyFlowShopInstance,
     timelimit: int = 3600,
-    constructive: Literal['multistart', 'neh'] = 'multistart',
+    constructive: Literal['iga', 'neh'] = 'iga',
 ) -> Experiment | None:
     # Initialization
     instance = truncate_instance(instance_)
@@ -103,12 +103,10 @@ if __name__ == '__main__':
         with open(os.path.join(input_path, file), 'r', encoding='utf8') as f:
             data = json.load(f)
         # Prevent from extra computational effort in simple instances
-        constructive: Literal['multistart', 'neh'] = 'multistart'
+        constructive: Literal['iga', 'neh'] = 'iga'
         if mach_def == '5x6':
             constructive = 'neh'
         instance = AssemblyFlowShopInstance(data['p'], data['edges'])
-        if len(data['p']) > 20 and mach_def != '5x6':
-            continue
         experiment = run_experiment(
             name, instance, timelimit=3600, constructive=constructive
         )
