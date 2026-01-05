@@ -93,7 +93,7 @@ Permutation local_search(std::vector<JobPtr>& jobs_,
         sigma1.job_to_bottom(jp);
     }
     Permutation perm =
-        Permutation(M, jobs.size(), jobs.size(), sigma1, std::vector<JobPtr>{},
+        Permutation(jobs.size(), jobs.size(), sigma1, std::vector<JobPtr>{},
                     Sigma(sigma1.m, mach_graph), mach_graph);
     return perm;
 }

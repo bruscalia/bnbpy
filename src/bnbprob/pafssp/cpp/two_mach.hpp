@@ -23,7 +23,6 @@ private:
 
 public:
     TwoMach() {}
-    TwoMach(const int &m, const std::vector<JobPtr> &jobs);
     TwoMach(const MachineGraph &mach_graph, const std::vector<JobPtr> &jobs);
     const JobTimes1D &get_seq(const int &m1, const int &m2)
     {

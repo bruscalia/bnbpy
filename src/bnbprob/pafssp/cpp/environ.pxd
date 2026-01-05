@@ -161,7 +161,6 @@ cdef extern from "mach_graph.hpp":
 cdef extern from "two_mach.hpp":
     cdef cppclass TwoMach:
         TwoMach()
-        TwoMach(const int& m, const vector[JobPtr]& jobs)
         TwoMach(const MachineGraph& mach_graph, const vector[JobPtr]& jobs)
 
         const vector[JobTimes]& get_seq(const int& m1, const int& m2)
@@ -216,12 +215,12 @@ cdef extern from "permutation.hpp":
                     const MachineGraph& mach_graph_)
 
         # Constructor from free jobs with MachineGraph object
-        Permutation(const int &m_, const vector[JobPtr] &jobs_,
+        Permutation(const vector[JobPtr] &jobs_,
                     const MachineGraph& mach_graph_)
 
         # Constructor given all desired attributes with MachineGraph object
         Permutation(
-            const int &m_, const int &n_, const int &level_,
+            const int &n_, const int &level_,
             const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_, const MachineGraph& mach_graph_,
             const shared_ptr[TwoMach]& two_mach_cache_
@@ -229,7 +228,7 @@ cdef extern from "permutation.hpp":
 
         # Constructor given all desired attributes but two_mach with MachineGraph object
         Permutation(
-            const int &m_, const int &n_, const int &level_,
+            const int &n_, const int &level_,
             const Sigma &sigma1_, const vector[JobPtr] &free_jobs_,
             const Sigma &sigma2_, const MachineGraph& mach_graph_
         )

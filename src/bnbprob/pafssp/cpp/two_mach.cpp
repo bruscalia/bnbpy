@@ -69,18 +69,6 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
     return j1;
 }
 
-TwoMach::TwoMach(const int &m, const std::vector<JobPtr> &jobs)
-{
-    for (int m1 = 0; m1 < m; ++m1)
-    {
-        for (int m2 = m1 + 1; m2 < m; ++m2)
-        {
-            this->sorted_maps[std::make_tuple(m1, m2)] =
-                create_pair_seq(m1, m2, jobs);
-        }
-    }
-}
-
 TwoMach::TwoMach(const MachineGraph &mach_graph, const std::vector<JobPtr> &jobs)
 {
     int m = mach_graph.get_M();

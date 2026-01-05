@@ -142,18 +142,18 @@ public:
                 const std::shared_ptr<MachineGraph> &mach_graph_);
 
     // Constructor from free jobs (assumes jobs are managed externally)
-    Permutation(const int &m_, const std::vector<JobPtr> &jobs_,
+    Permutation(const std::vector<JobPtr> &jobs_,
                 const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(m_),
+        : m(mach_graph_->get_M()),
           n(jobs_.size()),
           level(0),
-          sigma1(m_, mach_graph_),
+          sigma1(mach_graph_->get_M(), mach_graph_),
           free_jobs(jobs_),
-          sigma2(m_, mach_graph_),
+          sigma2(mach_graph_->get_M(), mach_graph_),
           mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(m, free_jobs)),
+          two_mach_cache(std::make_shared<TwoMach>(*mach_graph_, free_jobs)),
           scheduled_jobs(n, false),
-          single_mach_cache(m_, jobs_),
+          single_mach_cache(mach_graph_->get_M(), jobs_),
           owns_jobs(false)  // External job management
     {
         // Constructor implementation here
@@ -162,12 +162,12 @@ public:
     }
 
     // Constructor given all desired attributes
-    Permutation(const int &m_, const int &n_, const int &level_,
+    Permutation(const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_)
-        : m(m_),
+        : m(mach_graph_->get_M()),
           n(n_),
           level(level_),
           sigma1(sigma1_),
@@ -176,7 +176,7 @@ public:
           mach_graph(mach_graph_),
           two_mach_cache(two_mach_cache_),
           scheduled_jobs(n_, false),
-          single_mach_cache(m_, free_jobs_),
+          single_mach_cache(mach_graph_->get_M(), free_jobs_),
           owns_jobs(false)  // External job management
     {
         // Constructor implementation here
@@ -185,20 +185,20 @@ public:
     }
 
     // Constructor given all desired attributes but two_mach
-    Permutation(const int &m_, const int &n_, const int &level_,
+    Permutation(const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_,
                 const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(m_),
+        : m(mach_graph_->get_M()),
           n(n_),
           level(level_),
           sigma1(sigma1_),
           free_jobs(free_jobs_),
           sigma2(sigma2_),
           mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(m_, free_jobs_)),
+          two_mach_cache(std::make_shared<TwoMach>(*mach_graph_, free_jobs_)),
           scheduled_jobs(n_, false),
-          single_mach_cache(m_, free_jobs_),
+          single_mach_cache(mach_graph_->get_M(), free_jobs_),
           owns_jobs(false)  // External job management
     {
         // Constructor implementation here
@@ -214,18 +214,18 @@ public:
     }
 
     // Constructor from free jobs with MachineGraph object
-    Permutation(const int &m_, const std::vector<JobPtr> &jobs_,
+    Permutation(const std::vector<JobPtr> &jobs_,
                 const MachineGraph &mach_graph_)
-        : Permutation(m_, jobs_, std::make_shared<MachineGraph>(mach_graph_))
+        : Permutation(jobs_, std::make_shared<MachineGraph>(mach_graph_))
     {
     }
 
     // Constructor given all desired attributes with MachineGraph object
-    Permutation(const int &m_, const int &n_, const int &level_,
+    Permutation(const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_, const MachineGraph &mach_graph_,
                 const std::shared_ptr<TwoMach> &two_mach_cache_)
-        : Permutation(m_, n_, level_, sigma1_, free_jobs_, sigma2_,
+        : Permutation(n_, level_, sigma1_, free_jobs_, sigma2_,
                       std::make_shared<MachineGraph>(mach_graph_),
                       two_mach_cache_)
     {
@@ -233,10 +233,10 @@ public:
 
     // Constructor given all desired attributes but two_mach with MachineGraph
     // object
-    Permutation(const int &m_, const int &n_, const int &level_,
+    Permutation(const int &n_, const int &level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
                 const Sigma &sigma2_, const MachineGraph &mach_graph_)
-        : Permutation(m_, n_, level_, sigma1_, free_jobs_, sigma2_,
+        : Permutation(n_, level_, sigma1_, free_jobs_, sigma2_,
                       std::make_shared<MachineGraph>(mach_graph_))
     {
     }

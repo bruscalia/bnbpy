@@ -71,7 +71,7 @@ Permutation neh_core(std::vector<JobPtr>& jobs_,
 
     // Prepare as a permutation
     Permutation perm =
-        Permutation(final_sol.m, jobs.size(), jobs.size(), final_sol, std::vector<JobPtr>{},
+        Permutation(jobs.size(), jobs.size(), final_sol, std::vector<JobPtr>{},
                     Sigma(final_sol.m, mach_graph), mach_graph);
     return perm;
 }
