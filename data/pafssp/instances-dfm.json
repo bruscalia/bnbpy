@@ -4,419 +4,419 @@
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-001-20-7x7"
+        "name": "dfm-001-20-7x7"
     },
     {
         "seed": 9697354961,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-002-20-7x7"
+        "name": "dfm-002-20-7x7"
     },
     {
         "seed": 2181241943,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-003-20-7x7"
+        "name": "dfm-003-20-7x7"
     },
     {
         "seed": 1958682846,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-004-20-7x7"
+        "name": "dfm-004-20-7x7"
     },
     {
         "seed": 4163119785,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-005-20-7x7"
+        "name": "dfm-005-20-7x7"
     },
     {
         "seed": 9963334018,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-006-20-7x7"
+        "name": "dfm-006-20-7x7"
     },
     {
         "seed": 2812140441,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-007-20-7x7"
+        "name": "dfm-007-20-7x7"
     },
     {
         "seed": 1127978094,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-008-20-7x7"
+        "name": "dfm-008-20-7x7"
     },
     {
         "seed": 1939042955,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-009-20-7x7"
+        "name": "dfm-009-20-7x7"
     },
     {
         "seed": 9703905715,
         "n_jobs": 20,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-010-20-7x7"
+        "name": "dfm-010-20-7x7"
     },
     {
         "seed": 7635473142,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-011-20-10x10"
+        "name": "dfm-011-20-10x10"
     },
     {
         "seed": 6241752544,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-012-20-10x10"
+        "name": "dfm-012-20-10x10"
     },
     {
         "seed": 7825844140,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-013-20-10x10"
+        "name": "dfm-013-20-10x10"
     },
     {
         "seed": 4460967357,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-014-20-10x10"
+        "name": "dfm-014-20-10x10"
     },
     {
         "seed": 8293453178,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-015-20-10x10"
+        "name": "dfm-015-20-10x10"
     },
     {
         "seed": 6756332150,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-016-20-10x10"
+        "name": "dfm-016-20-10x10"
     },
     {
         "seed": 1667779376,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-017-20-10x10"
+        "name": "dfm-017-20-10x10"
     },
     {
         "seed": 2445662585,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-018-20-10x10"
+        "name": "dfm-018-20-10x10"
     },
     {
         "seed": 5693307665,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-019-20-10x10"
+        "name": "dfm-019-20-10x10"
     },
     {
         "seed": 5710360983,
         "n_jobs": 20,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-020-20-10x10"
+        "name": "dfm-020-20-10x10"
     },
     {
         "seed": 8934927891,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-021-20-15x15"
+        "name": "dfm-021-20-15x15"
     },
     {
         "seed": 7887950851,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-022-20-15x15"
+        "name": "dfm-022-20-15x15"
     },
     {
         "seed": 4466589567,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-023-20-15x15"
+        "name": "dfm-023-20-15x15"
     },
     {
         "seed": 8429141456,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-024-20-15x15"
+        "name": "dfm-024-20-15x15"
     },
     {
         "seed": 3303082117,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-025-20-15x15"
+        "name": "dfm-025-20-15x15"
     },
     {
         "seed": 2625792787,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-026-20-15x15"
+        "name": "dfm-026-20-15x15"
     },
     {
         "seed": 7665963761,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-027-20-15x15"
+        "name": "dfm-027-20-15x15"
     },
     {
         "seed": 8995970241,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-028-20-15x15"
+        "name": "dfm-028-20-15x15"
     },
     {
         "seed": 3479708607,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-029-20-15x15"
+        "name": "dfm-029-20-15x15"
     },
     {
         "seed": 4026113008,
         "n_jobs": 20,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-030-20-15x15"
+        "name": "dfm-030-20-15x15"
     },
     {
         "seed": 9786748825,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-031-50-7x7"
+        "name": "dfm-031-50-7x7"
     },
     {
         "seed": 5728765136,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-032-50-7x7"
+        "name": "dfm-032-50-7x7"
     },
     {
         "seed": 6488854841,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-033-50-7x7"
+        "name": "dfm-033-50-7x7"
     },
     {
         "seed": 2566942273,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-034-50-7x7"
+        "name": "dfm-034-50-7x7"
     },
     {
         "seed": 6884882440,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-035-50-7x7"
+        "name": "dfm-035-50-7x7"
     },
     {
         "seed": 3783290795,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-036-50-7x7"
+        "name": "dfm-036-50-7x7"
     },
     {
         "seed": 4131575764,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-037-50-7x7"
+        "name": "dfm-037-50-7x7"
     },
     {
         "seed": 5996775663,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-038-50-7x7"
+        "name": "dfm-038-50-7x7"
     },
     {
         "seed": 6924716023,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-039-50-7x7"
+        "name": "dfm-039-50-7x7"
     },
     {
         "seed": 3392080953,
         "n_jobs": 50,
         "n_each": 7,
         "n_total": 13,
-        "name": "d2f-040-50-7x7"
+        "name": "dfm-040-50-7x7"
     },
     {
         "seed": 8235363119,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-041-50-10x10"
+        "name": "dfm-041-50-10x10"
     },
     {
         "seed": 4332894265,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-042-50-10x10"
+        "name": "dfm-042-50-10x10"
     },
     {
         "seed": 6649827836,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-043-50-10x10"
+        "name": "dfm-043-50-10x10"
     },
     {
         "seed": 2149938334,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-044-50-10x10"
+        "name": "dfm-044-50-10x10"
     },
     {
         "seed": 2351531223,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-045-50-10x10"
+        "name": "dfm-045-50-10x10"
     },
     {
         "seed": 8110054933,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-046-50-10x10"
+        "name": "dfm-046-50-10x10"
     },
     {
         "seed": 2970753705,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-047-50-10x10"
+        "name": "dfm-047-50-10x10"
     },
     {
         "seed": 2137651678,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-048-50-10x10"
+        "name": "dfm-048-50-10x10"
     },
     {
         "seed": 7805745017,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-049-50-10x10"
+        "name": "dfm-049-50-10x10"
     },
     {
         "seed": 7010379415,
         "n_jobs": 50,
         "n_each": 10,
         "n_total": 19,
-        "name": "d2f-050-50-10x10"
+        "name": "dfm-050-50-10x10"
     },
     {
         "seed": 5284391408,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-051-50-15x15"
+        "name": "dfm-051-50-15x15"
     },
     {
         "seed": 7483366056,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-052-50-15x15"
+        "name": "dfm-052-50-15x15"
     },
     {
         "seed": 1470939445,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-053-50-15x15"
+        "name": "dfm-053-50-15x15"
     },
     {
         "seed": 3694860228,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-054-50-15x15"
+        "name": "dfm-054-50-15x15"
     },
     {
         "seed": 5567816720,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-055-50-15x15"
+        "name": "dfm-055-50-15x15"
     },
     {
         "seed": 9573276057,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-056-50-15x15"
+        "name": "dfm-056-50-15x15"
     },
     {
         "seed": 7567496105,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-057-50-15x15"
+        "name": "dfm-057-50-15x15"
     },
     {
         "seed": 9639245200,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-058-50-15x15"
+        "name": "dfm-058-50-15x15"
     },
     {
         "seed": 4095476665,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-059-50-15x15"
+        "name": "dfm-059-50-15x15"
     },
     {
         "seed": 8047877267,
         "n_jobs": 50,
         "n_each": 15,
         "n_total": 29,
-        "name": "d2f-060-50-15x15"
+        "name": "dfm-060-50-15x15"
     }
 ]

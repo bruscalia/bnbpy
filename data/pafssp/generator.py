@@ -74,11 +74,11 @@ def write_instances_2f() -> list[Instance2Fm]:
         for _ in range(10):
             i += 1
             seed = rng.randint(MIN_SEED, MAX_SEED)
-            name = f'd2f-{i:03d}-{n_jobs}-{n_each}x{n_each}'
+            name = f'dfm-{i:03d}-{n_jobs}-{n_each}x{n_each}'
             instances.append(
                 Instance2Fm(seed, n_jobs, n_each, 2 * n_each - 1, name)
             )
-    with open('instances-d2f.json', mode='w', encoding='utf8') as f:
+    with open('instances-dfm.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
 
     return instances
@@ -141,7 +141,7 @@ def generate_and_save_2f() -> None:
     save them to JSON files.
     """
     instances = write_instances_2f()
-    output_dir = Path('./d2f')
+    output_dir = Path('./dfm')
     output_dir.mkdir(exist_ok=True)
     for instance in instances:
         # Generate processing times in transposed format

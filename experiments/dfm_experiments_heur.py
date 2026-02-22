@@ -60,7 +60,7 @@ def run_experiment(
 if __name__ == '__main__':
     experiments = list[Experiment]()
 
-    input_path = './../data/pafssp/d2f'
+    input_path = './../data/pafssp/dfm'
     # Scan directory for all instances
     all_files = os.listdir(input_path)
     all_files.sort()
