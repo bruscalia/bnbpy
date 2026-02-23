@@ -148,7 +148,7 @@ class MyCG(bbp.ColumnGenProblem):
 The `bnbprob` package incorporates elements of `bnbpy` to solve classical examples.
 It is installed alongside `bnbpy`.
 
-See examples for [MILP](#milp), [Flow Shop](#flow-shop), and [Graph Coloring](#graph-coloring) problems below.
+See examples for [MILP](#milp), [Permutation Flow Shop](#flow-shop), and [Graph Coloring](#graph-coloring) problems below.
 
 ### MILP
 
@@ -176,10 +176,10 @@ print(f"Sol: {sol} | x: {sol.x}")
 # >>> Sol: Status: OPTIMAL | Cost: -18.0 | LB: -18.0 | x: [2. 2.]
 ```
 
-### Flow Shop
+### Permutation Flow Shop
 
 In this example, an instance from the literature with 20 jobs on 10 machines is solved.
-It takes less than 1 second, which is an impressive performance even compared to the best commercial MILP solvers.
+It takes less than 0.1 second, which is an impressive performance even compared to the best commercial MILP solvers.
 
 ```python
 import json
@@ -189,9 +189,7 @@ with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
     p = json.load(f)
 
 problem = PermFlowShop.from_p(p, constructive='neh')
-bnb = CallbackBnB(
-    eval_node='in', rtol=0.0001, save_tree=False
-)
+bnb = CallbackBnB()
 
 # The commercial solver Gurobi took 600s (timeout) to find the near-optimal
 # solution 1432
