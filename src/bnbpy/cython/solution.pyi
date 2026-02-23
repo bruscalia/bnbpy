@@ -6,8 +6,16 @@ class Solution:
     """Abstraction for a solution representation"""
 
     cost: Union[int, float]
+    """
+    Upper bound of the solution
+    (infinity in case of infeasibility or not being solved)
+    """
+
     lb: Union[int, float]
+    """Lower bound of the solution"""
+
     status: OptStatus
+    """Optimization status of the solution"""
 
     def __init__(self) -> None: ...
 

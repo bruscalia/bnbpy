@@ -32,6 +32,16 @@ class SearchResults(Generic[P]):
 
     def __str__(self) -> str: ...
 
+    def foo_something(self) -> None:
+        """Do nothing.
+
+        Returns
+        -------
+        None
+             This method does nothing and is just a placeholder for testing
+        """
+        ...
+
     @property
     def cost(self) -> float:
         """Cost of the best solution found"""
