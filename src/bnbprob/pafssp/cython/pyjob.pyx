@@ -10,7 +10,7 @@ from bnbprob.pafssp.cpp.environ cimport Job, JobPtr, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
 
-INIT_ERROR = 'C++ Job shared pointer not initialized'
+INIT_ERROR = 'C++ Job not initialized'
 
 
 cdef class PyJob:
@@ -42,6 +42,10 @@ cdef class PyJob:
         return self.get_q()
 
     @property
+    def s(self):
+        return self.get_s()
+
+    @property
     def lat(self):
         return self.get_lat()
 
@@ -58,16 +62,12 @@ cdef class PyJob:
         cdef:
             int m
             vector[int] p_
-            shared_ptr[vector[int]] p_shared
             MachineGraph mach_graph
             PyJob out
 
         out = PyJob.__new__(PyJob)
         p_ = p
         m = len(p)
-
-        # Create shared_ptr from vector
-        p_shared = make_shared[vector[int]](p_)
 
         # Create sequential MachineGraph using same pattern as problem.pyx
         if edges is None:
@@ -78,81 +78,83 @@ cdef class PyJob:
         mach_graph = create_machine_graph(mi)
 
         # Create Job with MachineGraph
-        out.job = make_shared[Job](j, p_shared, mach_graph)
+        out.job = Job(j, p_, mach_graph)
         return out
 
+    cdef JobPtr get_job(self):
+        return &self.job
+
     cpdef int get_j(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).j
+        return self.job.j
 
     cpdef list[int] get_p(self):
         cdef:
-            int i, pi
+            unsigned int i
+            int pi
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(deref(self.job).p).size()):
-            pi = deref(deref(self.job).p)[i]
+        for i in range(self.job.p.size()):
+            pi = self.job.p[i]
             out.append(pi)
         return out
 
     cpdef list[int] get_r(self):
         cdef:
-            int i, ri
+            unsigned int i
+            int ri
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).r.size()):
-            ri = deref(self.job).r[i]
+        for i in range(self.job.r.size()):
+            ri = self.job.r[i]
             out.append(ri)
         return out
 
     cpdef list[int] get_q(self):
         cdef:
-            int i, qi
+            unsigned int i
+            int qi
             list[int] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(self.job).q.size()):
-            qi = deref(self.job).q[i]
+        for i in range(self.job.q.size()):
+            qi = self.job.q[i]
             out.append(qi)
+        return out
+
+    cpdef list[int] get_s(self):
+        cdef:
+            unsigned int i
+            int si
+            list[int] out
+        out = []
+        for i in range(self.job.s.size()):
+            si = self.job.s[i]
+            out.append(si)
         return out
 
     cpdef list[list[int]] get_lat(self):
         cdef:
-            int i, j, li
+            unsigned int i, j
+            int li
             list[int] lati
             list[list[int]] out
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
         out = []
-        for i in range(deref(deref(self.job).lat).size()):
+        for i in range(self.job.lat.size()):
             out.append([])
-            for j in range(deref(deref(self.job).lat)[i].size()):
-                li = deref(deref(self.job).lat)[i][j]
+            for j in range(self.job.lat[i].size()):
+                li = self.job.lat[i][j]
                 out[i].append(li)
         return out
 
     cpdef int get_slope(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).get_slope()
+        return self.job.get_slope()
 
     cpdef int get_T(self):
-        if self.job == NULL:
-            raise ReferenceError(INIT_ERROR)
-        return deref(self.job).get_T()
+        return self.job.get_T()
 
 
-cdef PyJob job_to_py(JobPtr& jobptr):
+cdef PyJob job_to_py(JobPtr& job_ref):
     cdef:
         PyJob out
-    if jobptr == NULL:
-        raise ReferenceError(INIT_ERROR)
     out = PyJob.__new__(PyJob)
-    out.job = jobptr
+    out.job = deref(job_ref)
     return out

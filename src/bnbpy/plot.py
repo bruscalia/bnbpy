@@ -44,6 +44,8 @@ class Edges(list[Any]):
 
 def _format_lb(x: float | str) -> str:
     if isinstance(x, float):
+        if x.is_integer():
+            return f'{int(x)}'
         return f'{x:.1f}'
     else:
         return f'{x}'

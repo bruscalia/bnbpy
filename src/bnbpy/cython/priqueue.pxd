@@ -42,6 +42,9 @@ cdef class HeapPriQueue(BasePriQueue):
     cdef public:
         list[NodePriQueue] _queue
 
+    cdef:
+        double lb
+
     cpdef bint not_empty(HeapPriQueue self)
 
     cpdef Node dequeue(HeapPriQueue self)

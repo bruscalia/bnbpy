@@ -1,4 +1,5 @@
 import os
+from typing import cast
 
 import pytest
 
@@ -17,7 +18,6 @@ class TestGcol:
         [
             ('gcol_50.txt', 14, 12, 'heur'),
             ('gcol_50.txt', 14, 6, 'hybr'),
-            # ('gcol_50.txt', 14, 308, "mip"),
             ('gcol_32.txt', 8, 4, 'heur'),
             ('gcol_32.txt', 8, 4, 'hybr'),
             ('gcol_32.txt', 8, 4, 'mip'),
@@ -28,11 +28,14 @@ class TestGcol:
     ) -> None:
         fpath = os.path.join(HERE, os.pardir, 'instances', 'gcol', filename)
         instance = gcol.load_instance(fpath)
+        edges = cast(list[tuple[int, int]], instance['edges'])
         price_tol = 0.1
         bnb = BranchAndBound()
-        pricing = self.get_pricing(mode, instance['edges'], price_tol)
+        pricing = self.get_pricing(
+            mode, edges, price_tol
+        )
         problem = gcol.ColGenColor(
-            instance['edges'],
+            edges,
             pricing=pricing,
             max_iter_price=1000,
         )

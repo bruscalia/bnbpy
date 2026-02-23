@@ -1,21 +1,24 @@
 import pytest
-from fixtures.myproblem import MyProblem
+from myfixtures.myproblem import MyProblem
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
 
 
+@pytest.mark.core
 @pytest.mark.node
 class TestNode:
     """Test class for the Node class."""
 
+    @staticmethod
     @pytest.fixture
-    def parent_problem(self) -> MyProblem:  # noqa: PLR6301
+    def parent_problem() -> MyProblem:
         return MyProblem(lb_value=5, feasible=True)
 
+    @staticmethod
     @pytest.fixture
-    def child_problem(self) -> MyProblem:  # noqa: PLR6301
+    def child_problem() -> MyProblem:
         return MyProblem(lb_value=10, feasible=False)
 
     @staticmethod

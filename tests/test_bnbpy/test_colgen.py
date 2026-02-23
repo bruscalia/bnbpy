@@ -8,7 +8,7 @@ from bnbpy.cython.search import BranchAndBound
 from bnbpy.cython.status import OptStatus
 
 
-class DummyMaster(Master):  # type: ignore
+class DummyMaster(Master):
     def __init__(self, initial_cost: float):
         self.cost = initial_cost
         self.duals = [1.0, 1.0]  # Arbitrary initial dual values
@@ -26,7 +26,7 @@ class DummyMaster(Master):  # type: ignore
         return MasterSol(cost=self.cost, duals=self.duals)
 
 
-class DummyPricing(Pricing):  # type: ignore
+class DummyPricing(Pricing):
     def __init__(self, initial_red_cost: float = -2.0):
         super().__init__(price_tol=1e-2)
         self.round = 0  # Tracks the number of rounds executed
@@ -41,13 +41,13 @@ class DummyPricing(Pricing):  # type: ignore
         # Optimized increment for balanced convergence
         red_cost = self.initial_red_cost + (0.5 * self.round)
         self.round += 1
-        return PriceSol(
-            red_cost=red_cost, new_col=f'col{self.round}'
-        )
+        return PriceSol(red_cost=red_cost, new_col=f'col{self.round}')
 
 
 class DummyColumnGenProblem(ColumnGenProblem):  # type: ignore
     feas_tol = 0.1
+    master: DummyMaster
+    pricing: DummyPricing
 
     def __init__(
         self,
@@ -61,7 +61,7 @@ class DummyColumnGenProblem(ColumnGenProblem):  # type: ignore
             master=master, pricing=pricing, max_iter_price=max_iter_price
         )
 
-    def branch(self) -> List['DummyColumnGenProblem'] | None:
+    def branch(self) -> List['DummyColumnGenProblem']:
         c1 = self.copy()
         c2 = self.copy()
         c1.master.cost = self.master.cost + 3.7  # Optimized branching
@@ -69,10 +69,10 @@ class DummyColumnGenProblem(ColumnGenProblem):  # type: ignore
         return [c1, c2]
 
     def is_feasible(self) -> bool:
-        return cast(bool, self.master.cost % 2.7 <= self.feas_tol)
+        return self.master.cost % 2.7 <= self.feas_tol
 
-    def copy(self) -> 'DummyColumnGenProblem':
-        other = cast(DummyColumnGenProblem, super().copy(deep=False))
+    def copy(self, deep: bool = False) -> 'DummyColumnGenProblem':
+        other = cast(DummyColumnGenProblem, super().copy(deep=deep))
         # DON'T reset pricing.round - this was the main convergence issue!
         return other
 

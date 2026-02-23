@@ -61,8 +61,8 @@ class BranchAndBound:
     eval_in: bool
     eval_out: bool
     save_tree: bool
-    incumbent: Node
-    bound_node: Node
+    incumbent: Node | None
+    bound_node: Node | None
     __logger: SearchLogger
 
     def __init__(

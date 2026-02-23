@@ -28,6 +28,9 @@ cdef class Node:
     cdef inline Solution get_solution(Node self):
         return self.problem.solution
 
+    cdef inline int get_index(Node self):
+        return self._sort_index
+
     cpdef void compute_bound(Node self)
 
     cpdef bool check_feasible(Node self)

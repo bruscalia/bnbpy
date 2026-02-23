@@ -8,6 +8,7 @@
 
 #include "job.hpp"
 #include "job_times.hpp"
+#include "mach_graph.hpp"
 
 inline bool _asc_t1(const JobTimes &a, const JobTimes &b)
 {
@@ -24,11 +25,11 @@ struct JobTimesPredicate
 {
     const Job *target;
 
-    JobTimesPredicate(const JobPtr &jobptr) : target(&(*jobptr)) {}
+    JobTimesPredicate(const Job &jobptr) : target(&jobptr) {}
 
     bool operator()(const JobTimes &jt) const
     {
-        return jt.jobptr->j == target->j;
+        return jt.job.j == target->j;
     }
 };
 
@@ -42,12 +43,10 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
 
     for (const auto &job : jobs)
     {
-        int &lat = job->lat->at(m2)[m1];
-        // The extrapolation below is invalid, preserving the attempt
-        // int lat = job->r[m2] - job->r[m1] - job->p->at(m1);
-        int t1 = job->p->at(m1) + lat;
-        int t2 = job->p->at(m2) + lat;
-        JobTimes jt = JobTimes(m1, m2, job);
+        int &lat = job->lat.at(m1)[m2];
+        int t1 = job->p.at(m1) + lat;
+        int t2 = job->p.at(m2) + lat;
+        JobTimes jt = JobTimes(m1, m2, *job);
         if (t1 <= t2)
         {
             j1.push_back(jt);
@@ -70,25 +69,18 @@ JobTimes1D TwoMach::create_pair_seq(const int &m1, const int &m2,
     return j1;
 }
 
-TwoMach::TwoMach(const int &m, const std::vector<JobPtr> &jobs)
+TwoMach::TwoMach(const MachineGraph &mach_graph, const std::vector<JobPtr> &jobs)
 {
+    int m = mach_graph.get_M();
+    const auto &descendants = mach_graph.get_descendants();
+
     for (int m1 = 0; m1 < m; ++m1)
     {
-        for (int m2 = m1 + 1; m2 < m; ++m2)
+        // Use descendants from the graph instead of assuming m2 > m1
+        for (int m2 : descendants[m1])
         {
             this->sorted_maps[std::make_tuple(m1, m2)] =
                 create_pair_seq(m1, m2, jobs);
         }
-    }
-}
-
-void TwoMach::erase_job(const JobPtr &jobptr)
-{
-    for (auto it = sorted_maps.begin(); it != sorted_maps.end(); ++it)
-    {
-        std::vector<JobTimes> &vec = it->second;
-        vec.erase(
-            std::remove_if(vec.begin(), vec.end(), JobTimesPredicate(jobptr)),
-            vec.end());
     }
 }

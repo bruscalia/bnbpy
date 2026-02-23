@@ -1,23 +1,25 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
-from libcpp cimport bool
 from libc.math cimport INFINITY
+from libcpp cimport bool
 from libcpp.string cimport string
-
-from bnbpy.cython.node cimport Node
 
 from typing import Optional
 
-from bnbpy.cython.solution cimport Solution
+from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.solution cimport Solution
+
+
+cdef extern from "limits.h":
+    unsigned long long ULLONG_MAX
 
 
 cdef:
     double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
-    int LARGE_INT = 100000000
 
 
 cdef class SearchResults:
@@ -36,7 +38,7 @@ cdef class BranchAndBound:
         BasePriQueue queue
         double rtol
         double atol
-        int explored
+        unsigned long long explored
         string eval_node
         bool eval_in
         bool eval_out
@@ -77,7 +79,7 @@ cdef class BranchAndBound:
 
     cpdef void solution_callback(BranchAndBound self, Node node)
 
-    cpdef void _solve_root(BranchAndBound self)
+    cpdef void _enqueue_root(BranchAndBound self, Problem problem)
 
     cpdef void _node_eval(BranchAndBound self, Node node)
 
@@ -89,7 +91,7 @@ cdef class BranchAndBound:
 
     cdef Node _dequeue_core(BranchAndBound self)
 
-    cdef bool _check_termination(BranchAndBound self, int maxiter)
+    cdef bool _check_termination(BranchAndBound self, unsigned long long maxiter)
 
     cdef void _update_bound(BranchAndBound self)
 

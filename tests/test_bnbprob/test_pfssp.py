@@ -3,8 +3,8 @@ from typing import Any, Type
 
 import pytest
 
-from bnbprob.pfssp.cython.bnb import LazyBnB
-from bnbprob.pfssp.cython.problem import PermFlowShop, PermFlowShop2M
+from bnbprob.pafssp.cython.bnb import LazyBnB
+from bnbprob.pafssp.cython.problem import PermFlowShop
 from bnbpy.cython.search import BestFirstBnB, BranchAndBound, DepthFirstBnB
 
 
@@ -28,7 +28,7 @@ class TestPFSSP:
         [
             (DepthFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 11, 'quick'),
-            (DepthFirstBnB, PermFlowShop, 'out', 182, 46, 'quick'),
+            (DepthFirstBnB, PermFlowShop, 'out', 182, 47, 'quick'),
             (BestFirstBnB, PermFlowShop, 'out', 182, 22, 'quick'),
             (DepthFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
             (BestFirstBnB, PermFlowShop, 'in', 182, 0, 'neh'),
@@ -68,10 +68,10 @@ class TestPFSSP:
         return problem
 
     def test_warmstart(self) -> None:
-        problem = self.start_problem(PermFlowShop2M, constructive='quick')
+        problem = self.start_problem(PermFlowShop, constructive='quick')
         bnb = DepthFirstBnB(eval_node='in')
         bnb.solve(problem)
-        cost: int = bnb.solution.cost
+        cost: int = int(bnb.solution.cost)
         assert bnb.solution.cost == self.sol_value, (
             f'Wrong solution for DFS {cost}, expected {self.sol_value}'
         )
@@ -84,12 +84,12 @@ class TestPFSSP:
         self,
     ) -> None:
         problem = self.start_problem(PermFlowShop, constructive='quick')
-        bnb = LazyBnB(eval_node='in')
+        bnb = LazyBnB(delay_lb5=False)
         bnb.solve(problem)
         bnblazy = BranchAndBound(eval_node='in')
         problem_lazy = self.start_problem(PermFlowShop)
         bnblazy.solve(problem_lazy)
-        base_cost: int = bnb.solution.cost
+        base_cost: int = int(bnb.solution.cost)
         cb_cost: int = self.sol_value
         assert bnb.solution.cost == bnblazy.solution.cost, (
             f'Wrong solution for CB {base_cost}, expected {cb_cost}'
@@ -128,7 +128,7 @@ class TestPFSSPBounds:
         (43, 43),
         (47, 47),
         (46, 46),
-        (42, 42),
+        (39, 42),
     ]
 
     res_final: int = 43

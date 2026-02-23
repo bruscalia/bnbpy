@@ -1,5 +1,6 @@
 #include "job.hpp"
 
+#include <climits>
 #include <cstdlib>
 #include <memory>
 #include <vector>
@@ -8,55 +9,64 @@
 
 using namespace std;
 
-// Private helper function to initialize with MachineGraph precedence relationships
-void Job::initialize(const std::shared_ptr<std::vector<int>> &p_, const MachineGraph &mach_graph)
+// Private helper function to initialize with MachineGraph precedence
+// relationships
+void Job::initialize(const std::vector<int> &p_,
+                     const MachineGraph &mach_graph)
 {
-    int m = p_->size();
+    int m = p_.size();
 
-    // Initialize release dates of the job on each machine
-    for (int k : mach_graph.get_topo_order()) {
-        const std::vector<int> &prev_k = mach_graph.get_prec(k);
-        int max_release = 0;
-        for (const int &pk : prev_k) {
-            max_release = std::max(max_release, r[pk] + p_->at(pk));
-        }
-        r[k] = max_release;
-    }
+    // Recompute release dates (r) and wait times (q)
+    recompute_r_q(mach_graph);
 
-    // Initialize wait times of the job on each machine
-    for (int k : mach_graph.get_rev_topo_order()) {
-        const std::vector<int> &succ_k = mach_graph.get_succ(k);
-        int max_wait = 0;
-        for (const int &sk : succ_k) {
-            max_wait = std::max(max_wait, q[sk] + p_->at(sk));
-        }
-        q[k] = max_wait;
-    }
+    // The latency between two operations is the longest path between them
+    // minus the processing time of the first operation
+    // Compute longest paths between all pairs of machines
+    const std::vector<std::vector<int>> &descendants = mach_graph.get_descendants();
 
-    // The latency between two operations is the difference between
-    // their release dates minus the processing time of the first operation
-    // If there is no precedence, the latency is 0
     for (int m1 = 0; m1 < m; ++m1)
     {
-        (*lat)[m1] = std::vector<int>(m, 0);
-        for (int m2 = 0; m2 < m; ++m2)
+        lat[m1] = std::vector<int>(m, 0);
+
+        // Compute longest path from m1 to ALL destinations in a single pass
+        // dist[k] = longest path from m1 to k
+        std::vector<int> dist(m, INT_MIN);
+        dist[m1] = 0;
+
+        // Process machines in topological order
+        for (int k : mach_graph.get_topo_order())
         {
-            if (r[m1] > r[m2] + p_->at(m2)) {
-                (*lat)[m1][m2] = r[m1] - (r[m2] + p_->at(m2));
+            // This is not a descendant of m1
+            if (dist[k] == INT_MIN) continue;
+
+            // Update distances to all successors
+            for (int succ : mach_graph.get_succ(k))
+            {
+                dist[succ] = std::max(dist[succ], dist[k] + p_.at(k));
             }
         }
-    }
 
+        // Only populate latency for reachable descendants of m1
+        for (int m2 : descendants[m1])
+        {
+            if (dist[m2] != INT_MIN)
+            {
+                lat[m1][m2] = std::max(0, dist[m2] - p_.at(m1));
+            }
+            // If not reachable, latency remains 0 (already initialized)
+        }
+        // Note: lat[m1][m1] remains 0 as initialized, and non-descendants remain 0
+    }
 }
 
 // Get total time
 int Job::get_T() const
 {
-    int m = p->size();
+    int m = p.size();
     int T = 0;
     for (int i = 0; i < m; ++i)
     {
-        T += r[i] + (*p)[i] + q[i];
+        T += p[i];
     }
     return T;
 }
@@ -65,28 +75,44 @@ int Job::get_T() const
 int Job::get_slope() const
 {
     int slope = 0;
-    int m = this->p->size() + 1;
+    int m = this->p.size() + 1;
     for (int k = 1; k < m; ++k)
     {
-        slope += (k - (m + 1) / 2) * (*this->p)[k - 1];
+        slope += (k - (m + 1) / 2) * this->p[k - 1];
     }
     return slope;
 }
 
-// Function to copy a job
-inline std::shared_ptr<Job> copy_job(const std::shared_ptr<Job> &jobptr)
+// Method to recompute only r and q for the job given machine graph
+void Job::recompute_r_q(const MachineGraph &mach_graph)
 {
-    return std::make_shared<Job>(*jobptr);
-}
+    int m = p.size();
 
-// Function to copy a vector of jobs
-std::vector<std::shared_ptr<Job>> copy_jobs(
-    const std::vector<std::shared_ptr<Job>> &jobs)
-{
-    std::vector<std::shared_ptr<Job>> out(jobs.size());
-    for (int i = 0; i < static_cast<int>(jobs.size()); ++i)
+    // Create new vectors for r and q (copy-on-write behavior)
+    r.assign(m, 0);
+    q.assign(m, 0);
+
+    // Initialize release dates of the job on each machine
+    for (int k : mach_graph.get_topo_order())
     {
-        out[i] = make_shared<Job>(*jobs[i]);
+        const std::vector<int> &prev_k = mach_graph.get_prec(k);
+        int max_release = 0;
+        for (const int &pk : prev_k)
+        {
+            max_release = std::max(max_release, r[pk] + p.at(pk));
+        }
+        r[k] = max_release;
     }
-    return out;  // Return the copied vector
+
+    // Initialize wait times of the job on each machine
+    for (int k : mach_graph.get_rev_topo_order())
+    {
+        const std::vector<int> &succ_k = mach_graph.get_succ(k);
+        int max_wait = 0;
+        for (const int &sk : succ_k)
+        {
+            max_wait = std::max(max_wait, q[sk] + p.at(sk));
+        }
+        q[k] = max_wait;
+    }
 }

@@ -9,12 +9,7 @@
 #include "sigma.hpp"
 #include "utils.hpp"
 
-inline bool desc_T(const JobPtr& a, const JobPtr& b)
-{
-    return b->get_T() < a->get_T();
-}
-
-Permutation neh_constructive(std::vector<JobPtr>& jobs,
+Permutation neh_initialization(std::vector<JobPtr>& jobs,
                              const std::shared_ptr<MachineGraph>& mach_graph)
 {
     // Find best order of two jobs with longest processing times
@@ -23,37 +18,31 @@ Permutation neh_constructive(std::vector<JobPtr>& jobs,
     return neh_core(jobs, mach_graph);
 }
 
-Permutation neh_core(std::vector<JobPtr>& jobs,
+Permutation neh_core(std::vector<JobPtr>& jobs_,
                      const std::shared_ptr<MachineGraph>& mach_graph)
 {
-    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
+    int M, c1, c2;
     // Sigma s1, s2, sol, best_sol, s_alt;
-    JobPtr job;
     std::vector<JobPtr> vec;
     Sigma s1, s2, sol, best_sol;
+    std::vector<JobPtr> jobs = jobs_;
 
-    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+    M = jobs[0]->p.size();  // Assume r is the same size for all jobs
 
     // Initial setup for two jobs
     vec.resize(2);
     vec[0] = jobs[0];
     vec[1] = jobs[1];
-    recompute_r0(vec, 0);
-    // TODO: Update Sigma to support initialization from MachineGraph
     s1 = Sigma(M, mach_graph);
-    s1.jobs.reserve(2);
-    for (int k = 0; k < vec.size(); ++k)
+    for (unsigned int k = 0; k < vec.size(); ++k)
     {
         s1.job_to_bottom(vec[k]);
     }
 
     vec[0] = jobs[1];
     vec[1] = jobs[0];
-    recompute_r0(vec, 0);
-    // TODO: Update Sigma to support initialization from MachineGraph
     s2 = Sigma(M, mach_graph);
-    s2.jobs.reserve(2);
-    for (int k = 0; k < vec.size(); ++k)
+    for (unsigned int k = 0; k < vec.size(); ++k)
     {
         s2.job_to_bottom(vec[k]);
     }
@@ -70,68 +59,81 @@ Permutation neh_core(std::vector<JobPtr>& jobs,
     }
 
     // Find best insert for every other job
-    std::vector<JobPtr> free_jobs =
-        std::vector<JobPtr>(jobs.begin() + 2, jobs.end());
-    sol = neh_body(sol, free_jobs, mach_graph);
+    std::vector<JobPtr> free_jobs = std::vector<JobPtr>(jobs.begin() + 2, jobs.end());
+
+    std::vector<JobPtr> solution_jobs = neh_body(sol.get_jobs(), free_jobs, mach_graph);
+
+    // Create final Sigma from solution jobs
+    Sigma final_sol(M, mach_graph);
+    for (JobPtr& job : solution_jobs) {
+        final_sol.job_to_bottom(job);
+    }
 
     // Prepare as a permutation
     Permutation perm =
-        Permutation(sol.m, jobs.size(), jobs.size(), sol, std::vector<JobPtr>{},
-                    Sigma(sol.m, mach_graph), mach_graph);
+        Permutation(jobs.size(), jobs.size(), final_sol, std::vector<JobPtr>{},
+                    Sigma(final_sol.m, mach_graph), mach_graph);
     return perm;
 }
 
-Sigma neh_body(Sigma sol, std::vector<JobPtr>& jobs,
-               const std::shared_ptr<MachineGraph>& mach_graph)
+std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &jobs,
+                             const std::shared_ptr<MachineGraph> &mach_graph)
 {
-    int j, i, k, M, c1, c2, best_cost, seq_size, cost_alt;
-    // Sigma s1, s2, sol, best_sol, s_alt;
+    unsigned int j, i, best_cost, seq_size, cost_alt;
+    const int M = jobs[0]->p.size();  // Assume r is the same size for all jobs
     JobPtr job;
     std::vector<JobPtr> vec;
-    Sigma best_sol;
-
-    M = jobs[0]->p->size();  // Assume r is the same size for all jobs
+    std::vector<JobPtr> best_sol_jobs;
 
     // Find best insert for every other job
-    seq_size = sol.jobs.size();
+    seq_size = sol_jobs.size();
     for (j = 0; j < jobs.size(); ++j)
     {
-        // TODO: Update Sigma to support initialization from MachineGraph
-        Sigma base_sig(M, mach_graph);
         best_cost = INT_MAX;  // Replace with LARGE_INT constant
+        vec = sol_jobs;
+        // Ensure r of all machines without predecessors is zero
+        // Same for q of all machines without successors
+        // Initialize lists of sigma foward and backward
+        std::vector<Sigma> sigma_fwd(seq_size + 1);
+        std::vector<Sigma> sigma_bwd(seq_size + 1);
+        sigma_fwd[0] = Sigma(M, mach_graph);
+        sigma_bwd[seq_size] = Sigma(M, mach_graph);
+        // Gradually complete the sigmas
+        // Each sigma is a shallow copy of the previous one with one job more
+        for (i = 0; i < seq_size; ++i)
+        {
+            sigma_fwd[i + 1] = sigma_fwd[i];  // Shallow copy
+            sigma_fwd[i + 1].job_to_bottom(vec[i]);
+        }
+        for (i = seq_size; i > 0; --i)
+        {
+            sigma_bwd[i - 1] = sigma_bwd[i];  // Shallow copy
+            sigma_bwd[i - 1].job_to_top(vec[i - 1]);
+        }
+        // Each combination should append job to sigma 1 and take cost from
+        // a pair sigma 1 and sigma 2
         for (i = 0; i <= seq_size; ++i)
         {
             // Insert job in position i
             job = jobs[j];
-            vec = copy_jobs(sol.jobs);
-            vec.insert(vec.begin() + i, std::move(job));
-            recompute_r0(vec);
-
-            // Recompute release dates only of necessary jobs
-            if (i > 0)
-            {
-                base_sig.job_to_bottom(vec[i - 1]);
-            }
-
-            // Here the insertion is performed
-            // TODO: Update Sigma to support initialization from MachineGraph
-            Sigma s_alt = (base_sig);  // Shallow copy
-            s_alt.jobs.reserve(vec.size());
-            for (int k = i; k < vec.size(); ++k)
-            {
-                s_alt.job_to_bottom(vec[k]);
-            }
-
-            // New cost is the greatest completion time
-            cost_alt = get_max_value(s_alt.C);
+            // Append job to sigma 1
+            sigma_fwd[i].job_to_bottom(job);
+            // Take cost from sigma 1 and sigma 2
+            cost_alt = get_max_value(sigma_fwd[i].C, sigma_bwd[i].C);
             if (cost_alt < best_cost)
             {
+                best_sol_jobs = sigma_fwd[i].get_jobs();  // Shallow copy
+
+                for (JobPtr& j2 : sigma_bwd[i].get_jobs())
+                {
+                    best_sol_jobs.push_back(j2);
+                }
                 best_cost = cost_alt;
-                best_sol = std::move(s_alt);
+                best_sol_jobs = best_sol_jobs;
             }
         }
         seq_size += 1;
-        sol = std::move(best_sol);
+        sol_jobs = best_sol_jobs;
     }
-    return sol;
+    return sol_jobs;
 }

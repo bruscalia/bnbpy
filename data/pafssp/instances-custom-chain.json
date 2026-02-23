@@ -1,0 +1,282 @@
+[
+    {
+        "seed": 3746317213,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-001-20-chain7"
+    },
+    {
+        "seed": 9697354961,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-002-20-chain7"
+    },
+    {
+        "seed": 2181241943,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-003-20-chain7"
+    },
+    {
+        "seed": 1958682846,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-004-20-chain7"
+    },
+    {
+        "seed": 4163119785,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-005-20-chain7"
+    },
+    {
+        "seed": 9963334018,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-006-20-chain7"
+    },
+    {
+        "seed": 2812140441,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-007-20-chain7"
+    },
+    {
+        "seed": 1127978094,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-008-20-chain7"
+    },
+    {
+        "seed": 1939042955,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-009-20-chain7"
+    },
+    {
+        "seed": 9703905715,
+        "n_jobs": 20,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-010-20-chain7"
+    },
+    {
+        "seed": 7635473142,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-011-20-chain10"
+    },
+    {
+        "seed": 6241752544,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-012-20-chain10"
+    },
+    {
+        "seed": 7825844140,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-013-20-chain10"
+    },
+    {
+        "seed": 4460967357,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-014-20-chain10"
+    },
+    {
+        "seed": 8293453178,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-015-20-chain10"
+    },
+    {
+        "seed": 6756332150,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-016-20-chain10"
+    },
+    {
+        "seed": 1667779376,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-017-20-chain10"
+    },
+    {
+        "seed": 2445662585,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-018-20-chain10"
+    },
+    {
+        "seed": 5693307665,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-019-20-chain10"
+    },
+    {
+        "seed": 5710360983,
+        "n_jobs": 20,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-020-20-chain10"
+    },
+    {
+        "seed": 8934927891,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-021-50-chain7"
+    },
+    {
+        "seed": 7887950851,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-022-50-chain7"
+    },
+    {
+        "seed": 4466589567,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-023-50-chain7"
+    },
+    {
+        "seed": 8429141456,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-024-50-chain7"
+    },
+    {
+        "seed": 3303082117,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-025-50-chain7"
+    },
+    {
+        "seed": 2625792787,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-026-50-chain7"
+    },
+    {
+        "seed": 7665963761,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-027-50-chain7"
+    },
+    {
+        "seed": 8995970241,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-028-50-chain7"
+    },
+    {
+        "seed": 3479708607,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-029-50-chain7"
+    },
+    {
+        "seed": 4026113008,
+        "n_jobs": 50,
+        "m_chain": 7,
+        "m_total": 17,
+        "name": "custom-030-50-chain7"
+    },
+    {
+        "seed": 9786748825,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-031-50-chain10"
+    },
+    {
+        "seed": 5728765136,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-032-50-chain10"
+    },
+    {
+        "seed": 6488854841,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-033-50-chain10"
+    },
+    {
+        "seed": 2566942273,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-034-50-chain10"
+    },
+    {
+        "seed": 6884882440,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-035-50-chain10"
+    },
+    {
+        "seed": 3783290795,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-036-50-chain10"
+    },
+    {
+        "seed": 4131575764,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-037-50-chain10"
+    },
+    {
+        "seed": 5996775663,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-038-50-chain10"
+    },
+    {
+        "seed": 6924716023,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-039-50-chain10"
+    },
+    {
+        "seed": 3392080953,
+        "n_jobs": 50,
+        "m_chain": 10,
+        "m_total": 25,
+        "name": "custom-040-50-chain10"
+    }
+]
