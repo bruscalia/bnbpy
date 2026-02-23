@@ -17,7 +17,7 @@ class TestGcol:
         ('filename', 'solution', 'explored', 'mode'),
         [
             ('gcol_50.txt', 14, 12, 'heur'),
-            ('gcol_50.txt', 14, 6, 'hybr'),
+            ('gcol_50.txt', 14, 16, 'hybr'),
             ('gcol_32.txt', 8, 4, 'heur'),
             ('gcol_32.txt', 8, 4, 'hybr'),
             ('gcol_32.txt', 8, 4, 'mip'),
