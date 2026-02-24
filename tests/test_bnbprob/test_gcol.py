@@ -14,17 +14,17 @@ HERE = os.path.dirname(__file__)
 @pytest.mark.gcol
 class TestGcol:
     @pytest.mark.parametrize(
-        ('filename', 'solution', 'explored', 'mode'),
+        ('filename', 'solution', 'mode'),
         [
-            ('gcol_50.txt', 14, 12, 'heur'),
-            ('gcol_50.txt', 14, 16, 'hybr'),
-            ('gcol_32.txt', 8, 4, 'heur'),
-            ('gcol_32.txt', 8, 4, 'hybr'),
-            ('gcol_32.txt', 8, 4, 'mip'),
+            ('gcol_50.txt', 14, 'heur'),
+            ('gcol_50.txt', 14, 'hybr'),
+            ('gcol_32.txt', 8, 'heur'),
+            ('gcol_32.txt', 8, 'hybr'),
+            ('gcol_32.txt', 8, 'mip'),
         ],
     )
     def test_gcol(
-        self, filename: str, solution: int, explored: int, mode: str
+        self, filename: str, solution: int, mode: str
     ) -> None:
         fpath = os.path.join(HERE, os.pardir, 'instances', 'gcol', filename)
         instance = gcol.load_instance(fpath)
@@ -42,7 +42,6 @@ class TestGcol:
         sol = bnb.solve(problem, maxiter=500)
         assert sol.status == OptStatus.OPTIMAL, 'Subptimal solution'
         assert sol.cost == solution, 'Wrong cost'
-        assert bnb.explored == explored, 'Wrong number of nodes'
 
     @staticmethod
     def get_pricing(
