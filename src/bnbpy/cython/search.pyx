@@ -31,12 +31,23 @@ cdef:
 
 
 cdef class SearchResults:
+    """Results container for Branch & Bound search"""
 
     def __init__(
         self,
         Solution solution,
         Problem problem
     ) -> None:
+        """Initialize SearchResults
+
+        Parameters
+        ----------
+        solution : Solution
+            The best solution found
+
+        problem : Problem
+            The problem instance corresponding to the solution
+        """
         self.solution = solution
         self.problem = problem
 
@@ -48,18 +59,56 @@ cdef class SearchResults:
 
     @property
     def cost(self) -> float:
+        """Cost of the best solution found"""
         return self.solution.cost
 
     @property
     def lb(self) -> float:
+        """Lower bound of the search"""
         return self.solution.lb
 
     @property
     def status(self) -> OptStatus:
+        """Optimization status"""
         return self.solution.status
 
 
 cdef class BranchAndBound:
+    """
+    Class for solving optimization problems via Branch & Bound.
+
+    This class adopts a DFS strategy by default,
+    but can be easily customized by subclassing.
+
+    Some alternative strategies are already implemented as subclasses:
+
+    *   `BreadthFirstBnB`: Breadth-first Branch & Bound algorithm.
+    *   `DepthFirstBnB`: Depth-first Branch & Bound algorithm
+        (alias of `BranchAndBound`).
+    *   `BestFirstBnB`: Best-first Branch & Bound algorithm.
+
+    Useful methods for subclassing and custom implementations:
+
+    **Callback methods:**
+
+    *   `pre_eval_callback`: Before node bound evaluation.
+    *   `post_eval_callback`: After node bound evaluation.
+    *   `enqueue_callback`: After node is enqueued.
+    *   `dequeue_callback`: After node is dequeued.
+    *   `solution_callback`: When a new feasible
+        solution is obtained (after being set).
+
+    **Core methods:**
+
+    *   `enqueue`: Include new node into queue.
+    *   `dequeue`: Chooses the next evaluated
+        node and computes its lower bound.
+    *   `branch`: From a given node, create children nodes and enqueue them.
+
+    For a customization of enqueueing and dequeueing strategies,
+    it is recommended subclassing `BranchAndBound` with a customized `queue`
+    attribute by subclassing `BasePriQueue` too.
+    """
 
     def __init__(
         self,
@@ -68,7 +117,42 @@ cdef class BranchAndBound:
         eval_node = 'out',
         save_tree: bool = False
     ) -> None:
+        """Instantiate algorithm to solve problems via Branch & Bound.
 
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
+
+        Parameters
+        ----------
+        rtol : float, optional
+            Relative tolerance for termination, by default 1e-4
+
+        atol : float, optional
+            Absolute tolerance for termination, by default 1e-4
+
+        eval_node : Literal['in', 'out', 'both'], optional
+            Node bound evaluation strategy, by default 'out'.
+
+            *   'in': call `Problem.calc_bound` after
+                parent `branch`, before inserting child nodes
+                in the active queue. Useful when
+                bound computation is inexpensive.
+
+            *   'out': call `Problem.calc_bound` after
+                selecting a node from the active queue.
+                The result guides whether to explore
+                (`is_feasible`, possibly `branch`) or
+                prune. Often paired with fast enqueue
+                proxies for node quality, such as MILP
+                pseudo-costs.
+
+            *   'both': evaluate in both moments above.
+
+        save_tree : bool, optional
+            Whether to save node relationships, by default False.
+            It can consume a lot of memory in large trees.
+        """
         self.problem = None
         self.root = None
         self.rtol = rtol
@@ -128,6 +212,29 @@ cdef class BranchAndBound:
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None
     ) -> SearchResults:
+        """Solves optimization problem using Branch & Bound.
+
+        Note that the Cython implementation uses static typing,
+        so the `Problem` class must be a subclass of
+        `bnbpy.cython.problem.Problem`.
+
+        Parameters
+        ----------
+        problem : Problem
+            Problem instance as in root node
+
+        maxiter : Optional[int], optional
+            Maximum number of iterations, by default None
+
+        timelimit : Optional[Union[int, float]], optional
+            Time limit in seconds, by default None
+
+        Returns
+        -------
+        SearchResults
+            Search results containing best solution and problem instance
+        """
+
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
@@ -192,9 +299,23 @@ cdef class BranchAndBound:
             self.fathom(node)
 
     cpdef void enqueue(BranchAndBound self, Node node):
+        """Include new node into queue
+
+        Parameters
+        ----------
+        node : Node
+            Node to be included
+        """
         self.queue.enqueue(node)
 
     cpdef Node dequeue(BranchAndBound self):
+        """Chooses the next evaluated node and computes its lower bound
+
+        Returns
+        -------
+        Node
+            Node to be evaluated
+        """
         return self.queue.dequeue()
 
     cpdef void _warmstart(
@@ -214,6 +335,13 @@ cdef class BranchAndBound:
                 self.log_row('Warmstart')
 
     cpdef void branch(BranchAndBound self, Node node):
+        """From a given node, create children nodes and enqueue them
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
         cdef:
             list[Node] children
             Node child
@@ -228,7 +356,17 @@ cdef class BranchAndBound:
             node.cleanup()
             del node
 
-    cpdef void fathom(BranchAndBound self, Node node):  # noqa: PLR6301
+    cpdef void fathom(BranchAndBound self, Node node):
+        """Fathom node (by default is not deleted)
+
+        If deletion is required for managing memory, remember to delete
+        node from parent `children` attribute
+
+        Parameters
+        ----------
+        node : Node
+            Node to be fathomed
+        """
         node.fathom()
         if not self.save_tree and node is not self.root:
             node.cleanup()
@@ -277,6 +415,14 @@ cdef class BranchAndBound:
             self.branch(node)
 
     cpdef void set_solution(BranchAndBound self, Node node):
+        """Assigns the current node as incumbent, updates gap and calls
+        `solution_callback`
+
+        Parameters
+        ----------
+        node : Node
+            New solution node
+        """
         self.incumbent = node
         self.queue.filter_by_lb(node.lb)
         self._update_gap()
@@ -341,6 +487,13 @@ cdef class BranchAndBound:
         self.__logger.log_headers()
 
     cpdef void log_row(BranchAndBound self, object message):
+        """Log a row to the search logger.
+
+        Parameters
+        ----------
+        message : Any
+            Message to log
+        """
         gap = f'{(100 * self.gap):.2f}%'
         ub = f'{float(self.get_ub()):^6.4}'
         lb = f'{float(self.get_lb()):^6.4}'
@@ -397,7 +550,7 @@ def configure_logfile(
     Parameters
     ----------
     filename : str
-        Nameof target file
+        Name of target file
 
     mode : str, optional
         FileHandler writing mode, by default 'a' (append)

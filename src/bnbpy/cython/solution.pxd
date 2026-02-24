@@ -9,8 +9,15 @@ from bnbpy.cython.status cimport OptStatus
 cdef class Solution:
 
     cdef public:
-        double cost, lb
+        double cost
+        """
+        Upper bound of the solution
+        (infinity in case of infeasibility or not being solved)
+        """
+        double lb
+        """Lower bound of the solution"""
         OptStatus status
+        """Optimization status of the solution"""
 
     cpdef void set_optimal(Solution self)
 

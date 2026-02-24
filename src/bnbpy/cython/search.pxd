@@ -29,7 +29,6 @@ cdef class SearchResults:
 
 
 cdef class BranchAndBound:
-    """Class for solving optimization problems via Branch & Bound"""
 
     cdef public:
         Problem problem

@@ -4,6 +4,24 @@ bnbpy
 A generic, configurable Python framework for solving optimization problems
 using Branch & Bound. Also supports Column Generation and Branch & Price.
 
+See here a quick overview of the package with:
+
+* :ref:`Installation instructions <installation>`
+* :ref:`Basic usage examples <basic_usage>`.
+
+For a detailed documentation of the core components,
+please refer to :doc:`this section <bnbpy>`.
+
+This is how a search tree might look like
+for a simple problem solved with bnbpy:
+
+.. image:: _static/knapsack_tree.svg
+   :alt: Knapsack problem search tree
+   :align: center
+
+
+.. _installation:
+
 Installation
 ------------
 
@@ -26,6 +44,8 @@ For local development with editable mode:
    git clone https://github.com/bruscalia/bnbpy.git
    cd bnbpy
    python -m pip install -e .[dev]
+
+.. _basic_usage:
 
 Basic Usage
 -----------
@@ -113,9 +133,18 @@ Branch & Price
            pass
 
 
+Contact
+-------
+
+For any questions, suggestions or contributions,
+please open an issue or a pull request on the
+GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
+
+
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
+   :hidden:
 
    bnbpy
    bnbpy.colgen

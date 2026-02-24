@@ -1,5 +1,5 @@
-bnbpy.colgen module
-===================
+Column Generation
+=================
 
 .. automodule:: bnbpy.colgen
    :members: ColumnGenProblem, Master, Pricing, MasterSol, PriceSol

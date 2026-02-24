@@ -32,16 +32,6 @@ class SearchResults(Generic[P]):
 
     def __str__(self) -> str: ...
 
-    def foo_something(self) -> None:
-        """Do nothing.
-
-        Returns
-        -------
-        None
-             This method does nothing and is just a placeholder for testing
-        """
-        ...
-
     @property
     def cost(self) -> float:
         """Cost of the best solution found"""
@@ -58,7 +48,40 @@ class SearchResults(Generic[P]):
         ...
 
 class BranchAndBound:
-    """Class for solving optimization problems via Branch & Bound"""
+    """
+    Class for solving optimization problems via Branch & Bound.
+
+    This class adopts a DFS strategy by default,
+    but can be easily customized by subclassing.
+
+    Some alternative strategies are already implemented as subclasses:
+    *   `BreadthFirstBnB`: Breadth-first Branch & Bound algorithm.
+    *   `DepthFirstBnB`: Depth-first Branch & Bound algorithm
+        (alias of `BranchAndBound`).
+    *   `BestFirstBnB`: Best-first Branch & Bound algorithm.
+
+    Useful methods for subclassing and custom implementations:
+
+    **Callback methods:**
+
+    *   `pre_eval_callback`: Before node bound evaluation.
+    *   `post_eval_callback`: After node bound evaluation.
+    *   `enqueue_callback`: After node is enqueued.
+    *   `dequeue_callback`: After node is dequeued.
+    *   `solution_callback`: When a new feasible
+        solution is obtained (after being set).
+
+    **Core methods:**
+
+    *   `enqueue`: Include new node into queue.
+    *   `dequeue`: Chooses the next evaluated
+        node and computes its lower bound.
+    *   `branch`: From a given node, create children nodes and enqueue them.
+
+    For a customization of enqueueing and dequeueing strategies,
+    it is recommended subclassing `BranchAndBound` with a customized `queue`
+    attribute by subclassing `BasePriQueue` too.
+    """
 
     problem: Problem
     root: Node
@@ -82,7 +105,7 @@ class BranchAndBound:
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False
     ) -> None:
-        """Instantiate algoritm to solve problems via Branch & Bound.
+        """Instantiate algorithm to solve problems via Branch & Bound.
 
         Note that the Cython implementation uses static typing,
         so the `Problem` class must be a subclass of
@@ -97,10 +120,25 @@ class BranchAndBound:
             Absolute tolerance for termination, by default 1e-4
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node evaluation strategy, by default 'out' (as deque)
+            Node bound evaluation strategy, by default 'out'.
+
+            *   'in': call `Problem.calc_bound` after
+                parent `branch`, before inserting child nodes
+                in the active queue. Useful when
+                bound computation is inexpensive.
+
+            *   'out': call `Problem.calc_bound` after
+                selecting a node from the active queue.
+                The result guides whether to explore
+                (`is_feasible`, possibly `branch`) or
+                prune. Often paired with fast enqueue
+                proxies for node quality, such as MILP
+                pseudo-costs.
+
+            *   'both': evaluate in both moments above.
 
         save_tree : bool, optional
-            Either or not to save node relationships, by default False.
+            Whether to save node relationships, by default False.
             It can consume a lot of memory in large trees.
         """
         ...
@@ -251,7 +289,9 @@ class BreadthFirstBnB(BranchAndBound):
             Absolute tolerance for termination, by default 1e-4
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node evaluation strategy, by default 'out'
+            Node bound evaluation strategy, by default 'out'.
+            See `BranchAndBound.__init__` for the detailed behavior of
+            `'in'`, `'out'`, and `'both'`.
 
         save_tree : bool, optional
             Whether to save node relationships, by default False
@@ -284,7 +324,9 @@ class BestFirstBnB(BranchAndBound):
             Absolute tolerance for termination, by default 1e-4
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node evaluation strategy, by default 'out'
+            Node bound evaluation strategy, by default 'out'.
+            See `BranchAndBound.__init__` for the detailed behavior of
+            `'in'`, `'out'`, and `'both'`.
 
         save_tree : bool, optional
             Whether to save node relationships, by default False
@@ -299,7 +341,7 @@ def configure_logfile(
     Parameters
     ----------
     filename : str
-        Nameof target file
+        Name of target file
 
     mode : str, optional
         FileHandler writing mode, by default 'a' (append)

@@ -3,15 +3,15 @@ from typing import Union
 from bnbpy.cython.status import OptStatus
 
 class Solution:
-    """Abstraction for a solution representation"""
+    """Solution representation"""
 
-    cost: Union[int, float]
+    cost: float
     """
     Upper bound of the solution
     (infinity in case of infeasibility or not being solved)
     """
 
-    lb: Union[int, float]
+    lb: float
     """Lower bound of the solution"""
 
     status: OptStatus

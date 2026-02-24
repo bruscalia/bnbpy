@@ -1,3 +1,4 @@
+from bnbpy.cython.node import Node
 from bnbpy.cython.priqueue import BasePriQueue
 
 class MultiDFSQueue(BasePriQueue):
@@ -15,6 +16,24 @@ class MultiDFSQueue(BasePriQueue):
         """
         ...
 
+    def not_empty(self) -> bool:
+        ...
+
+    def enqueue(self, node: Node) -> None:
+        ...
+
+    def dequeue(self) -> Node:
+        ...
+
+    def get_lower_bound(self) -> Node:
+        ...
+
+    def pop_lower_bound(self) -> Node:
+        ...
+
+    def clear(self) -> None:
+        ...
+
 class CycleQueue(BasePriQueue):
     """A cycle queue explores sequentially the best-bound
     of each level until the maximum level is reached.
@@ -24,6 +43,24 @@ class CycleQueue(BasePriQueue):
     def __init__(self) -> None:
         """Initialize a cycle queue.
         """
+        ...
+
+    def not_empty(self) -> bool:
+        ...
+
+    def enqueue(self, node: Node) -> None:
+        ...
+
+    def dequeue(self) -> Node:
+        ...
+
+    def get_lower_bound(self) -> Node:
+        ...
+
+    def pop_lower_bound(self) -> Node:
+        ...
+
+    def clear(self) -> None:
         ...
 
     def reset_level(self) -> None:

@@ -3,10 +3,10 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# import os
-# import sys
+import os
+import sys
 
-# sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -22,15 +22,18 @@ release = '0.1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
+    'sphinx.ext.viewcode'
 ]
 
 # Autodoc settings
 autodoc_typehints = 'description'
 autodoc_member_order = 'bysource'
 
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+
 templates_path = ['_templates']
-exclude_patterns = ["*.pyx", "*.pxd"]
+exclude_patterns = [".pyx", ".pxd"]
 include_patterns = ["*.rst", "*.py", "*.pyi", "*.ipynb"]
 
 
