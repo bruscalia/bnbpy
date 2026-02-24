@@ -18,26 +18,87 @@ cdef class NodePriQueue:
 
 
 cdef class BasePriQueue:
+    """
+    Base class for managing active nodes in Branch & Bound algorithm
+    (not necessarily formally implementing a priority queue).
+
+    Note that due to Cython limitations this class is not implemented as
+    an ABC class, but it is mandatory to implement the following methods
+    in subclasses:
+
+    *   `not_empty`
+    *   `enqueue`
+    *   `dequeue`
+    *   `get_lower_bound`
+    *   `pop_lower_bound`
+    *   `clear`
+    """
 
     cpdef bint not_empty(BasePriQueue self):
+        """Checks if the priority queue is not empty.
+
+        Returns
+        -------
+        bool
+            True if the queue is not empty, False otherwise.
+        """
         raise NotImplementedError("Must implement not_empty()")
 
     cpdef void enqueue(BasePriQueue self, Node node):
+        """Adds a node to the priority queue.
+
+        Parameters
+        ----------
+        node : Node
+            The node to add to the queue.
+        """
         raise NotImplementedError("Must implement enqueue()")
 
     cpdef Node dequeue(BasePriQueue self):
+        """Removes and returns the next evaluated node.
+
+        Returns
+        -------
+        Node
+            The next evaluated node.
+        """
         raise NotImplementedError("Must implement dequeue()")
 
     cpdef Node get_lower_bound(BasePriQueue self):
+        """Gets the node of lower bound but
+        does not remove it from the queue.
+
+        Returns
+        -------
+        Node
+            The node with the lowest lower bound.
+        """
         raise NotImplementedError("Must implement get_lower_bound()")
 
     cpdef Node pop_lower_bound(BasePriQueue self):
-        raise NotImplementedError("Must implement get_lower_bound()")
+        """Removes and returns the node of lower bound.
+
+        Returns
+        -------
+        Node
+            The node with the lowest lower bound.
+        """
+        raise NotImplementedError("Must implement pop_lower_bound()")
 
     cpdef void clear(BasePriQueue self):
+        """Makes queue empty."""
         raise NotImplementedError("Must implement clear()")
 
     cpdef void filter_by_lb(BasePriQueue self, double max_lb):
+        """Filter nodes by lower bound.
+        This method is not implemented in the base class,
+        but can be overridden in subclasses.
+
+        Parameters
+        ----------
+        max_lb : float
+            The maximum lower bound value.
+        """
         # Not implemented, but won't be strictly necessary
         pass
 
@@ -101,6 +162,8 @@ cdef class HeapPriQueue(BasePriQueue):
 
 
 cdef class DFSPriQueue(HeapPriQueue):
+    """Depth-First Search priority queue implementation."""
+
     cpdef void enqueue(self, Node node):
         # DFS: (-level, lb)
         heapq.heappush(
@@ -110,6 +173,8 @@ cdef class DFSPriQueue(HeapPriQueue):
 
 
 cdef class BFSPriQueue(HeapPriQueue):
+    """Breadth-First Search priority queue implementation."""
+
     cpdef void enqueue(BFSPriQueue self, Node node):
         # BFS: (level, lb)
         heapq.heappush(
@@ -118,6 +183,8 @@ cdef class BFSPriQueue(HeapPriQueue):
 
 
 cdef class BestPriQueue(HeapPriQueue):
+    """Best-First Search priority queue implementation."""
+
     cpdef void enqueue(self, Node node):
         # Best-first: (lb, -level)
         heapq.heappush(

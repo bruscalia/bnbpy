@@ -16,6 +16,17 @@ cdef class Node:
     def __init__(
         self, Problem problem, Node parent=None
     ) -> None:
+        """Instantiates a new `Node` object based on a (sub)problem.
+        The node is evaluated in terms of lower bound as it is initialized.
+
+        Parameters
+        ----------
+        problem : Problem
+            Problem instance derived from parent node
+
+        parent : Optional[Node], optional
+            Parent node itself, if not root, by default None
+        """
 
         self.problem = problem
         self.parent = parent
@@ -55,13 +66,31 @@ cdef class Node:
         return self._sort_index
 
     cpdef void compute_bound(Node self):
+        """Computes the lower bound of the problem and sets it to
+        problem attribute `lb`, which is referenced as a `Node` property.
+        """
         self.problem.compute_bound()
         self.lb = max(self.lb, self.problem.get_lb())
 
     cpdef bool check_feasible(Node self):
+        """Calls `problem` `check_feasible()` method
+
+        Returns
+        -------
+        bool
+            Feasibility check result
+        """
         return self.problem.check_feasible()
 
     cpdef void set_solution(Node self, Solution solution):
+        """Calls method `set_solution` of problem, which also computes
+        its lower bound if not yet solved.
+
+        Parameters
+        ----------
+        solution : Solution
+            New solution to overwrite current
+        """
         self.problem.set_solution(solution)
         self.lb = self.problem.get_lb()
 
@@ -71,6 +100,16 @@ cdef class Node:
         return self.shallow_copy()
 
     cpdef list[Node] branch(Node self):
+        """Calls `problem` `branch()` method to create derived sub-problems.
+        Each subproblem is used to instantiate a child node.
+        Child nodes are evaluated in terms of lower bound as they are
+        initialized.
+
+        Returns
+        -------
+        list[Node]
+            List of child nodes, if any
+        """
         cdef:
             int i
             list prob_children

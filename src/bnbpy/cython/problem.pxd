@@ -9,6 +9,7 @@ cdef class Problem:
 
     cdef public:
         Solution solution
+        """Solution of the (sub)problem (if any)"""
 
     cpdef void cleanup(Problem self)
 

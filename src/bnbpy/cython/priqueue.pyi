@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing import Any
 
 from bnbpy.cython.node import Node
@@ -11,7 +12,23 @@ class NodePriQueue:
     def __lt__(self, other: 'NodePriQueue') -> bool: ...
 
 class BasePriQueue:
+    """
+    Base class for managing active nodes in Branch & Bound algorithm
+    (not necessarily formally implementing a priority queue).
 
+    Note that due to Cython limitations this class is not implemented as
+    an ABC class, but it is mandatory to implement the following methods
+    in subclasses:
+
+    *   `not_empty`
+    *   `enqueue`
+    *   `dequeue`
+    *   `get_lower_bound`
+    *   `pop_lower_bound`
+    *   `clear`
+    """
+
+    @abstractmethod
     def not_empty(self) -> bool:
         """Checks if the priority queue is not empty.
 
@@ -22,6 +39,7 @@ class BasePriQueue:
         """
         ...
 
+    @abstractmethod
     def enqueue(self, node: Node) -> None:
         """Adds a node to the priority queue.
 
@@ -32,6 +50,7 @@ class BasePriQueue:
         """
         ...
 
+    @abstractmethod
     def dequeue(self) -> Node:
         """Removes and returns the next evaluated node.
 
@@ -42,6 +61,7 @@ class BasePriQueue:
         """
         ...
 
+    @abstractmethod
     def get_lower_bound(self) -> Node:
         """Gets the node of lower bound but
         does not remove it from the queue.
@@ -53,6 +73,7 @@ class BasePriQueue:
         """
         ...
 
+    @abstractmethod
     def pop_lower_bound(self) -> Node:
         """Removes and returns the node of lower bound.
 
@@ -63,6 +84,7 @@ class BasePriQueue:
         """
         ...
 
+    @abstractmethod
     def clear(self) -> None:
         """Makes queue empty."""
         ...

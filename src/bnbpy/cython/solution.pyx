@@ -13,6 +13,7 @@ cdef extern from "math.h":
 
 
 cdef class Solution:
+    """Solution representation"""
 
     def __init__(self):
         self.cost = HUGE_VAL
