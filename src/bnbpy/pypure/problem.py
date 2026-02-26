@@ -22,18 +22,18 @@ class Problem:
 
     def calc_bound(self) -> Union[int, float]:
         """Returns a lower bound of the (sub)problem."""
-        raise NotImplementedError("Must implement `calc_bound` method")
+        raise NotImplementedError('Must implement `calc_bound` method')
 
     def is_feasible(self) -> bool:
         """
         Returns `True` if the problem in its complete
         form has a feasible solution.
         """
-        raise NotImplementedError("Must implement `is_feasible` method")
+        raise NotImplementedError('Must implement `is_feasible` method')
 
     def branch(self) -> list['Problem']:
         """Generates child nodes (problems) by branching."""
-        raise NotImplementedError("Must implement `branch` method")
+        raise NotImplementedError('Must implement `branch` method')
 
     @property
     def lb(self) -> Union[int, float]:

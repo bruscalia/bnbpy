@@ -3,7 +3,12 @@ from typing import Union
 from bnbpy.cython.status import OptStatus
 
 class Solution:
-    """Solution representation"""
+    """Solution representation class.
+
+    Be careful if subclassing
+    for it is returned using the concrete implementation in the method
+    `child_copy` of the `Problem` class.
+    """
 
     cost: float
     """
@@ -18,22 +23,13 @@ class Solution:
     """Optimization status of the solution"""
 
     def __init__(self) -> None: ...
-
     def __repr__(self) -> str: ...
-
     def __str__(self) -> str: ...
-
     @property
     def _signature(self) -> str: ...
-
     def set_optimal(self) -> None: ...
-
     def set_lb(self, lb: Union[int, float]) -> None: ...
-
     def set_feasible(self) -> None: ...
-
     def set_infeasible(self) -> None: ...
-
     def fathom(self) -> None: ...
-
     def copy(self, deep: bool = True) -> 'Solution': ...

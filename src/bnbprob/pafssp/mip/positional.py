@@ -21,9 +21,7 @@ def positional_model(
     """
 
     if edges is None:
-        edges = [
-            (i, i + 1) for i in range(len(p[0]) - 1)
-        ]
+        edges = [(i, i + 1) for i in range(len(p[0]) - 1)]
 
     model = pyo.ConcreteModel()
 

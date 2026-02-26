@@ -5,6 +5,7 @@ from bnbpy.cython.solution import Solution
 
 class Node:
     """Class for representing a node in a search tree."""
+
     problem: Problem
     parent: Optional['Node']
     level: int
@@ -29,15 +30,11 @@ class Node:
         ...
 
     def __del__(self) -> None: ...
-
     def __lt__(self, other: 'Node') -> bool: ...
-
     @property
     def solution(self) -> Solution: ...
-
     @property
     def index(self) -> int: ...
-
     def compute_bound(self) -> None:
         """Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
@@ -70,7 +67,6 @@ class Node:
         ...
 
     def copy(self, deep: bool = True) -> 'Node': ...
-
     def branch(self) -> list['Node']:
         """Calls `problem` `branch()` method to create derived sub-problems.
         Each subproblem is used to instantiate a child node.

@@ -56,9 +56,7 @@ class ColorNode(BaseNode['ColorNode']):
     @property
     def neighbor_colors(self) -> set[Color]:
         return {
-            n.color
-            for n in self.neighbors
-            if n.active and n.color is not None
+            n.color for n in self.neighbors if n.active and n.color is not None
         }
 
     @property
@@ -69,9 +67,7 @@ class ColorNode(BaseNode['ColorNode']):
 class ColorGraph(BaseGraph[ColorNode]):
     colors: List[Color]
 
-    def __init__(
-        self, edges: list[tuple[int, int]]
-    ):
+    def __init__(self, edges: list[tuple[int, int]]):
         self._set_node_cls(ColorNode)
         super().__init__(edges)
         self.colors = []

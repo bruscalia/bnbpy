@@ -58,7 +58,7 @@ def plot_tree(  # noqa: PLR0913, PLR0917
     custom_labels: Any = None,
     figsize: Optional[Union[tuple[Any, ...], list[Any]]] = None,
     dpi: int = 100,
-    **options: Any
+    **options: Any,
 ) -> None:
     """From the root node of a solved Branch & Bound, create a tree-plot
 
@@ -102,8 +102,7 @@ def plot_tree(  # noqa: PLR0913, PLR0917
     colors = [color_code.get(node, 'lightgrey') for node in G.nodes()]
     if show_lb:
         custom_labels = {
-            node.index: _format_lb(node.lb)
-            + f'$_{ ({node.index}) }$'
+            node.index: _format_lb(node.lb) + f'$_{ ({node.index}) }$'
             for node in tree_edges.nodes
         }
 
@@ -116,6 +115,6 @@ def plot_tree(  # noqa: PLR0913, PLR0917
         node_size=700,
         node_color=colors,
         arrows=False,
-        **options
+        **options,
     )
     plt.show()

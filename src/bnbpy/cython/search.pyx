@@ -350,8 +350,6 @@ cdef class BranchAndBound:
         if children:
             for child in children:
                 self._enqueue_core(child)
-        else:
-            self.log_row('Cutoff')
         if not self.save_tree and node is not self.root:
             node.cleanup()
             del node

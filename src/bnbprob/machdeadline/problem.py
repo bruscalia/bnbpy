@@ -1,5 +1,7 @@
+import heapq
 import logging
-from typing import Dict, Hashable, List, Optional
+from collections import defaultdict
+from typing import Collection
 
 from bnbprob.machdeadline.job import Job
 from bnbpy import Problem
@@ -7,101 +9,175 @@ from bnbpy import Problem
 log = logging.getLogger(__name__)
 
 
+LARGE_INT = 100000000
+
+
 class MachDeadlineProb(Problem):
-    sequence: List[Job]
-    jobs: Dict[Hashable, Job]
-    lb: int
-    cost: Optional[int]
+    _fixed: list[Job]
+    """End sequence in reverse order,
+    i.e. the last scheduled job is the first in the list"""
+    _unscheduled: list[Job]
+    """Unsceduled jobs, sorted by WSPT rule in correct order"""
+    _precumputed: bool
+    """Indicates whether the completion times
+    have been precalculated for the unscheduled jobs."""
+    _fixed_term: int
+    """Term of the objective function for the fixed part of the sequence"""
+    _unscheduled_term: int
+    """Term of the objective function for the unscheduled
+    part of the sequence"""
+    _violations: bool
+    """Whether the current sequence has any deadline delay violation"""
+    _unscheduled_total_time: int
+    """Total processing time of the unscheduled jobs"""
+    _mask: int
+    """Mask for hashing and equality, based on the sequence of schedules jobs.
+    Useful for dominance rules.
+    """
+    _is_dominated: bool
+    """Whether the current node is dominated by another one.
+    Useful for dominance rules.
+    """
+    _lb_refs: dict[int, int]
+    """References to lower bounds for dominance rules, indexed by the mask."""
 
-    def __init__(self, jobs: List[Job]) -> None:
+    def __init__(self, jobs: Collection[Job]) -> None:
         super().__init__()
-        self.sequence = [job.model_copy() for job in jobs]
-        self._set_job_attrs()
-        self.jobs = {job.id: job for job in jobs}
+        self._fixed = []
+        self._unscheduled = list(jobs)
+        self._precumputed = False
+        self._fixed_term = 0
+        self._unscheduled_term = 0
+        self._unscheduled_total_time = sum(job.p for job in self._unscheduled)
+        self._violations = False
+        self._mask = 0
+        self._is_dominated = False
+        self._lb_refs = defaultdict(lambda: LARGE_INT)
+        MachDeadlineProb.find_wspt(self._unscheduled)
+        self._compute_completion_times()
 
-    def _set_job_attrs(self) -> None:
-        for k, job in enumerate(self.sequence):
-            job.set_position(k)
-            if k == 0:
-                job.set_completion(job.p)
-            else:
-                last_c = self.sequence[k - 1].c
-                if last_c is None:
-                    raise ValueError('Last job completion time is not set.')
-                job.set_completion(last_c + job.p)
+    @property
+    def sequence(self) -> list[Job]:
+        return self._unscheduled + list(reversed(self._fixed))
 
     def write(self) -> str:
-        return '\n'.join([
-            f'Job: {job.id} - Completion: {job.c}' for job in self.sequence
-        ])
+        return '->'.join([f'{job}' for job in self.sequence])
 
-    def _calc_bound(self) -> int:
-        return sum(
-            job.w * job.c for job in self.sequence if job.c is not None
-        )
+    def _compute_completion_times(self) -> None:
+        last_c = 0
+        self._violations = False
+        self._unscheduled_term = 0
+        for job in self._unscheduled:
+            c = last_c + job.p
+            last_c = c
+            self._unscheduled_term += job.w * c
+            if c > job.d:
+                self._violations = True
+        self._precumputed = True
 
     def calc_bound(self) -> int:
-        fixed = self.get_fixed()
-        unfixed = self.get_unfixed()
-        self.find_wspt(unfixed)
-        fixed.sort(
-            key=lambda job: job.k if job.k is not None else -1, reverse=False
-        )
-        self.sequence = unfixed + fixed
-        self._set_job_attrs()
-        return self._calc_bound()
+        if not self._precumputed:
+            self._compute_completion_times()
+        cost = self._unscheduled_term + self._fixed_term
+        # This will cause the early pruning
+        # of dominated nodes
+        if cost >= self._lb_refs[self._mask]:
+            self._is_dominated = True
+            return cost
+        self._lb_refs[self._mask] = cost
+        return cost
 
     def is_feasible(self) -> bool:
-        valid = all(job.feasible for job in self.sequence)
-        return valid
+        if not self._precumputed:
+            self._compute_completion_times()
+        return not self._violations
 
-    def branch(self) -> List['MachDeadlineProb']:
-        # Get fixed and unfixed job lists to create new solution
-        fixed_jobs = self.get_fixed()
-        unfixed_jobs = self.get_unfixed()
-        if len(unfixed_jobs) == 0:
+    def branch(self) -> list['MachDeadlineProb']:
+        # Early pruning of dominated nodes
+        if self._is_dominated:
             return []
-        # Find next position to fix and iterate creating children
-        next_k = self._find_next_pos(fixed_jobs, unfixed_jobs)
+        # Create one child for each possible job to schedule next
         children = []
-        unfixed_makespan = sum(job.p for job in unfixed_jobs)
-        for job in unfixed_jobs:
-            feas_check = unfixed_makespan <= job.dl
-            if feas_check:
-                child = self.copy_to_child()
-                child.fix_job(job.id, next_k)
-                children.append(child)
+        for job in self._unscheduled:
+            # Early infeasibility check
+            if job.d < self._unscheduled_total_time:
+                continue
+            child = self.child_copy(deep=False)
+            child.fix_job(job)
+            children.append(child)
         return children
 
+    def fix_job(self, job: Job) -> None:
+        self._fixed.append(job)
+        self._unscheduled.remove(job)
+        self._mask |= 1 << job.id
+        self._fixed_term += job.w * self._unscheduled_total_time
+        self._unscheduled_total_time -= job.p
+        self._precumputed = False
+
+    def warmstart(self) -> 'MachDeadlineProb | None':
+        sol = self.child_copy(deep=False)
+        smith_jobs = sol.smith_rule()
+        if not smith_jobs:
+            return None
+        for job in smith_jobs:
+            sol.fix_job(job)
+        return sol
+
+    def smith_rule(self) -> list[Job]:
+        tot_time = self._unscheduled_total_time
+        pool = sorted(self._unscheduled, key=lambda j: j.d, reverse=False)
+        sol: list[Job] = []
+        candidates: list[tuple[float, Job]] = []
+        for _ in range(len(self._unscheduled)):
+            MachDeadlineProb._update_pool(pool, candidates, tot_time)
+            if len(candidates) == 0:
+                return []
+            next_job = heapq.heappop(candidates)[1]
+            sol.append(next_job)
+            tot_time -= next_job.p
+
+        return sol
+
     @staticmethod
-    def _find_next_pos(fixed_jobs: List[Job], unfixed_jobs: List[Job]) -> int:
-        if len(fixed_jobs) == 0:
-            next_k = len(unfixed_jobs) - 1
-        else:
-            next_k = min(job.k for job in fixed_jobs if job.k is not None) - 1
-        return next_k
+    def _update_pool(
+        pool: list[Job], candidates: list[tuple[float, Job]], tot_time: int
+    ) -> None:
+        for _ in range(len(pool)):
+            if pool[-1].d >= tot_time:
+                job = pool.pop()
+                heapq.heappush(candidates, (job.w / job.p, job))
+            else:
+                break
 
-    def fix_job(self, j: Hashable, k: int) -> None:
-        job = self.jobs[j]
-        job.set_position(k)
-        job.fix()
-
-    def unfix_job(self, j: int) -> None:
-        self.jobs[j].unfix()
-
-    def get_fixed(self) -> List[Job]:
-        return [job for job in self.jobs.values() if job.fixed]
-
-    def get_unfixed(self) -> List[Job]:
-        return [job for job in self.jobs.values() if not job.fixed]
-
-    def copy_to_child(self) -> 'MachDeadlineProb':
-        child = MachDeadlineProb(self.jobs_to_copy_list())
-        return child
-
-    def jobs_to_copy_list(self) -> List[Job]:
-        return [job.model_copy() for job in self.jobs.values()]
+    def child_copy(self, deep: bool = True) -> 'MachDeadlineProb':
+        other = super().child_copy(deep)
+        # In case of a shallow copy,
+        # we need to make sure to copy the mutable attributes.
+        # Notice jobs are immutable, so we can just pass on the references.
+        other._fixed = self._fixed.copy()
+        other._unscheduled = self._unscheduled.copy()
+        other._precumputed = self._precumputed
+        other._fixed_term = self._fixed_term
+        other._unscheduled_term = self._unscheduled_term
+        other._unscheduled_total_time = self._unscheduled_total_time
+        other._violations = self._violations
+        # Mask is immutable, so we can just pass on the reference
+        other._mask = self._mask
+        other._is_dominated = False
+        # Shared reference
+        other._lb_refs = self._lb_refs
+        return other
 
     @staticmethod
-    def find_wspt(jobs: List[Job]) -> None:
+    def find_wspt(jobs: list[Job]) -> None:
         jobs.sort(key=lambda job: job.w / job.p, reverse=True)
+
+
+# Noted to implement the Lagrangian lower-bound to Smith's rule,
+# as described in Potts & Van Wassenhove (1983):
+
+# 1) Use Smith's rule to sort unscheduled jobs (ok).
+# 2) Partition job blocks, revise the rule (not clear)
+# 3) Compute lagrangian multipliers
+# 4) Use multipliers for a tighter lower bound

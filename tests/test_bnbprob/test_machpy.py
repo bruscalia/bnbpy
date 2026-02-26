@@ -8,7 +8,7 @@ from bnbpy import BestFirstBnB, BreadthFirstBnB, DepthFirstBnB
 class TestMachDeadLine:
     p = [4, 3, 8, 2, 7, 6]
     w = [1, 1, 1, 1, 1, 1]
-    dl = [10, 20, 20, 30, 30, 30]
+    d = [10, 20, 20, 30, 30, 30]
     sol_value = 86
     dfs_nodes = 3
     bfs_nodes = 5
@@ -17,7 +17,7 @@ class TestMachDeadLine:
     @pytest.fixture
     def problem(self) -> MachDeadlineProb:  # noqa: PLR6301
         jobs = [
-            Job(id=j, p=self.p[j], w=self.w[j], dl=self.dl[j])
+            Job(id=j, p=self.p[j], w=self.w[j], d=self.d[j])
             for j in range(len(self.p))
         ]
         problem = MachDeadlineProb(jobs)

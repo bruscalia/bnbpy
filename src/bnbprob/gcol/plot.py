@@ -25,7 +25,6 @@ T = TypeVar('T', bound=A)
 
 
 class MyClass(Generic[T]):
-
     def foo(self, arg: list[T]) -> None:
         pass
 
@@ -35,7 +34,6 @@ class SubA(A):
 
 
 class SubMyClass(MyClass[SubA]):
-
     def foo(self, arg: list[SubA]) -> None:
         pass
 

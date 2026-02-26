@@ -29,9 +29,7 @@ class SearchResults(Generic[P]):
         ...
 
     def __repr__(self) -> str: ...
-
     def __str__(self) -> str: ...
-
     @property
     def cost(self) -> float:
         """Cost of the best solution found"""
@@ -103,7 +101,7 @@ class BranchAndBound:
         rtol: float = 1e-4,
         atol: float = 1e-4,
         eval_node: Literal['in', 'out', 'both'] = 'out',
-        save_tree: bool = False
+        save_tree: bool = False,
     ) -> None:
         """Instantiate algorithm to solve problems via Branch & Bound.
 
@@ -145,18 +143,15 @@ class BranchAndBound:
 
     @property
     def ub(self) -> float: ...
-
     @property
     def lb(self) -> float: ...
-
     @property
     def solution(self) -> Solution: ...
-
     def solve(
         self,
         problem: P,
         maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
+        timelimit: Optional[Union[int, float]] = None,
     ) -> SearchResults[P]:
         """Solves optimization problem using Branch & Bound.
 
@@ -276,7 +271,7 @@ class BreadthFirstBnB(BranchAndBound):
         rtol: float = 1e-4,
         atol: float = 1e-4,
         eval_node: Literal['in', 'out', 'both'] = 'out',
-        save_tree: bool = False
+        save_tree: bool = False,
     ) -> None:
         """Initialize Breadth-First Branch & Bound algorithm.
 
@@ -300,6 +295,7 @@ class BreadthFirstBnB(BranchAndBound):
 
 class DepthFirstBnB(BranchAndBound):
     """Depth-first Branch & Bound algorithm"""
+
     # Just an alias - uses DFS queue by default
     ...
 
@@ -311,7 +307,7 @@ class BestFirstBnB(BranchAndBound):
         rtol: float = 1e-4,
         atol: float = 1e-4,
         eval_node: Literal['in', 'out', 'both'] = 'out',
-        save_tree: bool = False
+        save_tree: bool = False,
     ) -> None:
         """Initialize Best-First Branch & Bound algorithm.
 

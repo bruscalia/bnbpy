@@ -3,14 +3,11 @@ from typing import Any
 
 
 class SearchLogger:
-    headers = ["Node", "Best Sol", "LB", "Gap", "Message"]
+    headers = ['Node', 'Best Sol', 'LB', 'Gap', 'Message']
     widths = [7, 10, 10, 7, 14]
-    delimiter = " | "
+    delimiter = ' | '
 
-    def __init__(
-        self,
-        logger: logging.Logger
-    ):
+    def __init__(self, logger: logging.Logger):
         self.logger = logger
 
     def log_headers(self) -> None:
@@ -29,13 +26,13 @@ class SearchLogger:
     def _format_row(self, *row: Any) -> str:
         # Format each element to a fixed width and centered
         formatted_row = self.delimiter.join(
-            f"{str(item):^{width}}" for item, width in zip(row, self.widths)
+            f'{str(item):^{width}}' for item, width in zip(row, self.widths)
         )
         return formatted_row
 
     def _create_underscore_line(self) -> str:
         # Create a line of underscores with the same width as each column
         underscore_line = self.delimiter.join(
-            "-" * width for width in self.widths
+            '-' * width for width in self.widths
         )
         return underscore_line

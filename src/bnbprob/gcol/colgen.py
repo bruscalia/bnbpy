@@ -325,9 +325,7 @@ def graph_from_solution(graph: ColorGraph, res: ScipyResults) -> None:
         raise ValueError('Solution must be computed before coloring graph')
     if res.problem.A_ub is None:
         raise ValueError('Problem A_ub must be defined before coloring graph')
-    cols = [
-        -res.problem.A_ub[:, j] for j, x in enumerate(res.x) if x > tol
-    ]
+    cols = [-res.problem.A_ub[:, j] for j, x in enumerate(res.x) if x > tol]
     colors = [
         set((int(i) for i in np.nonzero(c > tol)[0].astype(int)))  # noqa: C401
         for c in cols  # noqa: C401

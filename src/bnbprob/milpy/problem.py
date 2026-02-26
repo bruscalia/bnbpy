@@ -232,8 +232,8 @@ class MILP(Problem):
         and node choice method reinitialized
         """
         if deep:
-            return cast(MILP, super().copy(deep=deep))
-        child = cast(MILP, super().copy(deep=deep))
+            return super().copy(deep=deep)
+        child = super().copy(deep=deep)
         child.bounds = copy.copy(self.bounds)
         child._init_branching()
         child.solution = Solution()

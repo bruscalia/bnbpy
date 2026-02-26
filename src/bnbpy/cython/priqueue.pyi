@@ -8,7 +8,6 @@ class NodePriQueue:
     node: Node
 
     def __init__(self, priority: tuple[Any, ...], node: Node) -> None: ...
-
     def __lt__(self, other: 'NodePriQueue') -> bool: ...
 
 class BasePriQueue:
@@ -102,13 +101,10 @@ class BasePriQueue:
         ...
 
 class HeapPriQueue(BasePriQueue):
-
     _queue: list[NodePriQueue]
 
     def __cinit__(self) -> None: ...
-
     def not_empty(self) -> bool: ...
-
     def enqueue(self, node: Node) -> None:
         """Adds a node to the priority queue.
         Base implementation raises NotImplementedError.
@@ -150,9 +146,7 @@ class HeapPriQueue(BasePriQueue):
         """
         ...
 
-    def clear(self) -> None:
-        ...
-
+    def clear(self) -> None: ...
     def filter_by_lb(self, max_lb: float) -> None:
         """Filters the nodes in the priority queue by their lower bound.
 

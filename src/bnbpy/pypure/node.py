@@ -99,8 +99,7 @@ class Node:
         if prob_children is None:
             return []
         children = [
-            self.child_problem(prob_child)
-            for prob_child in prob_children
+            self.child_problem(prob_child) for prob_child in prob_children
         ]
         self.children = children
         return self.children

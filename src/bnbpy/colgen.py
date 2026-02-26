@@ -2,7 +2,7 @@ import copy
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Optional, Set, cast
+from typing import Any, Optional, Set
 
 from bnbpy.cython.problem import Problem
 
@@ -34,6 +34,7 @@ class MasterSol:
     (which includes dual information). Is is NOT recommended to modify
     these instance after creation due to safe hashing.
     """
+
     cost: float
     duals: Any
 
@@ -199,7 +200,7 @@ class ColumnGenProblem(Problem):
 
     def copy(self, deep: bool = False) -> 'ColumnGenProblem':
         if deep:
-            return cast(ColumnGenProblem, super().copy(deep=True))
+            return super().copy(deep=True)
         child = copy.copy(self)
         child.solution = self.solution.copy(deep=False)
         child.pricing = self.pricing.copy()

@@ -1,38 +1,20 @@
-import json
-from typing import Hashable, Optional
-
-from pydantic import BaseModel
+from pydantic.dataclasses import dataclass
 
 
-class Job(BaseModel):
-    id: Hashable
+@dataclass(slots=True, frozen=True)
+class Job:
+    id: int
     """Job unique identifier"""
     p: int
     """Job processing time"""
     w: int
     """Job weight in objective function"""
-    dl: int
+    d: int
     """Job deadline"""
-    fixed: bool = False
-    """If job is fixed in the current solution"""
-    k: Optional[int] = None
-    """Position of the job in the sequence."""
-    c: Optional[int] = None
-    """Completion time of the job."""
-
-    @property
-    def feasible(self) -> Optional[bool]:
-        if self.c is None:
-            return None
-        return self.c <= self.dl
 
     @property
     def _signature(self) -> str:
-        j = self.model_dump(include={"id", "c"})
-        return json.dumps(
-            j,
-            indent=4
-        )
+        return f'Job({self.id})'
 
     def __repr__(self) -> str:
         return self._signature
@@ -40,14 +22,5 @@ class Job(BaseModel):
     def __str__(self) -> str:
         return self._signature
 
-    def set_position(self, k: int) -> None:
-        self.k = k
-
-    def set_completion(self, c: int) -> None:
-        self.c = c
-
-    def fix(self) -> None:
-        self.fixed = True
-
-    def unfix(self) -> None:
-        self.fixed = False
+    def __lt__(self, other: 'Job') -> bool:
+        return self.id > other.id

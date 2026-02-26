@@ -90,7 +90,7 @@ class BranchAndBound:
         rtol: float = 1e-4,
         atol: float = 1e-4,
         eval_node: Literal['in', 'out', 'both'] | str = 'out',
-        save_tree: bool = False
+        save_tree: bool = False,
     ) -> None:
         """Instantiate algoritm to solve problems via Branch & Bound
 
@@ -168,7 +168,7 @@ class BranchAndBound:
         self,
         problem: Problem,
         maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
+        timelimit: Optional[Union[int, float]] = None,
     ) -> SearchResults:
         """Solves optimization problem using Branch & Bound
 
