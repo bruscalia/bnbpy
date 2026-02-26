@@ -1,6 +1,5 @@
 import heapq
 import logging
-import sys
 from collections import defaultdict
 from dataclasses import dataclass
 from math import ceil
@@ -13,7 +12,7 @@ from bnbpy import Problem
 log = logging.getLogger(__name__)
 
 
-LARGE_INT = 100000000
+LARGE_INT = 1_000_000_000
 
 
 @dataclass(slots=True)
@@ -99,7 +98,7 @@ class LagrangianDeadline(Problem):
             # If the lagrangian helper failed to find a solution,
             # by the Smith's rule,
             # it means that the current node is strictly infeasible
-            return sys.maxsize
+            return LARGE_INT
         cost = self._unscheduled_term.lagrangian + self._fixed_term
         # This will cause the early pruning
         # of dominated nodes
