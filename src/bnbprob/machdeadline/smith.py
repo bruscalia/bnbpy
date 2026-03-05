@@ -25,12 +25,12 @@ class SmithHelper:
             total_time = sum(job.p for job in jobs)
         pool = sorted(jobs, key=lambda j: j.d, reverse=False)
         sol: list[Job] = []
-        candidates: list[tuple[float, Job]] = []
+        candidates: list[Job] = []
         for _ in range(len(jobs)):
             SmithHelper._update_pool(pool, candidates, total_time)
             if len(candidates) == 0:
                 return SmithResults(jobs=jobs, success=False)
-            next_job = heapq.heappop(candidates)[1]
+            next_job = heapq.heappop(candidates)
             sol.append(next_job)
             total_time -= next_job.p
 
@@ -41,11 +41,11 @@ class SmithHelper:
 
     @staticmethod
     def _update_pool(
-        pool: list[Job], candidates: list[tuple[float, Job]], tot_time: int
+        pool: list[Job], candidates: list[Job], tot_time: int
     ) -> None:
         for _ in range(len(pool)):
             if pool[-1].d >= tot_time:
                 job = pool.pop()
-                heapq.heappush(candidates, (job.w / job.p, job))
+                heapq.heappush(candidates, job)
             else:
                 break

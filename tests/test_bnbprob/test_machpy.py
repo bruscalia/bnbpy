@@ -4,6 +4,11 @@ from bnbprob.machdeadline import Job, MachDeadlineProb
 from bnbpy import BestFirstBnB, BreadthFirstBnB, DepthFirstBnB
 
 
+class NoWarmstart(MachDeadlineProb):
+    def warmstart(self) -> None:  # noqa: PLR6301
+        return None
+
+
 @pytest.mark.machdeadline
 class TestMachDeadLine:
     p = [4, 3, 8, 2, 7, 6]
@@ -20,7 +25,7 @@ class TestMachDeadLine:
             Job(id=j, p=self.p[j], w=self.w[j], d=self.d[j])
             for j in range(len(self.p))
         ]
-        problem = MachDeadlineProb(jobs)
+        problem = NoWarmstart(jobs)
         return problem
 
     def test_dfs(self, problem: MachDeadlineProb) -> None:

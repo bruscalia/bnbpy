@@ -1,4 +1,3 @@
-import heapq
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
@@ -35,8 +34,6 @@ class LagrangianDeadline(Problem):
     _unscheduled_term: UnscheduledCosts
     """Term of the objective function for the unscheduled
     part of the sequence"""
-    _violations: bool
-    """Whether the current sequence has any deadline delay violation"""
     _unscheduled_total_time: int
     """Total processing time of the unscheduled jobs"""
     _mask: int
@@ -162,17 +159,6 @@ class LagrangianDeadline(Problem):
         self._mask |= 1 << job.id
         self._fixed_term += job.w * self._unscheduled_total_time
         self._unscheduled_total_time -= job.p
-
-    @staticmethod
-    def _update_pool(
-        pool: list[Job], candidates: list[tuple[float, Job]], tot_time: int
-    ) -> None:
-        for _ in range(len(pool)):
-            if pool[-1].d >= tot_time:
-                job = pool.pop()
-                heapq.heappush(candidates, (job.w / job.p, job))
-            else:
-                break
 
     def child_copy(self, deep: bool = True) -> 'LagrangianDeadline':
         other = super().child_copy(deep)

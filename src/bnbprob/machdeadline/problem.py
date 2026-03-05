@@ -1,9 +1,9 @@
-import heapq
 import logging
 from collections import defaultdict
 from typing import Collection
 
 from bnbprob.machdeadline.job import Job
+from bnbprob.machdeadline.smith import SmithHelper
 from bnbpy import Problem
 
 log = logging.getLogger(__name__)
@@ -116,39 +116,21 @@ class MachDeadlineProb(Problem):
         self._precumputed = False
 
     def warmstart(self) -> 'MachDeadlineProb | None':
-        sol = self.child_copy(deep=False)
-        smith_jobs = sol.smith_rule()
-        if not smith_jobs:
+        smith_results = SmithHelper.apply(
+            self._unscheduled,
+            total_time=self._unscheduled_total_time,
+            reverse=False,
+        )
+        # If Smith's rule is not successful,
+        # it means that there are no feasible solutions
+        if not smith_results.success:
             return None
-        for job in smith_jobs:
+
+        sol = self.child_copy(deep=False)
+
+        for job in smith_results.jobs:
             sol.fix_job(job)
         return sol
-
-    def smith_rule(self) -> list[Job]:
-        tot_time = self._unscheduled_total_time
-        pool = sorted(self._unscheduled, key=lambda j: j.d, reverse=False)
-        sol: list[Job] = []
-        candidates: list[tuple[float, Job]] = []
-        for _ in range(len(self._unscheduled)):
-            MachDeadlineProb._update_pool(pool, candidates, tot_time)
-            if len(candidates) == 0:
-                return []
-            next_job = heapq.heappop(candidates)[1]
-            sol.append(next_job)
-            tot_time -= next_job.p
-
-        return sol
-
-    @staticmethod
-    def _update_pool(
-        pool: list[Job], candidates: list[tuple[float, Job]], tot_time: int
-    ) -> None:
-        for _ in range(len(pool)):
-            if pool[-1].d >= tot_time:
-                job = pool.pop()
-                heapq.heappush(candidates, (job.w / job.p, job))
-            else:
-                break
 
     def child_copy(self, deep: bool = True) -> 'MachDeadlineProb':
         other = super().child_copy(deep)
@@ -171,13 +153,4 @@ class MachDeadlineProb(Problem):
 
     @staticmethod
     def find_wspt(jobs: list[Job]) -> None:
-        jobs.sort(key=lambda job: job.w / job.p, reverse=True)
-
-
-# Noted to implement the Lagrangian lower-bound to Smith's rule,
-# as described in Potts & Van Wassenhove (1983):
-
-# 1) Use Smith's rule to sort unscheduled jobs (ok).
-# 2) Partition job blocks, revise the rule (not clear)
-# 3) Compute lagrangian multipliers
-# 4) Use multipliers for a tighter lower bound
+        jobs.sort(key=lambda job: job.pri, reverse=True)

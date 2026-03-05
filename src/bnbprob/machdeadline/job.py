@@ -1,3 +1,5 @@
+from dataclasses import field
+
 from pydantic.dataclasses import dataclass
 
 
@@ -11,6 +13,11 @@ class Job:
     """Job weight in objective function"""
     d: int
     """Job deadline"""
+    pri: float = field(init=False, repr=False)
+    """Job priority, calculated as w/p"""
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, 'pri', self.w / self.p)
 
     @property
     def _signature(self) -> str:
@@ -23,4 +30,4 @@ class Job:
         return self._signature
 
     def __lt__(self, other: 'Job') -> bool:
-        return self.id > other.id
+        return self.pri < other.pri
