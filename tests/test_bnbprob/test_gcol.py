@@ -23,17 +23,13 @@ class TestGcol:
             ('gcol_32.txt', 8, 'mip'),
         ],
     )
-    def test_gcol(
-        self, filename: str, solution: int, mode: str
-    ) -> None:
+    def test_gcol(self, filename: str, solution: int, mode: str) -> None:
         fpath = os.path.join(HERE, os.pardir, 'instances', 'gcol', filename)
         instance = gcol.load_instance(fpath)
         edges = cast(list[tuple[int, int]], instance['edges'])
         price_tol = 0.1
         bnb = BranchAndBound()
-        pricing = self.get_pricing(
-            mode, edges, price_tol
-        )
+        pricing = self.get_pricing(mode, edges, price_tol)
         problem = gcol.ColGenColor(
             edges,
             pricing=pricing,

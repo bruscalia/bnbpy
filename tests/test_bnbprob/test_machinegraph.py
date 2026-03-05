@@ -206,9 +206,7 @@ class TestMachineGraph:
         graph = MachineGraph.from_edges(edges)
 
         # Create position mapping
-        position = {
-            node: idx for idx, node in enumerate(graph.topo_order)
-        }
+        position = {node: idx for idx, node in enumerate(graph.topo_order)}
 
         # Verify every edge (u, v) has u before v in topological order
         for u, v in edges:
