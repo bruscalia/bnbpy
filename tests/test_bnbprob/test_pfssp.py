@@ -8,7 +8,7 @@ from bnbprob.pafssp.cython.problem import PermFlowShop
 from bnbpy.cython.search import BestFirstBnB, BranchAndBound, DepthFirstBnB
 
 
-@pytest.mark.pfssp
+@pytest.mark.pafssp
 class TestPFSSP:
     J: int = 10
     M: int = 4
@@ -114,7 +114,7 @@ class TestPFSSP:
         assert cost == res, f'Wrong result for neh {cost} vs 54 (expected)'
 
 
-@pytest.mark.pfssp
+@pytest.mark.pafssp
 class TestPFSSPBounds:
     p: list[list[int]] = [
         [5, 9, 7, 4],
