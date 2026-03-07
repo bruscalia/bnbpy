@@ -69,8 +69,9 @@ jobs:
                 CIBW_BUILD: "${{ matrix.build }}${{ matrix.python }}*"
                 CIBW_SKIP: "*t-*"
                 CIBW_ARCHS: ${{ matrix.arch }}
+                CIBW_TEST_REQUIRES: matplotlib
                 CIBW_TEST_COMMAND: >
-                  python -c "import sys; import bnbpy; print(bnbpy); from bnbpy.cython import is_compiled; sys.exit(0 if is_compiled() else 42)"
+                  python -c "import sys; from bnbpy import is_compiled; sys.exit(0 if is_compiled() else 42)"
 
             - uses: actions/upload-artifact@v4
               with:
