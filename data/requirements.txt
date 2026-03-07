@@ -1,3 +1,0 @@
-numpy>=1.21
-Cython==3.*
-scipy>=1.9
