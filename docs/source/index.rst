@@ -25,25 +25,26 @@ for a simple problem solved with bnbpy:
 Installation
 ------------
 
-Install the package directly from GitHub:
+Install the package from PyPI:
 
 .. code-block:: bash
 
-   pip install git+https://github.com/bruscalia/bnbpy.git
+   pip install bnbpy
 
-To include development resources for tests and linters, use the ``dev`` extra:
 
-.. code-block:: bash
-
-   pip install "bnbpy[dev] @ git+https://github.com/bruscalia/bnbpy.git"
-
-For local development with editable mode:
+Alternatively, clone the repository and install without extras:
 
 .. code-block:: bash
 
    git clone https://github.com/bruscalia/bnbpy.git
    cd bnbpy
-   python -m pip install -e .[dev]
+   python -m pip install .
+
+Or with the ``dev`` extra for tests and linters:
+
+.. code-block:: bash
+
+   python -m pip install .[dev]
 
 .. _basic_usage:
 
