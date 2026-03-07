@@ -13,6 +13,10 @@ build:
     # nodejs: "20"
     # rust: "1.70"
     # golang: "1.20"
+  jobs:
+    pre_install:
+      - pip install Cython numpy
+      - python setup.py build_ext --inplace
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
