@@ -1,7 +1,9 @@
 from abc import abstractmethod
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence, TypeVar, Union
 
 from bnbpy.cython.solution import Solution
+
+P = TypeVar('P', bound='Problem')
 
 class Problem:
     """
@@ -34,7 +36,6 @@ class Problem:
         ...
 
     def __del__(self) -> None: ...
-
     @abstractmethod
     def calc_bound(self) -> float:
         """
@@ -83,9 +84,7 @@ class Problem:
         ...
 
     @property
-    def lb(self) -> Union[int, float]:
-        ...
-
+    def lb(self) -> Union[int, float]: ...
     def compute_bound(self) -> None:
         """
         This method is not intended to be modified by the user.
@@ -148,4 +147,47 @@ class Problem:
         """
         ...
 
-    def copy(self, deep: bool = True) -> 'Problem': ...
+    def copy(self: P, deep: bool = True) -> P:
+        """Returns a copy of the problem instance.
+
+        Mind that in case of a shallow copy, the `solution`
+        attribute will be a reference to the original one.
+
+        Use the method `child_copy` to safely initialize a copy
+        with a new solution.
+
+        Parameters
+        ----------
+        self : P
+            Current instance
+
+        deep : bool, optional
+            Whether to perform a deep copy, by default True
+
+        Returns
+        -------
+        P
+            Copy of the current instance
+        """
+        ...
+
+    def child_copy(self: P, deep: bool = False) -> P:
+        """Returns a copy of the problem instance with a new solution.
+
+        This method is useful to safely initialize a copy of the problem
+        with a new solution, without modifying the original one.
+
+        Parameters
+        ----------
+        self : P
+            Current instance
+
+        deep : bool, optional
+            Whether to perform a deep copy, by default False
+
+        Returns
+        -------
+        P
+            Copy of the current instance with a new solution
+        """
+        ...

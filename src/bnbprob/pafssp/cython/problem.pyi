@@ -46,19 +46,11 @@ class PermFlowShop(Problem):
     def __init__(
         self,
         constructive: Constructive = 'neh',
-    ) -> None:
-        ...
-
-    def __del__(self) -> None:
-        ...
-
-    def cleanup(self) -> None:
-        ...
-
+    ) -> None: ...
+    def __del__(self) -> None: ...
+    def cleanup(self) -> None: ...
     @property
-    def lb(self) -> float:
-        ...
-
+    def lb(self) -> float: ...
     @property
     def sequence(self) -> List[PyJob]:
         """Get the current job sequence"""
@@ -91,18 +83,14 @@ class PermFlowShop(Problem):
         """Get the sigma2 machine graph"""
         ...
 
-    def compute_bound(self) -> None:
-        ...
-
-    def check_feasible(self) -> bool:
-        ...
-
+    def compute_bound(self) -> None: ...
+    def check_feasible(self) -> bool: ...
     @classmethod
     def from_p(
         cls,
         p: List[List[int]],
         edges: Optional[List[Tuple[int, int]]] = None,
-        constructive: Constructive = 'neh'
+        constructive: Constructive = 'neh',
     ) -> 'PermFlowShop':
         """Instantiate problem based on processing times and machine graph
 
@@ -382,7 +370,6 @@ class PermFlowShop(Problem):
         ...
 
 class BenchPermFlowShop(PermFlowShop):
-
     def calc_bound(self) -> float:
         """Calls `update_params` and computes a single machine bound.
 

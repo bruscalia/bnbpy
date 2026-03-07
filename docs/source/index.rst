@@ -50,6 +50,8 @@ For local development with editable mode:
 Basic Usage
 -----------
 
+Remember in this documentation you can find more detailed examples in the *Usage section*. Especially, the :doc:`machine deadline example <Usage/machine-deadline>` is a good starting point to understand how to implement your own problem and apply Branch & Bound from scratch.
+
 Branch & Bound
 ~~~~~~~~~~~~~~
 
@@ -140,13 +142,20 @@ For any questions, suggestions or contributions,
 please open an issue or a pull request on the
 GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Usage:
+   :hidden:
+
+   Usage/machine-deadline
+   Usage/cutting-stock
+   Usage/milp
+   Usage/pfssp
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Package:
    :hidden:
 
    bnbpy
    bnbpy.colgen
-   examples
-

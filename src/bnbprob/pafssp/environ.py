@@ -5,7 +5,7 @@ __all__ = [
     'PermFlowShop',
     'PermFlowShop1M',
     'BenchPermFlowShop',
-    'BenchCutoffBnB'
+    'BenchCutoffBnB',
 ]
 
 from bnbprob.pafssp.cython.bnb import (

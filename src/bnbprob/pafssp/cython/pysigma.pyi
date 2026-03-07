@@ -12,6 +12,7 @@ class PySigma:
     scheduling. It maintains the current sequence of scheduled jobs and
     provides methods to extend the sequence.
     """
+
     m: int
     """Number of machines in the scheduling problem"""
     jobs: list[PyJob]
@@ -22,7 +23,7 @@ class PySigma:
     @staticmethod
     def empty(
         m: int, edges: Optional[list[tuple[int, int]]] = None
-    ) -> "PySigma":
+    ) -> 'PySigma':
         """Create an empty Sigma with given number of
         machines and machine graph.
 
@@ -50,7 +51,7 @@ class PySigma:
         m: int,
         jobs: list[PyJob],
         edges: Optional[list[tuple[int, int]]] = None,
-    ) -> "PySigma":
+    ) -> 'PySigma':
         """Create Sigma from list of PyJob objects.
 
         Parameters

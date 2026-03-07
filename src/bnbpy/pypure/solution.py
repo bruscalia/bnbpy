@@ -13,7 +13,7 @@ class Solution:
 
     def __init__(self) -> None:
         self.cost = float('inf')  # HUGE_VAL equivalent
-        self.lb = -float('inf')   # -HUGE_VAL equivalent
+        self.lb = -float('inf')  # -HUGE_VAL equivalent
         self.status = OptStatus.NO_SOLUTION
 
     def __repr__(self) -> str:

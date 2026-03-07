@@ -13,7 +13,12 @@ cdef extern from "math.h":
 
 
 cdef class Solution:
-    """Solution representation"""
+    """Solution representation class.
+
+    Be careful if subclassing
+    for it is returned using the concrete implementation in the method
+    `child_copy` of the `Problem` class.
+    """
 
     def __init__(self):
         self.cost = HUGE_VAL

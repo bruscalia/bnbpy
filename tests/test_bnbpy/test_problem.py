@@ -5,6 +5,8 @@ from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
 
+_SMALL_NUM = -1e6
+
 
 @pytest.mark.core
 @pytest.mark.problem
@@ -58,17 +60,45 @@ class TestProblem:
         assert children[1].lb == ref_value + 2
 
     @staticmethod
-    def test_copy() -> None:
+    def test_shallow_copy() -> None:
         """Test copying functionality of Problem."""
         ref_value = 15
         prob = MyProblem(lb_value=ref_value)
         prob.compute_bound()
-        shallow_copy = prob.copy(deep=False)
+        prob_copy = prob.copy(deep=False)
         deep_copy = prob.copy(deep=True)
 
-        assert shallow_copy.lb == ref_value
+        assert prob_copy.lb == ref_value
         assert deep_copy.lb == ref_value
-        assert shallow_copy is not prob
+        assert prob_copy is not prob
         assert deep_copy is not prob
-        assert shallow_copy.solution is prob.solution
+        assert prob_copy.solution is prob.solution
         assert deep_copy.solution is not prob.solution
+
+    @staticmethod
+    def test_deep_copy() -> None:
+        """Test that deep copy creates a new instance with a new solution."""
+        ref_value = 15
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        prob_copy = prob.copy(deep=True)
+
+        assert prob_copy.lb == ref_value
+        assert prob_copy is not prob
+        assert prob_copy.solution is not prob.solution
+        assert prob_copy.solution.status == prob.solution.status
+
+    @staticmethod
+    @pytest.mark.parametrize('deep', [True, False])
+    def test_child_copy(deep: bool) -> None:
+        """Test child_copy creates a new instance with a new solution."""
+        ref_value = 15
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        prob_copy = prob.child_copy(deep=deep)
+
+        assert prob_copy.lb < _SMALL_NUM
+        assert prob_copy is not prob
+        assert prob_copy.solution is not prob.solution
+        assert prob_copy.solution.status != prob.solution.status
+        assert prob_copy.solution.status == OptStatus.NO_SOLUTION

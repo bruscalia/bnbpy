@@ -6,7 +6,7 @@ __all__ = [
     'PermFlowShop1M',
     'BenchPermFlowShop',
     'BenchCutoffBnB',
-    'plot_gantt'
+    'plot_gantt',
 ]
 
 from bnbprob.pafssp.environ import (

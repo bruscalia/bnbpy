@@ -84,7 +84,7 @@ def draw_gantt_gif(  # noqa: PLR0913, PLR0917
             seed=seed,
             label_cols=label_cols,
             label_fontsize=label_fontsize,
-            max_label=max_label
+            max_label=max_label,
         )
 
     # Construct "frames"

@@ -38,7 +38,7 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 markers = [
     "machdeadline: Mark test related to machine deadline scenarios",
-    "pfssp: Mark test related to PFSSP scenarios",
+    "pafssp: Mark test related to PAFSSP scenarios",
     "milp: Mark test related to MILP problems",
     "milpnaive: Mark test related to naive MILP implementations",
     "knapsack: Mark test related to knapsack problem implementations",

@@ -32,6 +32,8 @@ cdef class Problem:
 
     cpdef Problem copy(self, bool deep=*)
 
+    cpdef Problem child_copy(self, bool deep=*)
+
     cdef inline Problem deep_copy(Problem self):
         return copy.deepcopy(self)
 

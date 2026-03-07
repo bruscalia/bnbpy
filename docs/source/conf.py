@@ -17,7 +17,10 @@ release = '0.1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'matplotlib.sphinxext.plot_directive',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'nbsphinx',
 ]
 
 # Autodoc settings
@@ -28,19 +31,18 @@ napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
 templates_path = ['_templates']
-exclude_patterns = [".pyx", ".pxd"]
-include_patterns = ["*.rst", "*.py", "*.pyi", "*.ipynb"]
+exclude_patterns: list[str] = []
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_context = {
-    "display_github": True,
-    "github_user": "bruscalia",
-    "github_repo": "bnbpy",
-    "github_version": "main",
-    "conf_py_path": "/docs/source/",
+    'display_github': True,
+    'github_user': 'bruscalia',
+    'github_repo': 'bnbpy',
+    'github_version': 'main',
+    'conf_py_path': '/docs/source/',
 }
 
 html_theme = 'sphinx_rtd_theme'

@@ -16,7 +16,7 @@ class LazyBnB(BranchAndBound):
         rtol: float = 0.0001,
         atol: float = 0.0001,
         save_tree: bool = False,
-        delay_lb5: bool = False
+        delay_lb5: bool = False,
     ) -> None:
         """Initialize LazyBnB algorithm
 
@@ -38,9 +38,7 @@ class LazyBnB(BranchAndBound):
         ...
 
     @staticmethod
-    def delay_by_root(problem: PermFlowShop) -> bool:
-        ...
-
+    def delay_by_root(problem: PermFlowShop) -> bool: ...
     def post_eval_callback(self, node: Node) -> None:
         """Callback executed after node evaluation
 
@@ -64,7 +62,7 @@ class CutoffBnB(LazyBnB):
         rtol: float = 0.0001,
         atol: float = 0.0001,
         save_tree: bool = False,
-        delay_lb5: bool = False
+        delay_lb5: bool = False,
     ) -> None:
         """Initialize CutoffBnB algorithm with upper bound cutoff.
 
@@ -92,6 +90,7 @@ class BenchCutoffBnB(LazyBnB):
     """Subclass derived from `BranchAndBound` with a cutoff value.
     In this variant the `update_params` is not
     called in the `post_eval_callback`."""
+
     ...
 
 class CallbackBnB(LazyBnB):

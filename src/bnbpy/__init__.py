@@ -45,6 +45,7 @@ try:
     from bnbpy.cython import is_compiled
 except (ModuleNotFoundError, ImportError) as e:
     from logging import getLogger
+
     log = getLogger(__name__)
     log.error('Cython modules not found')
     log.error(e)
