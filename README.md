@@ -9,21 +9,42 @@
 A generic, configurable Python framework for solving optimization problems
 using Branch & Bound. Also supports Column Generation and Branch & Price.
 
+📖 **[Documentation](https://bnbpy.readthedocs.io/en/latest/)**
+
 [Configure](#configuration) | [Usage](#usage) | [Base Problems](#base-problems) | [Development](#development) | [Contact](#contact)
 
 See more examples in the [notebooks folder](./notebooks/):
 
 - [Single Machine Scheduling](./notebooks/single-machine.ipynb)
-- [Permutation Flow Shop](./notebooks/pfssp.ipynb) (main focus so far)
-- [Permutation Assembly Flow Shop](./notebooks/pafssp.ipynb) (main focus so far)
+- [Permutation Flow Shop](./notebooks/pfssp.ipynb)
+- [Permutation Assembly Flow Shop](./notebooks/pafssp.ipynb)
 - [MILP](./notebooks/milp.ipynb)
 - [Cutting Stock](./notebooks/cutting-stock.ipynb)
-- [Graph Coloring](./notebooks/graph-coloring-bak.ipynb)
+- [Graph Coloring](./notebooks/graph-coloring.ipynb)
 - [Lot Sizing](./notebooks/lot-size.ipynb)
 
 ## Configuration
 
 ### Installation
+
+#### PyPI
+
+The `bnbpy` package is available in PyPI. So you can install it with a simple.
+
+```shell
+pip install bnbpy
+```
+
+#### Source Code
+
+Alternatively, you can clone the repository and build it locally on your computer. Ensure you have a c++ compiler available due to Cython and c++ core components.
+
+To clone the repository, you can run:
+
+```shell
+git clone https://github.com/bruscalia/bnbpy.git
+cd bnbpy
+```
 
 Install the package and its dependencies via pip from the root of the repository:
 
@@ -44,6 +65,7 @@ python -m pip install -e .[dev]
 ```
 
 All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements and extension settings are in [pyproject.toml](./pyproject.toml).
+
 
 ### Building
 
