@@ -1,13 +1,9 @@
-import logging
 from collections import defaultdict
 from typing import Collection
 
 from bnbprob.machdeadline.job import Job
 from bnbprob.machdeadline.smith import SmithHelper
 from bnbpy import Problem
-
-log = logging.getLogger(__name__)
-
 
 LARGE_INT = 100000000
 

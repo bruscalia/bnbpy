@@ -1,4 +1,3 @@
-import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from math import ceil
@@ -7,9 +6,6 @@ from typing import Collection
 from bnbprob.machdeadline.job import Job
 from bnbprob.machdeadline.smith import SmithHelper
 from bnbpy import Problem
-
-log = logging.getLogger(__name__)
-
 
 LARGE_INT = 1_000_000_000
 
@@ -25,7 +21,7 @@ class LagrangianDeadline(Problem):
     """End sequence in reverse order,
     i.e. the last scheduled job is the first in the list"""
     _unscheduled: list[Job]
-    """Unsceduled jobs, sorted by WSPT rule in correct order"""
+    """Unsceduled jobs, given by Smith's rule heuristic order"""
     _precumputed: bool
     """Indicates whether the completion times
     have been precalculated for the unscheduled jobs."""

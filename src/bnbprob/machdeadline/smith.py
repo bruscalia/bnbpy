@@ -1,11 +1,7 @@
 import heapq
-import logging
 from dataclasses import dataclass
 
 from bnbprob.machdeadline.job import Job
-
-log = logging.getLogger(__name__)
-
 
 LARGE_INT = 100000000
 
