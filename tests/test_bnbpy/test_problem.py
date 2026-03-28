@@ -1,5 +1,10 @@
 import pytest
-from myfixtures.myproblem import MyProblem
+from myfixtures.myproblem import (
+    STRONGER_BOUND_DELTA,
+    MyProblem,
+    PrimalHeuristicProblem,
+    StrongerBoundProblem,
+)
 
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
@@ -102,3 +107,88 @@ class TestProblem:
         assert prob_copy.solution is not prob.solution
         assert prob_copy.solution.status != prob.solution.status
         assert prob_copy.solution.status == OptStatus.NO_SOLUTION
+
+    # ------------------------------------------------------------------
+    # primal_heuristic
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_primal_heuristic_default() -> None:
+        """Base Problem.primal_heuristic() returns None."""
+        prob = MyProblem(lb_value=5)
+        assert prob.primal_heuristic() is None
+
+    @staticmethod
+    def test_primal_heuristic_returns_problem() -> None:
+        """PrimalHeuristicProblem.primal_heuristic() returns a Problem."""
+        prob = PrimalHeuristicProblem(lb_value=5)
+        result = prob.primal_heuristic()
+        assert isinstance(result, PrimalHeuristicProblem)
+
+    @staticmethod
+    def test_primal_heuristic_returns_feasible() -> None:
+        """PrimalHeuristicProblem.primal_heuristic() result is feasible."""
+        prob = PrimalHeuristicProblem(lb_value=7)
+        result = prob.primal_heuristic()
+        assert result is not None
+        assert result.is_feasible() is True
+
+    # ------------------------------------------------------------------
+    # stronger_bound
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_stronger_bound_default_no_solution() -> None:
+        """Before compute_bound, base stronger_bound returns -inf."""
+        prob = MyProblem(lb_value=10)
+        assert prob.stronger_bound() == float('-inf')
+
+    @staticmethod
+    def test_stronger_bound_default_after_compute() -> None:
+        """After compute_bound, base stronger_bound returns current lb."""
+        ref_value = 10
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        assert prob.stronger_bound() == ref_value
+
+    @staticmethod
+    def test_stronger_bound_improved() -> None:
+        """StrongerBoundProblem.stronger_bound() exceeds current lb."""
+        ref_value = 10
+        prob = StrongerBoundProblem(lb_value=ref_value)
+        prob.compute_bound()
+        assert prob.stronger_bound() == ref_value + STRONGER_BOUND_DELTA
+        assert prob.stronger_bound() > prob.lb
+
+    # ------------------------------------------------------------------
+    # upgrade_bound
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_upgrade_bound_improves() -> None:
+        """upgrade_bound with new_lb > current lb updates lb and status."""
+        ref_value = 10
+        new_lb = 15.0
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        prob.upgrade_bound(new_lb)
+        assert prob.lb == new_lb
+        assert prob.solution.status == OptStatus.RELAXATION
+
+    @staticmethod
+    def test_upgrade_bound_no_change_equal() -> None:
+        """upgrade_bound with new_lb == current lb leaves lb unchanged."""
+        ref_value = 10
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        prob.upgrade_bound(ref_value)
+        assert prob.lb == ref_value
+
+    @staticmethod
+    def test_upgrade_bound_no_change_lower() -> None:
+        """upgrade_bound with new_lb < current lb leaves lb unchanged."""
+        ref_value = 10
+        prob = MyProblem(lb_value=ref_value)
+        prob.compute_bound()
+        prob.upgrade_bound(ref_value - 3.0)
+        assert prob.lb == ref_value

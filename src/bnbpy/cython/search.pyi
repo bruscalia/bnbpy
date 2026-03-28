@@ -207,6 +207,34 @@ class BranchAndBound:
         """
         ...
 
+    def primal_heuristic(self, node: Node) -> None:
+        """Calls primal heuristic via node entity to generate a feasible
+        solution from the current node, if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
+        ...
+
+    def upgrade_bound(self, node: Node) -> None:
+        """Calls stronger_bound via node entity to generate a better
+        lower bound from the current node, if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
+        ...
+
     def fathom(self, node: Node) -> None:  # noqa: PLR6301
         """Fathom node (by default is not deleted)
 

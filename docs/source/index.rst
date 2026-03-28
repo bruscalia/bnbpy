@@ -152,6 +152,7 @@ GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
    Usage/cutting-stock
    Usage/milp
    Usage/pfssp
+   Usage/easy-callbacks
 
 .. toctree::
    :maxdepth: 1

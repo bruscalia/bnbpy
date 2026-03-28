@@ -30,6 +30,12 @@ cdef class Problem:
 
     cpdef Problem warmstart(Problem self)
 
+    cpdef Problem primal_heuristic(Problem self)
+
+    cpdef double stronger_bound(Problem self)
+
+    cpdef void upgrade_bound(Problem self, double new_lb)
+
     cpdef Problem copy(self, bool deep=*)
 
     cpdef Problem child_copy(self, bool deep=*)

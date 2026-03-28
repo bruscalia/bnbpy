@@ -1,7 +1,12 @@
 from typing import Literal
 
 import pytest
-from myfixtures.myproblem import MyProblem, UnboundedProblem
+from myfixtures.myproblem import (
+    MyProblem,
+    PrimalHeuristicProblem,
+    StrongerBoundProblem,
+    UnboundedProblem,
+)
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.search import BranchAndBound
@@ -271,3 +276,121 @@ class TestBranchAndBoundCallbacks:
         # Should use warmstart solution
         assert bnb.ub == WARMSTART_LB
         assert res.solution.status == OptStatus.FEASIBLE
+
+
+class _PrimalHeuristicBnB(BranchAndBound):
+    """BnB that invokes primal_heuristic from pre_eval_callback."""
+
+    def pre_eval_callback(self, node: Node) -> None:
+        self.primal_heuristic(node)
+
+
+class _UpgradeBoundBnB(BranchAndBound):
+    """BnB that invokes upgrade_bound from pre_eval_callback."""
+
+    def pre_eval_callback(self, node: Node) -> None:
+        self.upgrade_bound(node)
+
+
+@pytest.mark.core
+@pytest.mark.search
+class TestBranchAndBoundPrimalAndBound:
+    """Tests for BranchAndBound.primal_heuristic and .upgrade_bound methods."""
+
+    @staticmethod
+    def test_primal_heuristic_no_child() -> None:
+        """primal_heuristic does nothing when node yields None."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=False)
+        bnb = BranchAndBound()
+        node = Node(problem)
+        node.compute_bound()
+        bnb.primal_heuristic(node)
+        assert bnb.incumbent is None
+
+    @staticmethod
+    def test_primal_heuristic_updates_incumbent() -> None:
+        """primal_heuristic sets incumbent when child is feasible."""
+        problem = PrimalHeuristicProblem(lb_value=SIMPLE_LB, feasible=False)
+        bnb = BranchAndBound()
+        node = Node(problem)
+        node.compute_bound()
+        bnb.primal_heuristic(node)
+        assert bnb.incumbent is not None
+        assert bnb.ub == SIMPLE_LB
+
+    @staticmethod
+    def test_primal_heuristic_skips_worse_lb() -> None:
+        """primal_heuristic skips child when child.lb >= current ub."""
+        incumbent_problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BranchAndBound()
+        # Manually set an incumbent with lower cost
+        incumbent_node = Node(incumbent_problem)
+        incumbent_node.compute_bound()
+        incumbent_node.check_feasible()
+        bnb.incumbent = incumbent_node
+        # Child lb equals current ub — should be skipped
+        heur_problem = PrimalHeuristicProblem(
+            lb_value=SIMPLE_LB, feasible=False
+        )
+        heur_node = Node(heur_problem)
+        heur_node.compute_bound()
+        bnb.primal_heuristic(heur_node)
+        # Incumbent should remain the original one
+        assert bnb.incumbent is incumbent_node
+
+    @staticmethod
+    def test_primal_heuristic_called_from_callback() -> None:
+        """Solve with _PrimalHeuristicBnB finds solution via heuristic."""
+        problem = PrimalHeuristicProblem(lb_value=SIMPLE_LB, feasible=False)
+        bnb = _PrimalHeuristicBnB()
+        result = bnb.solve(problem)
+        assert result.solution.status == OptStatus.OPTIMAL
+        assert result.solution.cost == SIMPLE_LB
+
+    @staticmethod
+    def test_upgrade_bound_delegates_to_node() -> None:
+        """BranchAndBound.upgrade_bound raises node.lb via stronger_bound."""
+        problem = StrongerBoundProblem(lb_value=SIMPLE_LB)
+        bnb = BranchAndBound()
+        node = Node(problem)
+        node.compute_bound()
+        lb_before = node.lb
+        bnb.upgrade_bound(node)
+        assert node.lb > lb_before
+
+    @staticmethod
+    def test_upgrade_bound_no_change_base_problem() -> None:
+        """upgrade_bound leaves lb unchanged for base MyProblem."""
+        problem = MyProblem(lb_value=SIMPLE_LB)
+        bnb = BranchAndBound()
+        node = Node(problem)
+        node.compute_bound()
+        lb_before = node.lb
+        bnb.upgrade_bound(node)
+        assert node.lb == lb_before
+
+    @staticmethod
+    def test_upgrade_bound_in_callback_prunes_earlier() -> None:
+        """_UpgradeBoundBnB explores fewer nodes due to tighter bounds."""
+        # A feasible problem at root provides an upper bound,
+        # then a stronger-bound variant is used as the search problem
+        # so upgrade_bound tightens lb -> earlier pruning.
+        ub_value = FEASIBLE_LB  # ub set by warmstart
+
+        class _WarmstartStrong(StrongerBoundProblem):
+            @staticmethod
+            def warmstart() -> '_WarmstartStrong':
+                return _WarmstartStrong(lb_value=ub_value, feasible=True)
+
+        bnb_base = BranchAndBound()
+        bnb_upgrade = _UpgradeBoundBnB()
+        result_base = bnb_base.solve(
+            StrongerBoundProblem(lb_value=SIMPLE_LB, feasible=False)
+        )
+        result_upgrade = bnb_upgrade.solve(
+            _WarmstartStrong(lb_value=SIMPLE_LB, feasible=False)
+        )
+        # Both reach optimal; upgrade variant explores <= base variant
+        assert result_base.solution.status == OptStatus.OPTIMAL
+        assert result_upgrade.solution.status == OptStatus.OPTIMAL
+        assert bnb_upgrade.explored <= bnb_base.explored

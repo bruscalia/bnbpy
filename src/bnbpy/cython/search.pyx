@@ -354,6 +354,44 @@ cdef class BranchAndBound:
             node.cleanup()
             del node
 
+    cpdef void primal_heuristic(BranchAndBound self, Node node):
+        """Calls `Problem` `primal_heuristic()` via node
+        entity to generate a feasible
+        solution from the current node, if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
+        cdef:
+            Node child
+
+        child = node.primal_heuristic()
+        if child is None:
+            return
+        if child.lb < self.get_ub():
+            self.log_row('Primal heuristic')
+            self.set_solution(child)
+
+    cpdef void upgrade_bound(BranchAndBound self, Node node):
+        """Calls `Problem` `stronger_bound()` via node
+        entity to generate a better lower bound from the current node,
+        if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
+        node.upgrade_bound()
+
     cpdef void fathom(BranchAndBound self, Node node):
         """Fathom node (by default is not deleted)
 

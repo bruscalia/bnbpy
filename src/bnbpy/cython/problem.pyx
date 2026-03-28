@@ -119,6 +119,44 @@ cdef class Problem:
         """
         return None
 
+    cpdef Problem primal_heuristic(Problem self):
+        """Placeholder for primal heuristic implementation.
+        If the problem has a primal heuristic function
+        that returns a feasible problem state,
+        it will be used at the begining of the search tree.
+
+        Be careful not to modify the current problem instance,
+        but return a new one.
+
+        Returns
+        -------
+        Optional[Problem]
+            Problem modified in a primal heuristic form, or None
+            (in case not implemented)
+        """
+        return None
+
+    cpdef double stronger_bound(Problem self):
+        """Placeholder for stronger bound implementation.
+        If the problem has a stronger bound function that returns a better
+        lower bound than `calc_bound`, it will be used at the begining of
+        the search tree.
+
+        It will only be called if the
+        regular bound is not strong enough to prune the current node,
+        so it can be used as an additional pruning mechanism.
+
+        Returns
+        -------
+        float
+            Better lower bound if implemented, or simply current
+        """
+        return self.solution.lb
+
+    cpdef void upgrade_bound(Problem self, double new_lb):
+        if new_lb > self.solution.lb:
+            self.solution.set_lb(new_lb)
+
     cpdef Problem copy(self, bool deep=True):
         if deep:
             return self.deep_copy()

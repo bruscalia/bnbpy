@@ -143,6 +143,13 @@ class LagrangianDeadline(Problem):
         sol._fix_all_self()
         return sol
 
+    def primal_heuristic(self) -> 'LagrangianDeadline | None':
+        if not self._lagrangian.success:
+            return None
+        sol = self.child_copy(deep=False)
+        sol._fix_all_self()
+        return sol
+
     def _fix_all_self(self) -> None:
         for job in reversed(self._unscheduled):
             self._simple_fix_job(job)

@@ -66,6 +66,10 @@ cdef class BranchAndBound:
 
     cpdef void branch(BranchAndBound self, Node node)
 
+    cpdef void primal_heuristic(BranchAndBound self, Node node)
+
+    cpdef void upgrade_bound(BranchAndBound self, Node node)
+
     cpdef void fathom(BranchAndBound self, Node node)
 
     cpdef void pre_eval_callback(BranchAndBound self, Node node)

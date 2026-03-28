@@ -1,6 +1,7 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libc.math cimport INFINITY
 from libcpp cimport bool
 
 import copy
@@ -8,6 +9,11 @@ import copy
 from bnbpy.cython.counter cimport Counter
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
+
+
+cdef:
+    double LARGE_POS = INFINITY
+    double LOW_NEG = -INFINITY
 
 
 cdef class Node:
@@ -125,6 +131,44 @@ cdef class Node:
             children[i] = self.child_problem(prob_child)
         self.children = children
         return children
+
+    cpdef Node primal_heuristic(Node self):
+        """Calls `problem` `primal_heuristic()`
+        method to generate a feasible
+        solution from the current node, if any.
+
+        Returns
+        -------
+        Node | None
+            A child node with a feasible solution, if any
+        """
+        cdef:
+            Problem prob_child
+            Node child
+
+        prob_child = self.problem.primal_heuristic()
+        if prob_child is None:
+            return None
+
+        # The current node is not a parent
+        # to avoid issues with counting and indexing of nodes
+        child = init_node(prob_child, None)
+        # Enforce the lower bound to -infinity as
+        # if is not strictly worse than self
+        # and should be formally computed next
+        child.lb = LOW_NEG
+        child.compute_bound()
+        if not child.check_feasible():
+            return None
+        return child
+
+    cpdef void upgrade_bound(Node self):
+        cdef:
+            double new_lb
+        new_lb = self.problem.stronger_bound()
+        if new_lb > self.lb:
+            self.problem.upgrade_bound(new_lb)
+            self.lb = max(self.lb, self.problem.get_lb())
 
     cdef Node child_problem(Node self, Problem problem):
         cdef:

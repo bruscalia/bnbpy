@@ -79,3 +79,20 @@ class Node:
             List of child nodes, if any
         """
         ...
+
+    def primal_heuristic(self) -> 'Node | None':
+        """Calls `problem` `primal_heuristic()` method to generate a
+        feasible solution from the current node, if any.
+
+        Returns
+        -------
+        Node | None
+            A child node with a feasible solution, if any
+        """
+        ...
+
+    def upgrade_bound(self) -> None:
+        """Calls `problem` `stronger_bound()` and upgrades the node lb
+        if the result is strictly greater than the current lb.
+        """
+        ...

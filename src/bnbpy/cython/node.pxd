@@ -48,6 +48,10 @@ cdef class Node:
 
     cpdef list[Node] branch(Node self)
 
+    cpdef Node primal_heuristic(Node self)
+
+    cpdef void upgrade_bound(Node self)
+
     cdef Node child_problem(Node self, Problem problem)
 
     cdef Node shallow_copy(Node self)

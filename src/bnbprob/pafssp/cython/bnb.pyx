@@ -8,9 +8,8 @@ import heapq
 from typing import Optional, Union
 
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.mod_queue cimport CycleQueue
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport DFSPriQueue, HeapPriQueue, NodePriQueue
+from bnbpy.cython.priqueue cimport HeapPriQueue, NodePriQueue
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -67,21 +66,16 @@ cdef class LazyBnB(BranchAndBound):
         return super(LazyBnB, self).solve(problem, maxiter, timelimit)
 
     cpdef void post_eval_callback(LazyBnB self, Node node):
-        cdef:
-            PermFlowShop problem
         # Here the r and q values are not yet updated
         if node.lb < self.get_ub():
-            problem = node.problem
-            # Update lower r and q values and recompute bound
-            problem.simple_bound_upgrade()
-            node.lb = problem.get_lb()
+            # Update lower r and q values and recompute bound 1M
+            self.upgrade_bound(node)
             # Delayed two machine bound upgrade
             if node.level < self.min_lb5_level and self.delay_lb5:
                 return
             if node.lb < self.get_ub():
                 # Two machine bound upgrade
-                problem.double_bound_upgrade()
-                node.lb = problem.get_lb()
+                self.upgrade_bound(node)
 
 
 cdef class CutoffBnB(LazyBnB):
@@ -168,21 +162,7 @@ cdef class CallbackBnB(LazyBnB):
         self.heur_calls = 0
 
     cpdef void solution_callback(CallbackBnB self, Node node):
-        cdef:
-            PermFlowShop problem, ref_problem
-            PermFlowShop new_prob
-            Solution new_sol
-
-        problem = node.problem
-        new_prob = problem.local_search()
-        if new_prob is not None:
-            new_sol = new_prob.solution
-            # General procedure in case is valid
-            if new_prob.is_feasible() and new_sol.lb < node.lb:
-                node.problem = new_prob
-                node.set_solution(new_sol)
-                node.check_feasible()
-                self.set_solution(node)
+        self.primal_heuristic(node)
 
     cpdef Node dequeue(CallbackBnB self):
         cdef:

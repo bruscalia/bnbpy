@@ -1,9 +1,22 @@
 import pytest
-from myfixtures.myproblem import MyProblem
+from myfixtures.myproblem import (
+    MyProblem,
+    PrimalHeuristicProblem,
+    StrongerBoundProblem,
+)
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
+
+
+class _InfeasiblePrimalProblem(MyProblem):
+    """Returns an infeasible problem from primal_heuristic."""
+
+    def primal_heuristic(self) -> '_InfeasiblePrimalProblem':
+        return _InfeasiblePrimalProblem(
+            lb_value=self._lb_value, feasible=False
+        )
 
 
 @pytest.mark.core
@@ -100,3 +113,77 @@ class TestNode:
         assert deep_copy is not node
         assert shallow_copy.solution is node.solution
         assert deep_copy.solution is not node.solution
+
+    # ------------------------------------------------------------------
+    # primal_heuristic
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_primal_heuristic_returns_none_when_none(
+        parent_problem: MyProblem,
+    ) -> None:
+        """Node.primal_heuristic() returns None when problem returns None."""
+        node = Node(problem=parent_problem)
+        assert node.primal_heuristic() is None
+
+    @staticmethod
+    def test_primal_heuristic_returns_feasible_child() -> None:
+        """Node.primal_heuristic() returns a Node child when feasible."""
+        prob = PrimalHeuristicProblem(lb_value=7)
+        node = Node(problem=prob)
+        child = node.primal_heuristic()
+        assert child is not None
+        assert isinstance(child, Node)
+        assert child.solution.status == OptStatus.FEASIBLE
+
+    @staticmethod
+    def test_primal_heuristic_child_level() -> None:
+        """Child node level is parent level + 1."""
+        prob = PrimalHeuristicProblem(lb_value=7)
+        node = Node(problem=prob)
+        child = node.primal_heuristic()
+        assert child is not None
+        assert child.level == 0
+        assert child.parent is None
+
+    @staticmethod
+    def test_primal_heuristic_returns_none_when_infeasible() -> None:
+        """Node returns None when primal_heuristic yields infeasible."""
+        prob = _InfeasiblePrimalProblem(lb_value=7)
+        node = Node(problem=prob)
+        assert node.primal_heuristic() is None
+
+    # ------------------------------------------------------------------
+    # upgrade_bound
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_upgrade_bound_improves_lb() -> None:
+        """upgrade_bound raises node.lb when stronger_bound > current lb."""
+        prob = StrongerBoundProblem(lb_value=10)
+        node = Node(problem=prob)
+        node.compute_bound()
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb > lb_before
+
+    @staticmethod
+    def test_upgrade_bound_no_change_equal(
+        parent_problem: MyProblem,
+    ) -> None:
+        """upgrade_bound leaves lb unchanged when stronger_bound == lb."""
+        node = Node(problem=parent_problem)
+        node.compute_bound()
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb == lb_before
+
+    @staticmethod
+    def test_upgrade_bound_no_change_before_compute(
+        parent_problem: MyProblem,
+    ) -> None:
+        """upgrade_bound leaves lb unchanged before compute_bound."""
+        node = Node(problem=parent_problem)
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb == lb_before

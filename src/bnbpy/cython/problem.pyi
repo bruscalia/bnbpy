@@ -147,6 +147,36 @@ class Problem:
         """
         ...
 
+    def primal_heuristic(self) -> Optional['Problem']:
+        """Placeholder for primal heuristic implementation.
+
+        Returns
+        -------
+        Optional[Problem]
+            Problem modified in a primal heuristic form, or None
+        """
+        ...
+
+    def stronger_bound(self) -> float:
+        """Returns a stronger lower bound than `calc_bound` if available.
+
+        Returns
+        -------
+        float
+            Stronger lower bound, or current lb if not overridden
+        """
+        ...
+
+    def upgrade_bound(self, new_lb: float) -> None:
+        """Upgrades the solution lb to new_lb if strictly greater.
+
+        Parameters
+        ----------
+        new_lb : float
+            Candidate new lower bound
+        """
+        ...
+
     def copy(self: P, deep: bool = True) -> P:
         """Returns a copy of the problem instance.
 
