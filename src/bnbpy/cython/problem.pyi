@@ -14,6 +14,9 @@ class Problem:
         - `is_feasible`
         - `branch`
 
+    IMPORTANT: Always remember to call super().__init__()
+    in the constructor of the derived class.
+
     Although not implemented using an abstract base class,
     due to Cython limitations, these methods are essential for the
     correct functioning of the branch-and-bound algorithm.

@@ -17,7 +17,7 @@ from bnbpy.cython.priqueue cimport (
     BFSPriQueue,
     DFSPriQueue,
 )
-from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.problem cimport Problem, P
 from bnbpy.cython.solution cimport Solution
 from bnbpy.cython.status cimport OptStatus
 from bnbpy.logger import SearchLogger
@@ -197,7 +197,7 @@ cdef class BranchAndBound:
             return self.bound_node.get_solution()
         return Solution()
 
-    cdef void _set_problem(BranchAndBound self, Problem problem):
+    cdef void _set_problem(BranchAndBound self, P problem):
         self.problem = problem
 
     cdef void _restart_search(BranchAndBound self):
@@ -320,7 +320,7 @@ cdef class BranchAndBound:
 
     cpdef void _warmstart(
         BranchAndBound self,
-        Problem warmstart_problem,
+        P warmstart_problem,
     ):
         cdef:
             double lb
@@ -431,7 +431,7 @@ cdef class BranchAndBound:
         """
         pass
 
-    cpdef void _enqueue_root(BranchAndBound self, Problem problem):
+    cpdef void _enqueue_root(BranchAndBound self, P problem):
         self.root = init_node(problem)
         self._set_problem(problem)
         self._enqueue_core(self.root)

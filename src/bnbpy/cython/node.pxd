@@ -6,7 +6,7 @@ from libcpp cimport bool
 import copy
 
 from bnbpy.cython.counter cimport Counter
-from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.problem cimport Problem, P
 from bnbpy.cython.solution cimport Solution
 
 
@@ -23,38 +23,38 @@ cdef class Node:
     cdef:
         Counter _counter
 
-    cdef void cleanup(Node self)
+    cdef void cleanup(self)
 
-    cdef inline Solution get_solution(Node self):
+    cdef inline Solution get_solution(self):
         return self.problem.solution
 
-    cdef inline int get_index(Node self):
+    cdef inline int get_index(self):
         return self._sort_index
 
-    cpdef void compute_bound(Node self)
+    cpdef void compute_bound(self)
 
-    cpdef bool check_feasible(Node self)
+    cpdef bool check_feasible(self)
 
-    cpdef void set_solution(Node self, Solution solution)
+    cpdef void set_solution(self, Solution solution)
 
-    cdef inline void fathom(Node self):
+    cdef inline void fathom(self):
         """Sets solution status of node as 'FATHOMED'"""
         self.solution.fathom()
 
     cpdef Node copy(self, bool deep=*)
 
-    cdef inline Node deep_copy(Node self):
+    cdef inline Node deep_copy(self):
         return copy.deepcopy(self)
 
-    cpdef list[Node] branch(Node self)
+    cpdef list[Node] branch(self)
 
-    cpdef Node primal_heuristic(Node self)
+    cpdef Node primal_heuristic(self)
 
-    cpdef void upgrade_bound(Node self)
+    cpdef void upgrade_bound(self)
 
-    cdef Node child_problem(Node self, Problem problem)
+    cdef Node child_problem(self, P problem)
 
-    cdef Node shallow_copy(Node self)
+    cdef Node shallow_copy(self)
 
 
-cdef Node init_node(Problem problem, Node parent=*)
+cdef Node init_node(P problem, Node parent=*)

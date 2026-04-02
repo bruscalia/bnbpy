@@ -15,6 +15,9 @@ cdef class Problem:
         - `is_feasible`
         - `branch`
 
+    IMPORTANT: Always remember to call super().__init__()
+    in the constructor of the derived class.
+
     Although not implemented using an abstract base class,
     due to Cython limitations, these methods are essential for the
     correct functioning of the branch-and-bound algorithm.
@@ -37,10 +40,10 @@ cdef class Problem:
     def lb(self):
         return self.get_lb()
 
-    cpdef void cleanup(Problem self):
+    cpdef void cleanup(self):
         self.solution = None
 
-    cpdef double calc_bound(Problem self):
+    cpdef double calc_bound(self):
         """
         Returns a lower bound of the (sub)problem. By default,
         the subproblems' nodes are initialized with the same lower bounds
@@ -53,11 +56,11 @@ cdef class Problem:
         """
         raise NotImplementedError("Must implement `calc_bound` method")
 
-    cpdef void compute_bound(Problem self):
+    cpdef void compute_bound(self):
         lb = self.calc_bound()
         self.solution.set_lb(lb)
 
-    cpdef bool is_feasible(Problem self):
+    cpdef bool is_feasible(self):
         """
         Returns `True` if the problem in its complete
         form has a feasible solution.
@@ -73,7 +76,7 @@ cdef class Problem:
         """
         raise NotImplementedError("Must implement `is_feasible` method")
 
-    cpdef list[Problem] branch(Problem self):
+    cpdef list[Problem] branch(self):
         """Generates child nodes (problems) by branching.
 
         Be careful not to modify attributes shared among nodes.
@@ -88,7 +91,7 @@ cdef class Problem:
         """
         raise NotImplementedError("Must implement `branch` method")
 
-    cpdef bool check_feasible(Problem self):
+    cpdef bool check_feasible(self):
         cdef:
             bool feas
         feas = self.is_feasible()
@@ -98,12 +101,12 @@ cdef class Problem:
             self.solution.set_infeasible()
         return feas
 
-    cpdef void set_solution(Problem self, Solution solution):
+    cpdef void set_solution(self, Solution solution):
         self.solution = solution
         if self.solution.status == OptStatus.NO_SOLUTION:
             self.compute_bound()
 
-    cpdef Problem warmstart(Problem self):
+    cpdef Problem warmstart(self):
         """Placeholder for warmstart implementation.
         If the problem has a warmstart function that returns a feasible
         problem state, it will be used at the begining of the search tree.
@@ -119,7 +122,7 @@ cdef class Problem:
         """
         return None
 
-    cpdef Problem primal_heuristic(Problem self):
+    cpdef Problem primal_heuristic(self):
         """Placeholder for primal heuristic implementation.
         If the problem has a primal heuristic function
         that returns a feasible problem state,
@@ -136,7 +139,7 @@ cdef class Problem:
         """
         return None
 
-    cpdef double stronger_bound(Problem self):
+    cpdef double stronger_bound(self):
         """Placeholder for stronger bound implementation.
         If the problem has a stronger bound function that returns a better
         lower bound than `calc_bound`, it will be used at the begining of
@@ -153,7 +156,7 @@ cdef class Problem:
         """
         return self.solution.lb
 
-    cpdef void upgrade_bound(Problem self, double new_lb):
+    cpdef void upgrade_bound(self, double new_lb):
         if new_lb > self.solution.lb:
             self.solution.set_lb(new_lb)
 
@@ -170,7 +173,7 @@ cdef class Problem:
 
         Parameters
         ----------
-        self : P
+        self : Problem
             Current instance
 
         deep : bool, optional
@@ -178,7 +181,7 @@ cdef class Problem:
 
         Returns
         -------
-        P
+        Problem
             Copy of the current instance with a new solution
         """
         cdef:
