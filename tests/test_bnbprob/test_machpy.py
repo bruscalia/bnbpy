@@ -29,8 +29,8 @@ class TestMachDeadLine:
         return problem
 
     def test_dfs(self, problem: MachDeadlineProb) -> None:
-        bnb = DepthFirstBnB(eval_node='in')
-        bnb.solve(problem)
+        bnb = DepthFirstBnB(problem, eval_node='in')
+        bnb.solve()
         cost = bnb.solution.cost
         assert bnb.solution.cost == self.sol_value, (
             f'Wrong solution for DFS {cost}, expected {self.sol_value}'
@@ -41,8 +41,8 @@ class TestMachDeadLine:
         )
 
     def test_bfs(self, problem: MachDeadlineProb) -> None:
-        bnb = BreadthFirstBnB(eval_node='in')
-        bnb.solve(problem)
+        bnb = BreadthFirstBnB(problem, eval_node='in')
+        bnb.solve()
         cost = bnb.solution.cost
         assert bnb.solution.cost == self.sol_value, (
             f'Wrong solution for BFS {cost}, expected {self.sol_value}'
@@ -53,8 +53,8 @@ class TestMachDeadLine:
         )
 
     def test_bbs(self, problem: MachDeadlineProb) -> None:
-        bnb = BestFirstBnB(eval_node='in')
-        bnb.solve(problem)
+        bnb = BestFirstBnB(problem, eval_node='in')
+        bnb.solve()
         cost = bnb.solution.cost
         assert bnb.solution.cost == self.sol_value, (
             f'Wrong solution for lb priority {cost}, expected {self.sol_value}'

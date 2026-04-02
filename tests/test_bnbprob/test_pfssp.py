@@ -47,8 +47,8 @@ class TestPFSSP:
     ) -> None:
         problem = self.start_problem(prob_cls, constructive=constructive)
         print(problem)
-        bnb = bnb_cls(eval_node=eval_node)
-        bnb.solve(problem)
+        bnb = bnb_cls(problem, eval_node=eval_node)
+        bnb.solve()
         cost_sol = bnb.solution.cost
         assert cost_sol == cost, (
             f'Wrong cost for FSSP {bnb_cls} {cost_sol}, expected {cost}'
@@ -69,8 +69,8 @@ class TestPFSSP:
 
     def test_warmstart(self) -> None:
         problem = self.start_problem(PermFlowShop, constructive='quick')
-        bnb = DepthFirstBnB(eval_node='in')
-        bnb.solve(problem)
+        bnb = DepthFirstBnB(problem, eval_node='in')
+        bnb.solve()
         cost: int = int(bnb.solution.cost)
         assert bnb.solution.cost == self.sol_value, (
             f'Wrong solution for DFS {cost}, expected {self.sol_value}'
@@ -84,11 +84,11 @@ class TestPFSSP:
         self,
     ) -> None:
         problem = self.start_problem(PermFlowShop, constructive='quick')
-        bnb = LazyBnB(delay_lb5=False)
-        bnb.solve(problem)
-        bnblazy = BranchAndBound(eval_node='in')
+        bnb = LazyBnB(problem, delay_lb5=False)
+        bnb.solve()
         problem_lazy = self.start_problem(PermFlowShop)
-        bnblazy.solve(problem_lazy)
+        bnblazy = BranchAndBound(problem_lazy, eval_node='in')
+        bnblazy.solve()
         base_cost: int = int(bnb.solution.cost)
         cb_cost: int = self.sol_value
         assert bnb.solution.cost == bnblazy.solution.cost, (

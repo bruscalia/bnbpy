@@ -17,7 +17,7 @@ from bnbpy.cython.priqueue cimport (
     BFSPriQueue,
     DFSPriQueue,
 )
-from bnbpy.cython.problem cimport Problem, P
+from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 from bnbpy.cython.status cimport OptStatus
 from bnbpy.logger import SearchLogger
@@ -112,8 +112,7 @@ cdef class BranchAndBound:
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        Problem problem,
         eval_node = 'out',
         save_tree: bool = False
     ) -> None:
@@ -125,11 +124,8 @@ cdef class BranchAndBound:
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : Problem
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
             Node bound evaluation strategy, by default 'out'.
@@ -153,20 +149,42 @@ cdef class BranchAndBound:
             Whether to save node relationships, by default False.
             It can consume a lot of memory in large trees.
         """
-        self.problem = None
+        # Basic attribute initialization
+        self.problem = problem
+
+        # The root will be initialized at the first call to solve()
+        # to allow warmstart, with a `None` check
         self.root = None
-        self.rtol = rtol
-        self.atol = atol
-        self.eval_node = <string> eval_node.encode("utf-8")
         self.explored = 0
+        self.queue = DFSPriQueue()
+
+        # Default tolerances, might be overridden by solve() parameters
+        self.rtol = 1e-4
+        self.atol = 1e-4
+
+        # Evaluation strategy flags
+        self.eval_node = <string> eval_node.encode("utf-8")
         self.eval_in = self.eval_node in {'in', 'both'}
         self.eval_out = self.eval_node in {'out', 'both'}
         self.save_tree = save_tree
+
+        # Core search attributes
         self.incumbent = None
         self.bound_node = None
-        self.queue = DFSPriQueue()
         self.gap = INFINITY
+
+        # Initialize logger
         self.__logger = SearchLogger(log)
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax BranchAndBound[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "BranchAndBound can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     @property
     def ub(self):
@@ -197,9 +215,6 @@ cdef class BranchAndBound:
             return self.bound_node.get_solution()
         return Solution()
 
-    cdef void _set_problem(BranchAndBound self, P problem):
-        self.problem = problem
-
     cdef void _restart_search(BranchAndBound self):
         self.incumbent = None
         self.bound_node = None
@@ -208,9 +223,10 @@ cdef class BranchAndBound:
 
     def solve(
         self,
-        problem: Problem,
         maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
+        timelimit: Optional[Union[int, float]] = None,
+        rtol: Optional[float] = None,
+        atol: Optional[float] = None,
     ) -> SearchResults:
         """Solves optimization problem using Branch & Bound.
 
@@ -218,16 +234,25 @@ cdef class BranchAndBound:
         so the `Problem` class must be a subclass of
         `bnbpy.cython.problem.Problem`.
 
+        Call ``reset()`` before ``solve()`` to restart from scratch;
+        otherwise a second call to ``solve()`` resumes from the current
+        queue state.
+
         Parameters
         ----------
-        problem : Problem
-            Problem instance as in root node
-
         maxiter : Optional[int], optional
-            Maximum number of iterations, by default None
+            Maximum number of additional iterations, by default None
 
         timelimit : Optional[Union[int, float]], optional
             Time limit in seconds, by default None
+
+        rtol : Optional[float], optional
+            Relative tolerance for termination. If provided, permanently
+            updates ``self.rtol``, by default None
+
+        atol : Optional[float], optional
+            Absolute tolerance for termination. If provided, permanently
+            updates ``self.atol``, by default None
 
         Returns
         -------
@@ -238,26 +263,36 @@ cdef class BranchAndBound:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
-            unsigned long long _mxiter = ULLONG_MAX
+            unsigned long long _mxiter
             Node node
             Solution sol
             Problem inc_problem
 
-        # Set limits
-        if maxiter is not None:
-            _mxiter = maxiter
+        # Permanently update tolerances if provided
+        if rtol is not None:
+            self.rtol = rtol
+        if atol is not None:
+            self.atol = atol
+
         if timelimit is not None:
             _tlim = timelimit
         start_time = time.time()
 
-        # Core initialization
-        self._restart_search()
-        log.info('Starting exploration of search tree')
-        self._log_headers()
-        self._warmstart(problem.warmstart())
-        self._enqueue_root(problem)
+        # Initialize on first call only
+        if self.root is None:
+            self._restart_search()
+            log.info('Starting exploration of search tree')
+            self._log_headers()
+            self._warmstart(self.problem.warmstart())
+            self._enqueue_root()
 
-        # In case the root node is already the LB of a optimal warmstart
+        # Additional iterations from current explored count
+        if maxiter is not None:
+            _mxiter = self.explored + <unsigned long long> maxiter
+        else:
+            _mxiter = ULLONG_MAX
+
+        # In case the root node is already the LB of an optimal warmstart
         self._check_termination(_mxiter)
         while self.queue.not_empty():
             # Check for time termination
@@ -271,7 +306,7 @@ cdef class BranchAndBound:
             if node is not None:
                 # Perform iteration (feasibility, bound check, and branching)
                 self._do_iter(node)
-            # Update LB is node is the one
+            # Update LB if node is the one
             if node is self.bound_node:
                 self._update_bound()
             # Termination by optimality
@@ -287,6 +322,16 @@ cdef class BranchAndBound:
 
         res = SearchResults(sol, inc_problem)
         return res
+
+    cpdef void reset(self):
+        """Reset the search state for a fresh solve.
+
+        Clears the queue, incumbent, bound node, and root so that the
+        next call to ``solve()`` starts from scratch.
+        """
+        self._restart_search()
+        self.root = None
+        self.explored = 0
 
     cdef void _do_iter(BranchAndBound self, Node node):
         # Lower bound is accepted
@@ -320,7 +365,7 @@ cdef class BranchAndBound:
 
     cpdef void _warmstart(
         BranchAndBound self,
-        P warmstart_problem,
+        Problem warmstart_problem,
     ):
         cdef:
             double lb
@@ -431,9 +476,8 @@ cdef class BranchAndBound:
         """
         pass
 
-    cpdef void _enqueue_root(BranchAndBound self, P problem):
-        self.root = init_node(problem)
-        self._set_problem(problem)
+    cpdef void _enqueue_root(BranchAndBound self):
+        self.root = init_node(self.problem)
         self._enqueue_core(self.root)
         self._update_bound()
         self.explored = 0
@@ -551,12 +595,11 @@ cdef class BreadthFirstBnB(BranchAndBound):
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        Problem problem,
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node, save_tree)
+        super().__init__(problem, eval_node, save_tree)
         self.queue = BFSPriQueue()
 
 
@@ -569,12 +612,11 @@ cdef class BestFirstBnB(BranchAndBound):
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        Problem problem,
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node, save_tree)
+        super().__init__(problem, eval_node, save_tree)
         self.queue = BestPriQueue()
 
 

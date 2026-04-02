@@ -139,8 +139,8 @@ class TestColGen:
             initial_red_cost=initial_red_cost,
             max_iter_price=max_iter_price,
         )
-        bnb = BranchAndBound()
-        sol = bnb.solve(problem, maxiter=maxiter)
+        bnb = BranchAndBound(problem)
+        sol = bnb.solve(maxiter=maxiter)
         print(sol)
         assert sol.status == res[0], 'Wrong status after B&P'
         if res[1] is None:

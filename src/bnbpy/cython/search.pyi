@@ -45,7 +45,7 @@ class SearchResults(Generic[P]):
         """Optimization status"""
         ...
 
-class BranchAndBound:
+class BranchAndBound(Generic[P]):
     """
     Class for solving optimization problems via Branch & Bound.
 
@@ -81,7 +81,7 @@ class BranchAndBound:
     attribute by subclassing `BasePriQueue` too.
     """
 
-    problem: Problem
+    problem: P
     root: Node
     gap: float
     queue: BasePriQueue
@@ -98,8 +98,7 @@ class BranchAndBound:
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: P,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
     ) -> None:
@@ -111,11 +110,8 @@ class BranchAndBound:
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : P
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
             Node bound evaluation strategy, by default 'out'.
@@ -149,9 +145,10 @@ class BranchAndBound:
     def solution(self) -> Solution: ...
     def solve(
         self,
-        problem: P,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None,
+        rtol: Optional[float] = None,
+        atol: Optional[float] = None,
     ) -> SearchResults[P]:
         """Solves optimization problem using Branch & Bound.
 
@@ -159,21 +156,38 @@ class BranchAndBound:
         so the `Problem` class must be a subclass of
         `bnbpy.cython.problem.Problem`.
 
+        Call ``reset()`` before ``solve()`` to restart from scratch;
+        otherwise a second call to ``solve()`` resumes from the current
+        queue state.
+
         Parameters
         ----------
-        problem : Problem
-            Problem instance as in root node
-
         maxiter : Optional[int], optional
-            Maximum number of iterations, by default None
+            Maximum number of additional iterations, by default None
 
         timelimit : Optional[Union[int, float]], optional
             Time limit in seconds, by default None
+
+        rtol : Optional[float], optional
+            Relative tolerance for termination. If provided, permanently
+            updates ``self.rtol``, by default None
+
+        atol : Optional[float], optional
+            Absolute tolerance for termination. If provided, permanently
+            updates ``self.atol``, by default None
 
         Returns
         -------
         SearchResults
             Search results containing best solution and problem instance
+        """
+        ...
+
+    def reset(self) -> None:
+        """Reset the search state for a fresh solve.
+
+        Clears the queue, incumbent, bound node, and root so that the
+        next call to ``solve()`` starts from scratch.
         """
         ...
 
@@ -291,13 +305,12 @@ class BranchAndBound:
         """
         ...
 
-class BreadthFirstBnB(BranchAndBound):
+class BreadthFirstBnB(BranchAndBound[P]):
     """Breadth-first Branch & Bound algorithm"""
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: P,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
     ) -> None:
@@ -305,11 +318,8 @@ class BreadthFirstBnB(BranchAndBound):
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : P
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
             Node bound evaluation strategy, by default 'out'.
@@ -321,19 +331,18 @@ class BreadthFirstBnB(BranchAndBound):
         """
         ...
 
-class DepthFirstBnB(BranchAndBound):
+class DepthFirstBnB(BranchAndBound[P]):
     """Depth-first Branch & Bound algorithm"""
 
     # Just an alias - uses DFS queue by default
     ...
 
-class BestFirstBnB(BranchAndBound):
+class BestFirstBnB(BranchAndBound[P]):
     """Best-first Branch & Bound algorithm"""
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: P,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
     ) -> None:
@@ -341,11 +350,8 @@ class BestFirstBnB(BranchAndBound):
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : P
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
             Node bound evaluation strategy, by default 'out'.

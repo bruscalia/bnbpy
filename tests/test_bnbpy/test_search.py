@@ -22,30 +22,32 @@ FEASIBLE_LB = 10
 WARMSTART_LB = 8
 MAX_ITER = 5
 BRANCH_UNBOUNDED = 3
+THREE = 3
+TWO = 2
+ONE = 1
 
 
-class _CallbackBnB(BranchAndBound):
+class _CallbackBnB(BranchAndBound[MyProblem]):
     """Test subclass for solution_callback testing."""
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, problem: MyProblem) -> None:
+        super().__init__(problem)
         self.callback_called = False
 
     def solution_callback(self, _: Node) -> None:
         self.callback_called = True
 
 
-class _PrePostEvalBnB(BranchAndBound):
+class _PrePostEvalBnB(BranchAndBound[UnboundedProblem]):
     """Test subclass for pre_eval_callback testing."""
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: UnboundedProblem,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node, save_tree)
+        super().__init__(problem, eval_node, save_tree)
         self.pre_eval_count = 0
         self.post_eval_count = 0
 
@@ -83,7 +85,8 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_initialization() -> None:
         """Test the initialization of a BranchAndBound instance."""
-        bnb = BranchAndBound()
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=False)
+        bnb = BranchAndBound(problem)
         assert bnb.rtol == DEFAULT_RTOL
         assert bnb.atol == DEFAULT_ATOL
         assert bnb.solution.status == OptStatus.NO_SOLUTION
@@ -94,24 +97,34 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_initialization_with_params() -> None:
         """Test BranchAndBound initialization with custom parameters."""
-        bnb = BranchAndBound(
-            rtol=CUSTOM_RTOL, atol=CUSTOM_ATOL, save_tree=True
-        )
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=False)
+        bnb = BranchAndBound(problem, save_tree=True)
         assert bnb.solution.status == OptStatus.NO_SOLUTION
+        assert bnb.rtol == DEFAULT_RTOL
+        assert bnb.atol == DEFAULT_ATOL
+        assert bnb.save_tree is True
+
+    @staticmethod
+    def test_solve_rtol_override() -> None:
+        """Test that solve(rtol=X) permanently updates self.rtol."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BranchAndBound(problem)
+        assert bnb.rtol == DEFAULT_RTOL
+        assert bnb.atol == DEFAULT_ATOL
+        bnb.solve(rtol=CUSTOM_RTOL, atol=CUSTOM_ATOL)
         assert bnb.rtol == CUSTOM_RTOL
         assert bnb.atol == CUSTOM_ATOL
-        assert bnb.save_tree is True
 
     @staticmethod
     def test_ub_property_no_incumbent() -> None:
         """Test that ub returns infinity when no incumbent exists."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(MyProblem(lb_value=SIMPLE_LB, feasible=False))
         assert bnb.ub == float('inf')
 
     @staticmethod
     def test_ub_property_with_incumbent(feasible_problem: MyProblem) -> None:
         """Test that ub returns incumbent lb when incumbent exists."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(feasible_problem)
         node = Node(feasible_problem)
         node.compute_bound()
         bnb.incumbent = node
@@ -120,13 +133,13 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_lb_property_no_bound_node() -> None:
         """Test that lb returns -infinity when no bound node exists."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(MyProblem(lb_value=SIMPLE_LB, feasible=False))
         assert bnb.lb == -float('inf')
 
     @staticmethod
     def test_lb_property_with_bound_node(simple_problem: MyProblem) -> None:
         """Test that lb returns bound node lb when bound node exists."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(simple_problem)
         node = Node(simple_problem)
         node.compute_bound()
         bnb.bound_node = node
@@ -135,7 +148,7 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_enqueue_dequeue(simple_problem: MyProblem) -> None:
         """Test that enqueue and dequeue work correctly."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(simple_problem)
         node = Node(simple_problem)
         bnb.enqueue(node)
         dequeued = bnb.dequeue()
@@ -144,7 +157,7 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_set_solution(feasible_problem: MyProblem) -> None:
         """Test that set_solution updates incumbent."""
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(feasible_problem)
         node = Node(feasible_problem)
         node.compute_bound()
         node.check_feasible()
@@ -155,7 +168,7 @@ class TestBranchAndBoundBasic:
     @staticmethod
     def test_fathom(simple_problem: MyProblem) -> None:
         """Test that fathom sets node status to FATHOM."""
-        bnb = BranchAndBound(save_tree=True)
+        bnb = BranchAndBound(simple_problem, save_tree=True)
         node = Node(simple_problem)
         bnb.fathom(node)
         assert node.solution.status == OptStatus.FATHOM
@@ -170,8 +183,8 @@ class TestBranchAndBoundSolve:
     def test_solve_simple() -> None:
         """Test solving a simple problem."""
         problem = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
-        bnb = BranchAndBound()
-        result = bnb.solve(problem)
+        bnb = BranchAndBound(problem)
+        result = bnb.solve()
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == FEASIBLE_LB
 
@@ -179,16 +192,42 @@ class TestBranchAndBoundSolve:
     def test_solve_with_maxiter() -> None:
         """Test solving with iteration limit."""
         problem = UnboundedProblem()
-        bnb = BranchAndBound()
-        _ = bnb.solve(problem, maxiter=MAX_ITER)
+        bnb = BranchAndBound(problem)
+        _ = bnb.solve(maxiter=MAX_ITER)
         # Should stop due to iteration limit
         assert bnb.explored == MAX_ITER
+
+    @staticmethod
+    def test_solve_resume() -> None:
+        """Test that a second solve() resumes from where the first stopped."""
+        problem = UnboundedProblem()
+        bnb = BranchAndBound(problem)
+        bnb.solve(maxiter=TWO)
+        explored_after_first = bnb.explored
+        assert explored_after_first == TWO
+        bnb.solve(maxiter=THREE)
+        assert bnb.explored == explored_after_first + THREE
+
+    @staticmethod
+    def test_reset_clears_state() -> None:
+        """Test that reset() clears the search state for a fresh solve."""
+        problem = UnboundedProblem()
+        bnb = BranchAndBound(problem)
+        bnb.solve(maxiter=THREE)
+        assert bnb.root is not None
+        assert bnb.explored == THREE
+        bnb.reset()
+        assert bnb.root is None
+        assert bnb.explored == 0
+        # Second solve starts fresh
+        bnb.solve(maxiter=TWO)
+        assert bnb.explored == TWO
 
     @staticmethod
     def test_branch_with_tree() -> None:
         """Test that branch creates and enqueues child nodes."""
         problem = UnboundedProblem()
-        bnb = BranchAndBound(eval_node='out', save_tree=True)
+        bnb = BranchAndBound(problem, eval_node='out', save_tree=True)
         node = Node(problem)
         node.compute_bound()
         bnb.branch(node)
@@ -204,7 +243,7 @@ class TestBranchAndBoundSolve:
     def test_branch_clear_tree() -> None:
         """Test that branch creates and enqueues child nodes."""
         problem = UnboundedProblem()
-        bnb = BranchAndBound(eval_node='out', save_tree=False)
+        bnb = BranchAndBound(problem, eval_node='out', save_tree=False)
         node = Node(problem)
         node.compute_bound()
         bnb.branch(node)
@@ -221,8 +260,8 @@ class TestBranchAndBoundSolve:
         """Test that optimal solution is found for simple case."""
         # Create a problem with feasible solution at root
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
-        bnb = BranchAndBound()
-        result = bnb.solve(problem)
+        bnb = BranchAndBound(problem)
+        result = bnb.solve()
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == SIMPLE_LB
         assert bnb.explored == 1  # Should only explore root
@@ -231,8 +270,8 @@ class TestBranchAndBoundSolve:
     def test_gap_calculation() -> None:
         """Test that gap is calculated correctly."""
         problem = _WarmstartProblem(lb_value=SIMPLE_LB, feasible=False)
-        bnb = BranchAndBound()
-        _ = bnb.solve(problem, maxiter=0)
+        bnb = BranchAndBound(problem)
+        _ = bnb.solve(maxiter=0)
         # Optimal solution should have gap = 0
         assert bnb.gap == (WARMSTART_LB - SIMPLE_LB) / WARMSTART_LB
 
@@ -246,8 +285,8 @@ class TestBranchAndBoundCallbacks:
     def test_solution_callback() -> None:
         """Test that solution_callback is called when solution is found."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
-        bnb = _CallbackBnB()
-        _ = bnb.solve(problem)
+        bnb = _CallbackBnB(problem)
+        _ = bnb.solve()
         assert bnb.callback_called is True
 
     @staticmethod
@@ -260,8 +299,8 @@ class TestBranchAndBoundCallbacks:
     ) -> None:
         """Test different node evaluation modes."""
         problem = UnboundedProblem()
-        bnb = _PrePostEvalBnB(eval_node=eval_node)
-        result = bnb.solve(problem, maxiter=BRANCH_UNBOUNDED)
+        bnb = _PrePostEvalBnB(problem, eval_node=eval_node)
+        result = bnb.solve(maxiter=BRANCH_UNBOUNDED)
         assert result.solution.status == OptStatus.INFEASIBLE
         assert bnb.pre_eval_count == expected
         assert bnb.post_eval_count == expected
@@ -270,22 +309,22 @@ class TestBranchAndBoundCallbacks:
     def test_warmstart() -> None:
         """Test that warmstart is used when available."""
         problem = _WarmstartProblem(lb_value=SIMPLE_LB, feasible=False)
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(problem)
         # No bnb iterations! First solution is used
-        res = bnb.solve(problem, maxiter=0)
+        res = bnb.solve(maxiter=0)
         # Should use warmstart solution
         assert bnb.ub == WARMSTART_LB
         assert res.solution.status == OptStatus.FEASIBLE
 
 
-class _PrimalHeuristicBnB(BranchAndBound):
+class _PrimalHeuristicBnB(BranchAndBound[PrimalHeuristicProblem]):
     """BnB that invokes primal_heuristic from pre_eval_callback."""
 
     def pre_eval_callback(self, node: Node) -> None:
         self.primal_heuristic(node)
 
 
-class _UpgradeBoundBnB(BranchAndBound):
+class _UpgradeBoundBnB(BranchAndBound[StrongerBoundProblem]):
     """BnB that invokes upgrade_bound from pre_eval_callback."""
 
     def pre_eval_callback(self, node: Node) -> None:
@@ -301,7 +340,7 @@ class TestBranchAndBoundPrimalAndBound:
     def test_primal_heuristic_no_child() -> None:
         """primal_heuristic does nothing when node yields None."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=False)
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(problem)
         node = Node(problem)
         node.compute_bound()
         bnb.primal_heuristic(node)
@@ -311,7 +350,7 @@ class TestBranchAndBoundPrimalAndBound:
     def test_primal_heuristic_updates_incumbent() -> None:
         """primal_heuristic sets incumbent when child is feasible."""
         problem = PrimalHeuristicProblem(lb_value=SIMPLE_LB, feasible=False)
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(problem)
         node = Node(problem)
         node.compute_bound()
         bnb.primal_heuristic(node)
@@ -322,7 +361,10 @@ class TestBranchAndBoundPrimalAndBound:
     def test_primal_heuristic_skips_worse_lb() -> None:
         """primal_heuristic skips child when child.lb >= current ub."""
         incumbent_problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
-        bnb = BranchAndBound()
+        heur_problem = PrimalHeuristicProblem(
+            lb_value=SIMPLE_LB, feasible=False
+        )
+        bnb = BranchAndBound(heur_problem)
         # Manually set an incumbent with lower cost
         incumbent_node = Node(incumbent_problem)
         incumbent_node.compute_bound()
@@ -342,8 +384,8 @@ class TestBranchAndBoundPrimalAndBound:
     def test_primal_heuristic_called_from_callback() -> None:
         """Solve with _PrimalHeuristicBnB finds solution via heuristic."""
         problem = PrimalHeuristicProblem(lb_value=SIMPLE_LB, feasible=False)
-        bnb = _PrimalHeuristicBnB()
-        result = bnb.solve(problem)
+        bnb = _PrimalHeuristicBnB(problem)
+        result = bnb.solve()
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == SIMPLE_LB
 
@@ -351,7 +393,7 @@ class TestBranchAndBoundPrimalAndBound:
     def test_upgrade_bound_delegates_to_node() -> None:
         """BranchAndBound.upgrade_bound raises node.lb via stronger_bound."""
         problem = StrongerBoundProblem(lb_value=SIMPLE_LB)
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(problem)
         node = Node(problem)
         node.compute_bound()
         lb_before = node.lb
@@ -362,7 +404,7 @@ class TestBranchAndBoundPrimalAndBound:
     def test_upgrade_bound_no_change_base_problem() -> None:
         """upgrade_bound leaves lb unchanged for base MyProblem."""
         problem = MyProblem(lb_value=SIMPLE_LB)
-        bnb = BranchAndBound()
+        bnb = BranchAndBound(problem)
         node = Node(problem)
         node.compute_bound()
         lb_before = node.lb
@@ -382,15 +424,36 @@ class TestBranchAndBoundPrimalAndBound:
             def warmstart() -> '_WarmstartStrong':
                 return _WarmstartStrong(lb_value=ub_value, feasible=True)
 
-        bnb_base = BranchAndBound()
-        bnb_upgrade = _UpgradeBoundBnB()
-        result_base = bnb_base.solve(
-            StrongerBoundProblem(lb_value=SIMPLE_LB, feasible=False)
-        )
-        result_upgrade = bnb_upgrade.solve(
-            _WarmstartStrong(lb_value=SIMPLE_LB, feasible=False)
-        )
+        base_problem = StrongerBoundProblem(lb_value=SIMPLE_LB, feasible=False)
+        upgrade_problem = _WarmstartStrong(lb_value=SIMPLE_LB, feasible=False)
+        bnb_base = BranchAndBound(base_problem)
+        bnb_upgrade = _UpgradeBoundBnB(upgrade_problem)
+        result_base = bnb_base.solve()
+        result_upgrade = bnb_upgrade.solve()
         # Both reach optimal; upgrade variant explores <= base variant
         assert result_base.solution.status == OptStatus.OPTIMAL
         assert result_upgrade.solution.status == OptStatus.OPTIMAL
         assert bnb_upgrade.explored <= bnb_base.explored
+
+
+class TestGenericBehavior:
+    @staticmethod
+    def test_raises_type_error_on_wrong_generic() -> None:
+        """
+        Test that BranchAndBound raises
+        TypeError when parameterized with non-Problem.
+        """
+        with pytest.raises(TypeError):
+            BranchAndBound[int]  # type: ignore
+
+    @staticmethod
+    def test_is_okay_with_problem() -> None:
+        """
+        Test that BranchAndBound can be
+        parameterized with a Problem subclass.
+        """
+
+        bnb = BranchAndBound[MyProblem]
+        assert bnb is BranchAndBound, (
+            'BranchAndBound[MyProblem] should return the class itself'
+        )

@@ -9,7 +9,7 @@ from typing import Optional
 
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport BasePriQueue
-from bnbpy.cython.problem cimport Problem, P
+from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
@@ -52,9 +52,9 @@ cdef class BranchAndBound:
 
     cdef Solution get_solution(BranchAndBound self)
 
-    cdef void _set_problem(BranchAndBound self, P problem)
-
     cdef void _restart_search(BranchAndBound self)
+
+    cpdef void reset(self)
 
     cdef void _do_iter(BranchAndBound self, Node node)
 
@@ -62,7 +62,7 @@ cdef class BranchAndBound:
 
     cpdef Node dequeue(BranchAndBound self)
 
-    cpdef void _warmstart(BranchAndBound self, P warmstart_problem)
+    cpdef void _warmstart(BranchAndBound self, Problem warmstart_problem)
 
     cpdef void branch(BranchAndBound self, Node node)
 
@@ -82,7 +82,7 @@ cdef class BranchAndBound:
 
     cpdef void solution_callback(BranchAndBound self, Node node)
 
-    cpdef void _enqueue_root(BranchAndBound self, P problem)
+    cpdef void _enqueue_root(BranchAndBound self)
 
     cpdef void _node_eval(BranchAndBound self, Node node)
 

@@ -77,8 +77,8 @@ Branch & Bound
 
    # Apply Branch & Bound
    problem = MyProblem()
-   bnb = BranchAndBound()
-   bnb.solve(problem)
+   bnb = BranchAndBound(problem)
+   bnb.solve()
    print(bnb.solution)
 
 Branch & Price

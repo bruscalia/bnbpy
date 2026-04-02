@@ -4,7 +4,7 @@ from bnbpy.cython.search import BranchAndBound
 
 HEUR_BASE: int = 100
 
-class LazyBnB(BranchAndBound):
+class LazyBnB(BranchAndBound[PermFlowShop]):
     """Subclass derived from `BranchAndBound` with `post_eval_callback`
     that solves a 2M lower bound (`problem.double_bound_upgrade`)."""
 
@@ -13,8 +13,7 @@ class LazyBnB(BranchAndBound):
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        problem: PermFlowShop,
         save_tree: bool = False,
         delay_lb5: bool = False,
     ) -> None:
@@ -22,11 +21,8 @@ class LazyBnB(BranchAndBound):
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
+        problem : PermFlowShop
+            Problem instance to solve
 
         save_tree : bool, optional
             Whether to save tree structure, by default False
@@ -58,9 +54,8 @@ class CutoffBnB(LazyBnB):
 
     def __init__(
         self,
+        problem: PermFlowShop,
         ub_value: float,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
         save_tree: bool = False,
         delay_lb5: bool = False,
     ) -> None:
@@ -68,14 +63,11 @@ class CutoffBnB(LazyBnB):
 
         Parameters
         ----------
+        problem : PermFlowShop
+            Problem instance to solve
+
         ub_value : float
             Upper bound cutoff value
-
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
 
         save_tree : bool, optional
             Whether to save tree structure, by default False
@@ -106,8 +98,7 @@ class CallbackBnB(LazyBnB):
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        problem: PermFlowShop,
         save_tree: bool = False,
         delay_lb5: bool = False,
         heur_factor: int = HEUR_BASE,
@@ -116,11 +107,8 @@ class CallbackBnB(LazyBnB):
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
+        problem : PermFlowShop
+            Problem instance to solve
 
         save_tree : bool, optional
             Whether to save tree structure, by default False

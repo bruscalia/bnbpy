@@ -5,8 +5,6 @@ from libcpp cimport bool
 from libc.math cimport sqrt
 
 import heapq
-from typing import Optional, Union
-
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport HeapPriQueue, NodePriQueue
@@ -37,33 +35,23 @@ cdef class LazyBnB(BranchAndBound):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
+        PermFlowShop problem,
         save_tree=False,
         delay_lb5=False
     ):
-        super(LazyBnB, self).__init__(rtol, atol, EVAL_NODE, save_tree)
+        super(LazyBnB, self).__init__(problem, EVAL_NODE, save_tree)
         self.queue = DFSPriQueueFS()
         self.delay_lb5 = delay_lb5
-        self.min_lb5_level = 0
+        if delay_lb5:
+            self.min_lb5_level = (problem.get_n() // 3) + 1
+        else:
+            self.min_lb5_level = 0
 
     @staticmethod
     def delay_by_root(problem: PermFlowShop) -> bool:
         lb1 = problem.calc_lb_1m()
         lb5 = problem.calc_lb_2m()
         return lb1 <= lb5
-
-    def solve(
-        LazyBnB self,
-        PermFlowShop problem,
-        maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
-    ) -> SearchResults:
-        if self.delay_lb5:
-            self.min_lb5_level = (problem.get_n() // 3) + 1
-        else:
-            self.min_lb5_level = 0
-        return super(LazyBnB, self).solve(problem, maxiter, timelimit)
 
     cpdef void post_eval_callback(LazyBnB self, Node node):
         # Here the r and q values are not yet updated
@@ -85,13 +73,12 @@ cdef class CutoffBnB(LazyBnB):
 
     def __init__(
         self,
+        PermFlowShop problem,
         float ub_value,
-        rtol=0.0001,
-        atol=0.0001,
         save_tree=False,
         delay_lb5=False
     ):
-        super(CutoffBnB, self).__init__(rtol, atol, save_tree, delay_lb5)
+        super(CutoffBnB, self).__init__(problem, save_tree, delay_lb5)
         self.queue = DFSPriQueueFS()
         self.ub_value = ub_value
 
@@ -149,13 +136,12 @@ cdef class CallbackBnB(LazyBnB):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
+        PermFlowShop problem,
         save_tree=False,
         delay_lb5=False,
         heur_factor=HEUR_BASE
     ):
-        super(CallbackBnB, self).__init__(rtol, atol, save_tree, delay_lb5)
+        super(CallbackBnB, self).__init__(problem, save_tree, delay_lb5)
         self.queue = DFSPriQueueFS()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor
