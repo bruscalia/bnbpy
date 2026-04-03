@@ -95,7 +95,7 @@ class IndepSetSolution:
 class IndepSetHeur:
     graph: Optional[IndepGraph]
     sol: IndepSetSolution
-    queue: list['IndepSetNode']
+    queue: dict[int, 'IndepSetNode']
     history: list['IndepSetNode']
 
     def __init__(self) -> None:
@@ -110,7 +110,7 @@ class IndepSetHeur:
         self.graph = graph
         self.graph.clean()
         self.history = []
-        self.queue = list(self.graph.nodes.values())  # Pool of uncolored nodes
+        self.queue = dict(self.graph.nodes)  # Pool of uncolored nodes
         for i in range(len(self.queue)):
             node = self.dequeue()
             self.select(node)
@@ -125,12 +125,14 @@ class IndepSetHeur:
         node.select()
         self.sol.add(node)
         for other in node.neighbors:
-            if other in self.queue:
-                self.queue.remove(other)
+            if other.index in self.queue:
+                del self.queue[other.index]
 
     def dequeue(self) -> IndepSetNode:
-        node = max(self.queue, key=lambda x: x.weight / x.active_degree)
-        self.queue.remove(node)
+        node = max(
+            self.queue.values(), key=lambda x: x.weight / x.active_degree
+        )
+        del self.queue[node.index]
         return node
 
 
@@ -140,8 +142,8 @@ class RandomIndepSet(IndepSetHeur):
         self.rng = random.Random(seed)
 
     def dequeue(self) -> IndepSetNode:
-        node = self.rng.choice(self.queue)
-        self.queue.remove(node)
+        node = self.rng.choice(list(self.queue.values()))
+        del self.queue[node.index]
         return node
 
 

@@ -149,6 +149,7 @@ GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
    :hidden:
 
    Usage/machine-deadline
+   Usage/maxclique
    Usage/cutting-stock
    Usage/milp
    Usage/pfssp
