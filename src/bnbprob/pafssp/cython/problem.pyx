@@ -293,11 +293,11 @@ cdef class PermFlowShop(Problem):
             return <double>self.perm.calc_lb_full()
 
         if self.simple_upgraded:
-            return <double>self.lower_bound_2m()
+            return <double>self.perm.lower_bound_2m()
 
         self.simple_upgraded = True
         self.perm.update_params()
-        return <double>self.lower_bound_1m()
+        return <double>self.perm.lower_bound_1m()
 
     cpdef PermFlowShop primal_heuristic(PermFlowShop self):
         return self.local_search()
