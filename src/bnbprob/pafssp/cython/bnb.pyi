@@ -35,15 +35,15 @@ class LazyBnB(BranchAndBound[PermFlowShop]):
 
     @staticmethod
     def delay_by_root(problem: PermFlowShop) -> bool: ...
-    def post_eval_callback(self, node: Node) -> None:
+    def post_eval_callback(self, node: Node[PermFlowShop]) -> None:
         """Callback executed after node evaluation
 
         Applies bound upgrade to improve lower bound
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[PermFlowShop]
+            Node[PermFlowShop] being evaluated
         """
         ...
 
@@ -122,33 +122,33 @@ class CallbackBnB(LazyBnB):
         """
         ...
 
-    def solution_callback(self, node: Node) -> None:
+    def solution_callback(self, node: Node[PermFlowShop]) -> None:
         """Applies local search with best improvement making
         remove-insertion moves.
 
         Parameters
         ----------
-        node : Node
-            Node with new solution
+        node : Node[PermFlowShop]
+            Node[PermFlowShop] with new solution
         """
         ...
 
-    def dequeue(self) -> Node:
+    def dequeue(self) -> Node[PermFlowShop]:
         """Dequeue next node and apply intensification if needed
 
         Returns
         -------
-        Node
+        Node[PermFlowShop]
             Next node to process
         """
         ...
 
-    def intensify(self, node: Node) -> None:
+    def intensify(self, node: Node[PermFlowShop]) -> None:
         """Apply intensification heuristic to improve solution
 
         Parameters
         ----------
-        node : Node
-            Node to intensify
+        node : Node[PermFlowShop]
+            Node[PermFlowShop] to intensify
         """
         ...

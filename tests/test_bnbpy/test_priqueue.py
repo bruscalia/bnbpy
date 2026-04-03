@@ -33,7 +33,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def node_low() -> Node:
+    def node_low() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_LOW, feasible=False)
         node = Node(problem)
         node.compute_bound()
@@ -41,7 +41,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def node_medium() -> Node:
+    def node_medium() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_MEDIUM, feasible=False)
         node = Node(problem)
         node.compute_bound()
@@ -49,7 +49,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def node_high() -> Node:
+    def node_high() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_HIGH, feasible=False)
         node = Node(problem)
         node.compute_bound()
@@ -62,7 +62,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_not_empty_after_enqueue(
-        empty_queue: DFSPriQueue, node_low: Node
+        empty_queue: DFSPriQueue, node_low: Node[MyProblem]
     ) -> None:
         """Test that not_empty returns True after enqueueing a node."""
         empty_queue.enqueue(node_low)
@@ -88,7 +88,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_get_lower_bound_single_node(
-        empty_queue: DFSPriQueue, node_low: Node
+        empty_queue: DFSPriQueue, node_low: Node[MyProblem]
     ) -> None:
         """Test get_lower_bound with a single node."""
         empty_queue.enqueue(node_low)
@@ -99,9 +99,9 @@ class TestHeapPriQueue:
     @staticmethod
     def test_get_lower_bound_multiple_nodes(
         empty_queue: DFSPriQueue,
-        node_low: Node,
-        node_medium: Node,
-        node_high: Node,
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
+        node_high: Node[MyProblem],
     ) -> None:
         """Test get_lower_bound returns node with lowest lb."""
         empty_queue.enqueue(node_high)
@@ -113,7 +113,9 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_pop_lower_bound_removes_node(
-        empty_queue: DFSPriQueue, node_low: Node, node_medium: Node
+        empty_queue: DFSPriQueue,
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
     ) -> None:
         """Test that pop_lower_bound removes the node with lowest lb."""
         empty_queue.enqueue(node_medium)
@@ -127,7 +129,9 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_clear(
-        empty_queue: DFSPriQueue, node_low: Node, node_medium: Node
+        empty_queue: DFSPriQueue,
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
     ) -> None:
         """Test that clear empties the queue."""
         empty_queue.enqueue(node_low)
@@ -139,9 +143,9 @@ class TestHeapPriQueue:
     @staticmethod
     def test_filter_by_lb(
         empty_queue: DFSPriQueue,
-        node_low: Node,
-        node_medium: Node,
-        node_high: Node,
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
+        node_high: Node[MyProblem],
     ) -> None:
         """Test that filter_by_lb removes nodes with lb >= max_lb."""
         empty_queue.enqueue(node_low)

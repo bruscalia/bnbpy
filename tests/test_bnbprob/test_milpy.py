@@ -1,4 +1,4 @@
-from typing import Literal, cast
+from typing import Literal
 
 import numpy as np
 import pytest
@@ -41,7 +41,7 @@ class TestNaive:
         assert bnb.incumbent is not None, 'No incumbent found'
         if bnb.incumbent is None:
             return
-        problem: MILP = cast(MILP, bnb.incumbent.problem)
+        problem = bnb.incumbent.problem
         x_res = problem.results.x
         self.assert_cost(bnb.solution.cost)
         assert x_res is not None, 'No solution found'
@@ -100,8 +100,9 @@ class TestKnapsack:
         assert bnb.incumbent is not None, 'No incumbent found'
         if bnb.incumbent is None:
             return
-        problem: MILP = cast(MILP, bnb.incumbent.problem)
-        x_res = cast(np.ndarray, problem.results.x)
+        problem: MILP = bnb.incumbent.problem
+        x_res = problem.results.x
+        assert x_res is not None, 'No solution found'
         self.assert_sol(x_res)
 
     @pytest.mark.parametrize(

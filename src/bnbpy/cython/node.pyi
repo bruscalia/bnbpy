@@ -1,21 +1,21 @@
-from typing import Optional
+from typing import Generic, Optional, TypeVar
 
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
 
-class Node:
+P = TypeVar('P', bound=Problem)
+
+class Node(Generic[P]):
     """Class for representing a node in a search tree."""
 
-    problem: Problem
-    parent: Optional['Node']
+    problem: P
+    parent: Optional['Node[P]']
     level: int
     lb: float
-    children: list[Node]
+    children: list['Node[P]']
     _sort_index: int
 
-    def __init__(
-        self, problem: Problem, parent: Optional['Node'] = None
-    ) -> None:
+    def __init__(self, problem: P, parent: 'Optional[Node[P]]' = None) -> None:
         """Instantiates a new `Node` object based on a (sub)problem.
         The node is evaluated in terms of lower bound as it is initialized.
 
@@ -30,7 +30,7 @@ class Node:
         ...
 
     def __del__(self) -> None: ...
-    def __lt__(self, other: 'Node') -> bool: ...
+    def __lt__(self, other: 'Node[P]') -> bool: ...
     @property
     def solution(self) -> Solution: ...
     @property
@@ -66,8 +66,8 @@ class Node:
         """Sets solution status of node as 'FATHOMED'"""
         ...
 
-    def copy(self, deep: bool = True) -> 'Node': ...
-    def branch(self) -> list['Node']:
+    def copy(self, deep: bool = True) -> 'Node[P]': ...
+    def branch(self) -> list['Node[P]']:
         """Calls `problem` `branch()` method to create derived sub-problems.
         Each subproblem is used to instantiate a child node.
         Child nodes are evaluated in terms of lower bound as they are
@@ -80,13 +80,13 @@ class Node:
         """
         ...
 
-    def primal_heuristic(self) -> 'Node | None':
+    def primal_heuristic(self) -> 'Node[P] | None':
         """Calls `problem` `primal_heuristic()` method to generate a
         feasible solution from the current node, if any.
 
         Returns
         -------
-        Node | None
+        Node[P] | None
             A child node with a feasible solution, if any
         """
         ...

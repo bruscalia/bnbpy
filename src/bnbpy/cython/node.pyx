@@ -63,6 +63,16 @@ cdef class Node:
     def __lt__(self, other: 'Node'):
         return self._sort_index > other._sort_index
 
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax BranchAndBound[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "BranchAndBound can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
+
     @property
     def solution(self) -> Solution:
         return self.get_solution()

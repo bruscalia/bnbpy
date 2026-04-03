@@ -82,7 +82,7 @@ class BranchAndBound(Generic[P]):
     """
 
     problem: P
-    root: Node
+    root: Node[P]
     gap: float
     queue: BasePriQueue
     rtol: float
@@ -92,8 +92,8 @@ class BranchAndBound(Generic[P]):
     eval_in: bool
     eval_out: bool
     save_tree: bool
-    incumbent: Node | None
-    bound_node: Node | None
+    incumbent: Node[P] | None
+    bound_node: Node[P] | None
     __logger: SearchLogger
 
     def __init__(
@@ -114,7 +114,7 @@ class BranchAndBound(Generic[P]):
             Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
+            Node[P] bound evaluation strategy, by default 'out'.
 
             *   'in': call `Problem.calc_bound` after
                 parent `branch`, before inserting child nodes
@@ -191,37 +191,37 @@ class BranchAndBound(Generic[P]):
         """
         ...
 
-    def enqueue(self, node: Node) -> None:
+    def enqueue(self, node: Node[P]) -> None:
         """Include new node into queue
 
         Parameters
         ----------
-        node : Node
-            Node to be included
+        node : Node[P]
+            Node[P] to be included
         """
         ...
 
-    def dequeue(self) -> Node:
+    def dequeue(self) -> Node[P]:
         """Chooses the next evaluated node and computes its lower bound
 
         Returns
         -------
-        Node
-            Node to be evaluated
+        Node[P]
+            Node[P] to be evaluated
         """
         ...
 
-    def branch(self, node: Node) -> None:
+    def branch(self, node: Node[P]) -> None:
         """From a given node, create children nodes and enqueue them
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[P]
+            Node[P] being evaluated
         """
         ...
 
-    def primal_heuristic(self, node: Node) -> None:
+    def primal_heuristic(self, node: Node[P]) -> None:
         """Calls primal heuristic via node entity to generate a feasible
         solution from the current node, if any.
 
@@ -230,12 +230,12 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[P]
+            Node[P] being evaluated
         """
         ...
 
-    def upgrade_bound(self, node: Node) -> None:
+    def upgrade_bound(self, node: Node[P]) -> None:
         """Calls stronger_bound via node entity to generate a better
         lower bound from the current node, if any.
 
@@ -244,12 +244,12 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[P]
+            Node[P] being evaluated
         """
         ...
 
-    def fathom(self, node: Node) -> None:  # noqa: PLR6301
+    def fathom(self, node: Node[P]) -> None:  # noqa: PLR6301
         """Fathom node (by default is not deleted)
 
         If deletion is required for managing memory, remember to delete
@@ -257,40 +257,40 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node
-            Node to be fathomed
+        node : Node[P]
+            Node[P] to be fathomed
         """
         ...
 
-    def pre_eval_callback(self, node: Node) -> None:
+    def pre_eval_callback(self, node: Node[P]) -> None:
         """Abstraction for callbacks before node bound evaluation"""
         ...
 
-    def post_eval_callback(self, node: Node) -> None:
+    def post_eval_callback(self, node: Node[P]) -> None:
         """Abstraction for callbacks after node bound evaluation"""
         ...
 
-    def enqueue_callback(self, node: Node) -> None:
+    def enqueue_callback(self, node: Node[P]) -> None:
         """Abstraction for callbacks after node is enqueued"""
         ...
 
-    def dequeue_callback(self, node: Node) -> None:
+    def dequeue_callback(self, node: Node[P]) -> None:
         """Abstraction for callbacks after node is dequeued"""
         ...
 
-    def solution_callback(self, node: Node) -> None:
+    def solution_callback(self, node: Node[P]) -> None:
         """Abstraction for callback when a candidate
         feasible solution is verified (before being set)
         """
         ...
 
-    def set_solution(self, node: Node) -> None:
+    def set_solution(self, node: Node[P]) -> None:
         """Assigns the current node as incumbent, updates gap and calls
         `solution_callback`
 
         Parameters
         ----------
-        node : Node
+        node : Node[P]
             New solution node
         """
         ...
@@ -322,7 +322,7 @@ class BreadthFirstBnB(BranchAndBound[P]):
             Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
+            Node[P] bound evaluation strategy, by default 'out'.
             See `BranchAndBound.__init__` for the detailed behavior of
             `'in'`, `'out'`, and `'both'`.
 
@@ -354,7 +354,7 @@ class BestFirstBnB(BranchAndBound[P]):
             Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
+            Node[P] bound evaluation strategy, by default 'out'.
             See `BranchAndBound.__init__` for the detailed behavior of
             `'in'`, `'out'`, and `'both'`.
 

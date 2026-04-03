@@ -19,7 +19,7 @@ class ParallelBnB(BranchAndBound[Problem]):
         super().__init__(problem, eval_node)
         self.max_workers = max_workers
 
-    def branch(self, node: Node) -> None:
+    def branch(self, node: Node[Problem]) -> None:
         children = node.branch()
         if children:
             # Use ThreadPoolExecutor for parallel execution

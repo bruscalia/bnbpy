@@ -9,6 +9,7 @@ from myfixtures.myproblem import (
 )
 
 from bnbpy.cython.node import Node
+from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import BranchAndBound
 from bnbpy.cython.status import OptStatus
 
@@ -34,7 +35,7 @@ class _CallbackBnB(BranchAndBound[MyProblem]):
         super().__init__(problem)
         self.callback_called = False
 
-    def solution_callback(self, _: Node) -> None:
+    def solution_callback(self, _: Node[MyProblem]) -> None:
         self.callback_called = True
 
 
@@ -51,10 +52,10 @@ class _PrePostEvalBnB(BranchAndBound[UnboundedProblem]):
         self.pre_eval_count = 0
         self.post_eval_count = 0
 
-    def pre_eval_callback(self, _: Node) -> None:
+    def pre_eval_callback(self, _: Node[UnboundedProblem]) -> None:
         self.pre_eval_count += 1
 
-    def post_eval_callback(self, _: Node) -> None:
+    def post_eval_callback(self, _: Node[UnboundedProblem]) -> None:
         self.post_eval_count += 1
 
 
@@ -320,14 +321,14 @@ class TestBranchAndBoundCallbacks:
 class _PrimalHeuristicBnB(BranchAndBound[PrimalHeuristicProblem]):
     """BnB that invokes primal_heuristic from pre_eval_callback."""
 
-    def pre_eval_callback(self, node: Node) -> None:
+    def pre_eval_callback(self, node: Node[PrimalHeuristicProblem]) -> None:
         self.primal_heuristic(node)
 
 
 class _UpgradeBoundBnB(BranchAndBound[StrongerBoundProblem]):
     """BnB that invokes upgrade_bound from pre_eval_callback."""
 
-    def pre_eval_callback(self, node: Node) -> None:
+    def pre_eval_callback(self, node: Node[StrongerBoundProblem]) -> None:
         self.upgrade_bound(node)
 
 
@@ -364,9 +365,9 @@ class TestBranchAndBoundPrimalAndBound:
         heur_problem = PrimalHeuristicProblem(
             lb_value=SIMPLE_LB, feasible=False
         )
-        bnb = BranchAndBound(heur_problem)
+        bnb: BranchAndBound[Problem] = BranchAndBound(heur_problem)
         # Manually set an incumbent with lower cost
-        incumbent_node = Node(incumbent_problem)
+        incumbent_node: Node[Problem] = Node(incumbent_problem)
         incumbent_node.compute_bound()
         incumbent_node.check_feasible()
         bnb.incumbent = incumbent_node
@@ -374,7 +375,7 @@ class TestBranchAndBoundPrimalAndBound:
         heur_problem = PrimalHeuristicProblem(
             lb_value=SIMPLE_LB, feasible=False
         )
-        heur_node = Node(heur_problem)
+        heur_node: Node[Problem] = Node(heur_problem)
         heur_node.compute_bound()
         bnb.primal_heuristic(heur_node)
         # Incumbent should remain the original one
