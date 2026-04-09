@@ -45,6 +45,9 @@ cdef class HeapPriQueue(BasePriQueue):
     cdef:
         double lb
 
+    cdef inline c_get_size(HeapPriQueue self):
+        return len(self._queue)
+
     cpdef bint not_empty(HeapPriQueue self)
 
     cpdef Node dequeue(HeapPriQueue self)

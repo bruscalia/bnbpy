@@ -8,6 +8,7 @@ import heapq
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport HeapPriQueue, NodePriQueue
+from bnbpy.cython.mod_queue cimport CycleQueue
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -29,6 +30,13 @@ cdef class DFSPriQueueFS(HeapPriQueue):
             self._queue,
             NodePriQueue((-node.level, node.lb, idle_time), node)
         )
+
+
+cdef class CycleQueueFS(CycleQueue):
+
+    def __init__(self, int max_size=1_000_000):
+        super(CycleQueueFS, self).__init__(max_size)
+        self.fallback_queue = DFSPriQueueFS()
 
 
 cdef class LazyBnB(BranchAndBound):

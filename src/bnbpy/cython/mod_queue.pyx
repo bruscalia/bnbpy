@@ -1,7 +1,10 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+import heapq
+
 from libc.math cimport INFINITY
+from libcpp cimport bool
 from collections import defaultdict
 
 from bnbpy.cython.node cimport Node
@@ -10,6 +13,7 @@ from bnbpy.cython.priqueue cimport BasePriQueue, DFSPriQueue, NodePriQueue
 
 cdef:
     double LOW_NEG = -INFINITY
+    double HIGH_POS = INFINITY
 
 
 cdef class MultiDFSQueue(BasePriQueue):
@@ -131,64 +135,159 @@ cdef class MultiDFSQueue(BasePriQueue):
         self.queues = [DFSPriQueue()]
 
 
+cdef class BestQueueNode:
+
+    def __init__(self, Node node):
+        self.node = node
+        self.lb = node.lb
+
+    def __lt__(self, BestQueueNode other):
+        return self.lb < other.lb
+
+
+
+cdef class CycleLevel:
+
+    def __init__(self, int level):
+        self.level = level
+        self.nodes = []
+        self.next = self
+        self.prev = self
+
+    cpdef void add_node(self, Node node):
+        heapq.heappush(self.nodes, BestQueueNode(node))
+
+    cpdef Node pop_node(self):
+        if self.nodes:
+            return heapq.heappop(self.nodes).node
+        return None
+
+    cpdef void filter(self, double max_lb):
+        self.nodes = [n for n in self.nodes if n.lb < max_lb]
+        heapq.heapify(self.nodes)
+
+
 cdef class CycleQueue(BasePriQueue):
 
-    def __init__(self):
-        self.queues = defaultdict(DFSPriQueue)
-        self.max_level = 0
-        self.current_level = 0
+    def __init__(self, int max_size=100_000):
+        self.levels = []
+        self.current_level = None
+        self.start_level = None
+        self.last_level = None
+        self.node_counter = 0
+        self.fallback_queue = DFSPriQueue()
+        self.max_size = max_size
+        self.use_fallback = False
+        self.add_level()
 
-    cpdef bint not_empty(CycleQueue self):
+    cpdef void add_level(self):
+        new_level = CycleLevel(len(self.levels))
+        if not self.levels:
+            self.levels.append(new_level)
+            self.current_level = new_level
+            self.start_level = new_level
+            self.last_level = new_level
+        else:
+            # Insert in last position
+            self.last_level.next = new_level
+            new_level.prev = self.last_level
+            new_level.next = self.start_level
+            self.start_level.prev = new_level
+            self.levels.append(new_level)
+            self.last_level = new_level
+
+    cpdef bint not_empty(self):
+        return self.node_counter > 0
+
+    cpdef void enqueue(self, Node node):
         cdef:
-            DFSPriQueue q
-        for q in self.queues.values():
-            if q.not_empty():
-                return True
-        return False
+            int i
 
-    cpdef void enqueue(CycleQueue self, Node node):
-        self.queues[node.level].enqueue(node)
-        self.max_level = max(self.max_level, node.level)
+        if self.use_fallback or self.node_counter > self.max_size:
+            self.fallback_queue.enqueue(node)
+            self.use_fallback = True
+            self.node_counter += 1
+            return
 
-    cpdef Node dequeue(CycleQueue self):
+        if node.level <= self.last_level.level:
+            self.levels[node.level].add_node(node)
+        else:
+            for i in range(node.level - self.last_level.level):
+                self.add_level()
+            self.levels[node.level].add_node(node)
+        self.node_counter += 1
+
+    cpdef Node dequeue(self):
         cdef:
-            int start_level
+            CycleLevel start
             Node node
 
-        self.current_level = (self.current_level + 1) % (self.max_level + 1)
-        start_level = self.current_level
-        while True:
-            if self.queues[self.current_level].not_empty():
-                return self.queues[self.current_level].dequeue()
+        if self.fallback_queue.not_empty():
+            self.node_counter -= 1
+            if self.node_counter <= self.max_size // 2:
+                self.use_fallback = False
+            return self.fallback_queue.dequeue()
 
-            # Cycle to the next level
-            self.current_level = (self.current_level + 1) % (self.max_level + 1)
+        if len(self.current_level.nodes) == 0:
+            self.current_level = self.start_level
 
-            # If we've cycled back to the starting point and found nothing, stop
-            if self.current_level == start_level:
+        start = self.current_level
+        while len(self.current_level.nodes) == 0:
+            self.current_level = self.current_level.next
+            if self.current_level == start:
                 return None
 
-    cpdef Node get_lower_bound(CycleQueue self):
+        self.node_counter -= 1
+        node = self.current_level.pop_node()
+        self.current_level = self.current_level.next
+        return node
+
+    cpdef Node get_lower_bound(self):
         cdef:
-            NodePriQueue node
-            NodePriQueue min_node = None
-            int level
+            Node node
+            Node min_node
+            CycleLevel level
+            double min_lb
 
-        for level in range(self.max_level + 1):
-            for node in self.queues[level]._queue:
-                if min_node is None:
-                    min_node = node
-                if node.node.lb < min_node.node.lb:
-                    min_node = node
-        return min_node.node
+        min_lb = HIGH_POS
+        min_node = None
+        for level in self.levels:
+            if len(level.nodes) == 0:
+                continue
+            node = level.pop_node()
+            if node.lb < min_lb:
+                min_lb = node.lb
+                min_node = node
+            level.add_node(node)
 
-    cpdef void filter_by_lb(CycleQueue self, double max_lb):
-        self.queues[self.current_level].filter_by_lb(max_lb)
+        if self.fallback_queue.not_empty():
+            node = self.fallback_queue.get_lower_bound()
+            if node is not None and node.lb < min_lb:
+                min_node = node
+        return min_node
 
-    cpdef void clear(CycleQueue self):
-        self.queues = defaultdict(DFSPriQueue)
-        self.max_level = 0
-        self.current_level = 0
+    cpdef void filter_by_lb(self, double max_lb):
+        cdef:
+            CycleLevel level
+            int node_counter
 
-    cpdef void reset_level(CycleQueue self):
-        self.current_level = 0
+        node_counter = 0
+        for level in self.levels:
+            level.filter(max_lb)
+            node_counter += len(level.nodes)
+
+        self.fallback_queue.filter_by_lb(max_lb)
+        node_counter += self.fallback_queue.c_get_size()
+        self.node_counter = node_counter
+
+    cpdef void clear(self):
+        self.levels = []
+        self.current_level = None
+        self.start_level = None
+        self.last_level = None
+        self.node_counter = 0
+        self.fallback_queue.clear()
+        self.add_level()
+
+    cpdef void reset_level(self):
+        self.current_level = self.start_level
