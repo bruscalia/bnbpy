@@ -60,6 +60,8 @@ cdef class HeapPriQueue(BasePriQueue):
 
     cpdef void clear(HeapPriQueue self)
 
+    cpdef list[Node] pop_all(HeapPriQueue self)
+
 
 cdef class DFSPriQueue(HeapPriQueue):
 

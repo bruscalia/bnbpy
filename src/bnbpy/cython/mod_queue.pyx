@@ -2,6 +2,7 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 import heapq
+import time
 
 from libc.math cimport INFINITY
 from libcpp cimport bool
@@ -166,6 +167,16 @@ cdef class CycleLevel:
         self.nodes = [n for n in self.nodes if n.lb < max_lb]
         heapq.heapify(self.nodes)
 
+    cdef list[Node] pop_all(self):
+        cdef:
+            BestQueueNode node
+            list[Node] nodes
+        if self.nodes:
+            nodes = [n.node for n in self.nodes]
+            self.nodes = []
+            return nodes
+        return []
+
 
 cdef class CycleQueue(BasePriQueue):
 
@@ -203,9 +214,11 @@ cdef class CycleQueue(BasePriQueue):
         cdef:
             int i
 
-        if self.use_fallback or self.node_counter > self.max_size:
+        if not self.use_fallback and self.node_counter > self.max_size:
+            self.enter_fallback()
+
+        if self.use_fallback:
             self.fallback_queue.enqueue(node)
-            self.use_fallback = True
             self.node_counter += 1
             return
 
@@ -224,9 +237,10 @@ cdef class CycleQueue(BasePriQueue):
 
         if self.fallback_queue.not_empty():
             self.node_counter -= 1
+            node = self.fallback_queue.dequeue()
             if self.node_counter <= self.max_size // 2:
-                self.use_fallback = False
-            return self.fallback_queue.dequeue()
+                self.exit_fallback()
+            return node
 
         if len(self.current_level.nodes) == 0:
             self.current_level = self.start_level
@@ -291,3 +305,38 @@ cdef class CycleQueue(BasePriQueue):
 
     cpdef void reset_level(self):
         self.current_level = self.start_level
+
+    cdef void enter_fallback(self):
+        cdef:
+            CycleLevel level
+            Node node
+            list[Node] nodes
+
+        self.use_fallback = True
+
+        print("Entering fallback, moving nodes back to fallback queue...")
+        time.sleep(0.5)  # Simulate time taken to move nodes
+
+        nodes = []
+        for level in self.levels:
+            nodes.extend(level.pop_all())
+
+        for node in nodes:
+            self.fallback_queue.enqueue(node)
+
+    cdef void exit_fallback(self):
+        cdef:
+            Node node
+            list[Node] nodes
+
+        print("Exiting fallback, moving nodes back to cycle queue...")
+        time.sleep(0.5)  # Simulate time taken to move nodes
+        self.use_fallback = False
+        nodes = self.fallback_queue.pop_all()
+        for node in nodes:
+            if node.level <= self.last_level.level:
+                self.levels[node.level].add_node(node)
+            else:
+                for i in range(node.level - self.last_level.level):
+                    self.add_level()
+                self.levels[node.level].add_node(node)

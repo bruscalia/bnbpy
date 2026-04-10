@@ -8,7 +8,7 @@ import heapq
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport HeapPriQueue, NodePriQueue
-from bnbpy.cython.mod_queue cimport CycleQueue
+from bnbpy.cython.mod_queue cimport BestQueueNode, CycleQueue, CycleLevel
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -32,11 +32,56 @@ cdef class DFSPriQueueFS(HeapPriQueue):
         )
 
 
+cdef class BestQueueNodeFS(BestQueueNode):
+    cdef:
+        int idle_time
+
+    def __init__(self, Node node):
+        cdef:
+            PermFlowShop problem
+
+        problem = node.problem
+
+        self.node = node
+        self.lb = node.lb
+        self.idle_time = problem.calc_idle_time()
+
+    def __lt__(self, BestQueueNodeFS other):
+        if self.lb == other.lb:
+            return self.idle_time < other.idle_time
+        return self.lb < other.lb
+
+
+cdef class CycleLevelFS(CycleLevel):
+
+    cpdef void add_node(self, Node node):
+        heapq.heappush(self.nodes, BestQueueNodeFS(node))
+
+
 cdef class CycleQueueFS(CycleQueue):
 
     def __init__(self, int max_size=1_000_000):
         super(CycleQueueFS, self).__init__(max_size)
         self.fallback_queue = DFSPriQueueFS()
+
+    cpdef void add_level(self):
+        cdef:
+            CycleLevelFS new_level
+
+        new_level = CycleLevelFS(len(self.levels))
+        if not self.levels:
+            self.levels.append(new_level)
+            self.current_level = new_level
+            self.start_level = new_level
+            self.last_level = new_level
+        else:
+            # Insert in last position
+            self.last_level.next = new_level
+            new_level.prev = self.last_level
+            new_level.next = self.start_level
+            self.start_level.prev = new_level
+            self.levels.append(new_level)
+            self.last_level = new_level
 
 
 cdef class LazyBnB(BranchAndBound):

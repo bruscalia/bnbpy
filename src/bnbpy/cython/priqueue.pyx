@@ -13,7 +13,7 @@ cdef class NodePriQueue:
         self.priority = priority
         self.node = node
 
-    def __lt__(self, other):
+    def __lt__(self, NodePriQueue other):
         return self.priority < other.priority
 
 
@@ -159,6 +159,14 @@ cdef class HeapPriQueue(BasePriQueue):
 
     cpdef void clear(HeapPriQueue self):
         self._queue = []
+
+    cpdef list[Node] pop_all(HeapPriQueue self):
+        cdef:
+            NodePriQueue item
+            list[Node] nodes
+        nodes = [item.node for item in self._queue]
+        self._queue = []
+        return nodes
 
 
 cdef class DFSPriQueue(HeapPriQueue):

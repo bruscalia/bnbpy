@@ -51,6 +51,8 @@ cdef class CycleLevel:
 
     cpdef void filter(self, double max_lb)
 
+    cdef list[Node] pop_all(self)
+
 
 cdef class CycleQueue(BasePriQueue):
 
@@ -79,3 +81,7 @@ cdef class CycleQueue(BasePriQueue):
     cpdef void clear(self)
 
     cpdef void reset_level(self)
+
+    cdef void enter_fallback(self)
+
+    cdef void exit_fallback(self)
