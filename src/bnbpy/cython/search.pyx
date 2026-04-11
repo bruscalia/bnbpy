@@ -10,12 +10,12 @@ import logging
 import time
 from typing import Any, List, Literal, Optional, Tuple, Union
 
+from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.priqueue cimport (
-    BasePriQueue,
     BestPriQueue,
-    BFSPriQueue,
-    DFSPriQueue,
+    BfsPriQueue,
+    DfsPriQueue,
 )
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
@@ -107,7 +107,7 @@ cdef class BranchAndBound:
 
     For a customization of enqueueing and dequeueing strategies,
     it is recommended subclassing `BranchAndBound` with a customized `queue`
-    attribute by subclassing `BasePriQueue` too.
+    attribute by subclassing `BaseNodeManager` too.
     """
 
     def __init__(
@@ -156,7 +156,7 @@ cdef class BranchAndBound:
         # to allow warmstart, with a `None` check
         self.root = None
         self.explored = 0
-        self.queue = DFSPriQueue()
+        self.queue = DfsPriQueue()
 
         # Default tolerances, might be overridden by solve() parameters
         self.rtol = 1e-4
@@ -600,7 +600,7 @@ cdef class BreadthFirstBnB(BranchAndBound):
         save_tree: bool = False,
     ) -> None:
         super().__init__(problem, eval_node, save_tree)
-        self.queue = BFSPriQueue()
+        self.queue = BfsPriQueue()
 
 
 cdef class DepthFirstBnB(BranchAndBound):

@@ -7,8 +7,8 @@ from libcpp.string cimport string
 
 from typing import Optional
 
+from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
@@ -34,7 +34,7 @@ cdef class BranchAndBound:
         Problem problem
         Node root
         double gap
-        BasePriQueue queue
+        BaseNodeManager queue
         double rtol
         double atol
         unsigned long long explored

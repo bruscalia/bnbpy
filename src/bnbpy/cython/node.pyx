@@ -65,10 +65,10 @@ cdef class Node:
 
     @classmethod
     def __class_getitem__(cls, item: type[Problem]):
-        """Support generic syntax BranchAndBound[P] at runtime."""
+        """Support generic syntax Node[P] at runtime."""
         if not issubclass(item, Problem):
             raise TypeError(
-                "BranchAndBound can only be parameterized"
+                "Node can only be parameterized"
                 f" with a Problem subclass, got {item}"
             )
         return cls

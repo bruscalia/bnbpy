@@ -7,8 +7,8 @@ from libc.math cimport sqrt
 import heapq
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport HeapPriQueue, NodePriQueue
-from bnbpy.cython.mod_queue cimport BestQueueNode, CycleQueue, CycleLevel
+from bnbpy.cython.priqueue cimport PriEntry, PriorityQueue, init_pri_entry
+from bnbpy.cython.mod_queue cimport CycleQueue, CycleLevel
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -19,69 +19,44 @@ cdef:
 EVAL_NODE: str = "in"
 
 
-cdef class DFSPriQueueFS(HeapPriQueue):
+cdef class DfsFlowShop(PriorityQueue):
     cpdef void enqueue(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
+
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        heapq.heappush(
-            self._queue,
-            NodePriQueue((-node.level, node.lb, idle_time), node)
+        self.enqueue_entry(
+            node,
+            (-node.level, node.lb, idle_time)
         )
 
 
-cdef class BestQueueNodeFS(BestQueueNode):
-    cdef:
-        int idle_time
-
-    def __init__(self, Node node):
+cdef class BestFirstFlowShop(PriorityQueue):
+    cpdef void enqueue(self, Node node):
         cdef:
+            int idle_time
             PermFlowShop problem
 
         problem = node.problem
-
-        self.node = node
-        self.lb = node.lb
-        self.idle_time = problem.calc_idle_time()
-
-    def __lt__(self, BestQueueNodeFS other):
-        if self.lb == other.lb:
-            return self.idle_time < other.idle_time
-        return self.lb < other.lb
-
-
-cdef class CycleLevelFS(CycleLevel):
-
-    cpdef void add_node(self, Node node):
-        heapq.heappush(self.nodes, BestQueueNodeFS(node))
+        idle_time = problem.calc_idle_time()
+        self.enqueue_entry(
+            node,
+            (node.lb, idle_time)
+        )
 
 
 cdef class CycleQueueFS(CycleQueue):
 
     def __init__(self, int max_size=1_000_000):
         super(CycleQueueFS, self).__init__(max_size)
-        self.fallback_queue = DFSPriQueueFS()
+        self.fallback_queue = DfsFlowShop()
 
-    cpdef void add_level(self):
-        cdef:
-            CycleLevelFS new_level
-
-        new_level = CycleLevelFS(len(self.levels))
-        if not self.levels:
-            self.levels.append(new_level)
-            self.current_level = new_level
-            self.start_level = new_level
-            self.last_level = new_level
-        else:
-            # Insert in last position
-            self.last_level.next = new_level
-            new_level.prev = self.last_level
-            new_level.next = self.start_level
-            self.start_level.prev = new_level
-            self.levels.append(new_level)
-            self.last_level = new_level
+    cpdef CycleLevel new_level(self, int level):
+        new_level = CycleLevel(level)
+        new_level.set_queue(DfsFlowShop())
+        return new_level
 
 
 cdef class LazyBnB(BranchAndBound):
@@ -93,7 +68,7 @@ cdef class LazyBnB(BranchAndBound):
         delay_lb5=False
     ):
         super(LazyBnB, self).__init__(problem, EVAL_NODE, save_tree)
-        self.queue = DFSPriQueueFS()
+        self.queue = DfsFlowShop()
         self.delay_lb5 = delay_lb5
         if delay_lb5:
             self.min_lb5_level = (problem.get_n() // 3) + 1
@@ -132,7 +107,7 @@ cdef class CutoffBnB(LazyBnB):
         delay_lb5=False
     ):
         super(CutoffBnB, self).__init__(problem, save_tree, delay_lb5)
-        self.queue = DFSPriQueueFS()
+        self.queue = DfsFlowShop()
         self.ub_value = ub_value
 
     cdef void _restart_search(CutoffBnB self):
@@ -195,7 +170,7 @@ cdef class CallbackBnB(LazyBnB):
         heur_factor=HEUR_BASE
     ):
         super(CallbackBnB, self).__init__(problem, save_tree, delay_lb5)
-        self.queue = DFSPriQueueFS()
+        self.queue = DfsFlowShop()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor
         self.heur_calls = 0
@@ -205,7 +180,7 @@ cdef class CallbackBnB(LazyBnB):
 
     cpdef Node dequeue(CallbackBnB self):
         cdef:
-            DFSPriQueueFS queue
+            DfsFlowShop queue
             Node node
 
         node = self.queue.dequeue()

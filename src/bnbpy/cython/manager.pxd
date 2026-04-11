@@ -23,3 +23,32 @@ cdef class BaseNodeManager:
     cpdef void clear(self)
 
     cpdef void filter_by_lb(self, double max_lb)
+
+    cpdef list[Node] pop_all(self)
+
+
+cdef class LifoManager(BaseNodeManager):
+
+    cdef:
+        list[Node] stack
+
+    cpdef bool not_empty(self)
+
+    cpdef int size(self)
+
+    cpdef void enqueue(self, Node node)
+
+    cpdef Node dequeue(self)
+
+    cpdef Node get_lower_bound(self)
+
+    cpdef Node pop_lower_bound(self)
+
+    cpdef void clear(self)
+
+    cpdef void filter_by_lb(self, double max_lb)
+
+
+cdef class FifoManager(LifoManager):
+
+    cpdef Node dequeue(self)

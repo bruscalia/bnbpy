@@ -100,7 +100,7 @@ class BasePriQueue:
         """
         ...
 
-class HeapPriQueue(BasePriQueue):
+class PriorityQueue(BasePriQueue):
     _queue: list[NodePriQueue]
 
     def __cinit__(self) -> None: ...
@@ -157,7 +157,7 @@ class HeapPriQueue(BasePriQueue):
         """
         ...
 
-class DFSPriQueue(HeapPriQueue):
+class DfsPriQueue(PriorityQueue):
     """Depth-First Search priority queue implementation."""
 
     def enqueue(self, node: Node[Any]) -> None:
@@ -170,7 +170,7 @@ class DFSPriQueue(HeapPriQueue):
         """
         ...
 
-class BFSPriQueue(HeapPriQueue):
+class BfsPriQueue(PriorityQueue):
     """Breadth-First Search priority queue implementation."""
 
     def enqueue(self, node: Node[Any]) -> None:
@@ -183,7 +183,7 @@ class BFSPriQueue(HeapPriQueue):
         """
         ...
 
-class BestPriQueue(HeapPriQueue):
+class BestPriQueue(PriorityQueue):
     """Best-First Search priority queue implementation."""
 
     def enqueue(self, node: Node[Any]) -> None:

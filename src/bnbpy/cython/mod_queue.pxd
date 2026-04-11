@@ -5,45 +5,23 @@ from libcpp cimport bool
 
 from collections import defaultdict
 
+from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport BasePriQueue, DFSPriQueue, HeapPriQueue, NodePriQueue
-
-
-cdef class MultiDFSQueue(BasePriQueue):
-
-    cdef public:
-        list[DFSPriQueue] queues
-        int restart_freq
-        int iter_count
-        int current_idx
-
-    cpdef bint not_empty(MultiDFSQueue self)
-
-    cpdef void enqueue(MultiDFSQueue self, Node node)
-
-    cpdef Node dequeue(MultiDFSQueue self)
-
-    cpdef Node get_lower_bound(MultiDFSQueue self)
-
-    cpdef Node pop_lower_bound(MultiDFSQueue self)
-
-    cpdef void filter_by_lb(MultiDFSQueue self, double max_lb)
-
-    cpdef void clear(MultiDFSQueue self)
-
-
-cdef class BestQueueNode:
-    cdef public:
-        Node node
-        double lb
+from bnbpy.cython.priqueue cimport BestPriQueue, DfsPriQueue, PriorityQueue
 
 
 cdef class CycleLevel:
     cdef public:
         int level
-        list[BestQueueNode] nodes
         CycleLevel next
         CycleLevel prev
+
+    cdef:
+        PriorityQueue pri_queue
+
+    cpdef int size(self)
+
+    cpdef void set_queue(self, PriorityQueue pri_queue)
 
     cpdef void add_node(self, Node node)
 
@@ -54,7 +32,7 @@ cdef class CycleLevel:
     cdef list[Node] pop_all(self)
 
 
-cdef class CycleQueue(BasePriQueue):
+cdef class CycleQueue(BaseNodeManager):
 
     cdef public:
         list[CycleLevel] levels
@@ -64,11 +42,15 @@ cdef class CycleQueue(BasePriQueue):
         int node_counter
         int max_size
         bool use_fallback
-        HeapPriQueue fallback_queue
+        PriorityQueue fallback_queue
 
-    cpdef void add_level(self)
+    cpdef CycleLevel new_level(self, int level)
 
-    cpdef bint not_empty(self)
+    cdef void add_level(self)
+
+    cpdef int size(self)
+
+    cpdef bool not_empty(self)
 
     cpdef void enqueue(self, Node node)
 
