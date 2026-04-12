@@ -50,6 +50,8 @@ cdef class Node:
 
     cpdef Node primal_heuristic(self)
 
+    cdef void c_upgrade_bound(self)
+
     cpdef void upgrade_bound(self)
 
     cdef Node child_problem(self, P problem)

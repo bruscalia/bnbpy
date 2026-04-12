@@ -172,13 +172,20 @@ cdef class Node:
             return None
         return child
 
-    cpdef void upgrade_bound(self):
+    cdef void c_upgrade_bound(self):
         cdef:
             double new_lb
         new_lb = self.problem.stronger_bound()
         if new_lb > self.lb:
             self.problem.upgrade_bound(new_lb)
-            self.lb = max(self.lb, self.problem.get_lb())
+            if new_lb > self.lb:
+                self.lb = new_lb
+
+    cpdef void upgrade_bound(self):
+        """Calls `problem` `upgrade_bound()` method to compute a stronger
+        lower bound, if possible, and updates node's lower bound accordingly.
+        """
+        self.c_upgrade_bound()
 
     cdef Node child_problem(self, P problem):
         cdef:

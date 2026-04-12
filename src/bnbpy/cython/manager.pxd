@@ -2,6 +2,7 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from collections import deque
 
 from bnbpy.cython.node cimport Node
 
@@ -30,7 +31,7 @@ cdef class BaseNodeManager:
 cdef class LifoManager(BaseNodeManager):
 
     cdef:
-        list[Node] stack
+        object stack
 
     cpdef bool not_empty(self)
 

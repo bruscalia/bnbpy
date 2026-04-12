@@ -2,6 +2,7 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libcpp cimport bool
+from collections import deque
 
 from bnbpy.cython.node cimport Node
 
@@ -98,13 +99,13 @@ cdef class BaseNodeManager:
 
 
 cpdef double get_node_lb(Node node):
-    return node.get_lb()
+    return node.lb
 
 
 cdef class LifoManager(BaseNodeManager):
 
     def __cinit__(self):
-        self.stack = []
+        self.stack = deque()
 
     cpdef bool not_empty(self):
         return len(self.stack) > 0
@@ -136,10 +137,10 @@ cdef class LifoManager(BaseNodeManager):
         self.stack.clear()
 
     cpdef void filter_by_lb(self, double max_lb):
-        self.stack = [node for node in self.stack if node.lb <= max_lb]
+        self.stack = deque([node for node in self.stack if node.lb <= max_lb])
 
     cpdef list[Node] pop_all(self):
-        nodes = self.stack.copy()
+        nodes = list(self.stack)
         self.stack.clear()
         return nodes
 
@@ -148,5 +149,5 @@ cdef class FifoManager(LifoManager):
 
     cpdef Node dequeue(self):
         if self.not_empty():
-            return self.stack.pop(0)
+            return self.stack.popleft()
         return None

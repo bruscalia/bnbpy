@@ -85,13 +85,13 @@ cdef class LazyBnB(BranchAndBound):
         # Here the r and q values are not yet updated
         if node.lb < self.get_ub():
             # Update lower r and q values and recompute bound 1M
-            self.upgrade_bound(node)
+            node.c_upgrade_bound()
             # Delayed two machine bound upgrade
             if node.level < self.min_lb5_level and self.delay_lb5:
                 return
             if node.lb < self.get_ub():
                 # Two machine bound upgrade
-                self.upgrade_bound(node)
+                node.c_upgrade_bound()
 
 
 cdef class CutoffBnB(LazyBnB):
