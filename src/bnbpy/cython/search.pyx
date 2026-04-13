@@ -384,7 +384,7 @@ cdef class BranchAndBound:
                 self._do_iter(node)
             # Update LB if node is the one
             if node is self.bound_node:
-                self.log_row('Bound node dequeued')
+                # self.log_row('Bound node dequeued')
                 self._update_bound()
             # Termination by optimality
             if self._check_termination(_mxiter):

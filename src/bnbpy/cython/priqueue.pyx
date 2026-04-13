@@ -57,7 +57,6 @@ cdef class PriorityQueue(BaseNodeManager):
 
     def __cinit__(self):
         self.heap = []
-        self.bound_nodes = set()
         self.lb = INFINITY
 
     cpdef int size(self):
@@ -67,7 +66,6 @@ cdef class PriorityQueue(BaseNodeManager):
         return len(self.heap) > 0
 
     cpdef void enqueue(self, Node node):
-        self.bound_check_enqueue(node)
         heapq.heappush(self.heap, self.make_entry(node))
 
     cpdef void enqueue_all(self, list[Node] nodes):
@@ -81,34 +79,21 @@ cdef class PriorityQueue(BaseNodeManager):
         entries = [None] * N
         for j in range(N):
             node = nodes[j]
-            self.bound_check_enqueue(node)
             entries[j] = self.make_entry(node)
         self.heap.extend(entries)
         heapq.heapify(self.heap)
 
     cpdef Node dequeue(self):
-        cdef:
-            Node node
-
         if not self.heap:
             return None
-        node = heapq.heappop(self.heap).node
-        if node.lb == self.lb:
-            self.bound_nodes.discard(node)
-            if not self.bound_nodes:
-                self.recompute_bound_nodes()
-        return node
+        return heapq.heappop(self.heap).node
 
     cpdef Node get_lower_bound(self):
         cdef:
-            Node node
             PriEntry item, min_item
 
         if not self.heap:
             return None
-
-        for node in self.bound_nodes:
-            return node
 
         min_item = self.heap[0]
         for item in self.heap:
@@ -121,17 +106,10 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cpdef Node pop_lower_bound(self):
         cdef:
-            Node node
             PriEntry item, min_item
 
         if not self.heap:
             return None
-
-        if self.bound_nodes:
-            node = self.bound_nodes.pop()
-            if not self.bound_nodes:
-                self.recompute_bound_nodes()
-            return node
 
         min_item = self.heap[0]
         for item in self.heap:
@@ -158,13 +136,9 @@ cdef class PriorityQueue(BaseNodeManager):
             else:
                 item.node.cleanup()
         self.heap = self.heap[:j]
-        if self.lb >= max_lb:
-            self.bound_nodes.clear()
-            self.lb = INFINITY
 
     cpdef void clear(self):
         self.heap.clear()
-        self.bound_nodes.clear()
         self.lb = INFINITY
 
     cpdef list[Node] pop_all(self):
@@ -173,7 +147,6 @@ cdef class PriorityQueue(BaseNodeManager):
             list[Node] nodes
         nodes = [item.node for item in self.heap]
         self.heap.clear()
-        self.bound_nodes.clear()
         self.lb = INFINITY
         return nodes
 
@@ -196,29 +169,6 @@ cdef class PriorityQueue(BaseNodeManager):
             Heap entry carrying *node* and its ordering priority.
         """
         raise NotImplementedError("Subclasses must implement `make_entry` method")
-
-    cdef void bound_check_enqueue(self, Node node):
-        if node.lb == self.lb:
-            self.bound_nodes.add(node)
-        elif node.lb < self.lb:
-            self.bound_nodes.clear()
-            self.bound_nodes.add(node)
-            self.lb = node.lb
-
-    cdef void recompute_bound_nodes(self):
-        cdef:
-            PriEntry item
-
-        self.bound_nodes.clear()
-        self.lb = INFINITY
-
-        for item in self.heap:
-            if item.node.lb < self.lb:
-                self.lb = item.node.lb
-                self.bound_nodes.clear()
-                self.bound_nodes.add(item.node)
-            elif item.node.lb == self.lb:
-                self.bound_nodes.add(item.node)
 
 
 cdef class DfsPriQueue(PriorityQueue):
