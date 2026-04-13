@@ -9,9 +9,20 @@ import heapq
 
 from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
+from bnbpy.cython.problem cimport Problem
 
 
 cdef class PriEntry:
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax PriEntry[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "PriEntry can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     def __init__(self, Node node, object priority):
         self.node = node
@@ -19,6 +30,9 @@ cdef class PriEntry:
 
     def __lt__(self, PriEntry other):
         return self.priority < other.priority
+
+    def __gt__(self, PriEntry other):
+        return self.priority > other.priority
 
     cpdef object get_priority(self):
         return self.priority
@@ -51,10 +65,28 @@ cdef class PriorityQueue(BaseNodeManager):
     cpdef bool not_empty(self):
         return len(self.heap) > 0
 
+    cpdef void enqueue(self, Node node):
+        heapq.heappush(self.heap, self.make_entry(node))
+
+    cpdef void enqueue_all(self, list[Node] nodes):
+        cdef:
+            int j, N
+            Node node
+            PriEntry entry
+            list[PriEntry] entries
+
+        N = len(nodes)
+        entries = [None] * N
+        for j in range(N):
+            node = nodes[j]
+            entries[j] = self.make_entry(node)
+        self.heap.extend(entries)
+        heapq.heapify(self.heap)
+
     cpdef Node dequeue(self):
-        if self.not_empty():
-            return heapq.heappop(self.heap).node
-        return None
+        if not self.heap:
+            return None
+        return heapq.heappop(self.heap).node
 
     cpdef Node get_lower_bound(self):
         cdef:
@@ -93,11 +125,19 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cpdef void filter_by_lb(self, double max_lb):
         cdef:
+            int i, j, N
             PriEntry item
-            list[PriEntry] new_queue
 
-        new_queue = [item for item in self.heap if item.node.lb < max_lb]
-        self.heap = new_queue
+        N = len(self.heap)
+        j = 0
+        for i in range(N):
+            item = self.heap[i]
+            if item.node.lb < max_lb:
+                self.heap[j] = item
+                j += 1
+            else:
+                item.node.cleanup()
+        self.heap = self.heap[:j]
 
     cpdef void clear(self):
         self.heap.clear()
@@ -113,8 +153,22 @@ cdef class PriorityQueue(BaseNodeManager):
     cpdef list[PriEntry] get_heap(self):
         return self.heap
 
-    cpdef void enqueue_entry(self, Node node, object priority):
-        heapq.heappush(self.heap, init_pri_entry(node, priority))
+    cpdef PriEntry make_entry(self, Node node):
+        """Return a :class:`PriEntry` for *node*.
+
+        Subclasses must override this to define the ordering key.
+
+        Parameters
+        ----------
+        node : Node[P]
+            Node to wrap.
+
+        Returns
+        -------
+        PriEntry[P]
+            Heap entry carrying *node* and its ordering priority.
+        """
+        raise NotImplementedError("Subclasses must implement `make_entry` method")
 
 
 cdef class DfsPriQueue(PriorityQueue):
@@ -123,9 +177,9 @@ cdef class DfsPriQueue(PriorityQueue):
     tie-breaking by lower bound and node index (smaller first).
     """
 
-    cpdef void enqueue(self, Node node):
+    cpdef PriEntry make_entry(self, Node node):
         # DFS: (-level, lb)
-        self.enqueue_entry(
+        return init_pri_entry(
             node,
             (-node.level, node.lb, node.get_index())
         )
@@ -137,9 +191,9 @@ cdef class BfsPriQueue(PriorityQueue):
     tie-breaking by lower bound and node index (smaller first).
     """
 
-    cpdef void enqueue(self, Node node):
+    cpdef PriEntry make_entry(self, Node node):
         # BFS: (level, lb)
-        self.enqueue_entry(
+        return init_pri_entry(
             node,
             (node.level, node.lb, node.get_index())
         )
@@ -150,11 +204,11 @@ cdef class BestPriQueue(PriorityQueue):
     Best-First Search priority queue implementation.
     """
 
-    cpdef void enqueue(self, Node node):
-        # Best-first: (lb)
-        self.enqueue_entry(
+    cpdef PriEntry make_entry(self, Node node):
+        # Best-first: (lb, -level, index) — deeper nodes break ties
+        return init_pri_entry(
             node,
-            node.lb
+            (node.lb, -node.level, node.get_index())
         )
 
     cpdef Node get_lower_bound(self):
@@ -162,7 +216,7 @@ cdef class BestPriQueue(PriorityQueue):
             Node node
             PriEntry item
         if self.not_empty():
-            item = heapq.heapop(self.heap)
+            item = heapq.heappop(self.heap)
             node = item.node
             heapq.heappush(self.heap, item)
             return node

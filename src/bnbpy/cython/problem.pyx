@@ -165,7 +165,7 @@ cdef class Problem:
             return self.deep_copy()
         return self.shallow_copy()
 
-    cpdef Problem child_copy(self, bool deep=True):
+    cpdef Problem child_copy(self, bool deep=False):
         """Returns a copy of the problem instance with a new solution.
 
         This method is useful to safely initialize a copy of the problem

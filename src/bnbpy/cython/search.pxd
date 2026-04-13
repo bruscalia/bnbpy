@@ -34,7 +34,7 @@ cdef class BranchAndBound:
         Problem problem
         Node root
         double gap
-        BaseNodeManager queue
+        BaseNodeManager manager
         double rtol
         double atol
         unsigned long long explored

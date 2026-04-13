@@ -61,7 +61,7 @@ cdef class MaxClique(Problem):
         child_problem2 = self.child_copy(deep=False)
         child_problem2._set_graph(child_graph2)
 
-        return [child_problem1, child_problem2]
+        return [child_problem2, child_problem1]
 
     cpdef MaxClique child_copy(self, bool deep=True):
         cdef:

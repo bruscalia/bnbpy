@@ -15,6 +15,8 @@ cdef class BaseNodeManager:
 
     cpdef void enqueue(self, Node node)
 
+    cpdef void enqueue_all(self, list[Node] nodes)
+
     cpdef Node dequeue(self)
 
     cpdef Node get_lower_bound(self)

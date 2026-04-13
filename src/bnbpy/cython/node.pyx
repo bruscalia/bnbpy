@@ -178,8 +178,7 @@ cdef class Node:
         new_lb = self.problem.stronger_bound()
         if new_lb > self.lb:
             self.problem.upgrade_bound(new_lb)
-            if new_lb > self.lb:
-                self.lb = new_lb
+            self.lb = new_lb
 
     cpdef void upgrade_bound(self):
         """Calls `problem` `upgrade_bound()` method to compute a stronger

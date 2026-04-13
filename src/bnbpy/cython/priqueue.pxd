@@ -36,6 +36,10 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cpdef bool not_empty(self)
 
+    cpdef void enqueue(self, Node node)
+
+    cpdef void enqueue_all(self, list[Node] nodes)
+
     cpdef Node dequeue(self)
 
     cpdef Node get_lower_bound(self)
@@ -50,20 +54,20 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cpdef list[PriEntry] get_heap(self)
 
-    cpdef void enqueue_entry(self, Node node, object priority)
+    cpdef PriEntry make_entry(self, Node node)
 
 
 cdef class DfsPriQueue(PriorityQueue):
 
-    cpdef void enqueue(self, Node node)
+    cpdef PriEntry make_entry(self, Node node)
 
 
 cdef class BfsPriQueue(PriorityQueue):
 
-    cpdef void enqueue(self, Node node)
+    cpdef PriEntry make_entry(self, Node node)
 
 
 cdef class BestPriQueue(PriorityQueue):
 
-    cpdef void enqueue(self, Node node)
+    cpdef PriEntry make_entry(self, Node node)
 

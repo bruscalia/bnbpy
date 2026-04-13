@@ -5,9 +5,37 @@ from libcpp cimport bool
 from collections import deque
 
 from bnbpy.cython.node cimport Node
+from bnbpy.cython.problem cimport Problem
 
 
 cdef class BaseNodeManager:
+    """Base class for managing active nodes in a Branch & Bound search.
+
+    Note that due to Cython limitations this class is not implemented as an
+    ABC, but subclasses **must** implement:
+
+    *   ``size``
+    *   ``not_empty``
+    *   ``enqueue``
+    *   ``dequeue``
+    *   ``get_lower_bound``
+    *   ``pop_lower_bound``
+    *   ``clear``
+    *   ``pop_all``
+
+    ``enqueue_all`` and ``filter_by_lb`` have default implementations that
+    may be overridden for better performance.
+    """
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax BaseNodeManager[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "BaseNodeManager can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     cpdef int size(self):
         """Returns the number of nodes in the manager.
@@ -38,6 +66,18 @@ cdef class BaseNodeManager:
             The node to add to the queue.
         """
         raise NotImplementedError("Must implement enqueue()")
+
+    cpdef void enqueue_all(self, list[Node] nodes):
+        """Adds a list of nodes to the queue.
+        Might be overridden in subclasses for better performance.
+
+        Parameters
+        ----------
+        nodes : list[Node]
+            The list of nodes to add to the queue.
+        """
+        for node in nodes:
+            self.enqueue(node)
 
     cpdef Node dequeue(self):
         """Removes and returns the next evaluated node.
@@ -103,6 +143,12 @@ cpdef double get_node_lb(Node node):
 
 
 cdef class LifoManager(BaseNodeManager):
+    """Last-In First-Out (stack) node manager.
+
+    :meth:`dequeue` returns the most recently enqueued node.
+    :meth:`get_lower_bound` and :meth:`pop_lower_bound` perform a linear
+    scan over the stack to find the node with minimum ``lb``.
+    """
 
     def __cinit__(self):
         self.stack = deque()
@@ -137,7 +183,22 @@ cdef class LifoManager(BaseNodeManager):
         self.stack.clear()
 
     cpdef void filter_by_lb(self, double max_lb):
-        self.stack = deque([node for node in self.stack if node.lb <= max_lb])
+        cdef:
+            int i, j, N
+            Node node
+            list[Node] filtered_stack
+
+        filtered_stack = [None] * len(self.stack)
+        j = 0
+        for i in range(len(self.stack)):
+            node = self.stack[i]
+            if node.lb < max_lb:
+                filtered_stack[j] = node
+                j += 1
+            else:
+                node.cleanup()
+        filtered_stack = filtered_stack[:j]
+        self.stack = deque(filtered_stack)
 
     cpdef list[Node] pop_all(self):
         nodes = list(self.stack)
@@ -146,6 +207,11 @@ cdef class LifoManager(BaseNodeManager):
 
 
 cdef class FifoManager(LifoManager):
+    """First-In First-Out (queue) node manager.
+
+    Identical to :class:`LifoManager` except that :meth:`dequeue` returns
+    the **oldest** enqueued node (``popleft``).
+    """
 
     cpdef Node dequeue(self):
         if self.not_empty():

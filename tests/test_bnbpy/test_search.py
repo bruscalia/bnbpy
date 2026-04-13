@@ -8,9 +8,18 @@ from myfixtures.myproblem import (
     UnboundedProblem,
 )
 
+from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node import Node
+from bnbpy.cython.priqueue import BestPriQueue, BfsPriQueue, DfsPriQueue
 from bnbpy.cython.problem import Problem
-from bnbpy.cython.search import BranchAndBound
+from bnbpy.cython.search import (
+    BestFirstBnB,
+    BranchAndBound,
+    BreadthFirstBnB,
+    DepthFirstBnB,
+    FifoBnB,
+    LifoBnB,
+)
 from bnbpy.cython.status import OptStatus
 
 # Test constants
@@ -458,3 +467,126 @@ class TestGenericBehavior:
         assert bnb is BranchAndBound, (
             'BranchAndBound[MyProblem] should return the class itself'
         )
+
+
+@pytest.mark.core
+@pytest.mark.search
+class TestManagerStrategy:
+    """Tests for the manager strategy pattern in BranchAndBound."""
+
+    @staticmethod
+    def test_default_manager_is_dfs() -> None:
+        """Default manager should be DfsPriQueue."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BranchAndBound(problem)
+        assert isinstance(bnb.manager, DfsPriQueue)
+
+    @staticmethod
+    def test_custom_manager_injected() -> None:
+        """A custom manager passed at construction should be used."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        custom: BfsPriQueue[MyProblem] = BfsPriQueue()
+        bnb = BranchAndBound(problem, manager=custom)
+        assert bnb.manager is custom
+
+    @staticmethod
+    def test_manager_is_base_node_manager() -> None:
+        """manager attribute must be a BaseNodeManager instance."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BranchAndBound(problem)
+        assert isinstance(bnb.manager, BaseNodeManager)
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        ('strategy', 'expected_type'),
+        [
+            ('dfs', DfsPriQueue),
+            ('bfs', BfsPriQueue),
+            ('best', BestPriQueue),
+            ('lifo', LifoManager),
+            ('fifo', FifoManager),
+        ],
+    )
+    def test_build_manager_factory(strategy: str, expected_type: type) -> None:
+        """build_manager returns the correct manager for each strategy."""
+        mgr = BranchAndBound.build_manager(strategy)
+        assert isinstance(mgr, expected_type)
+
+    @staticmethod
+    def test_build_manager_case_insensitive() -> None:
+        """build_manager should accept upper-case strategy names."""
+        mgr = BranchAndBound.build_manager('DFS')
+        assert isinstance(mgr, DfsPriQueue)
+
+    @staticmethod
+    def test_build_manager_unknown_raises() -> None:
+        """build_manager raises ValueError for unknown strategy."""
+        with pytest.raises(ValueError, match='Unknown strategy'):
+            BranchAndBound.build_manager('unknown')
+
+    @staticmethod
+    def test_build_manager_solve_equivalence() -> None:
+        """Using build_manager('bfs') gives same result as BreadthFirstBnB."""
+        problem1 = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
+        problem2 = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
+        mgr = BranchAndBound.build_manager('bfs')
+        bnb1 = BranchAndBound(problem1, manager=mgr)
+        bnb2 = BreadthFirstBnB(problem2)
+        res1 = bnb1.solve()
+        res2 = bnb2.solve()
+        assert res1.solution.status == res2.solution.status
+        assert res1.solution.cost == res2.solution.cost
+
+
+@pytest.mark.core
+@pytest.mark.search
+class TestSubclassStrategies:
+    """Tests for BnB subclass variants using different manager strategies."""
+
+    @staticmethod
+    def test_depth_first_bnb_is_alias() -> None:
+        """DepthFirstBnB should use a DfsPriQueue manager."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = DepthFirstBnB(problem)
+        assert isinstance(bnb.manager, DfsPriQueue)
+
+    @staticmethod
+    def test_breadth_first_bnb_manager() -> None:
+        """BreadthFirstBnB should use a BfsPriQueue manager."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BreadthFirstBnB(problem)
+        assert isinstance(bnb.manager, BfsPriQueue)
+
+    @staticmethod
+    def test_best_first_bnb_manager() -> None:
+        """BestFirstBnB should use a BestPriQueue manager."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = BestFirstBnB(problem)
+        assert isinstance(bnb.manager, BestPriQueue)
+
+    @staticmethod
+    def test_lifo_bnb_manager() -> None:
+        """LifoBnB should use a LifoManager."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = LifoBnB(problem)
+        assert isinstance(bnb.manager, LifoManager)
+
+    @staticmethod
+    def test_fifo_bnb_manager() -> None:
+        """FifoBnB should use a FifoManager."""
+        problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
+        bnb = FifoBnB(problem)
+        assert isinstance(bnb.manager, FifoManager)
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        'bnb_class',
+        [DepthFirstBnB, BreadthFirstBnB, BestFirstBnB, LifoBnB, FifoBnB],
+    )
+    def test_all_subclasses_solve_feasible(bnb_class: type) -> None:
+        """All BnB variants should solve a trivially feasible problem."""
+        problem = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
+        bnb = bnb_class(problem)
+        result = bnb.solve()
+        assert result.solution.status == OptStatus.OPTIMAL
+        assert result.solution.cost == FEASIBLE_LB

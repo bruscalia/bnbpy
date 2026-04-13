@@ -23,6 +23,11 @@ cdef:
 
 cdef class CycleLevel:
 
+    @classmethod
+    def __class_getitem__(cls, item):
+        """Support generic syntax CycleLevel[P] at runtime."""
+        return cls
+
     def __init__(self, int level):
         self.level = level
         self.next = self
@@ -49,8 +54,27 @@ cdef class CycleLevel:
 
 
 cdef class CycleQueue(BaseNodeManager):
+    """
+    A cycling level-based node manager. Useful for cyclic best-first search.
+
+    Nodes are bucketed by tree level. The manager cycles through each level
+    in round-robin order, always dequeuing the best node within the
+    current level. When the number of stored nodes exceeds *max_size* the
+    manager falls back to its `fallback_queue`
+    (by default a DFS priority queue)
+    until the load drops to half of *max_size*.
+    """
 
     def __init__(self, int max_size=100_000):
+        """Initialise the cycle queue.
+
+        Parameters
+        ----------
+        max_size : int, optional
+            Maximum number of nodes before switching to the fallback DFS
+            queue, by default 100 000.
+        """
+
         self.levels = []
         self.current_level = None
         self.start_level = None
@@ -200,8 +224,7 @@ cdef class CycleQueue(BaseNodeManager):
         for level in self.levels:
             nodes.extend(level.pop_all())
 
-        for node in nodes:
-            self.fallback_queue.enqueue(node)
+        self.fallback_queue.enqueue_all(nodes)
 
     cdef void exit_fallback(self):
         cdef:

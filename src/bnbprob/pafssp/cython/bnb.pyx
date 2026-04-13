@@ -20,37 +20,44 @@ EVAL_NODE: str = "in"
 
 
 cdef class DfsFlowShop(PriorityQueue):
-    cpdef void enqueue(self, Node node):
+
+    cpdef PriEntry make_entry(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        self.enqueue_entry(
+
+        return init_pri_entry(
             node,
             (-node.level, node.lb, idle_time)
         )
 
 
 cdef class BestFirstFlowShop(PriorityQueue):
-    cpdef void enqueue(self, Node node):
+    cpdef PriEntry make_entry(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        self.enqueue_entry(
+
+        return init_pri_entry(
             node,
             (node.lb, idle_time)
         )
 
 
-cdef class CycleQueueFS(CycleQueue):
+cdef class CycleBestFlowShop(CycleQueue):
+    """Cycle Best First Search node manager specialised for PermFlowShop,
+    using :class:`DfsFlowShop`
+    as the per-level priority queue.
+    """
 
     def __init__(self, int max_size=1_000_000):
-        super(CycleQueueFS, self).__init__(max_size)
+        super(CycleBestFlowShop, self).__init__(max_size)
         self.fallback_queue = DfsFlowShop()
 
     cpdef CycleLevel new_level(self, int level):
@@ -68,7 +75,7 @@ cdef class LazyBnB(BranchAndBound):
         delay_lb5=False
     ):
         super(LazyBnB, self).__init__(problem, EVAL_NODE, save_tree)
-        self.queue = DfsFlowShop()
+        self.manager = DfsFlowShop()
         self.delay_lb5 = delay_lb5
         if delay_lb5:
             self.min_lb5_level = (problem.get_n() // 3) + 1
@@ -107,7 +114,7 @@ cdef class CutoffBnB(LazyBnB):
         delay_lb5=False
     ):
         super(CutoffBnB, self).__init__(problem, save_tree, delay_lb5)
-        self.queue = DfsFlowShop()
+        self.manager = DfsFlowShop()
         self.ub_value = ub_value
 
     cdef void _restart_search(CutoffBnB self):
@@ -126,7 +133,7 @@ cdef class CutoffBnB(LazyBnB):
         self.incumbent = node
         self.bound_node = None
         self.gap = 1.0
-        self.queue.clear()
+        self.manager.clear()
 
 
 cdef class BenchCutoffBnB(CutoffBnB):
@@ -147,7 +154,7 @@ cdef class BenchCutoffBnB(CutoffBnB):
         self.incumbent = node
         self.bound_node = None
         self.gap = 1.0
-        self.queue.clear()
+        self.manager.clear()
 
     cpdef void post_eval_callback(BenchCutoffBnB self, Node node):
         cdef:
@@ -170,7 +177,7 @@ cdef class CallbackBnB(LazyBnB):
         heur_factor=HEUR_BASE
     ):
         super(CallbackBnB, self).__init__(problem, save_tree, delay_lb5)
-        self.queue = DfsFlowShop()
+        self.manager = DfsFlowShop()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor
         self.heur_calls = 0
@@ -183,7 +190,7 @@ cdef class CallbackBnB(LazyBnB):
             DfsFlowShop queue
             Node node
 
-        node = self.queue.dequeue()
+        node = self.manager.dequeue()
         if self.explored >= self.heur_factor:
             self.intensify(node)
         return node

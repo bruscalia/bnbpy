@@ -81,8 +81,9 @@ class Node(Generic[P]):
         ...
 
     def primal_heuristic(self) -> 'Node[P] | None':
-        """Calls `problem` `primal_heuristic()` method to generate a
-        feasible solution from the current node, if any.
+        """Calls `problem` `primal_heuristic()`
+        method to generate a feasible
+        solution from the current node, if any.
 
         Returns
         -------
@@ -92,7 +93,7 @@ class Node(Generic[P]):
         ...
 
     def upgrade_bound(self) -> None:
-        """Calls `problem` `stronger_bound()` and upgrades the node lb
-        if the result is strictly greater than the current lb.
+        """Calls `problem` `upgrade_bound()` method to compute a stronger
+        lower bound, if possible, and updates node's lower bound accordingly.
         """
         ...

@@ -7,13 +7,19 @@ __all__ = [
     'BestFirstBnB',
     'BreadthFirstBnB',
     'DepthFirstBnB',
+    'FifoBnB',
+    'LifoBnB',
     'SearchResults',
     'configure_logfile',
+    'BaseNodeManager',
+    'LifoManager',
+    'FifoManager',
     'ColumnGenProblem',
     'Master',
     'MasterSol',
     'PriceSol',
     'Pricing',
+    'CycleQueue',
     'Node',
 ]
 
@@ -26,6 +32,8 @@ from bnbpy.colgen import (
     PriceSol,
     Pricing,
 )
+from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
+from bnbpy.cython.mod_queue import CycleQueue
 from bnbpy.cython.node import Node
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import (
@@ -33,6 +41,8 @@ from bnbpy.cython.search import (
     BranchAndBound,
     BreadthFirstBnB,
     DepthFirstBnB,
+    FifoBnB,
+    LifoBnB,
     SearchResults,
     configure_logfile,
 )
