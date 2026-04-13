@@ -60,8 +60,14 @@ cdef class Node:
         if self.parent:
             self.parent = None
 
-    def __lt__(self, other: 'Node'):
+    def __lt__(self, Node other):
         return self._sort_index > other._sort_index
+
+    def __eq__(self, Node other):
+        return self._sort_index == other._sort_index
+
+    def __hash__(self):
+        return self._sort_index
 
     @classmethod
     def __class_getitem__(cls, item: type[Problem]):

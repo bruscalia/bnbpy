@@ -155,23 +155,37 @@ class BranchAndBound(Generic[P]):
         Parameters
         ----------
         strategy : str
-            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``.
+            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``, ``'cbfs'``.
 
-            *   ``'dfs'``  \u2014 Depth-first search (``DfsPriQueue``).
-            *   ``'bfs'``  \u2014 Breadth-first search (``BfsPriQueue``).
-            *   ``'best'`` \u2014 Best-first search (``BestPriQueue``).
-            *   ``'lifo'`` \u2014 Last-in first-out stack (``LifoManager``).
-            *   ``'fifo'`` \u2014 First-in first-out queue (``FifoManager``).
+            *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
+            *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).
+            *   ``'best'`` — Best-first search (``BestPriQueue``).
+            *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
+            *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
+            *   ``'cbfs'`` — Cycle best-first search (``CycleQueue``).
+
+        options : Any
+            Additional keyword arguments to pass to the manager constructor.
 
         Returns
         -------
-        BaseNodeManager[Any]
+        BaseNodeManager
             The corresponding manager instance.
 
         Raises
         ------
         ValueError
             If *strategy* is not one of the recognised names.
+        """
+        ...
+
+    def set_manager(self, manager: BaseNodeManager[P]) -> None:
+        """Set a new node manager for the search.
+
+        Parameters
+        ----------
+        manager : BaseNodeManager
+            The new manager to use for node storage and retrieval.
         """
         ...
 
@@ -332,6 +346,17 @@ class BranchAndBound(Generic[P]):
         ----------
         node : Node[P]
             New solution node
+        """
+        ...
+
+    def set_bound(self, node: Node[P]) -> None:
+        """Public interface to set a new node as the
+        new `bound_node`, which is a readonly attribute.
+
+        Parameters
+        ----------
+        node : Node
+            New bound node
         """
         ...
 

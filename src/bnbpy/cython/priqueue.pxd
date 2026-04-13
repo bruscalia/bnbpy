@@ -30,6 +30,7 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cdef:
         list[PriEntry] heap
+        set[Node] bound_nodes
         double lb
 
     cpdef int size(self)
@@ -55,6 +56,10 @@ cdef class PriorityQueue(BaseNodeManager):
     cpdef list[PriEntry] get_heap(self)
 
     cpdef PriEntry make_entry(self, Node node)
+
+    cdef void bound_check_enqueue(self, Node node)
+
+    cdef void recompute_bound_nodes(self)
 
 
 cdef class DfsPriQueue(PriorityQueue):

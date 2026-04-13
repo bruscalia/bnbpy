@@ -13,10 +13,6 @@ from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
-cdef extern from "limits.h":
-    unsigned long long ULLONG_MAX
-
-
 cdef:
     double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
@@ -31,12 +27,14 @@ cdef class SearchResults:
 cdef class BranchAndBound:
 
     cdef public:
+        double rtol
+        double atol
+
+    cdef readonly:
         Problem problem
         Node root
         double gap
         BaseNodeManager manager
-        double rtol
-        double atol
         unsigned long long explored
         string eval_node
         bool eval_in
@@ -44,13 +42,17 @@ cdef class BranchAndBound:
         bool save_tree
         Node incumbent
         Node bound_node
-        object __logger
+
+    cdef:
+        object logger
 
     cdef double get_ub(BranchAndBound self)
 
     cdef double get_lb(BranchAndBound self)
 
     cdef Solution get_solution(BranchAndBound self)
+
+    cpdef void set_manager(self, BaseNodeManager manager)
 
     cdef void _restart_search(BranchAndBound self)
 
@@ -89,6 +91,8 @@ cdef class BranchAndBound:
     cpdef void _feasibility_check(BranchAndBound self, Node node)
 
     cpdef void set_solution(BranchAndBound self, Node node)
+
+    cpdef void set_bound(BranchAndBound self, Node node)
 
     cdef void _enqueue_core(BranchAndBound self, Node node)
 

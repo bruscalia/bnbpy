@@ -127,7 +127,7 @@ cdef class CutoffBnB(LazyBnB):
         solution.set_lb(self.ub_value)
         solution.set_feasible()
         problem = PermFlowShop.__new__(PermFlowShop)
-        problem.solution = solution
+        problem.set_solution(solution)
         node = Node(problem)
 
         self.incumbent = node

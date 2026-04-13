@@ -2,14 +2,16 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from libc.math cimport INFINITY
+from libc.limits cimport ULLONG_MAX
 from libcpp cimport bool
 from libcpp.string cimport string
 
 import logging
 import time
-from typing import Any, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal, Optional, Union
 
 from bnbpy.cython.manager cimport BaseNodeManager, FifoManager, LifoManager
+from bnbpy.cython.mod_queue cimport CycleQueue
 from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.priqueue cimport (
     BestPriQueue,
@@ -192,7 +194,7 @@ cdef class BranchAndBound:
         self.gap = INFINITY
 
         # Initialize logger
-        self.__logger = SearchLogger(log)
+        self.logger = SearchLogger(log)
 
     @classmethod
     def __class_getitem__(cls, item: type[Problem]):
@@ -234,20 +236,24 @@ cdef class BranchAndBound:
         return Solution()
 
     @staticmethod
-    def build_manager(strategy: str) -> BaseNodeManager:
+    def build_manager(strategy: str, **options: Any) -> BaseNodeManager:
         """Factory method that returns a :class:`BaseNodeManager` for the
         given traversal strategy name.
 
         Parameters
         ----------
         strategy : str
-            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``.
+            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``, ``'cbfs'``.
 
             *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
             *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).
             *   ``'best'`` — Best-first search (``BestPriQueue``).
             *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
             *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
+            *   ``'cbfs'`` — Cycle best-first search (``CycleQueue``).
+
+        options : Any
+            Additional keyword arguments to pass to the manager constructor.
 
         Returns
         -------
@@ -265,6 +271,7 @@ cdef class BranchAndBound:
             'best': BestPriQueue,
             'lifo': LifoManager,
             'fifo': FifoManager,
+            'cbfs': CycleQueue,
         }
         key = strategy.lower()
         if key not in _strategies:
@@ -272,7 +279,17 @@ cdef class BranchAndBound:
                 f"Unknown strategy {strategy!r}. "
                 f"Choose from: {list(_strategies)}"
             )
-        return _strategies[key]()
+        return _strategies[key](**options)
+
+    cpdef void set_manager(self, BaseNodeManager manager):
+        """Set a new node manager for the search.
+
+        Parameters
+        ----------
+        manager : BaseNodeManager
+            The new manager to use for node storage and retrieval.
+        """
+        self.manager = manager
 
     cdef void _restart_search(BranchAndBound self):
         self.incumbent = None
@@ -367,6 +384,7 @@ cdef class BranchAndBound:
                 self._do_iter(node)
             # Update LB if node is the one
             if node is self.bound_node:
+                self.log_row('Bound node dequeued')
                 self._update_bound()
             # Termination by optimality
             if self._check_termination(_mxiter):
@@ -568,6 +586,17 @@ cdef class BranchAndBound:
         self.log_row('New incumbent')
         self.solution_callback(node)
 
+    cpdef void set_bound(BranchAndBound self, Node node):
+        """Public interface to set a new node as the
+        new `bound_node`, which is a readonly attribute.
+
+        Parameters
+        ----------
+        node : Node
+            New bound node
+        """
+        self.bound_node = node
+
     cdef void _enqueue_core(BranchAndBound self, Node node):
         if self.eval_in:
             self._node_eval(node)
@@ -623,7 +652,7 @@ cdef class BranchAndBound:
             self.log_row('LB update')
 
     cpdef void _log_headers(BranchAndBound self):
-        self.__logger.log_headers()
+        self.logger.log_headers()
 
     cpdef void log_row(BranchAndBound self, object message):
         """Log a row to the search logger.
@@ -636,7 +665,7 @@ cdef class BranchAndBound:
         gap = f'{(100 * self.gap):.2f}%'
         ub = f'{float(self.get_ub()):^6.4}'
         lb = f'{float(self.get_lb()):^6.4}'
-        self.__logger.log_row(self.explored, ub, lb, gap, message)
+        self.logger.log_row(self.explored, ub, lb, gap, message)
 
     cdef void _update_gap(BranchAndBound self):
         if self.get_ub() != LARGE_POS:

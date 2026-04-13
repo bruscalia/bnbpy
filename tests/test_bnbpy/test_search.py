@@ -137,7 +137,7 @@ class TestBranchAndBoundBasic:
         bnb = BranchAndBound(feasible_problem)
         node = Node(feasible_problem)
         node.compute_bound()
-        bnb.incumbent = node
+        bnb.set_solution(node)
         assert bnb.ub == FEASIBLE_LB
 
     @staticmethod
@@ -152,7 +152,7 @@ class TestBranchAndBoundBasic:
         bnb = BranchAndBound(simple_problem)
         node = Node(simple_problem)
         node.compute_bound()
-        bnb.bound_node = node
+        bnb.set_bound(node)
         assert bnb.lb == SIMPLE_LB
 
     @staticmethod
@@ -379,7 +379,7 @@ class TestBranchAndBoundPrimalAndBound:
         incumbent_node: Node[Problem] = Node(incumbent_problem)
         incumbent_node.compute_bound()
         incumbent_node.check_feasible()
-        bnb.incumbent = incumbent_node
+        bnb.set_solution(incumbent_node)
         # Child lb equals current ub — should be skipped
         heur_problem = PrimalHeuristicProblem(
             lb_value=SIMPLE_LB, feasible=False
