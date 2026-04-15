@@ -3,6 +3,6 @@
 
 __all__ = ['Graph', 'NodeWrapper', 'MaxClique', 'plot_clique']
 
-from bnbprob.maxclique.graph import Graph, NodeWrapper
-from bnbprob.maxclique.problem import MaxClique
-from bnbprob.maxclique.plot import plot_clique
+from bnbprob.maxclique.graph cimport Graph, NodeWrapper
+from bnbprob.maxclique.plot cimport plot_clique
+from bnbprob.maxclique.problem cimport MaxClique
