@@ -1,5 +1,5 @@
 from bnbprob.pafssp.cython.problem import BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.mod_queue import CycleQueue
+from bnbpy.cython.cbfs import CycleQueue
 from bnbpy.cython.node import Node
 from bnbpy.cython.priqueue import PriorityQueue
 from bnbpy.cython.search import BranchAndBound

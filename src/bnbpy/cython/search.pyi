@@ -155,7 +155,8 @@ class BranchAndBound(Generic[P]):
         Parameters
         ----------
         strategy : str
-            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``, ``'cbfs'``.
+            One of ``'dfs'``, ``'bfs'``, ``'best'``,
+            ``'lifo'``, ``'fifo'``, ``'cbfs'``.
 
             *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
             *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).

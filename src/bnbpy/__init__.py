@@ -32,8 +32,8 @@ from bnbpy.colgen import (
     PriceSol,
     Pricing,
 )
+from bnbpy.cython.cbfs import CycleQueue
 from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
-from bnbpy.cython.mod_queue import CycleQueue
 from bnbpy.cython.node import Node
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import (

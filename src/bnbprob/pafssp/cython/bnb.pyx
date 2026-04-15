@@ -5,10 +5,11 @@ from libcpp cimport bool
 from libc.math cimport sqrt
 
 import heapq
+
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
+from bnbpy.cython.cbfs cimport CycleQueue, CycleLevel
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.priqueue cimport PriEntry, PriorityQueue, init_pri_entry
-from bnbpy.cython.mod_queue cimport CycleQueue, CycleLevel
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
