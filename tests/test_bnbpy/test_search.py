@@ -176,12 +176,23 @@ class TestBranchAndBoundBasic:
         assert bnb.ub == FEASIBLE_LB
 
     @staticmethod
-    def test_fathom(simple_problem: MyProblem) -> None:
-        """Test that fathom sets node status to FATHOM."""
+    def test_prune_save(simple_problem: MyProblem) -> None:
+        """Test that prune sets node status to FATHOM."""
         bnb = BranchAndBound(simple_problem, save_tree=True)
         node = Node(simple_problem)
-        bnb.fathom(node)
+        bnb.prune(node)
         assert node.solution.status == OptStatus.FATHOM
+
+    @staticmethod
+    def test_prune_clear(simple_problem: MyProblem) -> None:
+        """Test that prune sets node status to FATHOM."""
+        bnb = BranchAndBound(simple_problem, save_tree=False)
+        parent = Node(simple_problem)
+        node = Node(simple_problem, parent=parent)
+        bnb.prune(node)
+        assert node.problem is None
+        assert not node.parent
+        assert not node.children
 
 
 @pytest.mark.core

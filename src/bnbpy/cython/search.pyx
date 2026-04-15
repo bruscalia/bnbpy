@@ -418,7 +418,7 @@ cdef class BranchAndBound:
             # Node satisfies all constraints
             self._feasibility_check(node)
         else:
-            self.fathom(node)
+            self.prune(node)
 
     cpdef void _warmstart(
         BranchAndBound self,
@@ -493,16 +493,13 @@ cdef class BranchAndBound:
         """
         node.upgrade_bound()
 
-    cpdef void fathom(BranchAndBound self, Node node):
-        """Fathom node (by default is not deleted)
-
-        If deletion is required for managing memory, remember to delete
-        node from parent `children` attribute
+    cpdef void prune(BranchAndBound self, Node node):
+        """Prune node (by default is `Node.cleanup()` is called).
 
         Parameters
         ----------
-        node : Node
-            Node to be fathomed
+        node : Node[P]
+            Node[P] to be pruned
         """
         if not self.save_tree and node is not self.root:
             node.cleanup()
@@ -599,7 +596,7 @@ cdef class BranchAndBound:
             self.enqueue_callback(node)
             self.manager.enqueue(node)
         else:
-            self.fathom(node)
+            self.prune(node)
 
     cdef Node _dequeue_core(BranchAndBound self):
         node = self.manager.dequeue()
@@ -609,7 +606,7 @@ cdef class BranchAndBound:
         if node.lb >= self.get_ub():
             if node is self.bound_node:
                 self._update_bound()
-            self.fathom(node)
+            self.prune(node)
             return None
         return node
 

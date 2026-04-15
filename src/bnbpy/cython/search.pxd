@@ -68,7 +68,7 @@ cdef class BranchAndBound:
 
     cpdef void upgrade_bound(BranchAndBound self, Node node)
 
-    cpdef void fathom(BranchAndBound self, Node node)
+    cpdef void prune(BranchAndBound self, Node node)
 
     cpdef void pre_eval_callback(BranchAndBound self, Node node)
 

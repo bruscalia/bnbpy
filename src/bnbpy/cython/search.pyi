@@ -284,16 +284,13 @@ class BranchAndBound(Generic[P]):
         """
         ...
 
-    def fathom(self, node: Node[P]) -> None:  # noqa: PLR6301
-        """Fathom node (by default is not deleted)
-
-        If deletion is required for managing memory, remember to delete
-        node from parent `children` attribute
+    def prune(self, node: Node[P]) -> None:
+        """Prune node (by default is `Node.cleanup()` is called).
 
         Parameters
         ----------
         node : Node[P]
-            Node[P] to be fathomed
+            Node[P] to be pruned
         """
         ...
 
