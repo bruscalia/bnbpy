@@ -51,23 +51,21 @@ cdef class Node:
         cdef:
             Node child
 
-        if self.problem:
-            self.problem = None
-        if self.children is not None:
+        self.problem = None
+        if self.children:
             for child in self.children:
                 child.parent = None
             self.children = None
-        if self.parent:
-            self.parent = None
+        self.parent = None
 
     def __lt__(self, Node other):
         return self._sort_index > other._sort_index
 
-    def __eq__(self, Node other):
-        return self._sort_index == other._sort_index
+    def __eq__(self, other):
+        return self is other
 
     def __hash__(self):
-        return self._sort_index
+        return id(self)
 
     @classmethod
     def __class_getitem__(cls, item: type[Problem]):

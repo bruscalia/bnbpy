@@ -243,26 +243,6 @@ class BranchAndBound(Generic[P]):
         """
         ...
 
-    def enqueue(self, node: Node[P]) -> None:
-        """Include new node into the manager.
-
-        Parameters
-        ----------
-        node : Node[P]
-            Node[P] to be included
-        """
-        ...
-
-    def dequeue(self) -> Node[P]:
-        """Chooses the next evaluated node and computes its lower bound.
-
-        Returns
-        -------
-        Node[P]
-            Node[P] to be evaluated
-        """
-        ...
-
     def branch(self, node: Node[P]) -> None:
         """From a given node, create children nodes and enqueue them
 
@@ -325,11 +305,27 @@ class BranchAndBound(Generic[P]):
         ...
 
     def enqueue_callback(self, node: Node[P]) -> None:
-        """Abstraction for callbacks after node is enqueued"""
+        """
+        Abstraction for callbacks immediately
+        before node is enqueued, already after being evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that is about to be enqueued.
+        """
         ...
 
     def dequeue_callback(self, node: Node[P]) -> None:
-        """Abstraction for callbacks after node is dequeued"""
+        """
+        Abstraction for callbacks immediately
+        after node is dequeued and possibly evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that was dequeued and evaluated (if `eval_out` is True).
+        """
         ...
 
     def solution_callback(self, node: Node[P]) -> None:

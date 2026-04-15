@@ -16,7 +16,7 @@ cdef class LazyBnB(BranchAndBound):
         bool delay_lb5
         int min_lb5_level
 
-    cpdef void post_eval_callback(LazyBnB self, Node node)
+    cpdef void post_eval_callback(self, Node node)
 
 
 cdef class CallbackBnB(LazyBnB):
@@ -26,6 +26,8 @@ cdef class CallbackBnB(LazyBnB):
         int heur_factor
         int heur_calls
 
-    cpdef void solution_callback(CallbackBnB self, Node node)
+    cpdef void solution_callback(self, Node node)
 
-    cpdef void intensify(CallbackBnB self, Node node)
+    cpdef void dequeue_callback(self, Node node)
+
+    cpdef void intensify(self, Node node)

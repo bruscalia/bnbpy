@@ -66,6 +66,8 @@ cdef class PriorityQueue(BaseNodeManager):
         return len(self.heap) > 0
 
     cpdef void enqueue(self, Node node):
+        if node.lb < self.lb:
+            self.lb = node.lb
         heapq.heappush(self.heap, self.make_entry(node))
 
     cpdef void enqueue_all(self, list[Node] nodes):
@@ -79,6 +81,8 @@ cdef class PriorityQueue(BaseNodeManager):
         entries = [None] * N
         for j in range(N):
             node = nodes[j]
+            if node.lb < self.lb:
+                self.lb = node.lb
             entries[j] = self.make_entry(node)
         self.heap.extend(entries)
         heapq.heapify(self.heap)

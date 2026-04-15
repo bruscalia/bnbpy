@@ -42,9 +42,6 @@ cdef class PermFlowShop(Problem):
         self.constructive = <string> constructive.encode("utf-8")
         self.simple_upgraded = False
 
-    def __del__(self):
-        self.ccleanup()
-
     cdef void ccleanup(PermFlowShop self):
         self.solution = None
 

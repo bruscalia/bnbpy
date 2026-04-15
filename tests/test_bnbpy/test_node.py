@@ -54,6 +54,33 @@ class TestNode:
         assert node1 > node2
 
     @staticmethod
+    def test_eq_is_identity(parent_problem: MyProblem) -> None:
+        """Two distinct nodes with the same problem are not equal."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        assert node_a != node_b
+        assert node_a == node_a  # noqa: PLR0124
+
+    @staticmethod
+    def test_hash_is_identity(parent_problem: MyProblem) -> None:
+        """Each node has a unique hash based on object identity."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        assert hash(node_a) != hash(node_b)
+        assert hash(node_a) == hash(node_a)  # noqa: PLR0124
+
+    @staticmethod
+    def test_nodes_usable_in_set(parent_problem: MyProblem) -> None:
+        """Distinct nodes can coexist in a set."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        s = {node_a, node_b}
+        two_nodes = 2
+        assert len(s) == two_nodes
+        assert node_a in s
+        assert node_b in s
+
+    @staticmethod
     def test_node_lb_property(parent_problem: MyProblem) -> None:
         """Test that the lb property returns the correct lower bound."""
         node = Node(problem=parent_problem)

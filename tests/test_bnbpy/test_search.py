@@ -160,8 +160,8 @@ class TestBranchAndBoundBasic:
         """Test that enqueue and dequeue work correctly."""
         bnb = BranchAndBound(simple_problem)
         node = Node(simple_problem)
-        bnb.enqueue(node)
-        dequeued = bnb.dequeue()
+        bnb.manager.enqueue(node)
+        dequeued = bnb.manager.dequeue()
         assert dequeued is node
 
     @staticmethod
@@ -242,8 +242,8 @@ class TestBranchAndBoundSolve:
         node.compute_bound()
         bnb.branch(node)
         # Should have enqueued 2 children
-        child1 = bnb.dequeue()
-        child2 = bnb.dequeue()
+        child1 = bnb.manager.dequeue()
+        child2 = bnb.manager.dequeue()
         assert child1 is not None
         assert child2 is not None
         assert child1.parent is node
@@ -258,8 +258,8 @@ class TestBranchAndBoundSolve:
         node.compute_bound()
         bnb.branch(node)
         # Should have enqueued 2 children
-        child1 = bnb.dequeue()
-        child2 = bnb.dequeue()
+        child1 = bnb.manager.dequeue()
+        child2 = bnb.manager.dequeue()
         assert child1 is not None
         assert child2 is not None
         assert child1.parent is None

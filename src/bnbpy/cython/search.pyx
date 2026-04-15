@@ -420,26 +420,6 @@ cdef class BranchAndBound:
         else:
             self.fathom(node)
 
-    cpdef void enqueue(BranchAndBound self, Node node):
-        """Include new node into the manager.
-
-        Parameters
-        ----------
-        node : Node
-            Node to be included
-        """
-        self.manager.enqueue(node)
-
-    cpdef Node dequeue(BranchAndBound self):
-        """Chooses the next evaluated node and computes its lower bound.
-
-        Returns
-        -------
-        Node
-            Node to be evaluated
-        """
-        return self.manager.dequeue()
-
     cpdef void _warmstart(
         BranchAndBound self,
         Problem warmstart_problem,
@@ -474,7 +454,6 @@ cdef class BranchAndBound:
                 self._enqueue_core(child)
         if not self.save_tree and node is not self.root:
             node.cleanup()
-            del node
 
     cpdef void primal_heuristic(BranchAndBound self, Node node):
         """Calls `Problem` `primal_heuristic()` via node
@@ -525,10 +504,10 @@ cdef class BranchAndBound:
         node : Node
             Node to be fathomed
         """
-        node.fathom()
         if not self.save_tree and node is not self.root:
             node.cleanup()
-            del node
+        else:
+            node.fathom()
 
     cpdef void pre_eval_callback(BranchAndBound self, Node node):
         """Abstraction for callbacks before node bound evaluation"""
@@ -539,11 +518,27 @@ cdef class BranchAndBound:
         pass
 
     cpdef void enqueue_callback(BranchAndBound self, Node node):
-        """Abstraction for callbacks after node is enqueued"""
+        """
+        Abstraction for callbacks immediately
+        before node is enqueued, already after being evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that is about to be enqueued.
+        """
         pass
 
     cpdef void dequeue_callback(BranchAndBound self, Node node):
-        """Abstraction for callbacks after node is dequeued"""
+        """
+        Abstraction for callbacks immediately
+        after node is dequeued and possibly evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that was dequeued and evaluated (if `eval_out` is True).
+        """
         pass
 
     cpdef void solution_callback(BranchAndBound self, Node node):
@@ -601,13 +596,13 @@ cdef class BranchAndBound:
         if self.eval_in:
             self._node_eval(node)
         if node.lb < self.get_ub():
-            self.enqueue_callback(node)
-            self.enqueue(node)
+            self.enqueue_callback(node)W
+            self.manager.enqueue(node)
         else:
             self.fathom(node)
 
     cdef Node _dequeue_core(BranchAndBound self):
-        node = self.dequeue()
+        node = self.manager.dequeue()
         if self.eval_out:
             self._node_eval(node)
         self.dequeue_callback(node)

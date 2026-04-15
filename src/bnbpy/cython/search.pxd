@@ -60,10 +60,6 @@ cdef class BranchAndBound:
 
     cdef void _do_iter(BranchAndBound self, Node node)
 
-    cpdef void enqueue(BranchAndBound self, Node node)
-
-    cpdef Node dequeue(BranchAndBound self)
-
     cpdef void _warmstart(BranchAndBound self, Problem warmstart_problem)
 
     cpdef void branch(BranchAndBound self, Node node)

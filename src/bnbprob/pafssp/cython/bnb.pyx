@@ -88,7 +88,7 @@ cdef class LazyBnB(BranchAndBound):
         lb5 = problem.calc_lb_2m()
         return lb1 <= lb5
 
-    cpdef void post_eval_callback(LazyBnB self, Node node):
+    cpdef void post_eval_callback(self, Node node):
         # Here the r and q values are not yet updated
         if node.lb < self.get_ub():
             # Update lower r and q values and recompute bound 1M
@@ -156,7 +156,7 @@ cdef class BenchCutoffBnB(CutoffBnB):
         self.gap = 1.0
         self.manager.clear()
 
-    cpdef void post_eval_callback(BenchCutoffBnB self, Node node):
+    cpdef void post_eval_callback(self, Node node):
         cdef:
             BenchPermFlowShop problem
         # Here the r and q values are assumed to be already updated
@@ -182,20 +182,14 @@ cdef class CallbackBnB(LazyBnB):
         self.heur_factor = heur_factor
         self.heur_calls = 0
 
-    cpdef void solution_callback(CallbackBnB self, Node node):
+    cpdef void solution_callback(self, Node node):
         self.primal_heuristic(node)
 
-    cpdef Node dequeue(CallbackBnB self):
-        cdef:
-            DfsFlowShop queue
-            Node node
-
-        node = self.manager.dequeue()
+    cpdef void dequeue_callback(self, Node node):
         if self.explored >= self.heur_factor:
             self.intensify(node)
-        return node
 
-    cpdef void intensify(CallbackBnB self, Node node):
+    cpdef void intensify(self, Node node):
         cdef:
             Node new_node
             PermFlowShop problem, ref_problem, new_prob

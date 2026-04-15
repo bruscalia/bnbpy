@@ -39,6 +39,6 @@ class ParallelBnB(BranchAndBound[Problem]):
                         log.error(f'Error in computing LB for child node: {e}')
 
                     # Enqueue each child after computing the lower bound
-                    self.enqueue(child)
+                    self.manager.enqueue(child)
         else:
             self.log_row('Cutoff')
