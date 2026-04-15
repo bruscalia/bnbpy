@@ -10,8 +10,8 @@ import logging
 import time
 from typing import Any, Literal, Optional, Union
 
+from bnbpy.cython.cbfs cimport CycleQueue
 from bnbpy.cython.manager cimport BaseNodeManager, FifoManager, LifoManager
-from bnbpy.cython.mod_queue cimport CycleQueue
 from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.priqueue cimport (
     BestPriQueue,
@@ -596,7 +596,7 @@ cdef class BranchAndBound:
         if self.eval_in:
             self._node_eval(node)
         if node.lb < self.get_ub():
-            self.enqueue_callback(node)W
+            self.enqueue_callback(node)
             self.manager.enqueue(node)
         else:
             self.fathom(node)
