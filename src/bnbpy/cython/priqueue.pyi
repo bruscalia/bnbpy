@@ -64,7 +64,7 @@ class PriorityQueue(BaseNodeManager[P]):
 class DfsPriQueue(PriorityQueue[P]):
     """
     Depth-First Search priority queue implementation with
-    tie-breaking by lower bound and node index (smaller first).
+    tie-breaking by lower bound and node index (greater first).
     """
 
     def make_entry(self, node: Node[P]) -> PriEntry[P]: ...
@@ -80,6 +80,9 @@ class BfsPriQueue(PriorityQueue[P]):
 class BestPriQueue(PriorityQueue[P]):
     """
     Best-First Search priority queue implementation.
+
+    Nodes are ordered by lower bound, with tie-breaking by tree level
+    (deeper nodes first) and node index (greater first).
     """
 
     def make_entry(self, node: Node[P]) -> PriEntry[P]: ...

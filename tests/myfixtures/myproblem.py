@@ -33,7 +33,7 @@ class MyProblem(Problem):
         )
         child2 = MyProblem(
             lb_value=self._lb_value + 2 if self._lb_value is not None else 2,
-            feasible=False,
+            feasible=True,
         )
         return [child1, child2]
 

@@ -35,6 +35,7 @@ BRANCH_UNBOUNDED = 3
 THREE = 3
 TWO = 2
 ONE = 1
+SAFETY_MAXITER = 1000
 
 
 class _CallbackBnB(BranchAndBound[MyProblem]):
@@ -121,7 +122,7 @@ class TestBranchAndBoundBasic:
         bnb = BranchAndBound(problem)
         assert bnb.rtol == DEFAULT_RTOL
         assert bnb.atol == DEFAULT_ATOL
-        bnb.solve(rtol=CUSTOM_RTOL, atol=CUSTOM_ATOL)
+        bnb.solve(rtol=CUSTOM_RTOL, atol=CUSTOM_ATOL, maxiter=SAFETY_MAXITER)
         assert bnb.rtol == CUSTOM_RTOL
         assert bnb.atol == CUSTOM_ATOL
 
@@ -205,7 +206,7 @@ class TestBranchAndBoundSolve:
         """Test solving a simple problem."""
         problem = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
         bnb = BranchAndBound(problem)
-        result = bnb.solve()
+        result = bnb.solve(maxiter=SAFETY_MAXITER)
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == FEASIBLE_LB
 
@@ -282,7 +283,7 @@ class TestBranchAndBoundSolve:
         # Create a problem with feasible solution at root
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = BranchAndBound(problem)
-        result = bnb.solve()
+        result = bnb.solve(maxiter=SAFETY_MAXITER)
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == SIMPLE_LB
         assert bnb.explored == 1  # Should only explore root
@@ -307,7 +308,7 @@ class TestBranchAndBoundCallbacks:
         """Test that solution_callback is called when solution is found."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = _CallbackBnB(problem)
-        _ = bnb.solve()
+        _ = bnb.solve(maxiter=SAFETY_MAXITER)
         assert bnb.callback_called is True
 
     @staticmethod
@@ -406,7 +407,7 @@ class TestBranchAndBoundPrimalAndBound:
         """Solve with _PrimalHeuristicBnB finds solution via heuristic."""
         problem = PrimalHeuristicProblem(lb_value=SIMPLE_LB, feasible=False)
         bnb = _PrimalHeuristicBnB(problem)
-        result = bnb.solve()
+        result = bnb.solve(maxiter=SAFETY_MAXITER)
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == SIMPLE_LB
 
@@ -449,8 +450,8 @@ class TestBranchAndBoundPrimalAndBound:
         upgrade_problem = _WarmstartStrong(lb_value=SIMPLE_LB, feasible=False)
         bnb_base = BranchAndBound(base_problem)
         bnb_upgrade = _UpgradeBoundBnB(upgrade_problem)
-        result_base = bnb_base.solve()
-        result_upgrade = bnb_upgrade.solve()
+        result_base = bnb_base.solve(maxiter=SAFETY_MAXITER)
+        result_upgrade = bnb_upgrade.solve(maxiter=SAFETY_MAXITER)
         # Both reach optimal; upgrade variant explores <= base variant
         assert result_base.solution.status == OptStatus.OPTIMAL
         assert result_upgrade.solution.status == OptStatus.OPTIMAL
@@ -543,8 +544,8 @@ class TestManagerStrategy:
         mgr = BranchAndBound.build_manager('bfs')
         bnb1 = BranchAndBound(problem1, manager=mgr)
         bnb2 = BreadthFirstBnB(problem2)
-        res1 = bnb1.solve()
-        res2 = bnb2.solve()
+        res1 = bnb1.solve(maxiter=SAFETY_MAXITER)
+        res2 = bnb2.solve(maxiter=SAFETY_MAXITER)
         assert res1.solution.status == res2.solution.status
         assert res1.solution.cost == res2.solution.cost
 
@@ -598,6 +599,6 @@ class TestSubclassStrategies:
         """All BnB variants should solve a trivially feasible problem."""
         problem = MyProblem(lb_value=FEASIBLE_LB, feasible=True)
         bnb = bnb_class(problem)
-        result = bnb.solve()
+        result = bnb.solve(maxiter=SAFETY_MAXITER)
         assert result.solution.status == OptStatus.OPTIMAL
         assert result.solution.cost == FEASIBLE_LB

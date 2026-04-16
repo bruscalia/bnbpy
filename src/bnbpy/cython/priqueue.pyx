@@ -178,14 +178,14 @@ cdef class PriorityQueue(BaseNodeManager):
 cdef class DfsPriQueue(PriorityQueue):
     """
     Depth-First Search priority queue implementation with
-    tie-breaking by lower bound and node index (smaller first).
+    tie-breaking by lower bound and node index (greater first).
     """
 
     cpdef PriEntry make_entry(self, Node node):
         # DFS: (-level, lb)
         return init_pri_entry(
             node,
-            (-node.level, node.lb, node.get_index())
+            (-node.level, node.lb, -node.get_index())
         )
 
 
@@ -206,13 +206,16 @@ cdef class BfsPriQueue(PriorityQueue):
 cdef class BestPriQueue(PriorityQueue):
     """
     Best-First Search priority queue implementation.
+
+    Nodes are ordered by lower bound, with tie-breaking by tree level
+    (deeper nodes first) and node index (greater first).
     """
 
     cpdef PriEntry make_entry(self, Node node):
-        # Best-first: (lb, -level, index) — deeper nodes break ties
+        # Best-first: (lb, -level, -index) — deeper nodes break ties
         return init_pri_entry(
             node,
-            (node.lb, -node.level, node.get_index())
+            (node.lb, -node.level, -node.get_index())
         )
 
     cpdef Node get_lower_bound(self):

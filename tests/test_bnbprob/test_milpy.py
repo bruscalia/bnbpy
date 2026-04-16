@@ -111,7 +111,7 @@ class TestKnapsack:
             (OptStatus.OPTIMAL, 'in', 250, 125),
             (OptStatus.FEASIBLE, 'in', 11, 11),
             (OptStatus.RELAXATION, 'in', 0, 1),
-            (OptStatus.OPTIMAL, 'out', 250, 107),
+            (OptStatus.OPTIMAL, 'out', 250, 71),
             (OptStatus.FEASIBLE, 'out', 11, 11),
             (OptStatus.RELAXATION, 'out', 0, 1),
         ],
