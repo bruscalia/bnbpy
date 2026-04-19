@@ -3,7 +3,7 @@ BranchAndBound
 
 .. autoclass:: bnbpy.cython.search::BranchAndBound
    :class-doc-from: both
-   :members: solve, reset, enqueue, dequeue, branch, build_manager, pre_eval_callback, post_eval_callback, enqueue_callback, dequeue_callback, solution_callback, set_solution, log_row
+   :members: solve, reset, branch, build_manager, pre_eval_callback, post_eval_callback, enqueue_callback, dequeue_callback, solution_callback, set_solution, log_row
    :undoc-members:
    :show-inheritance:
    :member-order: bysource

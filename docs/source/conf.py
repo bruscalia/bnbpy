@@ -18,10 +18,17 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
+    'sphinxcontrib.mermaid',
     'matplotlib.sphinxext.plot_directive',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
+    'myst_parser',
 ]
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # Autodoc settings
 autodoc_typehints = 'description'
@@ -32,6 +39,9 @@ napoleon_numpy_docstring = True
 
 templates_path = ['_templates']
 exclude_patterns: list[str] = []
+
+# Mermaid settings
+mermaid_init_js = 'mermaid.initialize({theme: "forest"});'
 
 
 # -- Options for HTML output -------------------------------------------------

@@ -154,12 +154,12 @@ GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
    Usage/milp
    Usage/pfssp
    Usage/easy-callbacks
-   Usage/node-managers
 
 .. toctree::
    :maxdepth: 1
    :caption: Package:
    :hidden:
 
+   class_diagram
    bnbpy
    bnbpy.colgen

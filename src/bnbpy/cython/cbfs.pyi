@@ -19,6 +19,8 @@ class CycleLevel(Generic[P]):
     next: 'CycleLevel[P]'
     prev: 'CycleLevel[P]'
 
+    def __init__(self, level: int) -> None: ...
+
     def size(self) -> int:
         """Return the number of nodes at this level."""
         ...
