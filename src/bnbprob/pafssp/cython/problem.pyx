@@ -40,9 +40,7 @@ cdef class PermFlowShop(Problem):
     ) -> None:
         self.solution = Solution()
         self.constructive = <string> constructive.encode("utf-8")
-
-    def __del__(self):
-        self.ccleanup()
+        self.simple_upgraded = False
 
     cdef void ccleanup(PermFlowShop self):
         self.solution = None
@@ -287,38 +285,26 @@ cdef class PermFlowShop(Problem):
             out[j] = self._child_push(j)
         return out
 
+    cpdef double stronger_bound(PermFlowShop self):
+        if self.perm.free_jobs.size() == 0:
+            return <double>self.perm.calc_lb_full()
+
+        if self.simple_upgraded:
+            return <double>self.perm.lower_bound_2m()
+
+        self.simple_upgraded = True
+        self.perm.update_params()
+        return <double>self.perm.lower_bound_1m()
+
+    cpdef PermFlowShop primal_heuristic(PermFlowShop self):
+        return self.local_search()
+
     cdef PermFlowShop _child_push(PermFlowShop self, int& j):
         cdef:
             PermFlowShop child = self._copy()
 
         child._push_job(j)
         return child
-
-    cpdef void simple_bound_upgrade(PermFlowShop self):
-        cdef:
-            double lb
-
-        if self.perm.free_jobs.size() == 0:
-            lb = <double>self.perm.calc_lb_full()
-        else:
-            self.perm.update_params()
-            lb = <double>self.lower_bound_1m()
-        self.solution.set_lb(lb)
-
-    cpdef void double_bound_upgrade(PermFlowShop self):
-        self._double_bound_upgrade()
-
-    cdef void _double_bound_upgrade(PermFlowShop self):
-        cdef:
-            double lb5, lb
-
-        if self.perm.free_jobs.size() == 0:
-            lb5 = <double>self.perm.calc_lb_full()
-        else:
-            lb5 = <double>self.lower_bound_2m()
-
-        lb = max(self.solution.lb, lb5)
-        self.solution.set_lb(lb)
 
     cpdef int calc_lb_1m(PermFlowShop self):
         return self.perm.calc_lb_1m()
@@ -360,6 +346,7 @@ cdef class PermFlowShop(Problem):
         child.solution = Solution()
         child.constructive = self.constructive
         child.perm = self.perm
+        child.simple_upgraded = False
         return child
 
     cpdef void perm_copy(PermFlowShop self):
@@ -381,6 +368,7 @@ cdef class BenchPermFlowShop(PermFlowShop):
         child.solution = Solution()
         child.constructive = self.constructive
         child.perm = self.perm
+        child.simple_upgraded = False
         return child
 
 
@@ -389,9 +377,6 @@ cdef class PermFlowShop1M(PermFlowShop):
     cpdef double calc_bound(PermFlowShop1M self):
         return self.perm.calc_lb_1m()
 
-    cpdef void double_bound_upgrade(PermFlowShop1M self):
-        return
-
     cdef PermFlowShop1M _copy(PermFlowShop1M self):
         cdef:
             PermFlowShop1M child
@@ -399,4 +384,5 @@ cdef class PermFlowShop1M(PermFlowShop):
         child.solution = Solution()
         child.constructive = self.constructive
         child.perm = self.perm
+        child.simple_upgraded = False
         return child

@@ -1,104 +1,150 @@
-from bnbprob.pafssp.cython.problem import PermFlowShop
+from bnbprob.pafssp.cython.problem import BenchPermFlowShop, PermFlowShop
+from bnbpy.cython.cbfs import CycleQueue
 from bnbpy.cython.node import Node
+from bnbpy.cython.priqueue import PriorityQueue
 from bnbpy.cython.search import BranchAndBound
 
 HEUR_BASE: int = 100
+EVAL_NODE: str
 
-class LazyBnB(BranchAndBound):
-    """Subclass derived from `BranchAndBound` with `post_eval_callback`
-    that solves a 2M lower bound (`problem.double_bound_upgrade`)."""
+class DfsFlowShop(PriorityQueue[PermFlowShop]):
+    """DFS-ordered priority queue for PermFlowShop nodes.
+
+    Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
+    then least idle time first.
+    """
+
+    ...
+
+class BestFirstFlowShop(PriorityQueue[PermFlowShop]):
+    """Best-first priority queue for PermFlowShop nodes.
+
+    Priority is ``(lb, idle_time)`` — best bound, then least idle time first.
+    """
+
+    ...
+
+class CycleBestFlowShop(CycleQueue[PermFlowShop]):
+    """Cycle Best First Search node manager specialised for PermFlowShop,
+    using :class:`DfsFlowShop`
+    as the per-level priority queue.
+    """
+
+    ...
+
+class LazyBnB(BranchAndBound[PermFlowShop]):
+    """Subclass of :class:`~bnbpy.cython.search.BranchAndBound` with a
+    ``post_eval_callback`` that upgrades lower bounds via a 2-machine
+    relaxation (``problem.double_bound_upgrade``).
+
+    The search always uses ``eval_node='in'`` and a :class:`DfsFlowShop`
+    priority queue.
+    """
 
     delay_lb5: bool
     min_lb5_level: int
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        problem: PermFlowShop,
         save_tree: bool = False,
         delay_lb5: bool = False,
     ) -> None:
-        """Initialize LazyBnB algorithm
+        """Initialise the LazyBnB solver.
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
+        problem : PermFlowShop
+            Problem instance to solve.
 
         save_tree : bool, optional
-            Whether to save tree structure, by default False
+            Whether to preserve tree structure, by default ``False``.
 
         delay_lb5 : bool, optional
-            Whether to delay the two-machine lower bound computation,
-            by default False
+            Delay the two-machine lower-bound upgrade until the node
+            reaches a threshold depth, by default ``False``.
         """
         ...
 
     @staticmethod
-    def delay_by_root(problem: PermFlowShop) -> bool: ...
-    def post_eval_callback(self, node: Node) -> None:
-        """Callback executed after node evaluation
+    def delay_by_root(problem: PermFlowShop) -> bool:
+        """Return ``True`` if the two-machine bound should be delayed.
 
-        Applies bound upgrade to improve lower bound
+        Compares the one-machine and two-machine bounds at the root.
+        """
+        ...
+
+    def post_eval_callback(self, node: Node[PermFlowShop]) -> None:
+        """Upgrade lower bounds after node evaluation.
+
+        Calls ``node.c_upgrade_bound()`` (one-machine) and, if the node is
+        deep enough, the two-machine upgrade as well.
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[PermFlowShop]
+            Node that was just evaluated.
         """
         ...
 
 class CutoffBnB(LazyBnB):
-    """Subclass derived from `BranchAndBound` with a cutoff value."""
+    """Extension of :class:`LazyBnB` that starts with a known upper-bound
+    cutoff instead of deriving one from the root heuristic.
+    """
 
     ub_value: float
 
     def __init__(
         self,
+        problem: PermFlowShop,
         ub_value: float,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
         save_tree: bool = False,
         delay_lb5: bool = False,
     ) -> None:
-        """Initialize CutoffBnB algorithm with upper bound cutoff.
+        """Initialise CutoffBnB with an explicit upper-bound value.
 
         Parameters
         ----------
+        problem : PermFlowShop
+            Problem instance to solve.
+
         ub_value : float
-            Upper bound cutoff value
-
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
+            Known upper bound; used as the initial incumbent value.
 
         save_tree : bool, optional
-            Whether to save tree structure, by default False
+            Whether to preserve tree structure, by default ``False``.
 
         delay_lb5 : bool, optional
-            Whether to delay the two-machine lower bound computation,
-            by default False
+            Delay the two-machine lower-bound upgrade, by default ``False``.
         """
         ...
 
-class BenchCutoffBnB(LazyBnB):
-    """Subclass derived from `BranchAndBound` with a cutoff value.
-    In this variant the `update_params` is not
-    called in the `post_eval_callback`."""
+class BenchCutoffBnB(CutoffBnB):
+    """Benchmarking variant of :class:`CutoffBnB`.
 
-    ...
+    The ``post_eval_callback`` skips the ``update_params`` step so that
+    timings for the two-machine bound alone can be measured in isolation.
+    """
+
+    def post_eval_callback(self, node: Node[BenchPermFlowShop]) -> None:  # type: ignore[override]
+        """Apply only the two-machine bound upgrade (no param update).
+
+        Parameters
+        ----------
+        node : Node[BenchPermFlowShop]
+            Node that was just evaluated.
+        """
+        ...
 
 class CallbackBnB(LazyBnB):
-    """Subclass derived from `BranchAndBound` with `post_eval_callback`
-    that solves a 2M lower bound (`problem.double_bound_upgrade`).
+    """Extension of :class:`LazyBnB` with a primal heuristic and a
+    best-bound guided restart strategy.
 
-    Additionally there's local search as a `solution_callback` and
-    a best bound guided search restart at each `restart_freq` nodes."""
+    *   ``solution_callback`` runs a local search (remove-reinsertion)
+        whenever a new incumbent is found.
+    *   ``dequeue`` triggers an intensification move every
+        ``heur_factor`` explored nodes.
+    """
 
     base_heur_factor: int
     heur_factor: int
@@ -106,61 +152,59 @@ class CallbackBnB(LazyBnB):
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        problem: PermFlowShop,
         save_tree: bool = False,
         delay_lb5: bool = False,
         heur_factor: int = HEUR_BASE,
     ) -> None:
-        """Initialize CallbackBnB algorithm with heuristic callbacks
+        """Initialise CallbackBnB.
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance, by default 0.0001
-
-        atol : float, optional
-            Absolute tolerance, by default 0.0001
+        problem : PermFlowShop
+            Problem instance to solve.
 
         save_tree : bool, optional
-            Whether to save tree structure, by default False
+            Whether to preserve tree structure, by default ``False``.
 
         delay_lb5 : bool, optional
-            Whether to delay the two-machine lower bound computation,
-            by default False
+            Delay the two-machine lower-bound upgrade, by default ``False``.
 
         heur_factor : int, optional
-            Heuristic factor for intensification, by default HEUR_BASE
+            Number of nodes explored between intensification calls,
+            by default :data:`HEUR_BASE`.
         """
         ...
 
-    def solution_callback(self, node: Node) -> None:
-        """Applies local search with best improvement making
-        remove-insertion moves.
+    def solution_callback(self, node: Node[PermFlowShop]) -> None:
+        """Run a local search heuristic when a new incumbent is found.
 
         Parameters
         ----------
-        node : Node
-            Node with new solution
+        node : Node[PermFlowShop]
+            Node carrying the new feasible solution.
         """
         ...
 
-    def dequeue(self) -> Node:
-        """Dequeue next node and apply intensification if needed
+    def dequeue(self) -> Node[PermFlowShop]:
+        """Dequeue the next node and trigger intensification if due.
 
         Returns
         -------
-        Node
-            Next node to process
+        Node[PermFlowShop]
+            Next node to process.
         """
         ...
 
-    def intensify(self, node: Node) -> None:
-        """Apply intensification heuristic to improve solution
+    def intensify(self, node: Node[PermFlowShop]) -> None:
+        """Apply a remove-reinsertion local search starting from *node*.
+
+        Updates ``heur_factor`` and ``heur_calls`` based on whether
+        improvement was found.
 
         Parameters
         ----------
-        node : Node
-            Node to intensify
+        node : Node[PermFlowShop]
+            Reference node for the intensification move.
         """
         ...

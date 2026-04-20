@@ -7,14 +7,10 @@ from libcpp.string cimport string
 
 from typing import Optional
 
+from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport BasePriQueue
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
-
-
-cdef extern from "limits.h":
-    unsigned long long ULLONG_MAX
 
 
 cdef:
@@ -31,12 +27,14 @@ cdef class SearchResults:
 cdef class BranchAndBound:
 
     cdef public:
+        double rtol
+        double atol
+
+    cdef readonly:
         Problem problem
         Node root
         double gap
-        BasePriQueue queue
-        double rtol
-        double atol
+        BaseNodeManager manager
         unsigned long long explored
         string eval_node
         bool eval_in
@@ -44,7 +42,9 @@ cdef class BranchAndBound:
         bool save_tree
         Node incumbent
         Node bound_node
-        object __logger
+
+    cdef:
+        object logger
 
     cdef double get_ub(BranchAndBound self)
 
@@ -52,21 +52,23 @@ cdef class BranchAndBound:
 
     cdef Solution get_solution(BranchAndBound self)
 
-    cdef void _set_problem(BranchAndBound self, Problem problem)
+    cpdef void set_manager(self, BaseNodeManager manager)
 
     cdef void _restart_search(BranchAndBound self)
 
+    cpdef void reset(self)
+
     cdef void _do_iter(BranchAndBound self, Node node)
-
-    cpdef void enqueue(BranchAndBound self, Node node)
-
-    cpdef Node dequeue(BranchAndBound self)
 
     cpdef void _warmstart(BranchAndBound self, Problem warmstart_problem)
 
     cpdef void branch(BranchAndBound self, Node node)
 
-    cpdef void fathom(BranchAndBound self, Node node)
+    cpdef void primal_heuristic(BranchAndBound self, Node node)
+
+    cpdef void upgrade_bound(BranchAndBound self, Node node)
+
+    cpdef void prune(BranchAndBound self, Node node)
 
     cpdef void pre_eval_callback(BranchAndBound self, Node node)
 
@@ -78,13 +80,15 @@ cdef class BranchAndBound:
 
     cpdef void solution_callback(BranchAndBound self, Node node)
 
-    cpdef void _enqueue_root(BranchAndBound self, Problem problem)
+    cpdef void _enqueue_root(BranchAndBound self)
 
     cpdef void _node_eval(BranchAndBound self, Node node)
 
     cpdef void _feasibility_check(BranchAndBound self, Node node)
 
     cpdef void set_solution(BranchAndBound self, Node node)
+
+    cpdef void set_bound(BranchAndBound self, Node node)
 
     cdef void _enqueue_core(BranchAndBound self, Node node)
 

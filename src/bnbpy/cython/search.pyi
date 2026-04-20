@@ -1,7 +1,7 @@
 from typing import Any, Generic, Literal, Optional, TypeVar, Union
 
+from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue import BasePriQueue
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
@@ -45,7 +45,7 @@ class SearchResults(Generic[P]):
         """Optimization status"""
         ...
 
-class BranchAndBound:
+class BranchAndBound(Generic[P]):
     """
     Class for solving optimization problems via Branch & Bound.
 
@@ -53,10 +53,12 @@ class BranchAndBound:
     but can be easily customized by subclassing.
 
     Some alternative strategies are already implemented as subclasses:
+
+    *   `DepthFirstBnB`: Depth-first (default) alias of `BranchAndBound`.
     *   `BreadthFirstBnB`: Breadth-first Branch & Bound algorithm.
-    *   `DepthFirstBnB`: Depth-first Branch & Bound algorithm
-        (alias of `BranchAndBound`).
     *   `BestFirstBnB`: Best-first Branch & Bound algorithm.
+    *   `LifoBnB`: LIFO (last-in, first-out) strategy via `LifoManager`.
+    *   `FifoBnB`: FIFO (first-in, first-out) strategy via `FifoManager`.
 
     Useful methods for subclassing and custom implementations:
 
@@ -71,20 +73,20 @@ class BranchAndBound:
 
     **Core methods:**
 
-    *   `enqueue`: Include new node into queue.
+    *   `enqueue`: Include new node into manager.
     *   `dequeue`: Chooses the next evaluated
         node and computes its lower bound.
     *   `branch`: From a given node, create children nodes and enqueue them.
 
     For a customization of enqueueing and dequeueing strategies,
-    it is recommended subclassing `BranchAndBound` with a customized `queue`
-    attribute by subclassing `BasePriQueue` too.
+    pass a custom ``manager`` (subclass of `BaseNodeManager`) at construction
+    time, or override ``enqueue`` / ``dequeue`` in a subclass.
     """
 
-    problem: Problem
-    root: Node
+    problem: P
+    root: Node[P]
     gap: float
-    queue: BasePriQueue
+    manager: BaseNodeManager[P]
     rtol: float
     atol: float
     explored: int
@@ -92,16 +94,16 @@ class BranchAndBound:
     eval_in: bool
     eval_out: bool
     save_tree: bool
-    incumbent: Node | None
-    bound_node: Node | None
+    incumbent: Node[P] | None
+    bound_node: Node[P] | None
     __logger: SearchLogger
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: P,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
+        manager: BaseNodeManager[P] | None = None,
     ) -> None:
         """Instantiate algorithm to solve problems via Branch & Bound.
 
@@ -111,22 +113,19 @@ class BranchAndBound:
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : P
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
+            Node[P] bound evaluation strategy, by default 'out'.
 
             *   'in': call `Problem.calc_bound` after
                 parent `branch`, before inserting child nodes
-                in the active queue. Useful when
+                in the active manager. Useful when
                 bound computation is inexpensive.
 
             *   'out': call `Problem.calc_bound` after
-                selecting a node from the active queue.
+                selecting a node from the active manager.
                 The result guides whether to explore
                 (`is_feasible`, possibly `branch`) or
                 prune. Often paired with fast enqueue
@@ -138,6 +137,56 @@ class BranchAndBound:
         save_tree : bool, optional
             Whether to save node relationships, by default False.
             It can consume a lot of memory in large trees.
+
+        manager : BaseNodeManager, optional
+            Node manager that controls the search traversal strategy.
+            Defaults to ``DfsPriQueue()`` (depth-first search) when
+            ``None`` is given.  Pass any ``BaseNodeManager`` subclass
+            to customise the traversal order, or use the
+            :meth:`build_manager` factory for common string aliases.
+        """
+        ...
+
+    @staticmethod
+    def build_manager(strategy: str) -> BaseNodeManager[Any]:
+        """Factory method that returns a :class:`BaseNodeManager` for the
+        given traversal strategy name.
+
+        Parameters
+        ----------
+        strategy : str
+            One of ``'dfs'``, ``'bfs'``, ``'best'``,
+            ``'lifo'``, ``'fifo'``, ``'cbfs'``.
+
+            *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
+            *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).
+            *   ``'best'`` — Best-first search (``BestPriQueue``).
+            *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
+            *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
+            *   ``'cbfs'`` — Cycle best-first search (``CycleQueue``).
+
+        options : Any
+            Additional keyword arguments to pass to the manager constructor.
+
+        Returns
+        -------
+        BaseNodeManager
+            The corresponding manager instance.
+
+        Raises
+        ------
+        ValueError
+            If *strategy* is not one of the recognised names.
+        """
+        ...
+
+    def set_manager(self, manager: BaseNodeManager[P]) -> None:
+        """Set a new node manager for the search.
+
+        Parameters
+        ----------
+        manager : BaseNodeManager
+            The new manager to use for node storage and retrieval.
         """
         ...
 
@@ -149,9 +198,10 @@ class BranchAndBound:
     def solution(self) -> Solution: ...
     def solve(
         self,
-        problem: P,
         maxiter: Optional[int] = None,
         timelimit: Optional[Union[int, float]] = None,
+        rtol: Optional[float] = None,
+        atol: Optional[float] = None,
     ) -> SearchResults[P]:
         """Solves optimization problem using Branch & Bound.
 
@@ -159,16 +209,25 @@ class BranchAndBound:
         so the `Problem` class must be a subclass of
         `bnbpy.cython.problem.Problem`.
 
+        Call ``reset()`` before ``solve()`` to restart from scratch;
+        otherwise a second call to ``solve()`` resumes from the current
+        queue state.
+
         Parameters
         ----------
-        problem : Problem
-            Problem instance as in root node
-
         maxiter : Optional[int], optional
-            Maximum number of iterations, by default None
+            Maximum number of additional iterations, by default None
 
         timelimit : Optional[Union[int, float]], optional
             Time limit in seconds, by default None
+
+        rtol : Optional[float], optional
+            Relative tolerance for termination. If provided, permanently
+            updates ``self.rtol``, by default None
+
+        atol : Optional[float], optional
+            Absolute tolerance for termination. If provided, permanently
+            updates ``self.atol``, by default None
 
         Returns
         -------
@@ -177,79 +236,121 @@ class BranchAndBound:
         """
         ...
 
-    def enqueue(self, node: Node) -> None:
-        """Include new node into queue
+    def reset(self) -> None:
+        """Reset the search state for a fresh solve.
 
-        Parameters
-        ----------
-        node : Node
-            Node to be included
+        Clears the queue, incumbent, bound node, and root so that the
+        next call to ``solve()`` starts from scratch.
         """
         ...
 
-    def dequeue(self) -> Node:
-        """Chooses the next evaluated node and computes its lower bound
-
-        Returns
-        -------
-        Node
-            Node to be evaluated
-        """
-        ...
-
-    def branch(self, node: Node) -> None:
+    def branch(self, node: Node[P]) -> None:
         """From a given node, create children nodes and enqueue them
 
         Parameters
         ----------
-        node : Node
-            Node being evaluated
+        node : Node[P]
+            Node[P] being evaluated
         """
         ...
 
-    def fathom(self, node: Node) -> None:  # noqa: PLR6301
-        """Fathom node (by default is not deleted)
+    def primal_heuristic(self, node: Node[P]) -> None:
+        """Calls `Problem` `primal_heuristic()` via node
+        entity to generate a feasible
+        solution from the current node, if any.
 
-        If deletion is required for managing memory, remember to delete
-        node from parent `children` attribute
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node[P]
+            Node[P] being evaluated
+        """
+        ...
+
+    def upgrade_bound(self, node: Node[P]) -> None:
+        """Calls `Problem` `stronger_bound()` via node
+        entity to generate a better lower bound from the current node,
+        if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node[P]
+            Node[P] being evaluated
+        """
+        ...
+
+    def prune(self, node: Node[P]) -> None:
+        """Prune node (by default is `Node.cleanup()` is called).
+
+        Parameters
+        ----------
+        node : Node[P]
+            Node[P] to be pruned
+        """
+        ...
+
+    def pre_eval_callback(self, node: Node[P]) -> None:
+        """Abstraction for callbacks before node bound evaluation"""
+        ...
+
+    def post_eval_callback(self, node: Node[P]) -> None:
+        """Abstraction for callbacks after node bound evaluation"""
+        ...
+
+    def enqueue_callback(self, node: Node[P]) -> None:
+        """
+        Abstraction for callbacks immediately
+        before node is enqueued, already after being evaluated.
 
         Parameters
         ----------
         node : Node
-            Node to be fathomed
+            Node that is about to be enqueued.
         """
         ...
 
-    def pre_eval_callback(self, node: Node) -> None:
-        """Abstraction for callbacks before node bound evaluation"""
+    def dequeue_callback(self, node: Node[P]) -> None:
+        """
+        Abstraction for callbacks immediately
+        after node is dequeued and possibly evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that was dequeued and evaluated (if `eval_out` is True).
+        """
         ...
 
-    def post_eval_callback(self, node: Node) -> None:
-        """Abstraction for callbacks after node bound evaluation"""
-        ...
-
-    def enqueue_callback(self, node: Node) -> None:
-        """Abstraction for callbacks after node is enqueued"""
-        ...
-
-    def dequeue_callback(self, node: Node) -> None:
-        """Abstraction for callbacks after node is dequeued"""
-        ...
-
-    def solution_callback(self, node: Node) -> None:
+    def solution_callback(self, node: Node[P]) -> None:
         """Abstraction for callback when a candidate
         feasible solution is verified (before being set)
         """
         ...
 
-    def set_solution(self, node: Node) -> None:
+    def set_solution(self, node: Node[P]) -> None:
         """Assigns the current node as incumbent, updates gap and calls
         `solution_callback`
 
         Parameters
         ----------
-        node : Node
+        node : Node[P]
             New solution node
+        """
+        ...
+
+    def set_bound(self, node: Node[P]) -> None:
+        """Public interface to set a new node as the
+        new `bound_node`, which is a readonly attribute.
+
+        Parameters
+        ----------
+        node : Node
+            New bound node
         """
         ...
 
@@ -263,71 +364,67 @@ class BranchAndBound:
         """
         ...
 
-class BreadthFirstBnB(BranchAndBound):
-    """Breadth-first Branch & Bound algorithm"""
+class DepthFirstBnB(BranchAndBound[P]):
+    """Depth-first Branch & Bound algorithm.
 
-    def __init__(
-        self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
-        eval_node: Literal['in', 'out', 'both'] = 'out',
-        save_tree: bool = False,
-    ) -> None:
-        """Initialize Breadth-First Branch & Bound algorithm.
+    Uses :class:`~bnbpy.cython.priqueue.DfsPriQueue` as the node manager.
+    """
 
-        Parameters
-        ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
-
-        eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
-            See `BranchAndBound.__init__` for the detailed behavior of
-            `'in'`, `'out'`, and `'both'`.
-
-        save_tree : bool, optional
-            Whether to save node relationships, by default False
-        """
-        ...
-
-class DepthFirstBnB(BranchAndBound):
-    """Depth-first Branch & Bound algorithm"""
-
-    # Just an alias - uses DFS queue by default
     ...
 
-class BestFirstBnB(BranchAndBound):
-    """Best-first Branch & Bound algorithm"""
+class BreadthFirstBnB(BranchAndBound[P]):
+    """Breadth-first Branch & Bound algorithm.
+
+    Uses :class:`~bnbpy.cython.priqueue.BfsPriQueue` as the node manager.
+    """
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        problem: P,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         save_tree: bool = False,
-    ) -> None:
-        """Initialize Best-First Branch & Bound algorithm.
+    ) -> None: ...
 
-        Parameters
-        ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
+class BestFirstBnB(BranchAndBound[P]):
+    """Best-first Branch & Bound algorithm.
 
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+    Uses :class:`~bnbpy.cython.priqueue.BestPriQueue` as the node manager.
+    """
 
-        eval_node : Literal['in', 'out', 'both'], optional
-            Node bound evaluation strategy, by default 'out'.
-            See `BranchAndBound.__init__` for the detailed behavior of
-            `'in'`, `'out'`, and `'both'`.
+    def __init__(
+        self,
+        problem: P,
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
+    ) -> None: ...
 
-        save_tree : bool, optional
-            Whether to save node relationships, by default False
-        """
-        ...
+class LifoBnB(BranchAndBound[P]):
+    """Branch & Bound with a last-in first-out (LIFO) node manager.
+
+    Uses :class:`~bnbpy.cython.manager.LifoManager` as the node manager.
+    Equivalent to a pure stack-based DFS without bound-based tie-breaking.
+    """
+
+    def __init__(
+        self,
+        problem: P,
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
+    ) -> None: ...
+
+class FifoBnB(BranchAndBound[P]):
+    """Branch & Bound with a first-in first-out (FIFO) node manager.
+
+    Uses :class:`~bnbpy.cython.manager.FifoManager` as the node manager.
+    Equivalent to a pure queue-based BFS without bound-based tie-breaking.
+    """
+
+    def __init__(
+        self,
+        problem: P,
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
+    ) -> None: ...
 
 def configure_logfile(
     filename: str, only_messages: bool = True, mode: str = 'a', **kwargs: Any

@@ -2,6 +2,8 @@ sphinx==9.*
 sphinx-rtd-theme==3.*
 ipykernel
 sphinxcontrib-bibtex==2.*
+sphinxcontrib-mermaid==2.*
+myst-parser==5.*
 nbsphinx==0.9.*
 matplotlib==3.*
 pandoc==2.*

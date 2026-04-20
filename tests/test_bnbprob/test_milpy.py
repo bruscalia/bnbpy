@@ -1,4 +1,4 @@
-from typing import Literal, cast
+from typing import Literal
 
 import numpy as np
 import pytest
@@ -33,13 +33,15 @@ class TestNaive:
     @pytest.mark.parametrize(
         'bnb_class', [BestFirstBnB, BreadthFirstBnB, DepthFirstBnB]
     )
-    def test_milp(self, milp: MILP, bnb_class: type[BranchAndBound]) -> None:
-        bnb = bnb_class(eval_node='in')
-        bnb.solve(milp)
+    def test_milp(
+        self, milp: MILP, bnb_class: type[BranchAndBound[MILP]]
+    ) -> None:
+        bnb = bnb_class(milp, eval_node='in')
+        bnb.solve()
         assert bnb.incumbent is not None, 'No incumbent found'
         if bnb.incumbent is None:
             return
-        problem: MILP = cast(MILP, bnb.incumbent.problem)
+        problem = bnb.incumbent.problem
         x_res = problem.results.x
         self.assert_cost(bnb.solution.cost)
         assert x_res is not None, 'No solution found'
@@ -90,16 +92,17 @@ class TestKnapsack:
         'bnb_class', [BestFirstBnB, BreadthFirstBnB, DepthFirstBnB]
     )
     def test_knapsack(
-        self, milp: MILP, bnb_class: type[BranchAndBound]
+        self, milp: MILP, bnb_class: type[BranchAndBound[MILP]]
     ) -> None:
-        bnb = bnb_class(eval_node='in')
-        bnb.solve(milp)
+        bnb = bnb_class(milp, eval_node='in')
+        bnb.solve()
         self.assert_cost(bnb.solution.cost)
         assert bnb.incumbent is not None, 'No incumbent found'
         if bnb.incumbent is None:
             return
-        problem: MILP = cast(MILP, bnb.incumbent.problem)
-        x_res = cast(np.ndarray, problem.results.x)
+        problem: MILP = bnb.incumbent.problem
+        x_res = problem.results.x
+        assert x_res is not None, 'No solution found'
         self.assert_sol(x_res)
 
     @pytest.mark.parametrize(
@@ -108,7 +111,7 @@ class TestKnapsack:
             (OptStatus.OPTIMAL, 'in', 250, 125),
             (OptStatus.FEASIBLE, 'in', 11, 11),
             (OptStatus.RELAXATION, 'in', 0, 1),
-            (OptStatus.OPTIMAL, 'out', 250, 107),
+            (OptStatus.OPTIMAL, 'out', 250, 71),
             (OptStatus.FEASIBLE, 'out', 11, 11),
             (OptStatus.RELAXATION, 'out', 0, 1),
         ],
@@ -121,8 +124,8 @@ class TestKnapsack:
         maxiter: int,
         explored: int,
     ) -> None:
-        bnb = DepthFirstBnB(eval_node=eval_node)
-        bnb.solve(milp, maxiter=maxiter)
+        bnb = DepthFirstBnB(milp, eval_node=eval_node)
+        bnb.solve(maxiter=maxiter)
         assert bnb.solution.status == status, (
             f'Wrong status for ks test {bnb.solution.status},'
             f' expected {status}'

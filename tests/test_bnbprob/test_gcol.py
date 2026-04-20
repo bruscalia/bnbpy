@@ -28,14 +28,14 @@ class TestGcol:
         instance = gcol.load_instance(fpath)
         edges = cast(list[tuple[int, int]], instance['edges'])
         price_tol = 0.1
-        bnb = BranchAndBound()
         pricing = self.get_pricing(mode, edges, price_tol)
         problem = gcol.ColGenColor(
             edges,
             pricing=pricing,
             max_iter_price=1000,
         )
-        sol = bnb.solve(problem, maxiter=500)
+        bnb = BranchAndBound(problem)
+        sol = bnb.solve(maxiter=500)
         assert sol.status == OptStatus.OPTIMAL, 'Subptimal solution'
         assert sol.cost == solution, 'Wrong cost'
 

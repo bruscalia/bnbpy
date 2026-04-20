@@ -1,74 +1,73 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libcpp cimport bool
+from libcpp.vector cimport vector
+
+from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
 
 
-cdef class NodePriQueue:
-    cdef public:
-        tuple priority
+cdef class PriEntry:
+    cdef readonly:
         Node node
+        object priority
+
+    cpdef object get_priority(self)
 
 
-cdef inline NodePriQueue init_node_pri_queue(tuple priority, Node node):
+cdef inline PriEntry init_pri_entry(Node node, object priority):
 
     cdef:
-        NodePriQueue npri
-    npri = NodePriQueue.__new__(NodePriQueue)
+        PriEntry npri
+    npri = PriEntry.__new__(PriEntry)
     npri.priority = priority
     npri.node = node
     return npri
 
 
-cdef class BasePriQueue:
-
-    cpdef bint not_empty(BasePriQueue self)
-
-    cpdef void enqueue(BasePriQueue self, Node node)
-
-    cpdef Node dequeue(BasePriQueue self)
-
-    cpdef Node get_lower_bound(BasePriQueue self)
-
-    cpdef Node pop_lower_bound(BasePriQueue self)
-
-    cpdef void clear(BasePriQueue self)
-
-    cpdef void filter_by_lb(BasePriQueue self, double max_lb)
-
-
-cdef class HeapPriQueue(BasePriQueue):
-
-    cdef public:
-        list[NodePriQueue] _queue
+cdef class PriorityQueue(BaseNodeManager):
 
     cdef:
+        list[PriEntry] heap
         double lb
 
-    cpdef bint not_empty(HeapPriQueue self)
+    cpdef int size(self)
 
-    cpdef Node dequeue(HeapPriQueue self)
+    cpdef bool not_empty(self)
 
-    cpdef Node get_lower_bound(HeapPriQueue self)
+    cpdef void enqueue(self, Node node)
 
-    cpdef Node pop_lower_bound(HeapPriQueue self)
+    cpdef void enqueue_all(self, list[Node] nodes)
 
-    cpdef void filter_by_lb(HeapPriQueue self, double max_lb)
+    cpdef Node dequeue(self)
 
-    cpdef void clear(HeapPriQueue self)
+    cpdef Node get_lower_bound(self)
+
+    cpdef Node pop_lower_bound(self)
+
+    cpdef void filter_by_lb(self, double max_lb)
+
+    cpdef void clear(self)
+
+    cpdef list[Node] pop_all(self)
+
+    cpdef list[PriEntry] get_heap(self)
+
+    cpdef PriEntry make_entry(self, Node node)
 
 
-cdef class DFSPriQueue(HeapPriQueue):
+cdef class DfsPriQueue(PriorityQueue):
 
-    cpdef void enqueue(DFSPriQueue self, Node node)
-
-
-cdef class BFSPriQueue(HeapPriQueue):
-
-    cpdef void enqueue(BFSPriQueue self, Node node)
+    cpdef PriEntry make_entry(self, Node node)
 
 
-cdef class BestPriQueue(HeapPriQueue):
+cdef class BfsPriQueue(PriorityQueue):
 
-    cpdef void enqueue(BestPriQueue self, Node node)
+    cpdef PriEntry make_entry(self, Node node)
+
+
+cdef class BestPriQueue(PriorityQueue):
+
+    cpdef PriEntry make_entry(self, Node node)
 

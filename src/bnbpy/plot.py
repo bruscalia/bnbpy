@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, List, Optional, Union
 
 import matplotlib.pyplot as plt
@@ -7,7 +9,7 @@ from bnbpy.cython.node import Node
 from bnbpy.cython.status import OptStatus
 
 
-def get_color(node: Node) -> str:  # noqa: PLR0911
+def get_color(node: Node[Any]) -> str:  # noqa: PLR0911
     if node.parent is None:
         return 'cyan'
     if node.solution.status is OptStatus.OPTIMAL:
@@ -24,14 +26,14 @@ def get_color(node: Node) -> str:  # noqa: PLR0911
 
 
 class Edges(list[Any]):
-    nodes: List[Node]
+    nodes: List[Node[Any]]
 
-    def __init__(self, root: Node):
+    def __init__(self, root: Node[Any]):
         super().__init__()
         self.nodes = []
         self.traverse(root)
 
-    def traverse(self, node: Node) -> None:
+    def traverse(self, node: Node[Any]) -> None:
         self.nodes.append(node)
         for child in node.children:
             self.append((node.index, child.index))
@@ -52,7 +54,7 @@ def _format_lb(x: float | str) -> str:
 
 
 def plot_tree(  # noqa: PLR0913, PLR0917
-    root: Node,
+    root: Node[Any],
     align: str = 'horizontal',
     show_lb: bool = True,
     custom_labels: Any = None,
@@ -64,7 +66,7 @@ def plot_tree(  # noqa: PLR0913, PLR0917
 
     Parameters
     ----------
-    root : Node
+    root : Node[Any]
         Root node of search tree
 
     align : str, optional

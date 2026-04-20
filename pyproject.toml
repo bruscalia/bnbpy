@@ -47,6 +47,8 @@ markers = [
     "node: Mark test related to Node class",
     "search: Mark test related to B&B search module",
     "priqueue: Mark test related to priority queue classes",
+    "manager: Mark test related to node manager classes (LifoManager, FifoManager)",
+    "cbfs: Mark test related to CycleQueue / cyclic best-first search",
     "colgen: Mark test related to Column Generation",
     "gcol: Mark test related to the Graph Coloring module",
     "searchlogger: Mark test related to the SearchLogger class",

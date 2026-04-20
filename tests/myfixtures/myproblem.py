@@ -2,6 +2,8 @@ from typing import List, Optional, Union
 
 from bnbpy.cython.problem import Problem
 
+STRONGER_BOUND_DELTA = 5.0
+
 
 class MyProblem(Problem):
     """Concrete subclass of Problem for testing purposes."""
@@ -23,7 +25,7 @@ class MyProblem(Problem):
     def is_feasible(self) -> bool:
         return self._feasible
 
-    def branch(self) -> List['Problem']:
+    def branch(self) -> List['MyProblem']:
         # Create two child problems for testing
         child1 = MyProblem(
             lb_value=self._lb_value + 1 if self._lb_value is not None else 1,
@@ -31,7 +33,7 @@ class MyProblem(Problem):
         )
         child2 = MyProblem(
             lb_value=self._lb_value + 2 if self._lb_value is not None else 2,
-            feasible=False,
+            feasible=True,
         )
         return [child1, child2]
 
@@ -43,5 +45,19 @@ class UnboundedProblem(Problem):
     def is_feasible(_) -> bool:
         return False
 
-    def branch(self) -> List['Problem']:
+    def branch(self) -> List['UnboundedProblem']:
         return [self.copy(), self.copy()]
+
+
+class PrimalHeuristicProblem(MyProblem):
+    """MyProblem subclass that implements primal_heuristic."""
+
+    def primal_heuristic(self) -> 'PrimalHeuristicProblem':
+        return PrimalHeuristicProblem(lb_value=self._lb_value, feasible=True)
+
+
+class StrongerBoundProblem(MyProblem):
+    """MyProblem subclass that implements a stronger bound."""
+
+    def stronger_bound(self) -> float:
+        return self.solution.lb + STRONGER_BOUND_DELTA

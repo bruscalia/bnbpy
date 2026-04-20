@@ -1,19 +1,23 @@
-from abc import abstractmethod
-from typing import Any
+from typing import Any, Generic, TypeVar
 
+from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
+from bnbpy.cython.problem import Problem
 
-class NodePriQueue:
-    priority: tuple[Any, ...]
-    node: Node
+P = TypeVar('P', bound=Problem)
 
-    def __init__(self, priority: tuple[Any, ...], node: Node) -> None: ...
-    def __lt__(self, other: 'NodePriQueue') -> bool: ...
+class PriEntry(Generic[P]):
+    node: Node[P]
+    priority: Any
 
-class BasePriQueue:
+    def __init__(self, node: Node[P], priority: Any) -> None: ...
+    def __lt__(self, other: 'PriEntry[P]') -> bool: ...
+    def get_priority(self) -> Any: ...
+
+class PriorityQueue(BaseNodeManager[P]):
     """
-    Base class for managing active nodes in Branch & Bound algorithm
-    (not necessarily formally implementing a priority queue).
+    Class for managing active nodes in Branch & Bound algorithm
+    using a priority queue.
 
     Note that due to Cython limitations this class is not implemented as
     an ABC class, but it is mandatory to implement the following methods
@@ -27,171 +31,60 @@ class BasePriQueue:
     *   `clear`
     """
 
-    @abstractmethod
-    def not_empty(self) -> bool:
-        """Checks if the priority queue is not empty.
+    heap: list[PriEntry[P]]
 
-        Returns
-        -------
-        bool
-            True if the queue is not empty, False otherwise.
-        """
-        ...
-
-    @abstractmethod
-    def enqueue(self, node: Node) -> None:
-        """Adds a node to the priority queue.
-
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
-        ...
-
-    @abstractmethod
-    def dequeue(self) -> Node:
-        """Removes and returns the next evaluated node.
-
-        Returns
-        -------
-        Node
-            The next evaluated node.
-        """
-        ...
-
-    @abstractmethod
-    def get_lower_bound(self) -> Node:
-        """Gets the node of lower bound but
-        does not remove it from the queue.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound.
-        """
-        ...
-
-    @abstractmethod
-    def pop_lower_bound(self) -> Node:
-        """Removes and returns the node of lower bound.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound.
-        """
-        ...
-
-    @abstractmethod
-    def clear(self) -> None:
-        """Makes queue empty."""
-        ...
-
-    def filter_by_lb(self, max_lb: float) -> None:
-        """Filter nodes by lower bound.
-        This method is not implemented in the base class,
-        but can be overridden in subclasses.
-
-        Parameters
-        ----------
-        max_lb : float
-            The maximum lower bound value.
-        """
-        ...
-
-class HeapPriQueue(BasePriQueue):
-    _queue: list[NodePriQueue]
-
-    def __cinit__(self) -> None: ...
+    def size(self) -> int: ...
     def not_empty(self) -> bool: ...
-    def enqueue(self, node: Node) -> None:
-        """Adds a node to the priority queue.
-        Base implementation raises NotImplementedError.
-
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
-        ...
-
-    def dequeue(self) -> Node:
-        """Removes and returns the next evaluated node.
-
-        Returns
-        -------
-        Node
-            The next evaluated node, or None if queue is empty.
-        """
-        ...
-
-    def get_lower_bound(self) -> Node:
-        """Gets the node of lower bound but does not remove it from the queue.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound, or None if queue is empty.
-        """
-        ...
-
-    def pop_lower_bound(self) -> Node:
-        """Removes and returns the node of lower bound.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound, or None if queue is empty.
-        """
-        ...
-
+    def enqueue(self, node: Node[P]) -> None: ...
+    def enqueue_all(self, nodes: list[Node[P]]) -> None: ...
+    def dequeue(self) -> Node[P] | None: ...
+    def get_lower_bound(self) -> Node[P] | None: ...
+    def pop_lower_bound(self) -> Node[P] | None: ...
     def clear(self) -> None: ...
-    def filter_by_lb(self, max_lb: float) -> None:
-        """Filters the nodes in the priority queue by their lower bound.
+    def filter_by_lb(self, max_lb: float) -> None: ...
+    def pop_all(self) -> list[Node[P]]: ...
+    def get_heap(self) -> list[PriEntry[P]]: ...
+    def make_entry(self, node: Node[P]) -> PriEntry[P]:
+        """Return a :class:`PriEntry` for *node*.
+
+        Subclasses must override this to define the ordering key.
 
         Parameters
         ----------
-        max_lb : float
-            The maximum lower bound value.
+        node : Node[P]
+            Node to wrap.
+
+        Returns
+        -------
+        PriEntry[P]
+            Heap entry carrying *node* and its ordering priority.
         """
         ...
 
-class DFSPriQueue(HeapPriQueue):
-    """Depth-First Search priority queue implementation."""
+class DfsPriQueue(PriorityQueue[P]):
+    """
+    Depth-First Search priority queue implementation with
+    tie-breaking by lower bound and node index (greater first).
+    """
 
-    def enqueue(self, node: Node) -> None:
-        """Enqueue node using DFS priority: (-level, lb).
+    def make_entry(self, node: Node[P]) -> PriEntry[P]: ...
 
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
-        ...
+class BfsPriQueue(PriorityQueue[P]):
+    """
+    Breadth-First Search priority queue implementation with
+    tie-breaking by lower bound and node index (smaller first).
+    """
 
-class BFSPriQueue(HeapPriQueue):
-    """Breadth-First Search priority queue implementation."""
+    def make_entry(self, node: Node[P]) -> PriEntry[P]: ...
 
-    def enqueue(self, node: Node) -> None:
-        """Enqueue node using BFS priority: (level, lb).
+class BestPriQueue(PriorityQueue[P]):
+    """
+    Best-First Search priority queue implementation.
 
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
-        ...
+    Nodes are ordered by lower bound, with tie-breaking by tree level
+    (deeper nodes first) and node index (greater first).
+    """
 
-class BestPriQueue(HeapPriQueue):
-    """Best-First Search priority queue implementation."""
-
-    def enqueue(self, node: Node) -> None:
-        """Enqueue node using best-first priority: (lb, -level).
-
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
-        ...
+    def make_entry(self, node: Node[P]) -> PriEntry[P]: ...
+    def get_lower_bound(self) -> Node[P] | None: ...
+    def pop_lower_bound(self) -> Node[P] | None: ...

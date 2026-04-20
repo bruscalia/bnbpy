@@ -3,23 +3,23 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Literal
 
 from bnbpy.cython.node import Node
+from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import BranchAndBound
 
 log = logging.getLogger(__name__)
 
 
-class ParallelBnB(BranchAndBound):
+class ParallelBnB(BranchAndBound[Problem]):
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        problem: Problem,
         eval_node: Literal['in', 'out', 'both'] = 'out',
         max_workers: int = 4,
     ) -> None:
-        super().__init__(rtol, atol, eval_node)
+        super().__init__(problem, eval_node)
         self.max_workers = max_workers
 
-    def branch(self, node: Node) -> None:
+    def branch(self, node: Node[Problem]) -> None:
         children = node.branch()
         if children:
             # Use ThreadPoolExecutor for parallel execution
@@ -39,6 +39,6 @@ class ParallelBnB(BranchAndBound):
                         log.error(f'Error in computing LB for child node: {e}')
 
                     # Enqueue each child after computing the lower bound
-                    self.enqueue(child)
+                    self.manager.enqueue(child)
         else:
             self.log_row('Cutoff')

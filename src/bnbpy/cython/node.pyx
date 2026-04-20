@@ -1,13 +1,19 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
+from libc.math cimport INFINITY
 from libcpp cimport bool
 
 import copy
 
 from bnbpy.cython.counter cimport Counter
-from bnbpy.cython.problem cimport Problem
+from bnbpy.cython.problem cimport Problem, P
 from bnbpy.cython.solution cimport Solution
+
+
+cdef:
+    double LARGE_POS = INFINITY
+    double LOW_NEG = -INFINITY
 
 
 cdef class Node:
@@ -41,21 +47,35 @@ cdef class Node:
             self.level = parent.level + 1
         self._sort_index = self._counter.next()
 
-    cdef void cleanup(Node self):
+    cdef void cleanup(self):
         cdef:
             Node child
 
-        if self.problem:
-            self.problem = None
-        if self.children is not None:
+        self.problem = None
+        if self.children:
             for child in self.children:
                 child.parent = None
             self.children = None
-        if self.parent:
-            self.parent = None
+        self.parent = None
 
-    def __lt__(self, other: 'Node'):
+    def __lt__(self, Node other):
         return self._sort_index > other._sort_index
+
+    def __eq__(self, other):
+        return self is other
+
+    def __hash__(self):
+        return id(self)
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax Node[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "Node can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     @property
     def solution(self) -> Solution:
@@ -65,14 +85,14 @@ cdef class Node:
     def index(self):
         return self._sort_index
 
-    cpdef void compute_bound(Node self):
+    cpdef void compute_bound(self):
         """Computes the lower bound of the problem and sets it to
         problem attribute `lb`, which is referenced as a `Node` property.
         """
         self.problem.compute_bound()
         self.lb = max(self.lb, self.problem.get_lb())
 
-    cpdef bool check_feasible(Node self):
+    cpdef bool check_feasible(self):
         """Calls `problem` `check_feasible()` method
 
         Returns
@@ -82,7 +102,7 @@ cdef class Node:
         """
         return self.problem.check_feasible()
 
-    cpdef void set_solution(Node self, Solution solution):
+    cpdef void set_solution(self, Solution solution):
         """Calls method `set_solution` of problem, which also computes
         its lower bound if not yet solved.
 
@@ -99,7 +119,7 @@ cdef class Node:
             return self.deep_copy()
         return self.shallow_copy()
 
-    cpdef list[Node] branch(Node self):
+    cpdef list[Node] branch(self):
         """Calls `problem` `branch()` method to create derived sub-problems.
         Each subproblem is used to instantiate a child node.
         Child nodes are evaluated in terms of lower bound as they are
@@ -126,7 +146,51 @@ cdef class Node:
         self.children = children
         return children
 
-    cdef Node child_problem(Node self, Problem problem):
+    cpdef Node primal_heuristic(self):
+        """Calls `problem` `primal_heuristic()`
+        method to generate a feasible
+        solution from the current node, if any.
+
+        Returns
+        -------
+        Node | None
+            A child node with a feasible solution, if any
+        """
+        cdef:
+            Problem prob_child
+            Node child
+
+        prob_child = self.problem.primal_heuristic()
+        if prob_child is None:
+            return None
+
+        # The current node is not a parent
+        # to avoid issues with counting and indexing of nodes
+        child = init_node(prob_child, None)
+        # Enforce the lower bound to -infinity as
+        # if is not strictly worse than self
+        # and should be formally computed next
+        child.lb = LOW_NEG
+        child.compute_bound()
+        if not child.check_feasible():
+            return None
+        return child
+
+    cdef void c_upgrade_bound(self):
+        cdef:
+            double new_lb
+        new_lb = self.problem.stronger_bound()
+        if new_lb > self.lb:
+            self.problem.upgrade_bound(new_lb)
+            self.lb = new_lb
+
+    cpdef void upgrade_bound(self):
+        """Calls `problem` `upgrade_bound()` method to compute a stronger
+        lower bound, if possible, and updates node's lower bound accordingly.
+        """
+        self.c_upgrade_bound()
+
+    cdef Node child_problem(self, P problem):
         cdef:
             Node other
         other = Node.__new__(Node)
@@ -139,7 +203,7 @@ cdef class Node:
         other._sort_index = other._counter.next()
         return other
 
-    cdef Node shallow_copy(Node self):
+    cdef Node shallow_copy(self):
         cdef:
             Node other
         other = Node.__new__(Node)
@@ -153,7 +217,7 @@ cdef class Node:
         return other
 
 
-cdef Node init_node(Problem problem, Node parent=None):
+cdef Node init_node(P problem, Node parent=None):
     cdef:
         Node node
     node = Node.__new__(Node)

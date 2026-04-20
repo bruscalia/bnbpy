@@ -122,7 +122,7 @@ class TestColGen:
         ),
         [
             (20, -2, 100, 5, (OptStatus.INFEASIBLE, None, 19.89)),
-            (5, -6, 100, 50, (OptStatus.FEASIBLE, 27.09, 12.49)),
+            (5, -6, 100, 10, (OptStatus.FEASIBLE, 16.29, 8.59)),
             (5, -6, 100, 100, (OptStatus.OPTIMAL, 16.29, 16.29)),
         ],
     )
@@ -139,8 +139,8 @@ class TestColGen:
             initial_red_cost=initial_red_cost,
             max_iter_price=max_iter_price,
         )
-        bnb = BranchAndBound()
-        sol = bnb.solve(problem, maxiter=maxiter)
+        bnb = BranchAndBound(problem)
+        sol = bnb.solve(maxiter=maxiter)
         print(sol)
         assert sol.status == res[0], 'Wrong status after B&P'
         if res[1] is None:

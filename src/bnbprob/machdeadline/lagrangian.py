@@ -101,6 +101,9 @@ class LagrangianDeadline(Problem):
         self._lb_refs[self._mask] = self._fixed_term
         return cost
 
+    def clean_cache(self) -> None:
+        self._lb_refs.clear()
+
     def calc_real_cost(self) -> int:
         if not self._precumputed:
             self._compute_completion_times()
@@ -137,6 +140,13 @@ class LagrangianDeadline(Problem):
         self._precumputed = False
 
     def warmstart(self) -> 'LagrangianDeadline | None':
+        if not self._lagrangian.success:
+            return None
+        sol = self.child_copy(deep=False)
+        sol._fix_all_self()
+        return sol
+
+    def primal_heuristic(self) -> 'LagrangianDeadline | None':
         if not self._lagrangian.success:
             return None
         sol = self.child_copy(deep=False)

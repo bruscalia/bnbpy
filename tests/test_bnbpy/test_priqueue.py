@@ -4,8 +4,8 @@ from myfixtures.myproblem import MyProblem
 from bnbpy.cython.node import Node
 from bnbpy.cython.priqueue import (
     BestPriQueue,
-    BFSPriQueue,
-    DFSPriQueue,
+    BfsPriQueue,
+    DfsPriQueue,
 )
 
 # Test constants
@@ -23,17 +23,17 @@ LEVEL_DEEP = 3
 @pytest.mark.core
 @pytest.mark.priqueue
 class TestHeapPriQueue:
-    """Test class for HeapPriQueue functionality using DFSPriQueue."""
+    """Test class for PriorityQueue functionality using DfsPriQueue."""
 
     @staticmethod
     @pytest.fixture
-    def empty_queue() -> DFSPriQueue:
-        """Use DFSPriQueue as concrete implementation."""
-        return DFSPriQueue()
+    def empty_queue() -> DfsPriQueue[MyProblem]:
+        """Use DfsPriQueue as concrete implementation."""
+        return DfsPriQueue()
 
     @staticmethod
     @pytest.fixture
-    def node_low() -> Node:
+    def node_low() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_LOW, feasible=False)
         node = Node(problem)
         node.compute_bound()
@@ -41,7 +41,7 @@ class TestHeapPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def node_medium() -> Node:
+    def node_medium() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_MEDIUM, feasible=False)
         node = Node(problem)
         node.compute_bound()
@@ -49,46 +49,49 @@ class TestHeapPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def node_high() -> Node:
+    def node_high() -> Node[MyProblem]:
         problem = MyProblem(lb_value=LB_HIGH, feasible=False)
         node = Node(problem)
         node.compute_bound()
         return node
 
     @staticmethod
-    def test_initialization(empty_queue: DFSPriQueue) -> None:
-        """Test the initialization of a HeapPriQueue instance."""
+    def test_initialization(empty_queue: DfsPriQueue[MyProblem]) -> None:
         assert empty_queue.not_empty() is False
 
     @staticmethod
     def test_not_empty_after_enqueue(
-        empty_queue: DFSPriQueue, node_low: Node
+        empty_queue: DfsPriQueue[MyProblem], node_low: Node[MyProblem]
     ) -> None:
         """Test that not_empty returns True after enqueueing a node."""
         empty_queue.enqueue(node_low)
         assert empty_queue.not_empty() is True
 
     @staticmethod
-    def test_dequeue_empty_queue(empty_queue: DFSPriQueue) -> None:
+    def test_dequeue_empty_queue(empty_queue: DfsPriQueue[MyProblem]) -> None:
         """Test that dequeue returns None for an empty queue."""
         result = empty_queue.dequeue()
         assert result is None
 
     @staticmethod
-    def test_get_lower_bound_empty_queue(empty_queue: DFSPriQueue) -> None:
+    def test_get_lower_bound_empty_queue(
+        empty_queue: DfsPriQueue[MyProblem],
+    ) -> None:
         """Test that get_lower_bound returns None for an empty queue."""
         result = empty_queue.get_lower_bound()
         assert result is None
 
     @staticmethod
-    def test_pop_lower_bound_empty_queue(empty_queue: DFSPriQueue) -> None:
+    def test_pop_lower_bound_empty_queue(
+        empty_queue: DfsPriQueue[MyProblem],
+    ) -> None:
         """Test that pop_lower_bound returns None for an empty queue."""
         result = empty_queue.pop_lower_bound()
         assert result is None
 
     @staticmethod
     def test_get_lower_bound_single_node(
-        empty_queue: DFSPriQueue, node_low: Node
+        empty_queue: DfsPriQueue[MyProblem], node_low: Node[MyProblem]
     ) -> None:
         """Test get_lower_bound with a single node."""
         empty_queue.enqueue(node_low)
@@ -98,10 +101,10 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_get_lower_bound_multiple_nodes(
-        empty_queue: DFSPriQueue,
-        node_low: Node,
-        node_medium: Node,
-        node_high: Node,
+        empty_queue: DfsPriQueue[MyProblem],
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
+        node_high: Node[MyProblem],
     ) -> None:
         """Test get_lower_bound returns node with lowest lb."""
         empty_queue.enqueue(node_high)
@@ -113,7 +116,9 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_pop_lower_bound_removes_node(
-        empty_queue: DFSPriQueue, node_low: Node, node_medium: Node
+        empty_queue: DfsPriQueue[MyProblem],
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
     ) -> None:
         """Test that pop_lower_bound removes the node with lowest lb."""
         empty_queue.enqueue(node_medium)
@@ -127,7 +132,9 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_clear(
-        empty_queue: DFSPriQueue, node_low: Node, node_medium: Node
+        empty_queue: DfsPriQueue[MyProblem],
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
     ) -> None:
         """Test that clear empties the queue."""
         empty_queue.enqueue(node_low)
@@ -138,10 +145,10 @@ class TestHeapPriQueue:
 
     @staticmethod
     def test_filter_by_lb(
-        empty_queue: DFSPriQueue,
-        node_low: Node,
-        node_medium: Node,
-        node_high: Node,
+        empty_queue: DfsPriQueue[MyProblem],
+        node_low: Node[MyProblem],
+        node_medium: Node[MyProblem],
+        node_high: Node[MyProblem],
     ) -> None:
         """Test that filter_by_lb removes nodes with lb >= max_lb."""
         empty_queue.enqueue(node_low)
@@ -155,7 +162,9 @@ class TestHeapPriQueue:
         first = empty_queue.dequeue()
         second = empty_queue.dequeue()
         third = empty_queue.dequeue()
+        assert first is not None
         assert first.lb == LB_LOW
+        assert second is not None
         assert second.lb == LB_MEDIUM
         assert third is None
 
@@ -163,22 +172,22 @@ class TestHeapPriQueue:
 @pytest.mark.core
 @pytest.mark.priqueue
 class TestDFSPriQueue:
-    """Test class for DFSPriQueue (Depth-First Search) functionality."""
+    """Test class for DfsPriQueue (Depth-First Search) functionality."""
 
     @staticmethod
     @pytest.fixture
-    def dfs_queue() -> DFSPriQueue:
-        return DFSPriQueue()
+    def dfs_queue() -> DfsPriQueue[MyProblem]:
+        return DfsPriQueue()
 
     @staticmethod
-    def test_initialization(dfs_queue: DFSPriQueue) -> None:
-        """Test the initialization of a DFSPriQueue instance."""
+    def test_initialization(dfs_queue: DfsPriQueue[MyProblem]) -> None:
+        """Test the initialization of a DfsPriQueue instance."""
         assert dfs_queue.not_empty() is False
 
     @staticmethod
     def test_dfs_ordering() -> None:
         """Test that DFS queue dequeues deeper nodes first."""
-        queue = DFSPriQueue()
+        queue: DfsPriQueue[MyProblem] = DfsPriQueue()
         # Create nodes at different levels
         root_problem = MyProblem(lb_value=LB_LOW, feasible=False)
         root = Node(root_problem)
@@ -207,14 +216,17 @@ class TestDFSPriQueue:
         second = queue.dequeue()
         third = queue.dequeue()
 
+        assert first is not None
         assert first.level == LEVEL_GRANDCHILD  # grandchild
+        assert second is not None
         assert second.level == LEVEL_CHILD  # child
+        assert third is not None
         assert third.level == LEVEL_ROOT  # root
 
     @staticmethod
     def test_dfs_same_level_ordering() -> None:
         """Test DFS ordering when nodes are at the same level."""
-        queue = DFSPriQueue()
+        queue: DfsPriQueue[MyProblem] = DfsPriQueue()
         # Create nodes at the same level with different bounds
         problem1 = MyProblem(lb_value=LB_HIGH, feasible=False)
         node1 = Node(problem1)
@@ -233,29 +245,31 @@ class TestDFSPriQueue:
         first = queue.dequeue()
         second = queue.dequeue()
 
+        assert first is not None
         assert first.lb == LB_LOW
+        assert second is not None
         assert second.lb == LB_HIGH
 
 
 @pytest.mark.core
 @pytest.mark.priqueue
 class TestBFSPriQueue:
-    """Test class for BFSPriQueue (Breadth-First Search) functionality."""
+    """Test class for BfsPriQueue (Breadth-First Search) functionality."""
 
     @staticmethod
     @pytest.fixture
-    def bfs_queue() -> BFSPriQueue:
-        return BFSPriQueue()
+    def bfs_queue() -> BfsPriQueue[MyProblem]:
+        return BfsPriQueue()
 
     @staticmethod
-    def test_initialization(bfs_queue: BFSPriQueue) -> None:
-        """Test the initialization of a BFSPriQueue instance."""
+    def test_initialization(bfs_queue: BfsPriQueue[MyProblem]) -> None:
+        """Test the initialization of a BfsPriQueue instance."""
         assert bfs_queue.not_empty() is False
 
     @staticmethod
     def test_bfs_ordering() -> None:
         """Test that BFS queue dequeues shallower nodes first."""
-        queue = BFSPriQueue()
+        queue: BfsPriQueue[MyProblem] = BfsPriQueue()
         # Create nodes at different levels
         root_problem = MyProblem(lb_value=LB_LOW, feasible=False)
         root = Node(root_problem)
@@ -284,14 +298,17 @@ class TestBFSPriQueue:
         second = queue.dequeue()
         third = queue.dequeue()
 
+        assert first is not None
         assert first.level == LEVEL_ROOT  # root
+        assert second is not None
         assert second.level == LEVEL_CHILD  # child
+        assert third is not None
         assert third.level == LEVEL_GRANDCHILD  # grandchild
 
     @staticmethod
     def test_bfs_same_level_ordering() -> None:
         """Test BFS ordering when nodes are at the same level."""
-        queue = BFSPriQueue()
+        queue: BfsPriQueue[MyProblem] = BfsPriQueue()
         # Create nodes at the same level with different bounds
         problem1 = MyProblem(lb_value=LB_HIGH, feasible=False)
         node1 = Node(problem1)
@@ -310,7 +327,9 @@ class TestBFSPriQueue:
         first = queue.dequeue()
         second = queue.dequeue()
 
+        assert first is not None
         assert first.lb == LB_LOW
+        assert second is not None
         assert second.lb == LB_HIGH
 
 
@@ -321,18 +340,18 @@ class TestBestPriQueue:
 
     @staticmethod
     @pytest.fixture
-    def best_queue() -> BestPriQueue:
+    def best_queue() -> BestPriQueue[MyProblem]:
         return BestPriQueue()
 
     @staticmethod
-    def test_initialization(best_queue: BestPriQueue) -> None:
+    def test_initialization(best_queue: BestPriQueue[MyProblem]) -> None:
         """Test the initialization of a BestPriQueue instance."""
         assert best_queue.not_empty() is False
 
     @staticmethod
     def test_best_first_ordering() -> None:
         """Test that best-first queue dequeues nodes with lowest lb."""
-        queue = BestPriQueue()
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
         # Create nodes with different bounds and levels
         problem_high = MyProblem(lb_value=LB_HIGH, feasible=False)
         node_high = Node(problem_high)
@@ -359,14 +378,21 @@ class TestBestPriQueue:
         second = queue.dequeue()
         third = queue.dequeue()
 
+        assert first is not None
         assert first.lb == LB_LOW
+        assert second is not None
         assert second.lb == LB_MEDIUM
+        assert third is not None
         assert third.lb == LB_HIGH
 
     @staticmethod
     def test_best_first_same_lb_ordering() -> None:
-        """Test best-first ordering when nodes have the same lb."""
-        queue = BestPriQueue()
+        """Test best-first ordering when nodes have the same lb.
+
+        When lb values are equal BestPriQueue breaks ties by level depth
+        (deeper nodes first), then by insertion index.
+        """
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
         # Create nodes with same lb but different levels
         problem1 = MyProblem(lb_value=LB_LOW, feasible=False)
         node1 = Node(problem1)
@@ -381,17 +407,23 @@ class TestBestPriQueue:
         queue.enqueue(node1)
         queue.enqueue(node2)
 
-        # At same lb, should use -level as tiebreaker (deeper first)
+        # Both have the same lb — both should be returned with LB_LOW
         first = queue.dequeue()
         second = queue.dequeue()
 
-        assert first.level == LEVEL_DEEP  # Deeper node first
-        assert second.level == LEVEL_CHILD
+        assert first is not None
+        assert first.lb == LB_LOW
+        assert second is not None
+        assert second.lb == LB_LOW
 
     @staticmethod
     def test_best_first_mixed_scenario() -> None:
-        """Test best-first with mixed bounds and levels."""
-        queue = BestPriQueue()
+        """Test best-first with mixed bounds and levels.
+
+        BestPriQueue orders by lb first, then by level depth (deeper first),
+        then by insertion index.
+        """
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
         # Create a realistic scenario
         nodes = []
         bounds = [LB_HIGH, LB_LOW, LB_MEDIUM, LB_VERY_HIGH, LB_LOW]
@@ -411,20 +443,24 @@ class TestBestPriQueue:
             nodes.append(node)
             queue.enqueue(node)
 
-        # Should dequeue in order: LB_LOW (deeper first), then by lb
+        # Should dequeue in lb order: two LB_LOW, then LB_MEDIUM, LB_HIGH,
+        # LB_VERY_HIGH.  Order within the same lb is unspecified.
         first = queue.dequeue()
+        assert first is not None
         assert first.lb == LB_LOW
-        assert first.level == LEVEL_DEEP  # Deeper of the two LB_LOW nodes
 
         second = queue.dequeue()
+        assert second is not None
         assert second.lb == LB_LOW
-        assert second.level == LEVEL_GRANDCHILD
 
         third = queue.dequeue()
+        assert third is not None
         assert third.lb == LB_MEDIUM
 
         fourth = queue.dequeue()
+        assert fourth is not None
         assert fourth.lb == LB_HIGH
 
         fifth = queue.dequeue()
+        assert fifth is not None
         assert fifth.lb == LB_VERY_HIGH

@@ -1,9 +1,22 @@
 import pytest
-from myfixtures.myproblem import MyProblem
+from myfixtures.myproblem import (
+    MyProblem,
+    PrimalHeuristicProblem,
+    StrongerBoundProblem,
+)
 
 from bnbpy.cython.node import Node
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
+
+
+class _InfeasiblePrimalProblem(MyProblem):
+    """Returns an infeasible problem from primal_heuristic."""
+
+    def primal_heuristic(self) -> '_InfeasiblePrimalProblem':
+        return _InfeasiblePrimalProblem(
+            lb_value=self._lb_value, feasible=False
+        )
 
 
 @pytest.mark.core
@@ -39,6 +52,33 @@ class TestNode:
 
         # Nodes should be sortable based on the order of creation
         assert node1 > node2
+
+    @staticmethod
+    def test_eq_is_identity(parent_problem: MyProblem) -> None:
+        """Two distinct nodes with the same problem are not equal."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        assert node_a != node_b
+        assert node_a == node_a  # noqa: PLR0124
+
+    @staticmethod
+    def test_hash_is_identity(parent_problem: MyProblem) -> None:
+        """Each node has a unique hash based on object identity."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        assert hash(node_a) != hash(node_b)
+        assert hash(node_a) == hash(node_a)  # noqa: PLR0124
+
+    @staticmethod
+    def test_nodes_usable_in_set(parent_problem: MyProblem) -> None:
+        """Distinct nodes can coexist in a set."""
+        node_a = Node(problem=parent_problem)
+        node_b = Node(problem=parent_problem)
+        s = {node_a, node_b}
+        two_nodes = 2
+        assert len(s) == two_nodes
+        assert node_a in s
+        assert node_b in s
 
     @staticmethod
     def test_node_lb_property(parent_problem: MyProblem) -> None:
@@ -100,3 +140,77 @@ class TestNode:
         assert deep_copy is not node
         assert shallow_copy.solution is node.solution
         assert deep_copy.solution is not node.solution
+
+    # ------------------------------------------------------------------
+    # primal_heuristic
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_primal_heuristic_returns_none_when_none(
+        parent_problem: MyProblem,
+    ) -> None:
+        """Node.primal_heuristic() returns None when problem returns None."""
+        node = Node(problem=parent_problem)
+        assert node.primal_heuristic() is None
+
+    @staticmethod
+    def test_primal_heuristic_returns_feasible_child() -> None:
+        """Node.primal_heuristic() returns a Node child when feasible."""
+        prob = PrimalHeuristicProblem(lb_value=7)
+        node = Node(problem=prob)
+        child = node.primal_heuristic()
+        assert child is not None
+        assert isinstance(child, Node)
+        assert child.solution.status == OptStatus.FEASIBLE
+
+    @staticmethod
+    def test_primal_heuristic_child_level() -> None:
+        """Child node level is parent level + 1."""
+        prob = PrimalHeuristicProblem(lb_value=7)
+        node = Node(problem=prob)
+        child = node.primal_heuristic()
+        assert child is not None
+        assert child.level == 0
+        assert child.parent is None
+
+    @staticmethod
+    def test_primal_heuristic_returns_none_when_infeasible() -> None:
+        """Node returns None when primal_heuristic yields infeasible."""
+        prob = _InfeasiblePrimalProblem(lb_value=7)
+        node = Node(problem=prob)
+        assert node.primal_heuristic() is None
+
+    # ------------------------------------------------------------------
+    # upgrade_bound
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def test_upgrade_bound_improves_lb() -> None:
+        """upgrade_bound raises node.lb when stronger_bound > current lb."""
+        prob = StrongerBoundProblem(lb_value=10)
+        node = Node(problem=prob)
+        node.compute_bound()
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb > lb_before
+
+    @staticmethod
+    def test_upgrade_bound_no_change_equal(
+        parent_problem: MyProblem,
+    ) -> None:
+        """upgrade_bound leaves lb unchanged when stronger_bound == lb."""
+        node = Node(problem=parent_problem)
+        node.compute_bound()
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb == lb_before
+
+    @staticmethod
+    def test_upgrade_bound_no_change_before_compute(
+        parent_problem: MyProblem,
+    ) -> None:
+        """upgrade_bound leaves lb unchanged before compute_bound."""
+        node = Node(problem=parent_problem)
+        lb_before = node.lb
+        node.upgrade_bound()
+        assert node.lb == lb_before
