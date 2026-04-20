@@ -1,5 +1,13 @@
 import pyomo.environ as pyo
 
+from bnbprob.pafssp import PermFlowShop
+
+
+def set_warmstart(model: pyo.ConcreteModel, instance: PermFlowShop) -> None:
+    warmstart = instance.warmstart()
+    for k, job in enumerate(warmstart.sequence):
+        model.x[job.j, k].value = 1
+
 
 def positional_model(
     p: list[list[int]], edges: list[tuple[int, int]] | None = None
