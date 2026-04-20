@@ -3,6 +3,7 @@ __all__ = [
     'MachDeadlineProb',
     'MachineDeadlineInstance',
     'LagrangianDeadline',
+    'PrecedenceModel',
     'DeadlineLagrangianSearch',
 ]
 
@@ -10,4 +11,5 @@ from bnbprob.machdeadline.bnb import DeadlineLagrangianSearch
 from bnbprob.machdeadline.instance import MachineDeadlineInstance
 from bnbprob.machdeadline.job import Job
 from bnbprob.machdeadline.lagrangian import LagrangianDeadline
+from bnbprob.machdeadline.model import PrecedenceModel
 from bnbprob.machdeadline.problem import MachDeadlineProb

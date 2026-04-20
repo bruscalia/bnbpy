@@ -1,6 +1,8 @@
-from bnbpy import BranchAndBound, Node, Problem
+from bnbpy import BranchAndBound, Node
+
+from .lagrangian import LagrangianDeadline
 
 
-class DeadlineLagrangianSearch(BranchAndBound[Problem]):
-    def post_eval_callback(self, node: Node[Problem]) -> None:
+class DeadlineLagrangianSearch(BranchAndBound[LagrangianDeadline]):
+    def post_eval_callback(self, node: Node[LagrangianDeadline]) -> None:
         self.primal_heuristic(node)
