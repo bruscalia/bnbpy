@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libc.math cimport INFINITY
 from libc.limits cimport ULLONG_MAX
@@ -599,6 +599,9 @@ cdef class BranchAndBound:
             self.prune(node)
 
     cdef Node _dequeue_core(BranchAndBound self):
+        cdef:
+            Node node
+
         node = self.manager.dequeue()
         if self.eval_out:
             self._node_eval(node)
@@ -633,6 +636,7 @@ cdef class BranchAndBound:
                 self.bound_node = self.incumbent
             self._update_gap()
             return
+
         old_bound = self.bound_node
         self.bound_node = self.manager.get_lower_bound()
         if (

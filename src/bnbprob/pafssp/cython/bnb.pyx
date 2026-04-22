@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp cimport bool
 from libc.math cimport sqrt
@@ -57,8 +57,12 @@ cdef class CycleBestFlowShop(CycleQueue):
     as the per-level priority queue.
     """
 
-    def __init__(self, int max_size=1_000_000):
-        super(CycleBestFlowShop, self).__init__(max_size)
+    def __init__(
+        self,
+        int max_size=1_000_000,
+        bool permanent_fallback=False,
+    ):
+        super(CycleBestFlowShop, self).__init__(max_size, permanent_fallback)
         self.fallback_queue = DfsFlowShop()
 
     cpdef CycleLevel new_level(self, int level):
@@ -73,9 +77,14 @@ cdef class LazyBnB(BranchAndBound):
         self,
         PermFlowShop problem,
         save_tree=False,
-        delay_lb5=False
+        delay_lb5=False,
     ):
-        super(LazyBnB, self).__init__(problem, EVAL_NODE, save_tree)
+        super(LazyBnB, self).__init__(
+            problem,
+            EVAL_NODE,
+            save_tree,
+            None,
+        )
         self.manager = DfsFlowShop()
         self.delay_lb5 = delay_lb5
         if delay_lb5:
@@ -112,9 +121,13 @@ cdef class CutoffBnB(LazyBnB):
         PermFlowShop problem,
         float ub_value,
         save_tree=False,
-        delay_lb5=False
+        delay_lb5=False,
     ):
-        super(CutoffBnB, self).__init__(problem, save_tree, delay_lb5)
+        super(CutoffBnB, self).__init__(
+            problem,
+            save_tree,
+            delay_lb5,
+        )
         self.manager = DfsFlowShop()
         self.ub_value = ub_value
 
@@ -175,9 +188,13 @@ cdef class CallbackBnB(LazyBnB):
         PermFlowShop problem,
         save_tree=False,
         delay_lb5=False,
-        heur_factor=HEUR_BASE
+        heur_factor=HEUR_BASE,
     ):
-        super(CallbackBnB, self).__init__(problem, save_tree, delay_lb5)
+        super(CallbackBnB, self).__init__(
+            problem,
+            save_tree,
+            delay_lb5,
+        )
         self.manager = DfsFlowShop()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor

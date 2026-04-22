@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from cpython.object cimport Py_EQ, Py_NE, Py_LT, Py_GT, Py_LE, Py_GE
 from libcpp cimport bool

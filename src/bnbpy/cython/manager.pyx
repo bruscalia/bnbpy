@@ -1,6 +1,7 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
+from libc.math cimport INFINITY
 from libcpp cimport bool
 from collections import deque
 
@@ -151,7 +152,8 @@ cdef class LifoManager(BaseNodeManager):
     """
 
     def __cinit__(self):
-        self.stack = deque()
+        self.stack = []
+        self.lb = INFINITY
 
     cpdef bool not_empty(self):
         return len(self.stack) > 0
@@ -160,6 +162,8 @@ cdef class LifoManager(BaseNodeManager):
         return len(self.stack)
 
     cpdef void enqueue(self, Node node):
+        if node.lb < self.lb:
+            self.lb = node.lb
         self.stack.append(node)
 
     cpdef Node dequeue(self):
@@ -168,37 +172,44 @@ cdef class LifoManager(BaseNodeManager):
         return None
 
     cpdef Node get_lower_bound(self):
+        cdef:
+            Node node, min_node
         if self.not_empty():
-            return min(self.stack, key=get_node_lb)
+            min_node = self.stack[0]
+            for node in self.stack:
+                if node.lb <= self.lb:
+                    return node
+                if node.lb < min_node.lb:
+                    min_node = node
+            self.lb = min_node.lb
+            return min_node
         return None
 
     cpdef Node pop_lower_bound(self):
         if self.not_empty():
-            min_node = min(self.stack, key=get_node_lb)
+            min_node = self.get_lower_bound()
             self.stack.remove(min_node)
             return min_node
         return None
 
     cpdef void clear(self):
         self.stack.clear()
+        self.lb = INFINITY
 
     cpdef void filter_by_lb(self, double max_lb):
         cdef:
             int i, j, N
             Node node
-            list[Node] filtered_stack
 
-        filtered_stack = [None] * len(self.stack)
         j = 0
         for i in range(len(self.stack)):
             node = self.stack[i]
             if node.lb < max_lb:
-                filtered_stack[j] = node
+                self.stack[j] = node
                 j += 1
             else:
                 node.cleanup()
-        filtered_stack = filtered_stack[:j]
-        self.stack = deque(filtered_stack)
+        self.stack = self.stack[:j]
 
     cpdef list[Node] pop_all(self):
         nodes = list(self.stack)
@@ -215,5 +226,5 @@ cdef class FifoManager(LifoManager):
 
     cpdef Node dequeue(self):
         if self.not_empty():
-            return self.stack.popleft()
+            return self.stack.pop(0)
         return None

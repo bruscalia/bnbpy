@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
@@ -30,6 +30,7 @@ cdef class PriorityQueue(BaseNodeManager):
 
     cdef:
         list[PriEntry] heap
+        set[Node] bound_nodes
         double lb
 
     cpdef int size(self)
@@ -55,6 +56,21 @@ cdef class PriorityQueue(BaseNodeManager):
     cpdef list[PriEntry] get_heap(self)
 
     cpdef PriEntry make_entry(self, Node node)
+
+    cpdef double peek_lb(self)
+
+    cpdef set[Node] get_bound_nodes(self)
+
+    cdef inline void enqueue_bound_update(self, Node node):
+        if node.lb <= self.lb:
+            if node.lb < self.lb:
+                self.lb = node.lb
+                self.bound_nodes.clear()
+            self.bound_nodes.add(node)
+
+    cdef inline void dequeue_bound_update(self, Node node):
+        if node.lb <= self.lb:
+            self.bound_nodes.discard(node)
 
 
 cdef class DfsPriQueue(PriorityQueue):

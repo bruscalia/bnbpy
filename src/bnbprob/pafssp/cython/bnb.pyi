@@ -30,7 +30,11 @@ class CycleBestFlowShop(CycleQueue[PermFlowShop]):
     as the per-level priority queue.
     """
 
-    ...
+    def __init__(
+        self,
+        max_size: int = 1_000_000,
+        permanent_fallback: bool = False,
+    ) -> None: ...
 
 class LazyBnB(BranchAndBound[PermFlowShop]):
     """Subclass of :class:`~bnbpy.cython.search.BranchAndBound` with a

@@ -464,3 +464,139 @@ class TestBestPriQueue:
         fifth = queue.dequeue()
         assert fifth is not None
         assert fifth.lb == LB_VERY_HIGH
+
+
+@pytest.mark.core
+@pytest.mark.priqueue
+class TestBoundNodesTracking:
+    """Tests for the bound_nodes bookkeeping in PriorityQueue.
+
+    These cases guard against a regression where enqueueing a node with a
+    strictly lower lb failed to clear stale entries from bound_nodes.
+
+    Root cause: the old enqueue() updated self.lb *before* calling
+    enqueue_bound_update, so the inner check ``node.lb < self.lb`` was
+    never True and bound_nodes was never cleared.  get_lower_bound() then
+    short-circuited on the stale set and returned a higher-lb node.
+    """
+
+    @staticmethod
+    def test_bound_nodes_cleared_when_lower_lb_enqueued() -> None:
+        """Enqueueing a node with strictly lower lb replaces bound_nodes.
+
+        After enqueue(high) then enqueue(low), get_lower_bound() must return
+        the low node, not the high one that was first added to bound_nodes.
+        """
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
+        node_high = Node(MyProblem(lb_value=LB_HIGH, feasible=False))
+        node_high.compute_bound()
+        node_low = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        node_low.compute_bound()
+
+        queue.enqueue(node_high)  # bound_nodes <- {node_high}, lb = LB_HIGH
+        queue.enqueue(node_low)  # must clear {node_high}, lb = LB_LOW
+
+        # get_lower_bound uses the bound_nodes short-circuit — must return
+        # node_low, not node_high
+        result = queue.get_lower_bound()
+        assert result is node_low
+
+        # Drain: first out must still be the lowest-lb node
+        first = queue.dequeue()
+        assert first is node_low
+
+    @staticmethod
+    def test_bound_nodes_not_stale_across_multiple_lb_drops() -> None:
+        """bound_nodes is replaced, not accumulated, on each lb drop."""
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
+        node_a = Node(MyProblem(lb_value=LB_VERY_HIGH, feasible=False))
+        node_a.compute_bound()
+        node_b = Node(MyProblem(lb_value=LB_HIGH, feasible=False))
+        node_b.compute_bound()
+        node_c = Node(MyProblem(lb_value=LB_MEDIUM, feasible=False))
+        node_c.compute_bound()
+        node_d = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        node_d.compute_bound()
+
+        queue.enqueue(node_a)  # lb = LB_VERY_HIGH
+        queue.enqueue(node_b)  # lb drops to LB_HIGH
+        queue.enqueue(node_c)  # lb drops to LB_MEDIUM
+        queue.enqueue(node_d)  # lb drops to LB_LOW
+
+        # Only node_d should be the bound
+        result = queue.get_lower_bound()
+        assert result is node_d
+        assert result.lb == LB_LOW
+
+        # Higher-lb nodes must NOT be in bound_nodes
+        bound = queue.get_bound_nodes()
+        assert node_a not in bound
+        assert node_b not in bound
+        assert node_c not in bound
+        assert node_d in bound
+
+    @staticmethod
+    def test_bound_nodes_collects_all_equal_lb_nodes() -> None:
+        """All nodes sharing the minimum lb are tracked in bound_nodes."""
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
+        n1 = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        n1.compute_bound()
+        n2 = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        n2.compute_bound()
+        n3 = Node(MyProblem(lb_value=LB_MEDIUM, feasible=False))
+        n3.compute_bound()
+
+        queue.enqueue(n1)
+        queue.enqueue(n2)
+        queue.enqueue(n3)  # higher lb — must NOT enter bound_nodes
+
+        bound = queue.get_bound_nodes()
+        assert n1 in bound
+        assert n2 in bound
+        assert n3 not in bound
+
+    @staticmethod
+    def test_bound_nodes_updated_after_sole_bound_node_dequeued() -> None:
+        """After dequeuing the sole bound node, the next minimum is found."""
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
+        node_low = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        node_low.compute_bound()
+        node_high = Node(MyProblem(lb_value=LB_HIGH, feasible=False))
+        node_high.compute_bound()
+
+        queue.enqueue(node_low)
+        queue.enqueue(node_high)
+        assert queue.get_lower_bound() is node_low
+
+        queue.dequeue()  # pops node_low (best-first)
+
+        result = queue.get_lower_bound()
+        assert result is node_high
+        assert result.lb == LB_HIGH
+
+    @staticmethod
+    def test_get_lower_bound_after_dequeue_enqueue_cycle() -> None:
+        """get_lower_bound remains consistent through an enqueue/dequeue cycle.
+
+        After dequeuing the bound node, self.lb is *not* reset.  A subsequent
+        enqueue with lb > old self.lb must not be silently excluded from
+        bound_nodes; get_lower_bound must trigger a full heap scan and still
+        return the actual minimum.
+        """
+        queue: BestPriQueue[MyProblem] = BestPriQueue()
+        low = Node(MyProblem(lb_value=LB_LOW, feasible=False))
+        low.compute_bound()
+        queue.enqueue(low)
+        assert queue.get_lower_bound() is low  # lb = LB_LOW
+
+        queue.dequeue()  # removes low; bound_nodes = {}, lb stays at LB_LOW
+
+        high = Node(MyProblem(lb_value=LB_HIGH, feasible=False))
+        high.compute_bound()
+        queue.enqueue(high)
+        # high.lb > self.lb (LB_LOW) — enqueue_bound_update does NOT add to
+        # bound_nodes, so bound_nodes stays empty.  get_lower_bound must
+        # perform a full heap scan and still find the correct minimum.
+        result = queue.get_lower_bound()
+        assert result is high
+        assert result.lb == LB_HIGH

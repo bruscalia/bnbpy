@@ -20,7 +20,6 @@ class CycleLevel(Generic[P]):
     prev: 'CycleLevel[P]'
 
     def __init__(self, level: int) -> None: ...
-
     def size(self) -> int:
         """Return the number of nodes at this level."""
         ...
@@ -84,9 +83,14 @@ class CycleQueue(BaseNodeManager[P]):
     node_counter: int
     max_size: int
     use_fallback: bool
+    permanent_fallback: bool
     fallback_queue: PriorityQueue[P]
 
-    def __init__(self, max_size: int = 100_000) -> None:
+    def __init__(
+        self,
+        max_size: int = 100_000,
+        permanent_fallback: bool = False,
+    ) -> None:
         """Initialise the cycle queue.
 
         Parameters
@@ -94,6 +98,10 @@ class CycleQueue(BaseNodeManager[P]):
         max_size : int, optional
             Maximum number of nodes before switching to the fallback DFS
             queue, by default 100 000.
+
+        permanent_fallback : bool, optional
+            If ``True``, once the fallback queue is entered it will never be
+            exited, even if the load drops below the threshold.
         """
         ...
 
