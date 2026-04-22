@@ -4,12 +4,10 @@
 from libcpp cimport bool
 from libc.math cimport sqrt
 
-import heapq
-
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.cbfs cimport CycleQueue, CycleLevel
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport PriEntry, PriorityQueue, init_pri_entry
+from bnbpy.cython.priqueue_cpp cimport CppPriorityQueue, DfsCppPriQueue, BestCppPriQueue
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -20,35 +18,28 @@ cdef:
 EVAL_NODE: str = "in"
 
 
-cdef class DfsFlowShop(PriorityQueue):
+cdef class DfsFlowShop(DfsCppPriQueue):
 
-    cpdef PriEntry make_entry(self, Node node):
+    cpdef object make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-
-        return init_pri_entry(
-            node,
-            (-node.level, node.lb, idle_time)
-        )
+        return (-node.level, node.lb, idle_time)
 
 
-cdef class BestFirstFlowShop(PriorityQueue):
-    cpdef PriEntry make_entry(self, Node node):
+cdef class BestFirstFlowShop(BestCppPriQueue):
+
+    cpdef object make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-
-        return init_pri_entry(
-            node,
-            (node.lb, idle_time)
-        )
+        return (node.lb, idle_time)
 
 
 cdef class CycleBestFlowShop(CycleQueue):
@@ -66,9 +57,10 @@ cdef class CycleBestFlowShop(CycleQueue):
         self.fallback_queue = DfsFlowShop()
 
     cpdef CycleLevel new_level(self, int level):
-        new_level = CycleLevel(level)
-        new_level.set_queue(DfsFlowShop())
-        return new_level
+        cdef CycleLevel lvl
+        lvl = CycleLevel(level)
+        lvl.set_queue(DfsFlowShop())
+        return lvl
 
 
 cdef class LazyBnB(BranchAndBound):
@@ -91,6 +83,7 @@ cdef class LazyBnB(BranchAndBound):
             self.min_lb5_level = (problem.get_n() // 3) + 1
         else:
             self.min_lb5_level = 0
+
 
     @staticmethod
     def delay_by_root(problem: PermFlowShop) -> bool:

@@ -1,13 +1,17 @@
 from bnbprob.pafssp.cython.problem import BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.cbfs import CycleQueue
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue import PriorityQueue
+from bnbpy.cython.priqueue_cpp import (
+    BestCppPriQueue,
+    CppPriorityQueue,
+    DfsCppPriQueue,
+)
 from bnbpy.cython.search import BranchAndBound
 
 HEUR_BASE: int = 100
 EVAL_NODE: str
 
-class DfsFlowShop(PriorityQueue[PermFlowShop]):
+class DfsFlowShop(DfsCppPriQueue[PermFlowShop]):
     """DFS-ordered priority queue for PermFlowShop nodes.
 
     Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
@@ -16,7 +20,7 @@ class DfsFlowShop(PriorityQueue[PermFlowShop]):
 
     ...
 
-class BestFirstFlowShop(PriorityQueue[PermFlowShop]):
+class BestFirstFlowShop(BestCppPriQueue[PermFlowShop]):
     """Best-first priority queue for PermFlowShop nodes.
 
     Priority is ``(lb, idle_time)`` — best bound, then least idle time first.

@@ -3,7 +3,7 @@ from myfixtures.myproblem import MyProblem
 
 from bnbpy.cython.cbfs import CycleLevel, CycleQueue
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue import DfsPriQueue
+from bnbpy.cython.priqueue_cpp import DfsCppPriQueue
 from bnbpy.cython.search import BranchAndBound
 from bnbpy.cython.status import OptStatus
 
@@ -126,7 +126,7 @@ class TestCycleLevel:
         node = _make_node(LB_LOW)
         level.add_node(node)
         # Replace with a fresh queue — old node is gone
-        level.set_queue(DfsPriQueue())
+        level.set_queue(DfsCppPriQueue())
         assert level.size() == 0
 
     @staticmethod

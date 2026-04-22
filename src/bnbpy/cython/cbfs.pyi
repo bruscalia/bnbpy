@@ -2,7 +2,7 @@ from typing import Generic, TypeVar
 
 from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue import PriorityQueue
+from bnbpy.cython.priqueue_cpp import CppPriorityQueue
 from bnbpy.cython.problem import Problem
 
 P = TypeVar('P', bound=Problem)
@@ -24,7 +24,7 @@ class CycleLevel(Generic[P]):
         """Return the number of nodes at this level."""
         ...
 
-    def set_queue(self, pri_queue: PriorityQueue[P]) -> None:
+    def set_queue(self, pri_queue: CppPriorityQueue[P]) -> None:
         """Replace the internal priority queue.
 
         Parameters
@@ -84,7 +84,7 @@ class CycleQueue(BaseNodeManager[P]):
     max_size: int
     use_fallback: bool
     permanent_fallback: bool
-    fallback_queue: PriorityQueue[P]
+    fallback_queue: CppPriorityQueue[P]
 
     def __init__(
         self,

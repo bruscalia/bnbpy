@@ -8,7 +8,7 @@ from libcpp cimport bool
 
 from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport BestPriQueue, DfsPriQueue, PriorityQueue
+from bnbpy.cython.priqueue_cpp cimport BestCppPriQueue, DfsCppPriQueue, CppPriorityQueue
 
 log = logging.getLogger(__name__)
 
@@ -29,12 +29,12 @@ cdef class CycleLevel:
         self.level = level
         self.next = self
         self.prev = self
-        self.pri_queue = BestPriQueue()
+        self.pri_queue = BestCppPriQueue()
 
     cpdef int size(self):
         return self.pri_queue.size()
 
-    cpdef void set_queue(self, PriorityQueue pri_queue):
+    cpdef void set_queue(self, CppPriorityQueue pri_queue):
         self.pri_queue = pri_queue
 
     cpdef void add_node(self, Node node):
@@ -84,7 +84,7 @@ cdef class CycleQueue(BaseNodeManager):
         self.start_level = None
         self.last_level = None
         self.node_counter = 0
-        self.fallback_queue = DfsPriQueue()
+        self.fallback_queue = DfsCppPriQueue()
         self.max_size = max_size
         self.use_fallback = False
         self.permanent_fallback = permanent_fallback
