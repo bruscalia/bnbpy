@@ -60,7 +60,7 @@ cdef class CycleQueue(BaseNodeManager):
     Nodes are bucketed by tree level. The manager cycles through each level
     in round-robin order, always dequeuing the best node within the
     current level. When the number of stored nodes exceeds *max_size* the
-    manager falls back to its `fallback_queue`
+    manager falls back to a DFS priority queue
     (by default a DFS priority queue)
     until the load drops to half of *max_size*.
     """
@@ -84,7 +84,6 @@ cdef class CycleQueue(BaseNodeManager):
         self.start_level = None
         self.last_level = None
         self.node_counter = 0
-        self.fallback_queue = DfsCppPriQueue()
         self.max_size = max_size
         self.use_fallback = False
         self.permanent_fallback = permanent_fallback
@@ -128,36 +127,37 @@ cdef class CycleQueue(BaseNodeManager):
         if not self.use_fallback and self.node_counter > self.max_size:
             self.enter_fallback()
 
-        if self.use_fallback:
-            self.fallback_queue.enqueue(node)
-            self.node_counter += 1
-            self.enqueue_bound_update(node)
-            return
-
-        if node.level <= self.last_level.level:
-            self.levels[node.level].add_node(node)
-        else:
+        if node.level > self.last_level.level:
             for i in range(node.level - self.last_level.level):
                 self.add_level()
-            self.levels[node.level].add_node(node)
 
+        self.levels[node.level].add_node(node)
         self.node_counter += 1
         self.enqueue_bound_update(node)
+
+        if self.use_fallback and node.level > self.current_level.level:
+            self.current_level = self.levels[node.level]
 
     cpdef Node dequeue(self):
         cdef:
             CycleLevel start
             Node node
 
-        if self.use_fallback or self.fallback_queue.not_empty():
+        # Current level already set to maximum with nodes
+        if self.use_fallback:
+            start = self.current_level
+            while self.current_level.size() == 0:
+                self.current_level = self.current_level.prev
+                if self.current_level is start:
+                    return None
+            node = self.current_level.pop_node()
+            self.dequeue_bound_update(node)
             self.node_counter -= 1
-            node = self.fallback_queue.dequeue()
             if (
                 not self.permanent_fallback
                 and self.node_counter <= self.max_size // 2
             ):
                 self.exit_fallback()
-            self.dequeue_bound_update(node)
             return node
 
         self.current_level = self.current_level.next
@@ -205,16 +205,6 @@ cdef class CycleQueue(BaseNodeManager):
                     self.bound_nodes.update(bound_nodes)
                 self.bound_nodes.update(bound_nodes)
 
-        if self.fallback_queue.not_empty():
-            node = self.fallback_queue.get_lower_bound()
-            if node.lb <= min_lb:
-                bound_nodes = self.fallback_queue.get_bound_nodes()
-                if node.lb < min_lb:
-                    min_node = node
-                    min_lb = node.lb
-                    self.bound_nodes.clear()
-                self.bound_nodes.update(bound_nodes)
-
         self.lb = min_lb
         return min_node
 
@@ -228,8 +218,6 @@ cdef class CycleQueue(BaseNodeManager):
             level.filter(max_lb)
             node_counter += level.size()
 
-        self.fallback_queue.filter_by_lb(max_lb)
-        node_counter += self.fallback_queue.size()
         self.node_counter = node_counter
         if self.node_counter == 0:
             self.lb = HIGH_POS
@@ -241,7 +229,6 @@ cdef class CycleQueue(BaseNodeManager):
         self.start_level = None
         self.last_level = None
         self.node_counter = 0
-        self.fallback_queue.clear()
         self.add_level()
         self.lb = HIGH_POS
         self.bound_nodes.clear()
@@ -251,19 +238,25 @@ cdef class CycleQueue(BaseNodeManager):
 
     cdef void enter_fallback(self):
         cdef:
-            CycleLevel level
+            CycleLevel start
             list[Node] nodes
 
         self.use_fallback = True
 
         log.info("Entering fallback - Cycle queues are full")
 
-        nodes = []
-        for level in self.levels:
-            nodes.extend(level.pop_all())
-        self.current_level = self.start_level
+        start = self.last_level
+        self.current_level = start
+        while self.current_level.size() == 0:
+            self.current_level = self.current_level.prev
+            if self.current_level is start:
+                break
 
-        self.fallback_queue.enqueue_all(nodes)
+        # nodes = []
+        # for level in self.levels:
+        #     nodes.extend(level.pop_all())
+        # self.current_level = self.start_level
+
 
     cdef void exit_fallback(self):
         cdef:
@@ -273,12 +266,12 @@ cdef class CycleQueue(BaseNodeManager):
         log.info("Exiting fallback - moving nodes back to cycle queues")
 
         self.use_fallback = False
-        nodes = self.fallback_queue.pop_all()
+        # nodes = self.fallback_queue.pop_all()
 
-        for node in nodes:
-            if node.level <= self.last_level.level:
-                self.levels[node.level].add_node(node)
-            else:
-                for i in range(node.level - self.last_level.level):
-                    self.add_level()
-                self.levels[node.level].add_node(node)
+        # for node in nodes:
+        #     if node.level <= self.last_level.level:
+        #         self.levels[node.level].add_node(node)
+        #     else:
+        #         for i in range(node.level - self.last_level.level):
+        #             self.add_level()
+        #         self.levels[node.level].add_node(node)

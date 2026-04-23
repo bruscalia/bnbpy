@@ -55,7 +55,6 @@ cdef class CycleBestFlowShop(CycleQueue):
         bool permanent_fallback=False,
     ):
         super(CycleBestFlowShop, self).__init__(max_size, permanent_fallback)
-        self.fallback_queue = DfsFlowShop()
 
     cpdef CycleLevel new_level(self, int level):
         cdef CycleLevel lvl

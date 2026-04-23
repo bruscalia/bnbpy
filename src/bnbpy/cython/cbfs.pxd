@@ -52,7 +52,6 @@ cdef class CycleQueue(BaseNodeManager):
         int max_size
         bool use_fallback
         bool permanent_fallback
-        CppPriorityQueue fallback_queue
 
     cdef:
         double lb
