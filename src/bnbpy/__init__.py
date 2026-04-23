@@ -19,7 +19,7 @@ __all__ = [
     'MasterSol',
     'PriceSol',
     'Pricing',
-    'CycleQueue',
+    'CyclicBestSearch',
     'Node',
 ]
 
@@ -32,7 +32,7 @@ from bnbpy.colgen import (
     PriceSol,
     Pricing,
 )
-from bnbpy.cython.cbfs import CycleQueue
+from bnbpy.cython.levelqueue import CyclicBestSearch
 from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node import Node
 from bnbpy.cython.problem import Problem

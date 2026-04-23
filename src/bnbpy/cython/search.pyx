@@ -10,7 +10,7 @@ import logging
 import time
 from typing import Any, Literal, Optional, Union
 
-from bnbpy.cython.cbfs cimport CycleQueue
+from bnbpy.cython.levelqueue cimport CyclicBestSearch
 from bnbpy.cython.manager cimport BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node cimport Node, init_node
 from bnbpy.cython.priqueue cimport (
@@ -250,7 +250,7 @@ cdef class BranchAndBound:
             *   ``'best'`` — Best-first search (``BestPriQueue``).
             *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
             *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
-            *   ``'cbfs'`` — Cycle best-first search (``CycleQueue``).
+            *   ``'cbfs'`` — Cyclic best-first search (``CyclicBestSearch``).
 
         options : Any
             Additional keyword arguments to pass to the manager constructor.
@@ -271,7 +271,7 @@ cdef class BranchAndBound:
             'best': BestPriQueue,
             'lifo': LifoManager,
             'fifo': FifoManager,
-            'cbfs': CycleQueue,
+            'cbfs': CyclicBestSearch,
         }
         key = strategy.lower()
         if key not in _strategies:

@@ -6,9 +6,9 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.cbfs cimport CycleQueue, CycleLevel
+from bnbpy.cython.levelqueue cimport CyclicBestSearch, LevelQueue
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue_cpp cimport CppPriorityQueue, DfsCppPriQueue, BestCppPriQueue
+from bnbpy.cython.nodequeue cimport PriorityManagerInterface
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -19,7 +19,12 @@ cdef:
 EVAL_NODE: str = "in"
 
 
-cdef class DfsFlowShop(DfsCppPriQueue):
+cdef class DfsFlowShop(PriorityManagerInterface):
+    """DFS-ordered priority queue for PermFlowShop nodes.
+
+    Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
+    then least idle time first.
+    """
 
     cpdef vector[double] make_priority(self, Node node):
         cdef:
@@ -31,7 +36,11 @@ cdef class DfsFlowShop(DfsCppPriQueue):
         return [-node.level, node.lb, idle_time]
 
 
-cdef class BestFirstFlowShop(BestCppPriQueue):
+cdef class BestFirstFlowShop(PriorityManagerInterface):
+    """Best-first priority queue for PermFlowShop nodes.
+
+    Priority is ``(lb, idle_time)`` — best bound, then least idle time first.
+    """
 
     cpdef vector[double] make_priority(self, Node node):
         cdef:
@@ -43,10 +52,9 @@ cdef class BestFirstFlowShop(BestCppPriQueue):
         return [node.lb, idle_time]
 
 
-cdef class CycleBestFlowShop(CycleQueue):
-    """Cycle Best First Search node manager specialised for PermFlowShop,
-    using :class:`DfsFlowShop`
-    as the per-level priority queue.
+cdef class CycleBestFlowShop(CyclicBestSearch):
+    """Cyclic best-first search node manager specialised for PermFlowShop,
+    using :class:`DfsFlowShop` as the per-level priority queue.
     """
 
     def __init__(
@@ -56,9 +64,9 @@ cdef class CycleBestFlowShop(CycleQueue):
     ):
         super(CycleBestFlowShop, self).__init__(max_size, permanent_fallback)
 
-    cpdef CycleLevel new_level(self, int level):
-        cdef CycleLevel lvl
-        lvl = CycleLevel(level)
+    cpdef LevelQueue new_level(self, int level):
+        cdef LevelQueue lvl
+        lvl = LevelQueue(level)
         lvl.set_queue(DfsFlowShop())
         return lvl
 

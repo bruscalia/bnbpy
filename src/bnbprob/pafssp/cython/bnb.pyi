@@ -1,17 +1,13 @@
 from bnbprob.pafssp.cython.problem import BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.cbfs import CycleQueue
+from bnbpy.cython.levelqueue import CyclicBestSearch
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue_cpp import (
-    BestCppPriQueue,
-    CppPriorityQueue,
-    DfsCppPriQueue,
-)
+from bnbpy.cython.nodequeue import PriorityManagerInterface
 from bnbpy.cython.search import BranchAndBound
 
 HEUR_BASE: int = 100
 EVAL_NODE: str
 
-class DfsFlowShop(DfsCppPriQueue[PermFlowShop]):
+class DfsFlowShop(PriorityManagerInterface[PermFlowShop]):
     """DFS-ordered priority queue for PermFlowShop nodes.
 
     Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
@@ -20,7 +16,7 @@ class DfsFlowShop(DfsCppPriQueue[PermFlowShop]):
 
     ...
 
-class BestFirstFlowShop(BestCppPriQueue[PermFlowShop]):
+class BestFirstFlowShop(PriorityManagerInterface[PermFlowShop]):
     """Best-first priority queue for PermFlowShop nodes.
 
     Priority is ``(lb, idle_time)`` — best bound, then least idle time first.
@@ -28,10 +24,9 @@ class BestFirstFlowShop(BestCppPriQueue[PermFlowShop]):
 
     ...
 
-class CycleBestFlowShop(CycleQueue[PermFlowShop]):
-    """Cycle Best First Search node manager specialised for PermFlowShop,
-    using :class:`DfsFlowShop`
-    as the per-level priority queue.
+class CycleBestFlowShop(CyclicBestSearch[PermFlowShop]):
+    """Cyclic best-first search node manager specialised for PermFlowShop,
+    using :class:`DfsFlowShop` as the per-level priority queue.
     """
 
     def __init__(

@@ -11,6 +11,8 @@ For the core components of the branch-and-bound framework, please refer to the f
 * :doc:`OptStatus <bnbpy.cython.status>` for optimization status.
 * :doc:`Node Managers <bnbpy.cython.manager>` for node manager interface and simple LIFO/FIFO managers.
 * :doc:`Priority Queues <bnbpy.cython.priqueue>` for priority queue node managers.
+* :doc:`Node Priority Queue <bnbpy.cython.nodequeue>` for C++-backed priority queue managers.
+* :doc:`Level Queue <bnbpy.cython.levelqueue>` for level-based node managers (cyclic best-first and DFS).
 * :doc:`Node <bnbpy.cython.node>` for the representation of nodes.
 
 For a detailed documentation of its column generation submodule, please refer to :doc:`Column Generation <bnbpy.colgen>`.
@@ -26,4 +28,6 @@ For a detailed documentation of its column generation submodule, please refer to
    bnbpy.cython.status
    bnbpy.cython.manager
    bnbpy.cython.priqueue
+   bnbpy.cython.nodequeue
+   bnbpy.cython.levelqueue
    bnbpy.cython.node

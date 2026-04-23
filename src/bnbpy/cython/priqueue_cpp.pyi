@@ -1,4 +1,4 @@
-from typing import Any, Generic, TypeVar
+from typing import Any, TypeVar
 
 from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
