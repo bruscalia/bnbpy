@@ -82,17 +82,16 @@ cdef class CppPriorityQueue(BaseNodeManager):
 
     cpdef void enqueue(self, Node node):
         cdef:
-            object priority
+            vector[double] priority
             double t0
 
-        t0 = _now_ns()
-        priority = self.make_priority(node)
-        self.pq.push(<PyObject*>node, node.lb, <PyObject*>priority)
+        # t0 = _now_ns()
+        self.pq.push(<PyObject*>node, node.lb, self.make_priority(node))
         # pq.push did Py_INCREF on both node and priority.
         # Our local 'priority' still holds one reference; when it goes out
         # of scope the refcount drops back to 1 (owned by the heap). Correct.
         self.enqueue_bound_update(node)
-        self.enqueue_time += _now_ns() - t0
+        # self.enqueue_time += _now_ns() - t0
 
     cpdef void enqueue_all(self, list[Node] nodes):
         cdef Node node
@@ -107,13 +106,12 @@ cdef class CppPriorityQueue(BaseNodeManager):
 
         if self.pq.empty():
             return None
-        t0 = _now_ns()
+        # t0 = _now_ns()
         entry = self.pq.pop()           # transfers ownership
         node = <Node>entry.obj          # Cython INCREFs → refcount = 2
         _Py_DECREF(entry.obj)           # balance push INCREF → refcount = 1
-        _Py_DECREF(entry.priority)      # release priority push INCREF
         self.dequeue_bound_update(node)
-        self.dequeue_time += _now_ns() - t0
+        # self.dequeue_time += _now_ns() - t0
         return node
 
     cpdef Node get_lower_bound(self):
@@ -159,7 +157,6 @@ cdef class CppPriorityQueue(BaseNodeManager):
         entry = self.pq.pop_min_bound()  # transfers ownership
         node = <Node>entry.obj           # Cython INCREFs → refcount = 2
         _Py_DECREF(entry.obj)            # balance push INCREF → refcount = 1
-        _Py_DECREF(entry.priority)       # release priority push INCREF
         self.dequeue_bound_update(node)
         return node
 
@@ -181,7 +178,6 @@ cdef class CppPriorityQueue(BaseNodeManager):
             entry = removed[i]             # transferred ownership
             node = <Node>entry.obj         # Cython INCREFs → refcount = 2
             _Py_DECREF(entry.obj)          # balance push INCREF → refcount = 1
-            _Py_DECREF(entry.priority)     # release priority push INCREF
             node.cleanup()
 
         if self.pq.empty():
@@ -203,7 +199,6 @@ cdef class CppPriorityQueue(BaseNodeManager):
             entry = self.pq.pop()
             node = <Node>entry.obj
             _Py_DECREF(entry.obj)
-            _Py_DECREF(entry.priority)
             nodes.append(node)
         self.lb = INFINITY
         self.bound_nodes.clear()
@@ -220,7 +215,7 @@ cdef class CppPriorityQueue(BaseNodeManager):
     cpdef set[Node] get_bound_nodes(self):
         return self.bound_nodes
 
-    cpdef object make_priority(self, Node node):
+    cpdef vector[double] make_priority(self, Node node):
         raise NotImplementedError("Subclasses must implement make_priority()")
 
 
@@ -231,19 +226,19 @@ cdef class CppPriorityQueue(BaseNodeManager):
 cdef class DfsCppPriQueue(CppPriorityQueue):
     """Depth-first ordering: ``(-level, lb, -index)``."""
 
-    cpdef object make_priority(self, Node node):
-        return (-node.level, node.lb, -node.get_index())
+    cpdef vector[double] make_priority(self, Node node):
+        return [-node.level, node.lb, -node.get_index()]
 
 
 cdef class BfsCppPriQueue(CppPriorityQueue):
     """Breadth-first ordering: ``(level, lb, index)``."""
 
-    cpdef object make_priority(self, Node node):
-        return (node.level, node.lb, node.get_index())
+    cpdef vector[double] make_priority(self, Node node):
+        return [node.level, node.lb, node.get_index()]
 
 
 cdef class BestCppPriQueue(CppPriorityQueue):
     """Best-first ordering: ``(lb, -level, -index)``."""
 
-    cpdef object make_priority(self, Node node):
-        return (node.lb, -node.level, -node.get_index())
+    cpdef vector[double] make_priority(self, Node node):
+        return [node.lb, -node.level, -node.get_index()]

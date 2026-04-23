@@ -22,8 +22,9 @@ cdef extern from *:
     struct PriNode {
         PyObject* obj;
         double lb;
-        PyObject* priority;
-        PriNode() : obj(nullptr), lb(0.0), priority(nullptr) {}
+        std::vector<double> priority;
+        PriNode() : obj(nullptr), lb(0.0), priority() {}
+        PriNode(PyObject* o, double l, const std::vector<double>& p) : obj(o), lb(l), priority(p) {}
     };
 
     // Comparator: implements min-heap over Python-comparable priorities.
@@ -32,9 +33,7 @@ cdef extern from *:
     // makes the element with the *smallest* Python priority bubble to the top.
     struct PyPriNodeLess {
         bool operator()(const PriNode& a, const PriNode& b) const {
-            int r = PyObject_RichCompareBool(a.priority, b.priority, Py_GT);
-            if (r < 0) { PyErr_Clear(); return false; }
-            return r == 1;
+            return a.priority > b.priority;
         }
     };
 
@@ -47,17 +46,12 @@ cdef extern from *:
         // Push: C++ takes ownership (INCREFs both obj and priority).
         // When the vector is full, grow capacity by RESERVE_BLOCK to avoid
         // repeated O(n) copy-reallocations on every doubling boundary.
-        void push(PyObject* obj, double lb, PyObject* priority) {
+        void push(PyObject* obj, double lb, const std::vector<double>& priority) {
             if (heap.size() == heap.capacity()) {
                 heap.reserve(heap.capacity() + RESERVE_BLOCK);
             }
-            PriNode e;
-            e.obj = obj;
-            e.lb = lb;
-            e.priority = priority;
             Py_INCREF(obj);
-            Py_INCREF(priority);
-            heap.push_back(e);
+            heap.emplace_back(obj, lb, priority);
             std::push_heap(heap.begin(), heap.end(), cmp);
         }
 
@@ -114,7 +108,6 @@ cdef extern from *:
         void clear() {
             for (auto& e : heap) {
                 Py_DECREF(e.obj);
-                Py_DECREF(e.priority);
             }
             heap.clear();
         }
@@ -159,12 +152,13 @@ cdef extern from *:
     cdef cppclass PriNode:
         PyObject* obj
         double lb
-        PyObject* priority
+        vector[double] priority
         PriNode()
+        PriNode(PyObject* o, double l, const vector[double]& p)
 
     cdef cppclass PyPriQueue:
         PyPriQueue()
-        void push(PyObject* obj, double lb, PyObject* priority)
+        void push(PyObject* obj, double lb, const vector[double]& priority)
         PriNode pop()
         PriNode min_bound_entry()
         PriNode pop_min_bound()
@@ -217,7 +211,7 @@ cdef class CppPriorityQueue(BaseNodeManager):
 
     cpdef void reset_timers(self)
 
-    cpdef object make_priority(self, Node node)
+    cpdef vector[double] make_priority(self, Node node)
 
     cpdef double peek_lb(self)
 
@@ -237,14 +231,14 @@ cdef class CppPriorityQueue(BaseNodeManager):
 
 cdef class DfsCppPriQueue(CppPriorityQueue):
     """DFS variant: priority ``(-level, lb, -index)``."""
-    cpdef object make_priority(self, Node node)
+    cpdef vector[double] make_priority(self, Node node)
 
 
 cdef class BfsCppPriQueue(CppPriorityQueue):
     """BFS variant: priority ``(level, lb, index)``."""
-    cpdef object make_priority(self, Node node)
+    cpdef vector[double] make_priority(self, Node node)
 
 
 cdef class BestCppPriQueue(CppPriorityQueue):
     """Best-first variant: priority ``(lb, -level, -index)``."""
-    cpdef object make_priority(self, Node node)
+    cpdef vector[double] make_priority(self, Node node)

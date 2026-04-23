@@ -1,8 +1,9 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from libcpp cimport bool
 from libc.math cimport sqrt
+from libcpp cimport bool
+from libcpp.vector cimport vector
 
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.cbfs cimport CycleQueue, CycleLevel
@@ -20,26 +21,26 @@ EVAL_NODE: str = "in"
 
 cdef class DfsFlowShop(DfsCppPriQueue):
 
-    cpdef object make_priority(self, Node node):
+    cpdef vector[double] make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        return (-node.level, node.lb, idle_time)
+        return [-node.level, node.lb, idle_time]
 
 
 cdef class BestFirstFlowShop(BestCppPriQueue):
 
-    cpdef object make_priority(self, Node node):
+    cpdef vector[double] make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
 
         problem = node.problem
         idle_time = problem.calc_idle_time()
-        return (node.lb, idle_time)
+        return [node.lb, idle_time]
 
 
 cdef class CycleBestFlowShop(CycleQueue):
