@@ -10,7 +10,7 @@ search.  The manager is the *strategy* object injected into
 Simple managers (:class:`~bnbpy.cython.manager.LifoManager`,
 :class:`~bnbpy.cython.manager.FifoManager`) use a plain ``deque`` and impose
 pure stack / queue traversal with no priority ordering.  For bound-based
-traversal strategies see :doc:`bnbpy.cython.priqueue`.
+traversal strategies see :doc:`bnbpy.cython.primanager`.
 
 
 BaseNodeManager
@@ -19,7 +19,7 @@ BaseNodeManager
 .. autoclass:: bnbpy.cython.manager::BaseNodeManager
    :class-doc-from: both
    :members: not_empty, size, enqueue, enqueue_all, dequeue,
-             get_lower_bound, pop_lower_bound, clear, filter_by_lb, pop_all
+             get_lower_bound, clear, filter_by_lb
    :undoc-members:
    :show-inheritance:
    :member-order: bysource

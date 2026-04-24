@@ -33,15 +33,9 @@ cdef class Problem:
     def __init__(self) -> None:
         self.solution = Solution()
 
-    def __del__(self):
-        self.cleanup()
-
     @property
     def lb(self):
         return self.get_lb()
-
-    cpdef void cleanup(self):
-        self.solution = None
 
     cpdef double calc_bound(self):
         """

@@ -1,6 +1,7 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
+cimport cython
 from cpython.ref cimport PyObject
 from libcpp cimport bool
 from libcpp.vector cimport vector
@@ -68,16 +69,6 @@ cdef extern from *:
             return entry;
         }
 
-        // Returns a by-value copy with borrowed references (heap still owns).
-        // Caller must NOT Py_DECREF the returned pointer.
-        NodePriEntry min_bound_entry() const {
-            size_t best = 0;
-            for (size_t i = 1; i < heap.size(); ++i) {
-                if (heap[i].lb < heap[best].lb) best = i;
-            }
-            return heap[best];
-        }
-
         // pop_min_bound: transfers ownership to caller.
         // Same capacity-shrink policy as pop().
         NodePriEntry pop_min_bound() {
@@ -127,17 +118,6 @@ cdef extern from *:
             return removed;
         }
 
-        // Fills `out` with borrowed entries tied at the minimum lb (two-pass).
-        // All returned pointers are borrowed — caller must NOT Py_DECREF them.
-        double fill_min_lb_nodes(std::vector<NodePriEntry>& out) const {
-            double min_lb = heap[0].lb;
-            for (size_t i = 1; i < heap.size(); ++i)
-                if (heap[i].lb < min_lb) min_lb = heap[i].lb;
-            for (size_t i = 0; i < heap.size(); ++i)
-                if (heap[i].lb == min_lb) out.push_back(heap[i]);
-            return min_lb;
-        }
-
         size_t size() const { return heap.size(); }
         bool empty() const { return heap.empty(); }
     };
@@ -153,73 +133,30 @@ cdef extern from *:
         NodePriQueue()
         void push(PyObject* obj, double lb, const vector[double]& priority)
         NodePriEntry pop()
-        NodePriEntry min_bound_entry()
         NodePriEntry pop_min_bound()
         vector[NodePriEntry] filter(double max_lb)
-        double fill_min_lb_nodes(vector[NodePriEntry]& out)
         void clear()
         size_t size()
         bint empty()
 
 
-cdef class PriorityManagerInterface(BaseNodeManager):
-    """Priority queue manager backed by a native C++ binary heap.
-
-    Stores nodes with ``vector[double]`` priorities; the queue is a
-    *min*-heap (smallest priority dequeued first).
-
-    Subclasses must override :meth:`make_priority`.
-    """
+@cython.final
+cdef class NodePriQueueWrapper:
 
     cdef:
         NodePriQueue pq
-        double lb
-        set[Node] bound_nodes
 
-    cdef public:
-        double enqueue_time
-        double dequeue_time
+    @cython.final
+    cpdef void push(self, Node node, vector[double]& priority)
 
-    cpdef int size(self)
+    @cython.final
+    cpdef Node pop(self)
 
-    cpdef bool not_empty(self)
+    @cython.final
+    cpdef void filter(self, double max_lb)
 
-    cpdef void enqueue(self, Node node)
+    @cython.final
+    cpdef size_t size(self)
 
-    cpdef void enqueue_all(self, list[Node] nodes)
-
-    cpdef Node dequeue(self)
-
-    cpdef Node get_lower_bound(self)
-
-    cpdef Node pop_lower_bound(self)
-
-    cpdef void filter_by_lb(self, double max_lb)
-
+    @cython.final
     cpdef void clear(self)
-
-    cpdef list[Node] pop_all(self)
-
-    cpdef void reset_timers(self)
-
-    cpdef vector[double] make_priority(self, Node node)
-
-    cpdef double peek_lb(self)
-
-    cpdef set[Node] get_bound_nodes(self)
-
-    cdef inline void enqueue_bound_update(self, Node node):
-        if node.lb <= self.lb:
-            if node.lb < self.lb:
-                self.lb = node.lb
-                self.bound_nodes.clear()
-            self.bound_nodes.add(node)
-
-    cdef inline void dequeue_bound_update(self, Node node):
-        if node.lb <= self.lb:
-            self.bound_nodes.discard(node)
-
-
-cdef class BestFirstSearch(PriorityManagerInterface):
-    """Best-first variant: priority ``(lb, -level, -index)``."""
-    cpdef vector[double] make_priority(self, Node node)

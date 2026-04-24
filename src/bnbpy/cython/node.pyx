@@ -1,6 +1,7 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
+cimport cython
 from libc.math cimport INFINITY
 from libcpp cimport bool
 
@@ -16,6 +17,7 @@ cdef:
     double LOW_NEG = -INFINITY
 
 
+@cython.final
 cdef class Node:
     """Class for representing a node in a search tree."""
 
@@ -47,7 +49,7 @@ cdef class Node:
             self.level = parent.level + 1
         self._sort_index = self._counter.next()
 
-    cdef void cleanup(self):
+    cpdef void cleanup(self):
         cdef:
             Node child
 

@@ -8,144 +8,96 @@ P = TypeVar('P', bound=Problem)
 class BaseNodeManager(Generic[P]):
     """Base class for managing active nodes in a Branch & Bound search.
 
-    Note that due to Cython limitations this class is not implemented as an
-    ABC, but subclasses **must** implement:
+    Implements the *Template Method* pattern.  Subclasses **must** implement
+    the four abstract hooks:
 
-    *   ``size``
-    *   ``not_empty``
-    *   ``enqueue``
-    *   ``dequeue``
-    *   ``get_lower_bound``
-    *   ``pop_lower_bound``
-    *   ``clear``
-    *   ``pop_all``
+    *   ``_enqueue`` — add a node to the underlying data structure.
+    *   ``_dequeue`` — remove and return the next node.
+    *   ``_filter_by_lb`` — physically discard nodes with lb >= max_lb.
+    *   ``_clear`` — empty the underlying data structure.
 
-    ``enqueue_all`` and ``filter_by_lb`` have default implementations that
-    may be overridden for better performance.
+    All other public methods implement the template logic and should not be
+    overridden.
     """
 
-    def size(self) -> int:
-        """Returns the number of nodes in the manager.
+    bound_memory: dict[float, set[Node[P]]]
+    lb: float
+    bound_nodes: set[Node[P]]
+    nodecount: int
 
-        Returns
-        -------
-        int
-            The number of nodes in the manager.
-        """
+    def memorize(self, node: Node[P]) -> None:
+        """Record *node* in ``bound_memory``; update ``lb``/``bound_nodes``."""
+        ...
+
+    def forget(self, node: Node[P]) -> None:
+        """Remove *node* from ``bound_memory``; recompute ``lb`` if needed."""
+        ...
+
+    def filter_memory_lb(self, max_lb: float) -> None:
+        """Remove all ``bound_memory`` entries with key >= *max_lb*."""
+        ...
+
+    def clear_memory(self) -> None:
+        """Reset ``bound_memory``, ``lb``, and ``bound_nodes``."""
+        ...
+
+    def size(self) -> int:
+        """Returns the number of nodes in the manager."""
         ...
 
     def not_empty(self) -> bool:
-        """Checks if the priority queue is not empty.
+        """Checks if the manager is not empty."""
+        ...
 
-        Returns
-        -------
-        bool
-            True if the queue is not empty, False otherwise.
-        """
+    def _enqueue(self, node: Node[P]) -> None:
+        """Internal hook — add *node* to the underlying structure."""
+        ...
+
+    def _dequeue(self) -> Node[P] | None:
+        """Internal hook — remove and return the next node."""
+        ...
+
+    def _filter_by_lb(self, max_lb: float) -> None:
+        """Internal hook — physically remove nodes with lb >= *max_lb*."""
+        ...
+
+    def _clear(self) -> None:
+        """Internal hook — empty the underlying data structure."""
         ...
 
     def enqueue(self, node: Node[P]) -> None:
-        """Adds a node to the priority queue.
-
-        Parameters
-        ----------
-        node : Node
-            The node to add to the queue.
-        """
+        """Add *node* and record it in ``bound_memory``."""
         ...
 
     def enqueue_all(self, nodes: list[Node[P]]) -> None:
-        """Adds a list of nodes to the queue.
-        Might be overridden in subclasses for better performance.
-
-        Parameters
-        ----------
-        nodes : list[Node]
-            The list of nodes to add to the queue.
-        """
+        """Add a list of nodes."""
         ...
 
     def dequeue(self) -> Node[P] | None:
-        """Removes and returns the next evaluated node.
-
-        Returns
-        -------
-        Node
-            The next evaluated node.
-        """
+        """Remove and return the next node, updating ``bound_memory``."""
         ...
 
     def get_lower_bound(self) -> Node[P] | None:
-        """Gets the node of lower bound but
-        does not remove it from the queue.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound.
-        """
-        ...
-
-    def pop_lower_bound(self) -> Node[P] | None:
-        """Removes and returns the node of lower bound.
-
-        Returns
-        -------
-        Node
-            The node with the lowest lower bound.
-        """
+        """Return a node with the minimum lower bound (O(1))."""
         ...
 
     def clear(self) -> None:
-        """Makes queue empty."""
+        """Make the manager empty."""
         ...
 
     def filter_by_lb(self, max_lb: float) -> None:
-        """Filter nodes by lower bound.
-        This method is not implemented in the base class,
-        but can be overridden in subclasses.
-
-        Parameters
-        ----------
-        max_lb : float
-            The maximum lower bound value.
-        """
-        ...
-
-    def pop_all(self) -> list[Node[P]]:
-        """Removes and returns all nodes in the manager.
-
-        Returns
-        -------
-        list[Node]
-            A list of all nodes in the manager.
-        """
+        """Remove nodes with lb >= *max_lb* and update ``bound_memory``."""
         ...
 
 class LifoManager(BaseNodeManager[P]):
-    """Last-In First-Out (stack) node manager.
+    """Last-In First-Out (stack) node manager."""
 
-    :meth:`dequeue` returns the most recently enqueued node.
-    :meth:`get_lower_bound` and :meth:`pop_lower_bound` perform a linear
-    scan over the stack to find the node with minimum ``lb``.
-    """
-
-    def size(self) -> int: ...
-    def not_empty(self) -> bool: ...
-    def enqueue(self, node: Node[P]) -> None: ...
-    def enqueue_all(self, nodes: list[Node[P]]) -> None: ...
-    def dequeue(self) -> Node[P] | None: ...
-    def get_lower_bound(self) -> Node[P] | None: ...
-    def pop_lower_bound(self) -> Node[P] | None: ...
-    def clear(self) -> None: ...
-    def filter_by_lb(self, max_lb: float) -> None: ...
-    def pop_all(self) -> list[Node[P]]: ...
+    def _enqueue(self, node: Node[P]) -> None: ...
+    def _dequeue(self) -> Node[P] | None: ...
+    def _clear(self) -> None: ...
+    def _filter_by_lb(self, max_lb: float) -> None: ...
 
 class FifoManager(LifoManager[P]):
-    """First-In First-Out (queue) node manager.
+    """First-In First-Out (queue) node manager."""
 
-    Identical to :class:`LifoManager` except that :meth:`dequeue` returns
-    the **oldest** enqueued node (``popleft``).
-    """
-
-    def dequeue(self) -> Node[P] | None: ...
+    def _dequeue(self) -> Node[P] | None: ...

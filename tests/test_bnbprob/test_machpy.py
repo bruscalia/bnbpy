@@ -16,7 +16,7 @@ class TestMachDeadLine:
     d = [10, 20, 20, 30, 30, 30]
     sol_value = 86
     dfs_nodes = 3
-    bfs_nodes = 5
+    bfs_nodes = 9
     bb_nodes = 3
 
     @pytest.fixture

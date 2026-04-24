@@ -2,7 +2,6 @@ from typing import Generic, TypeVar
 
 from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
-from bnbpy.cython.nodequeue import PriorityManagerInterface
 from bnbpy.cython.problem import Problem
 
 P = TypeVar('P', bound=Problem)
@@ -10,62 +9,75 @@ P = TypeVar('P', bound=Problem)
 class LevelQueue(Generic[P]):
     """A single level in a level-based node manager.
 
-    Internally holds a
-    :class:`~bnbpy.cython.nodequeue.PriorityManagerInterface`
-    (``queue`` attribute) and maintains doubly-linked pointers to neighbouring
-    levels.
+    Internally holds a raw C++ min-heap (``NodePriQueue``) and maintains
+    doubly-linked pointers to neighbouring levels.  Nodes are ordered by the
+    key produced by :meth:`make_priority`.
     """
 
     level: int
     next: 'LevelQueue[P]'
     prev: 'LevelQueue[P]'
-    queue: PriorityManagerInterface[P]
 
     def __init__(self, level: int) -> None: ...
     def size(self) -> int:
         """Return the number of nodes at this level."""
         ...
 
-    def set_queue(self, queue: PriorityManagerInterface[P]) -> None:
-        """Replace the internal priority queue.
+    def make_priority(self, node: Node[P]) -> list[float]:
+        """Return the ordering key for *node* (smaller → dequeued first).
+
+        Default is best-first: ``(lb, -level, -index)``.  Override in
+        subclasses to change intra-level ordering.
 
         Parameters
         ----------
-        queue : PriorityManagerInterface[P]
-            New priority queue to use at this level.
+        node : Node
+            The node being enqueued.
+
+        Returns
+        -------
+        list[float]
+            Priority vector; smaller values are dequeued first.
         """
         ...
 
-    def add_node(self, node: Node[P]) -> None:
-        """Enqueue *node* at this level."""
+    def push(self, node: Node[P]) -> None:
+        """Enqueue *node* at this level.
+
+        Parameters
+        ----------
+        node : Node
+            The node to enqueue.
+        """
         ...
 
-    def pop_node(self) -> Node[P] | None:
-        """Dequeue and return the next node at this level."""
+    def pop(self) -> Node[P] | None:
+        """Dequeue and return the highest-priority node at this level.
+
+        Returns
+        -------
+        Node or None
+            The node with the smallest priority key, or ``None`` if this
+            level is empty.
+        """
         ...
 
     def filter(self, max_lb: float) -> None:
         """Discard nodes whose ``lb >= max_lb``."""
         ...
 
-    def peek_lb(self) -> float:
-        """Return the current lower-bound of this level without popping."""
-        ...
-
 class LevelManagerInterface(BaseNodeManager[P]):
     """Abstract base for level-based node managers.
 
     Nodes are bucketed by tree level.  Concrete subclasses must override
-    :meth:`new_level` to define which
-    :class:`~bnbpy.cython.nodequeue.PriorityManagerInterface` is used at
-    each level.
+    :meth:`new_level` to define which :class:`LevelQueue` subclass is used
+    at each level.
     """
 
     levels: list[LevelQueue[P]]
     current_level: LevelQueue[P]
     start_level: LevelQueue[P]
     last_level: LevelQueue[P]
-    node_counter: int
     max_size: int
     use_fallback: bool
     permanent_fallback: bool
@@ -87,16 +99,10 @@ class LevelManagerInterface(BaseNodeManager[P]):
         """
         ...
 
-    def size(self) -> int: ...
-    def not_empty(self) -> bool: ...
-    def enqueue(self, node: Node[P]) -> None: ...
-    def enqueue_all(self, nodes: list[Node[P]]) -> None: ...
-    def dequeue(self) -> Node[P] | None: ...
-    def get_lower_bound(self) -> Node[P] | None: ...
-    def pop_lower_bound(self) -> Node[P] | None: ...
-    def filter_by_lb(self, max_lb: float) -> None: ...
-    def clear(self) -> None: ...
-    def pop_all(self) -> list[Node[P]]: ...
+    def _enqueue(self, node: Node[P]) -> None: ...
+    def _dequeue(self) -> Node[P] | None: ...
+    def _filter_by_lb(self, max_lb: float) -> None: ...
+    def _clear(self) -> None: ...
     def reset_level(self) -> None:
         """Reset the current level pointer back to the first level."""
         ...

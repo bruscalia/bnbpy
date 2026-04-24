@@ -1,6 +1,7 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
+cimport cython
 from libcpp cimport bool
 
 import copy
@@ -10,6 +11,7 @@ from bnbpy.cython.problem cimport Problem, P
 from bnbpy.cython.solution cimport Solution
 
 
+@cython.final
 cdef class Node:
 
     cdef public:
@@ -23,7 +25,7 @@ cdef class Node:
     cdef:
         Counter _counter
 
-    cdef void cleanup(self)
+    cpdef void cleanup(self)
 
     cdef inline Solution get_solution(self):
         return self.problem.solution

@@ -8,7 +8,7 @@ from libcpp.vector cimport vector
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.levelqueue cimport CyclicBestSearch, LevelQueue
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.nodequeue cimport PriorityManagerInterface
+from bnbpy.cython.primanager cimport PriorityManagerTemplate
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -19,7 +19,7 @@ cdef:
 EVAL_NODE: str = "in"
 
 
-cdef class DfsFlowShop(PriorityManagerInterface):
+cdef class DfsFlowShop(PriorityManagerTemplate):
     """DFS-ordered priority queue for PermFlowShop nodes.
 
     Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
@@ -30,14 +30,37 @@ cdef class DfsFlowShop(PriorityManagerInterface):
         cdef:
             int idle_time
             PermFlowShop problem
+            vector[double] pri = vector[double](3)
 
         problem = node.problem
-        idle_time = problem.calc_idle_time()
-        return [-node.level, node.lb, idle_time]
+        pri[0] = -node.level
+        pri[1] = node.lb
+        pri[2] = <double>problem.calc_idle_time()
+        return pri
 
 
-cdef class BestFirstFlowShop(PriorityManagerInterface):
-    """Best-first priority queue for PermFlowShop nodes.
+cdef class DfsLevelQueue(LevelQueue):
+    """Per-level queue for PermFlowShop with DFS-ordered priority.
+
+    Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
+    then least idle time first.
+    """
+
+    cpdef vector[double] make_priority(self, Node node):
+        cdef:
+            int idle_time
+            PermFlowShop problem
+            vector[double] pri = vector[double](3)
+
+        problem = node.problem
+        pri[0] = -node.level
+        pri[1] = node.lb
+        pri[2] = <double>problem.calc_idle_time()
+        return pri
+
+
+cdef class BestFirstLevelQueue(LevelQueue):
+    """Per-level queue for PermFlowShop with best-first priority.
 
     Priority is ``(lb, idle_time)`` — best bound, then least idle time first.
     """
@@ -46,11 +69,13 @@ cdef class BestFirstFlowShop(PriorityManagerInterface):
         cdef:
             int idle_time
             PermFlowShop problem
+            vector[double] pri = vector[double](3)
 
         problem = node.problem
-        idle_time = problem.calc_idle_time()
-        return [node.lb, idle_time]
-
+        pri[0] = -node.level
+        pri[1] = node.lb
+        pri[2] = <double>problem.calc_idle_time()
+        return pri
 
 cdef class CycleBestFlowShop(CyclicBestSearch):
     """Cyclic best-first search node manager specialised for PermFlowShop,
@@ -65,10 +90,7 @@ cdef class CycleBestFlowShop(CyclicBestSearch):
         super(CycleBestFlowShop, self).__init__(max_size, permanent_fallback)
 
     cpdef LevelQueue new_level(self, int level):
-        cdef LevelQueue lvl
-        lvl = LevelQueue(level)
-        lvl.set_queue(DfsFlowShop())
-        return lvl
+        return DfsLevelQueue(level)
 
 
 cdef class LazyBnB(BranchAndBound):

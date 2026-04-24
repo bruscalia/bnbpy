@@ -10,7 +10,7 @@ from myfixtures.myproblem import (
 
 from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node import Node
-from bnbpy.cython.priqueue import BestPriQueue, BfsPriQueue, DfsPriQueue
+from bnbpy.cython.primanager import BestFirstSearch, DepthFirstSearch
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.search import (
     BestFirstBnB,
@@ -488,16 +488,16 @@ class TestManagerStrategy:
 
     @staticmethod
     def test_default_manager_is_dfs() -> None:
-        """Default manager should be DfsPriQueue."""
+        """Default manager should be DepthFirstSearch."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = BranchAndBound(problem)
-        assert isinstance(bnb.manager, DfsPriQueue)
+        assert isinstance(bnb.manager, DepthFirstSearch)
 
     @staticmethod
     def test_custom_manager_injected() -> None:
         """A custom manager passed at construction should be used."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
-        custom: BfsPriQueue[MyProblem] = BfsPriQueue()
+        custom: FifoManager[MyProblem] = FifoManager()
         bnb = BranchAndBound(problem, manager=custom)
         assert bnb.manager is custom
 
@@ -512,9 +512,9 @@ class TestManagerStrategy:
     @pytest.mark.parametrize(
         ('strategy', 'expected_type'),
         [
-            ('dfs', DfsPriQueue),
-            ('bfs', BfsPriQueue),
-            ('best', BestPriQueue),
+            ('dfs', DepthFirstSearch),
+            ('bfs', FifoManager),
+            ('best', BestFirstSearch),
             ('lifo', LifoManager),
             ('fifo', FifoManager),
         ],
@@ -528,7 +528,7 @@ class TestManagerStrategy:
     def test_build_manager_case_insensitive() -> None:
         """build_manager should accept upper-case strategy names."""
         mgr = BranchAndBound.build_manager('DFS')
-        assert isinstance(mgr, DfsPriQueue)
+        assert isinstance(mgr, DepthFirstSearch)
 
     @staticmethod
     def test_build_manager_unknown_raises() -> None:
@@ -557,24 +557,24 @@ class TestSubclassStrategies:
 
     @staticmethod
     def test_depth_first_bnb_is_alias() -> None:
-        """DepthFirstBnB should use a DfsPriQueue manager."""
+        """DepthFirstBnB should use a DepthFirstSearch manager."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = DepthFirstBnB(problem)
-        assert isinstance(bnb.manager, DfsPriQueue)
+        assert isinstance(bnb.manager, DepthFirstSearch)
 
     @staticmethod
     def test_breadth_first_bnb_manager() -> None:
-        """BreadthFirstBnB should use a BfsPriQueue manager."""
+        """BreadthFirstBnB should use a FifoManager manager."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = BreadthFirstBnB(problem)
-        assert isinstance(bnb.manager, BfsPriQueue)
+        assert isinstance(bnb.manager, FifoManager)
 
     @staticmethod
     def test_best_first_bnb_manager() -> None:
-        """BestFirstBnB should use a BestPriQueue manager."""
+        """BestFirstBnB should use a BestFirstSearch manager."""
         problem = MyProblem(lb_value=SIMPLE_LB, feasible=True)
         bnb = BestFirstBnB(problem)
-        assert isinstance(bnb.manager, BestPriQueue)
+        assert isinstance(bnb.manager, BestFirstSearch)
 
     @staticmethod
     def test_lifo_bnb_manager() -> None:

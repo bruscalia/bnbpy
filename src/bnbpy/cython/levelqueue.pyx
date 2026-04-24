@@ -3,18 +3,14 @@
 
 import logging
 
-from libc.math cimport INFINITY
 from libcpp cimport bool
+from libcpp.vector cimport vector
 
 from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.nodequeue cimport BestFirstSearch, PriorityManagerInterface
+from bnbpy.cython.nodequeue cimport NodePriQueueWrapper
 
 log = logging.getLogger(__name__)
-
-
-cdef:
-    double HIGH_POS = INFINITY
 
 
 # ---------------------------------------------------------------------------
@@ -24,9 +20,13 @@ cdef:
 cdef class LevelQueue:
     """A single level in a level-based node manager.
 
-    Internally holds a :class:`~bnbpy.cython.nodequeue.PriorityManagerInterface`
-    for nodes at this level and maintains doubly-linked pointers to
-    neighbouring levels.
+    Internally holds a wrapper of a raw C++
+    :class:`NodePriQueueWrapper`
+    (min-heap) and maintains
+    doubly-linked pointers to neighbouring levels.
+
+    The ordering key for each node is produced by :meth:`make_priority`;
+    subclasses override this to customise the intra-level priority.
     """
 
     @classmethod
@@ -38,28 +38,53 @@ cdef class LevelQueue:
         self.level = level
         self.next = self
         self.prev = self
-        self.queue = BestFirstSearch()
+        self.pq = NodePriQueueWrapper()
+
+    def __dealloc__(self):
+        if self.pq is not None:
+            self.pq.clear()
 
     cpdef int size(self):
-        return self.queue.size()
+        return <int>self.pq.size()
 
-    cpdef void set_queue(self, PriorityManagerInterface queue):
-        self.queue = queue
+    cpdef void push(self, Node node):
+        self.pq.push(node, self.make_priority(node))
+        # Possibly reactivating this level in forward checks
+        # if self.pq.size() == 1:
+        #     self.prev.next = self
 
-    cpdef void add_node(self, Node node):
-        self.queue.enqueue(node)
-
-    cpdef Node pop_node(self):
-        return self.queue.dequeue()
+    cpdef Node pop(self):
+        # Bypass in forward direction
+        # to avoid O(n) pointer updates when popping the last node
+        # if self.pq.size() == 1:
+        #     self.prev.next = self.next
+        return self.pq.pop()
 
     cpdef void filter(self, double max_lb):
-        self.queue.filter_by_lb(max_lb)
+        self.pq.filter(max_lb)
 
-    cpdef double peek_lb(self):
-        return self.queue.peek_lb()
+    cpdef vector[double] make_priority(self, Node node):
+        """Return the ordering key for *node* (smaller → dequeued first).
 
-    cdef list[Node] pop_all(self):
-        return self.queue.pop_all()
+        Default is best-first: ``(lb, -level, -index)``.
+        Override in subclasses to change intra-level ordering.
+
+        Parameters
+        ----------
+        node : Node
+            The node being enqueued.
+
+        Returns
+        -------
+        list[float]
+            Priority vector; smaller values are dequeued first.
+        """
+        cdef:
+            vector[double] pri = vector[double](3)
+        pri[0] = node.lb
+        pri[1] = -node.level
+        pri[2] = -node.get_index()
+        return pri
 
 
 # ---------------------------------------------------------------------------
@@ -71,7 +96,7 @@ cdef class LevelManagerInterface(BaseNodeManager):
 
     Nodes are bucketed by tree level into doubly-linked :class:`LevelQueue`
     objects.  Concrete subclasses must override :meth:`new_level` to control
-    which :class:`~bnbpy.cython.nodequeue.PriorityManagerInterface` is used
+    which :class:`LevelQueue` subclass (and thus which priority) is used
     at each level.
     """
 
@@ -80,13 +105,10 @@ cdef class LevelManagerInterface(BaseNodeManager):
         self.current_level = None
         self.start_level = None
         self.last_level = None
-        self.node_counter = 0
         self.max_size = max_size
         self.use_fallback = False
         self.permanent_fallback = permanent_fallback
         self.add_level()
-        self.lb = HIGH_POS
-        self.bound_nodes = set()
 
     cpdef LevelQueue new_level(self, int level):
         raise NotImplementedError("Subclasses must implement new_level()")
@@ -108,35 +130,22 @@ cdef class LevelManagerInterface(BaseNodeManager):
             self.levels.append(new_lv)
             self.last_level = new_lv
 
-    cpdef int size(self):
-        return self.node_counter
-
-    cpdef bool not_empty(self):
-        return self.node_counter > 0
-
-    cpdef void enqueue(self, Node node):
+    cpdef void _enqueue(self, Node node):
         cdef int i
 
-        if not self.use_fallback and self.node_counter > self.max_size:
+        if not self.use_fallback and self.nodecount > self.max_size:
             self.enter_fallback()
 
         if node.level > self.last_level.level:
             for i in range(node.level - self.last_level.level):
                 self.add_level()
 
-        self.levels[node.level].add_node(node)
-        self.node_counter += 1
-        self.enqueue_bound_update(node)
+        self.levels[node.level].push(node)
 
         if self.use_fallback and node.level > self.current_level.level:
             self.current_level = self.levels[node.level]
 
-    cpdef void enqueue_all(self, list[Node] nodes):
-        cdef Node node
-        for node in nodes:
-            self.enqueue(node)
-
-    cpdef Node dequeue(self):
+    cpdef Node _dequeue(self):
         cdef:
             LevelQueue start
             Node node
@@ -148,12 +157,10 @@ cdef class LevelManagerInterface(BaseNodeManager):
                 self.current_level = self.current_level.prev
                 if self.current_level is start:
                     return None
-            node = self.current_level.pop_node()
-            self.dequeue_bound_update(node)
-            self.node_counter -= 1
+            node = self.current_level.pop()
             if (
                 not self.permanent_fallback
-                and self.node_counter <= self.max_size // 2
+                and self.nodecount - 1 <= self.max_size // 2
             ):
                 self.exit_fallback()
             return node
@@ -169,119 +176,26 @@ cdef class LevelManagerInterface(BaseNodeManager):
             if self.current_level is start:
                 return None
 
-        self.node_counter -= 1
-        node = self.current_level.pop_node()
-        self.dequeue_bound_update(node)
+        node = self.current_level.pop()
         return node
 
-    cpdef Node get_lower_bound(self):
-        cdef:
-            Node node
-            Node min_node
-            set[Node] bound_nodes
-            LevelQueue level
-            double min_lb
-
-        # Fast path: cached bound_nodes is populated
-        for node in self.bound_nodes:
-            return node
-
-        min_lb = HIGH_POS
-        min_node = None
-        self.bound_nodes.clear()
-        for level in self.levels:
-            if level.size() == 0 or level.peek_lb() > min_lb:
-                continue
-            node = level.get_lower_bound()
-            if node is None:
-                continue
-            if node.lb <= min_lb:
-                bound_nodes = level.get_bound_nodes()
-                if node.lb < min_lb:
-                    min_lb = node.lb
-                    min_node = node
-                    self.bound_nodes.clear()
-                    self.bound_nodes.update(bound_nodes)
-                else:
-                    self.bound_nodes.update(bound_nodes)
-
-        self.lb = min_lb
-        return min_node
-
-    cpdef Node pop_lower_bound(self):
-        """Remove and return the node with the smallest lb."""
-        cdef:
-            Node node
-            Node min_node
-            LevelQueue best_level
-            LevelQueue level
-            double min_lb
-
-        if self.node_counter == 0:
-            return None
-
-        min_lb = HIGH_POS
-        best_level = None
-        for level in self.levels:
-            if level.size() == 0:
-                continue
-            if level.peek_lb() < min_lb:
-                min_lb = level.peek_lb()
-                best_level = level
-
-        if best_level is None:
-            return None
-
-        node = best_level.queue.pop_lower_bound()
-        if node is None:
-            return None
-
-        self.node_counter -= 1
-        self.dequeue_bound_update(node)
-
-        if self.node_counter == 0:
-            self.lb = HIGH_POS
-            self.bound_nodes.clear()
-
-        return node
-
-    cpdef void filter_by_lb(self, double max_lb):
-        cdef:
-            LevelQueue level
-            int node_counter
-
-        node_counter = 0
+    cpdef void _filter_by_lb(self, double max_lb):
+        cdef LevelQueue level
         for level in self.levels:
             level.filter(max_lb)
-            node_counter += level.size()
 
-        self.node_counter = node_counter
-        if self.node_counter == 0:
-            self.lb = HIGH_POS
-            self.bound_nodes.clear()
-
-    cpdef void clear(self):
+    cpdef void _clear(self):
+        cdef LevelQueue level
+        for level in self.levels:
+            level.pq.clear()
+            level.next = None
+            level.prev = None
         self.levels = []
         self.current_level = None
         self.start_level = None
         self.last_level = None
-        self.node_counter = 0
         self.use_fallback = False
         self.add_level()
-        self.lb = HIGH_POS
-        self.bound_nodes.clear()
-
-    cpdef list[Node] pop_all(self):
-        cdef:
-            LevelQueue level
-            list[Node] nodes = []
-
-        for level in self.levels:
-            nodes.extend(level.pop_all())
-        self.node_counter = 0
-        self.lb = HIGH_POS
-        self.bound_nodes.clear()
-        return nodes
 
     cpdef void reset_level(self):
         """Reset the current level pointer back to the first level."""
@@ -327,9 +241,7 @@ cdef class CyclicBestSearch(LevelManagerInterface):
         super(CyclicBestSearch, self).__init__(max_size, permanent_fallback)
 
     cpdef LevelQueue new_level(self, int level):
-        cdef LevelQueue lvl = LevelQueue(level)
-        lvl.set_queue(BestFirstSearch())
-        return lvl
+        return LevelQueue(level)
 
 
 # ---------------------------------------------------------------------------
@@ -349,6 +261,4 @@ cdef class DfsPriority(LevelManagerInterface):
         self.use_fallback = True
 
     cpdef LevelQueue new_level(self, int level):
-        cdef LevelQueue lvl = LevelQueue(level)
-        lvl.set_queue(BestFirstSearch())
-        return lvl
+        return LevelQueue(level)

@@ -42,9 +42,6 @@ cdef class PermFlowShop(Problem):
         self.constructive = <string> constructive.encode("utf-8")
         self.simple_upgraded = False
 
-    cdef void ccleanup(PermFlowShop self):
-        self.solution = None
-
     @classmethod
     def from_p(
         cls,

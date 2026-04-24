@@ -13,11 +13,7 @@ from typing import Any, Literal, Optional, Union
 from bnbpy.cython.levelqueue cimport CyclicBestSearch
 from bnbpy.cython.manager cimport BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node cimport Node, init_node
-from bnbpy.cython.priqueue cimport (
-    BestPriQueue,
-    BfsPriQueue,
-    DfsPriQueue,
-)
+from bnbpy.cython.primanager cimport BestFirstSearch, DepthFirstSearch
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 from bnbpy.cython.status cimport OptStatus
@@ -164,7 +160,7 @@ cdef class BranchAndBound:
 
         manager : BaseNodeManager, optional
             Node manager that controls the search traversal strategy.
-            Defaults to ``DfsPriQueue()`` (depth-first search) when
+            Defaults to ``DepthFirstSearch()`` (depth-first search) when
             ``None`` is given.  Pass any ``BaseNodeManager`` subclass
             to customise the traversal order, or use the
             :meth:`build_manager` factory for common string aliases.
@@ -176,7 +172,7 @@ cdef class BranchAndBound:
         # to allow warmstart, with a `None` check
         self.root = None
         self.explored = 0
-        self.manager = manager if manager is not None else DfsPriQueue()
+        self.manager = manager if manager is not None else DepthFirstSearch()
 
         # Default tolerances, might be overridden by solve() parameters
         self.rtol = 1e-4
@@ -245,9 +241,9 @@ cdef class BranchAndBound:
         strategy : str
             One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``, ``'cbfs'``.
 
-            *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
-            *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).
-            *   ``'best'`` — Best-first search (``BestPriQueue``).
+            *   ``'dfs'``  — Depth-first search (``DepthFirstSearch``).
+            *   ``'bfs'``  — Breadth-first search (``FifoManager``).
+            *   ``'best'`` — Best-first search (``BestFirstSearch``).
             *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
             *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
             *   ``'cbfs'`` — Cyclic best-first search (``CyclicBestSearch``).
@@ -266,9 +262,9 @@ cdef class BranchAndBound:
             If *strategy* is not one of the recognised names.
         """
         _strategies = {
-            'dfs': DfsPriQueue,
-            'bfs': BfsPriQueue,
-            'best': BestPriQueue,
+            'dfs': DepthFirstSearch,
+            'bfs': FifoManager,
+            'best': BestFirstSearch,
             'lifo': LifoManager,
             'fifo': FifoManager,
             'cbfs': CyclicBestSearch,
@@ -678,7 +674,7 @@ cdef class BranchAndBound:
 cdef class DepthFirstBnB(BranchAndBound):
     """Depth-first Branch & Bound algorithm.
 
-    Uses :class:`~bnbpy.cython.priqueue.DfsPriQueue` as the node manager.
+    Uses :class:`~bnbpy.cython.primanager.DepthFirstSearch` as the node manager.
     """
 
     def __init__(
@@ -687,13 +683,13 @@ cdef class DepthFirstBnB(BranchAndBound):
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(problem, eval_node, save_tree, DfsPriQueue())
+        super().__init__(problem, eval_node, save_tree, DepthFirstSearch())
 
 
 cdef class BreadthFirstBnB(BranchAndBound):
     """Breadth-first Branch & Bound algorithm.
 
-    Uses a :class:`~bnbpy.cython.priqueue.BfsPriQueue` as the node manager.
+    Uses a :class:`~bnbpy.cython.manager.FifoManager` as the node manager.
     """
 
     def __init__(
@@ -702,13 +698,13 @@ cdef class BreadthFirstBnB(BranchAndBound):
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(problem, eval_node, save_tree, BfsPriQueue())
+        super().__init__(problem, eval_node, save_tree, FifoManager())
 
 
 cdef class BestFirstBnB(BranchAndBound):
     """Best-first Branch & Bound algorithm.
 
-    Uses a :class:`~bnbpy.cython.priqueue.BestPriQueue` as the node manager.
+    Uses a :class:`~bnbpy.cython.primanager.BestFirstSearch` as the node manager.
     """
 
     def __init__(
@@ -717,7 +713,7 @@ cdef class BestFirstBnB(BranchAndBound):
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(problem, eval_node, save_tree, BestPriQueue())
+        super().__init__(problem, eval_node, save_tree, BestFirstSearch())
 
 
 cdef class LifoBnB(BranchAndBound):

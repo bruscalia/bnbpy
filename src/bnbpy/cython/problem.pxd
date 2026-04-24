@@ -15,8 +15,6 @@ cdef class Problem:
         Solution solution
         """Solution of the (sub)problem (if any)"""
 
-    cpdef void cleanup(self)
-
     cpdef double calc_bound(self)
 
     cpdef bool is_feasible(self)

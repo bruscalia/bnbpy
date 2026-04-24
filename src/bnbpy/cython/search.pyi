@@ -140,7 +140,7 @@ class BranchAndBound(Generic[P]):
 
         manager : BaseNodeManager, optional
             Node manager that controls the search traversal strategy.
-            Defaults to ``DfsPriQueue()`` (depth-first search) when
+            Defaults to ``DepthFirstSearch()`` (depth-first search) when
             ``None`` is given.  Pass any ``BaseNodeManager`` subclass
             to customise the traversal order, or use the
             :meth:`build_manager` factory for common string aliases.
@@ -158,9 +158,9 @@ class BranchAndBound(Generic[P]):
             One of ``'dfs'``, ``'bfs'``, ``'best'``,
             ``'lifo'``, ``'fifo'``, ``'cbfs'``.
 
-            *   ``'dfs'``  — Depth-first search (``DfsPriQueue``).
-            *   ``'bfs'``  — Breadth-first search (``BfsPriQueue``).
-            *   ``'best'`` — Best-first search (``BestPriQueue``).
+            *   ``'dfs'``  — Depth-first search (``DepthFirstSearch``).
+            *   ``'bfs'``  — Breadth-first search (``FifoManager``).
+            *   ``'best'`` — Best-first search (``BestFirstSearch``).
             *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
             *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
             *   ``'cbfs'`` — Cyclic best-first search (``CyclicBestSearch``).
@@ -367,7 +367,8 @@ class BranchAndBound(Generic[P]):
 class DepthFirstBnB(BranchAndBound[P]):
     """Depth-first Branch & Bound algorithm.
 
-    Uses :class:`~bnbpy.cython.priqueue.DfsPriQueue` as the node manager.
+    Uses :class:`~bnbpy.cython.primanager.DepthFirstSearch` as the node
+    manager.
     """
 
     ...
@@ -375,7 +376,7 @@ class DepthFirstBnB(BranchAndBound[P]):
 class BreadthFirstBnB(BranchAndBound[P]):
     """Breadth-first Branch & Bound algorithm.
 
-    Uses :class:`~bnbpy.cython.priqueue.BfsPriQueue` as the node manager.
+    Uses :class:`~bnbpy.cython.manager.FifoManager` as the node manager.
     """
 
     def __init__(
@@ -388,7 +389,7 @@ class BreadthFirstBnB(BranchAndBound[P]):
 class BestFirstBnB(BranchAndBound[P]):
     """Best-first Branch & Bound algorithm.
 
-    Uses :class:`~bnbpy.cython.priqueue.BestPriQueue` as the node manager.
+    Uses :class:`~bnbpy.cython.primanager.BestFirstSearch` as the node manager.
     """
 
     def __init__(

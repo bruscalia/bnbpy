@@ -35,15 +35,15 @@ class TestBaseNodeManagerInterface:
         # Instantiate without going through a subclass
         return BaseNodeManager.__new__(BaseNodeManager)
 
-    def test_size_raises(self) -> None:
+    def test_size_returns_zero(self) -> None:
+        """size() on a bare manager returns 0 (nodecount-based, no raise)."""
         mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
-            mgr.size()
+        assert mgr.size() == 0
 
-    def test_not_empty_raises(self) -> None:
+    def test_not_empty_returns_false(self) -> None:
+        """not_empty() on a bare manager returns False (nodecount-based)."""
         mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
-            mgr.not_empty()
+        assert mgr.not_empty() is False
 
     def test_enqueue_raises(self) -> None:
         mgr = self._bare_manager()
@@ -56,25 +56,15 @@ class TestBaseNodeManagerInterface:
         with pytest.raises((NotImplementedError, Exception)):
             mgr.dequeue()
 
-    def test_get_lower_bound_raises(self) -> None:
+    def test_get_lower_bound_empty(self) -> None:
+        """get_lower_bound returns None on an empty manager (no raise)."""
         mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
-            mgr.get_lower_bound()
-
-    def test_pop_lower_bound_raises(self) -> None:
-        mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
-            mgr.pop_lower_bound()
+        assert mgr.get_lower_bound() is None
 
     def test_clear_raises(self) -> None:
         mgr = self._bare_manager()
         with pytest.raises((NotImplementedError, Exception)):
             mgr.clear()
-
-    def test_pop_all_raises(self) -> None:
-        mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
-            mgr.pop_all()
 
     def test_filter_by_lb_is_noop(self) -> None:
         """filter_by_lb on the base class is a no-op (does not raise)."""
@@ -149,7 +139,7 @@ class TestLifoManager:
         assert manager.dequeue() is None
 
     # ------------------------------------------------------------------
-    # enqueue_all / pop_all
+    # enqueue_all / nodecount
     # ------------------------------------------------------------------
 
     @staticmethod
@@ -159,14 +149,27 @@ class TestLifoManager:
         assert manager.size() == THREE
 
     @staticmethod
-    def test_pop_all_returns_all_nodes(
+    def test_nodecount_tracks_enqueue_dequeue(
         manager: LifoManager[MyProblem],
     ) -> None:
-        nodes = [_make_node(lb) for lb in (LB_LOW, LB_MEDIUM, LB_HIGH)]
-        for n in nodes:
-            manager.enqueue(n)
-        result = manager.pop_all()
-        assert {id(n) for n in result} == {id(n) for n in nodes}
+        """nodecount increments on enqueue and decrements on dequeue."""
+        assert manager.nodecount == 0
+        manager.enqueue(_make_node(LB_LOW))
+        assert manager.nodecount == 1
+        manager.enqueue(_make_node(LB_MEDIUM))
+        assert manager.nodecount == TWO
+        manager.dequeue()
+        assert manager.nodecount == 1
+        manager.dequeue()
+        assert manager.nodecount == 0
+
+    @staticmethod
+    def test_nodecount_reset_on_clear(manager: LifoManager[MyProblem]) -> None:
+        """nodecount is zero after clear()."""
+        manager.enqueue(_make_node(LB_LOW))
+        manager.enqueue(_make_node(LB_MEDIUM))
+        manager.clear()
+        assert manager.nodecount == 0
         assert manager.not_empty() is False
 
     # ------------------------------------------------------------------
@@ -190,25 +193,6 @@ class TestLifoManager:
         manager: LifoManager[MyProblem],
     ) -> None:
         assert manager.get_lower_bound() is None
-
-    @staticmethod
-    def test_pop_lower_bound_removes_min(
-        manager: LifoManager[MyProblem],
-    ) -> None:
-        node_high = _make_node(LB_HIGH)
-        node_low = _make_node(LB_LOW)
-        manager.enqueue(node_high)
-        manager.enqueue(node_low)
-        result = manager.pop_lower_bound()
-        assert result is node_low
-        assert manager.size() == 1
-        assert manager.dequeue() is node_high
-
-    @staticmethod
-    def test_pop_lower_bound_empty_returns_none(
-        manager: LifoManager[MyProblem],
-    ) -> None:
-        assert manager.pop_lower_bound() is None
 
     # ------------------------------------------------------------------
     # filter_by_lb
@@ -297,7 +281,7 @@ class TestFifoManager:
         assert manager.dequeue() is None
 
     # ------------------------------------------------------------------
-    # enqueue_all / pop_all
+    # enqueue_all / nodecount
     # ------------------------------------------------------------------
 
     @staticmethod
@@ -311,11 +295,14 @@ class TestFifoManager:
         assert manager.dequeue() is nodes[2]
 
     @staticmethod
-    def test_pop_all(manager: FifoManager[MyProblem]) -> None:
+    def test_nodecount_after_enqueue_clear(
+        manager: FifoManager[MyProblem],
+    ) -> None:
         nodes = [_make_node(lb) for lb in (LB_LOW, LB_MEDIUM)]
         manager.enqueue_all(nodes)
-        result = manager.pop_all()
-        assert len(result) == TWO
+        assert manager.nodecount == TWO
+        manager.clear()
+        assert manager.nodecount == 0
         assert manager.not_empty() is False
 
     # ------------------------------------------------------------------
@@ -331,16 +318,6 @@ class TestFifoManager:
         result = manager.get_lower_bound()
         assert result is node_low
         assert manager.size() == TWO
-
-    @staticmethod
-    def test_pop_lower_bound(manager: FifoManager[MyProblem]) -> None:
-        node_high = _make_node(LB_HIGH)
-        node_low = _make_node(LB_LOW)
-        manager.enqueue(node_high)
-        manager.enqueue(node_low)
-        result = manager.pop_lower_bound()
-        assert result is node_low
-        assert manager.size() == 1
 
     # ------------------------------------------------------------------
     # filter_by_lb
@@ -359,3 +336,100 @@ class TestFifoManager:
         # FIFO order preserved after filtering
         assert manager.dequeue() is node_low
         assert manager.dequeue() is node_medium
+
+
+@pytest.mark.core
+@pytest.mark.manager
+class TestBoundMemory:
+    """Tests for bound_memory / memorize / forget in BaseNodeManager."""
+
+    @staticmethod
+    def test_memorize_sets_lb_and_bound_nodes() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        node = _make_node(LB_LOW)
+        mgr.enqueue(node)
+        assert mgr.lb == LB_LOW
+        assert node in mgr.bound_nodes
+
+    @staticmethod
+    def test_memorize_lower_node_updates_lb() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        high = _make_node(LB_HIGH)
+        low = _make_node(LB_LOW)
+        mgr.enqueue(high)
+        mgr.enqueue(low)
+        assert mgr.lb == LB_LOW
+        assert low in mgr.bound_nodes
+        assert high not in mgr.bound_nodes
+
+    @staticmethod
+    def test_memorize_equal_lb_both_in_bound_nodes() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        n1 = _make_node(LB_LOW)
+        n2 = _make_node(LB_LOW)
+        mgr.enqueue(n1)
+        mgr.enqueue(n2)
+        assert mgr.lb == LB_LOW
+        assert n1 in mgr.bound_nodes
+        assert n2 in mgr.bound_nodes
+
+    @staticmethod
+    def test_forget_updates_lb_to_next_minimum() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        low = _make_node(LB_LOW)
+        high = _make_node(LB_HIGH)
+        mgr.enqueue(low)
+        mgr.enqueue(high)
+        assert mgr.lb == LB_LOW
+        mgr.dequeue()  # pops high (LIFO), forget(high) — lb stays LB_LOW
+        assert mgr.lb == LB_LOW
+        mgr.dequeue()  # pops low (LIFO), forget(low) — lb stays stale (lazy)
+        assert len(mgr.bound_memory) == 0
+        assert len(mgr.bound_nodes) == 0
+
+    @staticmethod
+    def test_forget_when_sole_min_lb_node_dequeued() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        low = _make_node(LB_LOW)
+        medium = _make_node(LB_MEDIUM)
+        mgr.enqueue(low)
+        mgr.enqueue(medium)
+        mgr.dequeue()  # pops medium (LIFO)
+        assert mgr.lb == LB_LOW
+        mgr.dequeue()  # pops low (LIFO) — sole min-lb node; lb stays stale (lazy)
+        assert len(mgr.bound_memory) == 0
+
+    @staticmethod
+    def test_filter_memory_lb_removes_entries() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        mgr.enqueue(_make_node(LB_LOW))
+        mgr.enqueue(_make_node(LB_MEDIUM))
+        mgr.enqueue(_make_node(LB_HIGH))
+        mgr.filter_by_lb(MAX_LB_FILTER)
+        # lb < 12 survive; lb >= 12 removed from bound_memory
+        assert LB_HIGH not in mgr.bound_memory
+        assert LB_LOW in mgr.bound_memory or LB_MEDIUM in mgr.bound_memory
+        assert mgr.lb < MAX_LB_FILTER
+
+    @staticmethod
+    def test_clear_memory_resets_all() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        mgr.enqueue(_make_node(LB_LOW))
+        mgr.clear()
+        assert mgr.lb == float('inf')
+        assert len(mgr.bound_nodes) == 0
+        assert len(mgr.bound_memory) == 0
+
+    @staticmethod
+    def test_bound_memory_keys_match_node_lbs() -> None:
+        mgr: LifoManager[MyProblem] = LifoManager()
+        n1 = _make_node(LB_LOW)
+        n2 = _make_node(LB_MEDIUM)
+        n3 = _make_node(LB_HIGH)
+        mgr.enqueue(n1)
+        mgr.enqueue(n2)
+        mgr.enqueue(n3)
+        assert set(mgr.bound_memory.keys()) == {LB_LOW, LB_MEDIUM, LB_HIGH}
+        assert n1 in mgr.bound_memory[LB_LOW]
+        assert n2 in mgr.bound_memory[LB_MEDIUM]
+        assert n3 in mgr.bound_memory[LB_HIGH]

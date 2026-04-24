@@ -42,8 +42,6 @@ cdef class PermFlowShop(Problem):
 
     cpdef object get_mach_graph(PermFlowShop self)
 
-    cdef void ccleanup(PermFlowShop self)
-
     cpdef PermFlowShop warmstart(PermFlowShop self)
 
     cpdef PermFlowShop quick_constructive(PermFlowShop self)
