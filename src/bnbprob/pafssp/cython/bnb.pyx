@@ -62,19 +62,19 @@ cdef class DfsLevelQueue(LevelQueue):
 cdef class BestFirstLevelQueue(LevelQueue):
     """Per-level queue for PermFlowShop with best-first priority.
 
-    Priority is ``(lb, idle_time)`` — best bound, then least idle time first.
+    Priority is ``(lb, idle_time)`` — best bound first, then
+    least idle time.
     """
 
     cpdef vector[double] make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
-            vector[double] pri = vector[double](3)
+            vector[double] pri = vector[double](2)
 
         problem = node.problem
-        pri[0] = -node.level
-        pri[1] = node.lb
-        pri[2] = <double>problem.calc_idle_time()
+        pri[0] = node.lb
+        pri[1] = <double>problem.calc_idle_time()
         return pri
 
 cdef class CycleBestFlowShop(CyclicBestSearch):
