@@ -20,9 +20,11 @@ class PermFlowShop(Problem):
     by Potts (1980), also implemented by Ladhari & Haouari (2005),
     therein described as 'LB1' and 'LB5'.
 
-    If the attribute `constructive` is 'neh', the heuristic
-    of Nawaz et al. (1983) is adopted, otherwise
-    the strategy by Palmer (1965).
+    The `constructive` attribute selects the warmstart strategy:
+    'neh' uses Nawaz et al. (1983), 'quick' uses the slope-sorting
+    heuristic by Palmer (1965), 'multistart' applies randomized
+    multi-iteration NEH, and 'iga' uses the Iterated Greedy Algorithm
+    by Ruiz & Stützle (2007).
 
     References
     ----------
@@ -35,12 +37,16 @@ class PermFlowShop(Problem):
     n-job flow-shop sequencing problem.
     Omega, 11(1), 91-95.
 
+    Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
+    in the minimum total time—a quick method of obtaining a near optimum.
+    Journal of the Operational Research Society, 16(1), 101-107.
+
     Potts, C. N. (1980). An adaptive branching rule for the permutation
     flow-shop problem. European Journal of Operational Research, 5(1), 19-25.
 
-    Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
-    in the minimum total time—a quick method of obtaining a near optimum.
-    Journal of the Operational Research Society, 16(1), 101-107
+    Ruiz, R., & Stützle, T. (2007). A simple and effective iterated
+    greedy algorithm for the permutation flowshop scheduling problem.
+    European Journal of Operational Research, 177(3), 2033-2049.
     """
 
     def __init__(
@@ -115,9 +121,11 @@ class PermFlowShop(Problem):
         """
         Computes an initial feasible solution based on the method of choice.
 
-        If the attribute `constructive` is 'neh', the heuristic
-        of Nawaz et al. (1983) is adopted, otherwise
-        the strategy by Palmer (1965).
+        Dispatches to the constructive method selected by the `constructive`
+        attribute: 'neh' uses Nawaz et al. (1983), 'quick' uses the
+        slope-sorting heuristic by Palmer (1965), 'multistart' applies
+        randomized multi-iteration NEH, and 'iga' uses the Iterated Greedy
+        Algorithm by Ruiz & Stützle (2007).
 
         Returns
         -------
@@ -133,13 +141,18 @@ class PermFlowShop(Problem):
 
         Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
         in the minimum total time—a quick method of obtaining a near optimum.
-        Journal of the Operational Research Society, 16(1), 101-107
+        Journal of the Operational Research Society, 16(1), 101-107.
+
+        Ruiz, R., & Stützle, T. (2007). A simple and effective iterated
+        greedy algorithm for the permutation flowshop scheduling problem.
+        European Journal of Operational Research, 177(3), 2033-2049.
         """
         ...
 
     def quick_constructive(self) -> PermFlowShop:
-        """Computes a feasible solution based on the sorting
-        strategy by Palmer (1965).
+        """Computes a feasible solution using the slope-sorting strategy
+        by Palmer (1965). Jobs are sorted in descending order of a slope
+        index derived from their processing times across machines.
 
         Returns
         -------
@@ -150,7 +163,7 @@ class PermFlowShop(Problem):
         ----------
         Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
         in the minimum total time—a quick method of obtaining a near optimum.
-        Journal of the Operational Research Society, 16(1), 101-107
+        Journal of the Operational Research Society, 16(1), 101-107.
         """
         ...
 
@@ -166,8 +179,8 @@ class PermFlowShop(Problem):
         PermFlowShop
             Solution to the problem
 
-        Reference
-        ---------
+        References
+        ----------
         Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).
         A heuristic algorithm for the m-machine,
         n-job flow-shop sequencing problem.
@@ -192,21 +205,23 @@ class PermFlowShop(Problem):
         ...
 
     def iga_initialization(self) -> PermFlowShop:
-        """Iterated Greedy Algorithm (IGA) heuristic
-        by Ruiz and Stützle (2007).
+        """
+        Iterated Greedy Algorithm (IGA) heuristic
+        by Ruiz & Stützle (2007).
 
-        1) NEH greedy initialization;
-        2) local search;
-        3) perturbation by d random removals.
+        Applies IGA starting from an NEH solution with
+        k = n x m iterations, d = max(5, ⌊n/10⌋) destroyed jobs per
+        iteration, and a fixed random seed of 42.
 
-        The complete heuristic has a time complexity of O(k m n^2),
-        where k is the number of iterations (default number of jobs
-        times number of machines). The random seed is fixed as 42.
+        Each iteration: (1) destroy d jobs; (2) reconstruct greedily;
+        (3) accept if the new makespan improves the incumbent.
+
+        Time complexity: O(k m n²) = O(m² n³), for the computed `k`.
 
         Returns
         -------
         PermFlowShop
-            Solution to the problem
+            Best solution found across all iterations.
 
         Reference
         ---------
@@ -249,31 +264,30 @@ class PermFlowShop(Problem):
         ...
 
     def iga_heur(self, n_iter: int, d: int, seed: int = 0) -> 'PermFlowShop':
-        """Iterated Greedy Algorithm (IGA) heuristic
-        by Ruiz and Stützle (2007).
+        """Iterated Greedy Algorithm (IGA) heuristic by Ruiz & Stützle (2007).
 
-        1) NEH greedy initialization;
-        2) local search;
-        3) perturbation by d random removals.
+        Starts from an NEH solution, then repeats ``n_iter`` times:
+        (1) destroy ``d`` jobs; (2) reconstruct greedily;
+        (3) accept the new solution if it improves the incumbent.
 
         Parameters
         ----------
         n_iter : int
-            Number of iterations for the IGA heuristic
+            Number of IGA iterations.
 
         d : int
-            Number of random removed jobs for perturbation
+            Number of jobs removed per iteration (destruction step).
 
         seed : int, optional
-            Random seed for reproducibility. If 0 (default), uses random device
+            Random seed. If 0 (default), uses the system random device.
 
         Returns
         -------
         PermFlowShop
-            Best solution found across all iterations
+            Best solution found across all iterations.
 
-        Reference
-        ---------
+        References
+        ----------
         Ruiz, R., & Stützle, T. (2007). A simple and effective iterated
         greedy algorithm for the permutation flowshop scheduling problem.
         European Journal of Operational Research, 177(3), 2033-2049.
@@ -297,11 +311,14 @@ class PermFlowShop(Problem):
 
     def calc_bound(self) -> float:
         """Calculate lower bound for the current state.
-        At the initial moment, solely a single machine bound is computed.
-        The bound can be upgraded via `simple_bound_upgrade` and/or
-        `double_bound_upgrade`.
 
-        See `calc_lb_1m` and `calc_lb_2m` for details."""
+        Initially computes only the single-machine bound (LB1). Calling
+        ``stronger_bound()`` upgrades it: first via tighter release-date
+        parameters (LB1 with O(mn)), then via the two-machine relaxation
+        (LB5 with O(m²n)).
+
+        See ``calc_lb_1m``, ``calc_lb_2m``, and ``stronger_bound`` for
+        details."""
         ...
 
     def is_feasible(self) -> bool:
@@ -314,16 +331,20 @@ class PermFlowShop(Problem):
         ...
 
     def simple_bound_upgrade(self) -> None:
-        """Upgrade current lower bound using tighter release dates
-        and wait times with time complexity of O(m n)."""
+        """Upgrade the lower bound using tighter release dates and wait times.
+
+        Calls ``update_params()`` to refresh head (r) and tail (q) values
+        for the free jobs, then recomputes the single-machine bound (LB1).
+        Time complexity: O(m n)."""
         ...
 
     def double_bound_upgrade(self) -> None:
-        """Upgrade current lower bound using two-machine relaxations
-        with time complexity of O(m^2 n).
+        """Upgrade the lower bound using two-machine relaxations (LB5).
 
-        By default, this method is called only in nodes of which
-        level is greater than or equal to floor(n/3) + 1."""
+        Assumes ``update_params()`` has already been called (i.e.
+        ``simple_bound_upgrade`` was applied first). Recomputes the
+        two-machine bound using all machine pairs.
+        Time complexity: O(m² n)."""
         ...
 
     def calc_lb_1m(self) -> int:
@@ -369,6 +390,13 @@ class PermFlowShop(Problem):
         ...
 
 class BenchPermFlowShop(PermFlowShop):
+    """Benchmarking variant of :class:`PermFlowShop`.
+
+    ``calc_bound`` always calls ``update_params()`` before computing the
+    single-machine lower bound (LB1), so that parameter-update cost is
+    included in timing measurements. Inherits all other behaviour from
+    :class:`PermFlowShop`.
+    """
     def calc_bound(self) -> float:
         """Calls `update_params` and computes a single machine bound.
 
@@ -380,8 +408,12 @@ class BenchPermFlowShop(PermFlowShop):
         ...
 
 class PermFlowShop1M(PermFlowShop):
-    """This approach uses the single machine bound upgrade
-    in child problems.
+    """Variant of :class:`PermFlowShop` that applies only the
+    single-machine bound upgrade.
+
+    ``double_bound_upgrade`` is overridden as a no-op, so the two-machine
+    relaxation (LB5) is never applied. This reduces per-node cost at the
+    expense of a weaker bound.
     """
 
     def calc_bound(self) -> float:
@@ -389,5 +421,6 @@ class PermFlowShop1M(PermFlowShop):
         ...
 
     def double_bound_upgrade(self) -> None:
-        """Override to disable bound upgrade."""
+        """No-op override. Two-machine relaxation is disabled for this
+        variant."""
         ...

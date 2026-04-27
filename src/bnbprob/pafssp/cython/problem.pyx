@@ -33,10 +33,47 @@ cdef:
 
 
 cdef class PermFlowShop(Problem):
+    """
+    Class to represent a permutation flow-shop scheduling problem
+    with lower bounds computed by the max of a single machine and
+    a two machine relaxations.
+
+    The bounds for single and two-machine problems are described
+    by Potts (1980), also implemented by Ladhari & Haouari (2005),
+    therein described as 'LB1' and 'LB5'.
+
+    The `constructive` attribute selects the warmstart strategy:
+    'neh' uses Nawaz et al. (1983), 'quick' uses the slope-sorting
+    heuristic by Palmer (1965), 'multistart' applies randomized
+    multi-iteration NEH, and 'iga' uses the Iterated Greedy Algorithm
+    by Ruiz & Stützle (2007).
+
+    References
+    ----------
+    Ladhari, T., & Haouari, M. (2005). A computational study of
+    the permutation flow shop problem based on a tight lower bound.
+    Computers & Operations Research, 32(7), 1831-1847.
+
+    Nawaz, M., Enscore Jr, E. E., & Ham, I. (1983).
+    A heuristic algorithm for the m-machine,
+    n-job flow-shop sequencing problem.
+    Omega, 11(1), 91-95.
+
+    Palmer, D. S. (1965). Sequencing jobs through a multi-stage process
+    in the minimum total time—a quick method of obtaining a near optimum.
+    Journal of the Operational Research Society, 16(1), 101-107.
+
+    Potts, C. N. (1980). An adaptive branching rule for the permutation
+    flow-shop problem. European Journal of Operational Research, 5(1), 19-25.
+
+    Ruiz, R., & Stützle, T. (2007). A simple and effective iterated
+    greedy algorithm for the permutation flowshop scheduling problem.
+    European Journal of Operational Research, 177(3), 2033-2049.
+    """
 
     def __init__(
         self,
-        constructive: Literal['neh', 'quick', 'multistart'] = 'neh',
+        constructive: Literal['neh', 'quick', 'multistart', 'iga'] = 'neh',
     ) -> None:
         self.solution = Solution()
         self.constructive = <string> constructive.encode("utf-8")
@@ -77,6 +114,7 @@ cdef class PermFlowShop(Problem):
 
     @property
     def sequence(self):
+        """Get the current job sequence"""
         cdef:
             int i
             vector[JobPtr] seq
@@ -353,6 +391,12 @@ cdef class PermFlowShop(Problem):
 
 
 cdef class BenchPermFlowShop(PermFlowShop):
+    """Benchmarking variant of PermFlowShop.
+
+    ``calc_bound`` always calls ``update_params()`` before computing the
+    single-machine bound, so that parameter update cost is included in
+    timing measurements.
+    """
 
     cpdef double calc_bound(BenchPermFlowShop self):
         self.perm.update_params()
@@ -370,6 +414,10 @@ cdef class BenchPermFlowShop(PermFlowShop):
 
 
 cdef class PermFlowShop1M(PermFlowShop):
+    """Variant of PermFlowShop that only ever applies the single-machine
+    bound upgrade. The two-machine bound (LB5) is never computed, which
+    reduces per-node cost at the expense of a looser bound.
+    """
 
     cpdef double calc_bound(PermFlowShop1M self):
         return self.perm.calc_lb_1m()
