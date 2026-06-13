@@ -274,8 +274,9 @@ class TestBranchAndBoundSolve:
         child2 = bnb.manager.dequeue()
         assert child1 is not None
         assert child2 is not None
-        assert child1.parent is None
-        assert child2.parent is None
+        assert node.children is None
+        assert child1.parent is node
+        assert child2.parent is node
 
     @staticmethod
     def test_optimality_check() -> None:

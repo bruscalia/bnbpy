@@ -450,6 +450,8 @@ cdef class BranchAndBound:
                 self._enqueue_core(child)
         if not self.save_tree and node is not self.root:
             node.cleanup()
+        elif self.save_tree:
+            node.save_children(children)
 
     cpdef void primal_heuristic(BranchAndBound self, Node node):
         """Calls `Problem` `primal_heuristic()` via node

@@ -50,6 +50,8 @@ cdef class Node:
 
     cpdef list[Node] branch(self)
 
+    cpdef void save_children(self, list[Node] children)
+
     cpdef Node primal_heuristic(self)
 
     cdef void c_upgrade_bound(self)

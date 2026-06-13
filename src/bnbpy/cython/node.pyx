@@ -38,7 +38,7 @@ cdef class Node:
 
         self.problem = problem
         self.parent = parent
-        self.children = []
+        self.children = None
         if parent is None:
             self._counter = Counter()
             self.level = 0
@@ -134,7 +134,8 @@ cdef class Node:
         """
         cdef:
             int i
-            list prob_children
+            Problem prob_child
+            list[Problem] prob_children
             list[Node] children
 
         prob_children = self.problem.branch()
@@ -145,8 +146,17 @@ cdef class Node:
         for i in range(len(prob_children)):
             prob_child = prob_children[i]
             children[i] = self.child_problem(prob_child)
-        self.children = children
         return children
+
+    cpdef void save_children(self, list[Node] children):
+        """Saves the list of child nodes to `children` attribute of the node.
+
+        Parameters
+        ----------
+        children : list[Node]
+            List of child nodes to save
+        """
+        self.children = children
 
     cpdef Node primal_heuristic(self):
         """Calls `problem` `primal_heuristic()`
@@ -198,7 +208,7 @@ cdef class Node:
         other = Node.__new__(Node)
         other.problem = problem
         other.parent = self
-        other.children = []
+        other.children = None
         other._counter = self._counter
         other.lb = self.lb
         other.level = self.level + 1
@@ -211,7 +221,7 @@ cdef class Node:
         other = Node.__new__(Node)
         other.problem = self.problem
         other.parent = self
-        other.children = []
+        other.children = None
         other._counter = self._counter
         other.lb = self.lb
         other.level = self.level + 1
@@ -225,7 +235,7 @@ cdef Node init_node(P problem, Node parent=None):
     node = Node.__new__(Node)
     node.problem = problem
     node.parent = parent
-    node.children = []
+    node.children = None
     if parent is None:
         node._counter = Counter()
         node.level = 0

@@ -41,7 +41,7 @@ class TestNode:
         assert node.problem == parent_problem
         assert node.parent is None
         assert isinstance(node.solution, Solution)
-        assert node.children == []
+        assert node.children is None
         assert node.lb == parent_problem.lb
 
     @staticmethod

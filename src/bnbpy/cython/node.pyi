@@ -12,7 +12,7 @@ class Node(Generic[P]):
     parent: Optional['Node[P]']
     level: int
     lb: float
-    children: list['Node[P]']
+    children: Optional[list['Node[P]']]
     _sort_index: int
 
     def __init__(self, problem: P, parent: 'Optional[Node[P]]' = None) -> None:
@@ -77,6 +77,17 @@ class Node(Generic[P]):
         -------
         list[Node]
             List of child nodes, if any
+        """
+        ...
+
+    def save_children(self, children: list['Node[P]']) -> None:
+        """Saves the list of child nodes to the
+        `children` attribute of the node.
+
+        Parameters
+        ----------
+        children : list[Node]
+            List of child nodes to be saved
         """
         ...
 
