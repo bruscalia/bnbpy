@@ -1,5 +1,5 @@
 from bnbprob.pafssp.cython.problem import BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.levelqueue import CyclicBestSearch
+from bnbpy.cython.levelqueue import CyclicBestSearch, LevelQueue
 from bnbpy.cython.node import Node
 from bnbpy.cython.primanager import PriorityManagerTemplate
 from bnbpy.cython.search import BranchAndBound
@@ -12,6 +12,14 @@ class DfsFlowShop(PriorityManagerTemplate[PermFlowShop]):
 
     Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
     then least idle time first.
+    """
+
+    ...
+
+class DfsLevelQueue(LevelQueue):
+    """Per-level queue for PermFlowShop with best-first priority.
+
+    Priority is ``(lb, idle_time)`` — best bound first, then least idle time.
     """
 
     ...

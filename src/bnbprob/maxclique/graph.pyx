@@ -58,7 +58,8 @@ cdef class Graph:
         self._active_size = 0
 
     def __del__(self) -> None:
-        cdef size_t i
+        cdef:
+            size_t i
         for i in range(self._nodes.size()):
             c_free_node(self._nodes[i])
         self._nodes.clear()
