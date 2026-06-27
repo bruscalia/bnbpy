@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp cimport bool
 from libcpp.string cimport string
@@ -24,6 +24,7 @@ cdef class PermFlowShop(Problem):
 
     cdef public:
         string constructive
+        bool simple_upgraded
         # Cannot override attribute `solution` in cdef class
         # due to Cython limitation
 
@@ -40,8 +41,6 @@ cdef class PermFlowShop(Problem):
         return self.perm.n
 
     cpdef object get_mach_graph(PermFlowShop self)
-
-    cdef void ccleanup(PermFlowShop self)
 
     cpdef PermFlowShop warmstart(PermFlowShop self)
 
@@ -72,11 +71,9 @@ cdef class PermFlowShop(Problem):
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
-    cpdef void simple_bound_upgrade(PermFlowShop self)
+    cpdef double stronger_bound(PermFlowShop self)
 
-    cpdef void double_bound_upgrade(PermFlowShop self)
-
-    cdef void _double_bound_upgrade(PermFlowShop self)
+    cpdef PermFlowShop primal_heuristic(PermFlowShop self)
 
     cpdef int calc_lb_1m(PermFlowShop self)
 
@@ -113,5 +110,3 @@ cdef class BenchPermFlowShop(PermFlowShop):
 cdef class PermFlowShop1M(PermFlowShop):
 
     cpdef double calc_bound(PermFlowShop1M self)
-
-    cpdef void double_bound_upgrade(PermFlowShop1M self)

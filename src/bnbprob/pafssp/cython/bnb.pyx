@@ -1,16 +1,14 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from libcpp cimport bool
 from libc.math cimport sqrt
-
-import heapq
-from typing import Optional, Union
+from libcpp cimport bool
+from libcpp.vector cimport vector
 
 from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
-from bnbpy.cython.mod_queue cimport CycleQueue
+from bnbpy.cython.levelqueue cimport CyclicBestSearch, LevelQueue
 from bnbpy.cython.node cimport Node
-from bnbpy.cython.priqueue cimport DFSPriQueue, HeapPriQueue, NodePriQueue
+from bnbpy.cython.primanager cimport PriorityManagerTemplate
 from bnbpy.cython.search cimport BranchAndBound, SearchResults
 from bnbpy.cython.solution cimport Solution
 
@@ -21,32 +19,81 @@ cdef:
 EVAL_NODE: str = "in"
 
 
-cdef class DFSPriQueueFS(HeapPriQueue):
-    cpdef void enqueue(self, Node node):
+cdef class DfsFlowShop(PriorityManagerTemplate):
+    """DFS-ordered priority queue for PermFlowShop nodes.
+
+    Priority is ``(-level, lb, idle_time)`` — deepest, then best bound,
+    then least idle time first.
+    """
+
+    cpdef vector[double] make_priority(self, Node node):
         cdef:
             int idle_time
             PermFlowShop problem
+            vector[double] pri = vector[double](3)
+
         problem = node.problem
-        idle_time = problem.calc_idle_time()
-        heapq.heappush(
-            self._queue,
-            NodePriQueue((-node.level, node.lb, idle_time), node)
-        )
+        pri[0] = -node.level
+        pri[1] = node.lb
+        pri[2] = <double>problem.calc_idle_time()
+        return pri
+
+
+cdef class DfsLevelQueue(LevelQueue):
+    """Per-level queue for PermFlowShop with best-first priority.
+
+    Priority is ``(lb, idle_time)`` — best bound first, then least idle time.
+    """
+
+    cpdef vector[double] make_priority(self, Node node):
+        cdef:
+            int idle_time
+            PermFlowShop problem
+            vector[double] pri = vector[double](2)
+
+        problem = node.problem
+        pri[0] = node.lb
+        pri[1] = <double>problem.calc_idle_time()
+        return pri
+
+
+cdef class CycleBestFlowShop(CyclicBestSearch):
+    """Cyclic best-first search node manager specialised for PermFlowShop,
+    using :class:`DfsFlowShop` as the per-level priority queue.
+    """
+
+    def __init__(
+        self,
+        int max_size=1_000_000,
+        bool permanent_fallback=False,
+    ):
+        super(CycleBestFlowShop, self).__init__(max_size, permanent_fallback)
+
+    cpdef LevelQueue new_level(self, int level):
+        return DfsLevelQueue(level)
 
 
 cdef class LazyBnB(BranchAndBound):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
+        PermFlowShop problem,
         save_tree=False,
-        delay_lb5=False
+        delay_lb5=False,
     ):
-        super(LazyBnB, self).__init__(rtol, atol, EVAL_NODE, save_tree)
-        self.queue = DFSPriQueueFS()
+        super(LazyBnB, self).__init__(
+            problem,
+            EVAL_NODE,
+            save_tree,
+            None,
+        )
+        self.manager = DfsFlowShop()
         self.delay_lb5 = delay_lb5
-        self.min_lb5_level = 0
+        if delay_lb5:
+            self.min_lb5_level = (problem.get_n() // 3) + 1
+        else:
+            self.min_lb5_level = 0
+
 
     @staticmethod
     def delay_by_root(problem: PermFlowShop) -> bool:
@@ -54,34 +101,17 @@ cdef class LazyBnB(BranchAndBound):
         lb5 = problem.calc_lb_2m()
         return lb1 <= lb5
 
-    def solve(
-        LazyBnB self,
-        PermFlowShop problem,
-        maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
-    ) -> SearchResults:
-        if self.delay_lb5:
-            self.min_lb5_level = (problem.get_n() // 3) + 1
-        else:
-            self.min_lb5_level = 0
-        return super(LazyBnB, self).solve(problem, maxiter, timelimit)
-
-    cpdef void post_eval_callback(LazyBnB self, Node node):
-        cdef:
-            PermFlowShop problem
+    cpdef void post_eval_callback(self, Node node):
         # Here the r and q values are not yet updated
         if node.lb < self.get_ub():
-            problem = node.problem
-            # Update lower r and q values and recompute bound
-            problem.simple_bound_upgrade()
-            node.lb = problem.get_lb()
+            # Update lower r and q values and recompute bound 1M
+            node.c_upgrade_bound()
             # Delayed two machine bound upgrade
             if node.level < self.min_lb5_level and self.delay_lb5:
                 return
             if node.lb < self.get_ub():
                 # Two machine bound upgrade
-                problem.double_bound_upgrade()
-                node.lb = problem.get_lb()
+                node.c_upgrade_bound()
 
 
 cdef class CutoffBnB(LazyBnB):
@@ -91,14 +121,17 @@ cdef class CutoffBnB(LazyBnB):
 
     def __init__(
         self,
+        PermFlowShop problem,
         float ub_value,
-        rtol=0.0001,
-        atol=0.0001,
         save_tree=False,
-        delay_lb5=False
+        delay_lb5=False,
     ):
-        super(CutoffBnB, self).__init__(rtol, atol, save_tree, delay_lb5)
-        self.queue = DFSPriQueueFS()
+        super(CutoffBnB, self).__init__(
+            problem,
+            save_tree,
+            delay_lb5,
+        )
+        self.manager = DfsFlowShop()
         self.ub_value = ub_value
 
     cdef void _restart_search(CutoffBnB self):
@@ -111,13 +144,13 @@ cdef class CutoffBnB(LazyBnB):
         solution.set_lb(self.ub_value)
         solution.set_feasible()
         problem = PermFlowShop.__new__(PermFlowShop)
-        problem.solution = solution
+        problem.set_solution(solution)
         node = Node(problem)
 
         self.incumbent = node
         self.bound_node = None
         self.gap = 1.0
-        self.queue.clear()
+        self.manager.clear()
 
 
 cdef class BenchCutoffBnB(CutoffBnB):
@@ -138,9 +171,9 @@ cdef class BenchCutoffBnB(CutoffBnB):
         self.incumbent = node
         self.bound_node = None
         self.gap = 1.0
-        self.queue.clear()
+        self.manager.clear()
 
-    cpdef void post_eval_callback(BenchCutoffBnB self, Node node):
+    cpdef void post_eval_callback(self, Node node):
         cdef:
             BenchPermFlowShop problem
         # Here the r and q values are assumed to be already updated
@@ -155,46 +188,29 @@ cdef class CallbackBnB(LazyBnB):
 
     def __init__(
         self,
-        rtol=0.0001,
-        atol=0.0001,
+        PermFlowShop problem,
         save_tree=False,
         delay_lb5=False,
-        heur_factor=HEUR_BASE
+        heur_factor=HEUR_BASE,
     ):
-        super(CallbackBnB, self).__init__(rtol, atol, save_tree, delay_lb5)
-        self.queue = DFSPriQueueFS()
+        super(CallbackBnB, self).__init__(
+            problem,
+            save_tree,
+            delay_lb5,
+        )
+        self.manager = DfsFlowShop()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor
         self.heur_calls = 0
 
-    cpdef void solution_callback(CallbackBnB self, Node node):
-        cdef:
-            PermFlowShop problem, ref_problem
-            PermFlowShop new_prob
-            Solution new_sol
+    cpdef void solution_callback(self, Node node):
+        self.primal_heuristic(node)
 
-        problem = node.problem
-        new_prob = problem.local_search()
-        if new_prob is not None:
-            new_sol = new_prob.solution
-            # General procedure in case is valid
-            if new_prob.is_feasible() and new_sol.lb < node.lb:
-                node.problem = new_prob
-                node.set_solution(new_sol)
-                node.check_feasible()
-                self.set_solution(node)
-
-    cpdef Node dequeue(CallbackBnB self):
-        cdef:
-            DFSPriQueueFS queue
-            Node node
-
-        node = self.queue.dequeue()
+    cpdef void dequeue_callback(self, Node node):
         if self.explored >= self.heur_factor:
             self.intensify(node)
-        return node
 
-    cpdef void intensify(CallbackBnB self, Node node):
+    cpdef void intensify(self, Node node):
         cdef:
             Node new_node
             PermFlowShop problem, ref_problem, new_prob

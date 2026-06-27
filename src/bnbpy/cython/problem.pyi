@@ -14,6 +14,9 @@ class Problem:
         - `is_feasible`
         - `branch`
 
+    IMPORTANT: Always remember to call super().__init__()
+    in the constructor of the derived class.
+
     Although not implemented using an abstract base class,
     due to Cython limitations, these methods are essential for the
     correct functioning of the branch-and-bound algorithm.
@@ -144,6 +147,36 @@ class Problem:
         Optional[Problem]
             Problem modified in a warmstart form, or None
             (in case not implemented)
+        """
+        ...
+
+    def primal_heuristic(self) -> Optional['Problem']:
+        """Placeholder for primal heuristic implementation.
+
+        Returns
+        -------
+        Optional[Problem]
+            Problem modified in a primal heuristic form, or None
+        """
+        ...
+
+    def stronger_bound(self) -> float:
+        """Returns a stronger lower bound than `calc_bound` if available.
+
+        Returns
+        -------
+        float
+            Stronger lower bound, or current lb if not overridden
+        """
+        ...
+
+    def upgrade_bound(self, new_lb: float) -> None:
+        """Upgrades the solution lb to new_lb if strictly greater.
+
+        Parameters
+        ----------
+        new_lb : float
+            Candidate new lower bound
         """
         ...
 

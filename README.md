@@ -107,8 +107,8 @@ class MyProblem(Problem):
 
 # Apply Branch & Bound
 problem = MyProblem()
-bnb = BranchAndBound()
-bnb.solve(problem)
+bnb = BranchAndBound(problem)
+bnb.solve()
 print(bnb.solution)
 ```
 
@@ -192,8 +192,8 @@ A_ub = np.array([
 b_ub = np.array([12.0, 6.0])
 
 milp = MILP(c, A_ub=A_ub, b_ub=b_ub)
-bfs = BranchAndBound()
-sol = bfs.solve(milp)
+bfs = BranchAndBound(milp)
+sol = bfs.solve()
 print(f"Sol: {sol} | x: {sol.x}")
 # >>> Sol: Status: OPTIMAL | Cost: -18.0 | LB: -18.0 | x: [2. 2.]
 ```
@@ -211,12 +211,12 @@ with open("./data/flow-shop/reC11.json", mode="r", encoding="utf8") as f:
     p = json.load(f)
 
 problem = PermFlowShop.from_p(p, constructive='neh')
-bnb = CallbackBnB()
+bnb = CallbackBnB(problem)
 
 # The commercial solver Gurobi took 600s (timeout) to find the near-optimal
 # solution 1432
 sol = bnb.solve(
-    problem, maxiter=1000000, timelimit=600
+    maxiter=1000000, timelimit=600
 )
 print(sol)
 # >>> Status: OPTIMAL | Cost: 1431 | LB: 1431
@@ -242,7 +242,6 @@ instance = gcol.load_instance("./data/gcol/gcol_70_7.txt")
 # With only heuristics to generate columns, it took only 14s
 # The commercial solver Gurobi took 81s to find the optimal solution
 # but could only prove optimality within 51 min
-bnb = BranchAndBound()
 price_tol = 0.1
 pricing = gcol.ColorHybrPricing(
     instance["edges"],
@@ -256,7 +255,8 @@ problem = gcol.ColGenColor(
     pricing=pricing,
     max_iter_price=1000,
 )
-sol = bnb.solve(problem, maxiter=1000)
+bnb = BranchAndBound(problem)
+sol = bnb.solve(maxiter=1000)
 print(sol)
 # >>> Status: OPTIMAL | Cost: 17 | LB: 17
 ```

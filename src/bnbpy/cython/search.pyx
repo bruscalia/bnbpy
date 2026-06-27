@@ -1,22 +1,19 @@
 # distutils: language = c++
-# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
+# cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libc.math cimport INFINITY
+from libc.limits cimport ULLONG_MAX
 from libcpp cimport bool
 from libcpp.string cimport string
 
-import heapq
 import logging
 import time
-from typing import Any, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal, Optional, Union
 
+from bnbpy.cython.levelqueue cimport CyclicBestSearch
+from bnbpy.cython.manager cimport BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node cimport Node, init_node
-from bnbpy.cython.priqueue cimport (
-    BasePriQueue,
-    BestPriQueue,
-    BFSPriQueue,
-    DFSPriQueue,
-)
+from bnbpy.cython.primanager cimport BestFirstSearch, DepthFirstSearch
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 from bnbpy.cython.status cimport OptStatus
@@ -32,6 +29,16 @@ cdef:
 
 cdef class SearchResults:
     """Results container for Branch & Bound search"""
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax SearchResults[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "SearchResults can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     def __init__(
         self,
@@ -82,10 +89,11 @@ cdef class BranchAndBound:
 
     Some alternative strategies are already implemented as subclasses:
 
+    *   `DepthFirstBnB`: Depth-first (default) alias of `BranchAndBound`.
     *   `BreadthFirstBnB`: Breadth-first Branch & Bound algorithm.
-    *   `DepthFirstBnB`: Depth-first Branch & Bound algorithm
-        (alias of `BranchAndBound`).
     *   `BestFirstBnB`: Best-first Branch & Bound algorithm.
+    *   `LifoBnB`: LIFO (last-in, first-out) strategy via `LifoManager`.
+    *   `FifoBnB`: FIFO (first-in, first-out) strategy via `FifoManager`.
 
     Useful methods for subclassing and custom implementations:
 
@@ -100,22 +108,22 @@ cdef class BranchAndBound:
 
     **Core methods:**
 
-    *   `enqueue`: Include new node into queue.
+    *   `enqueue`: Include new node into manager.
     *   `dequeue`: Chooses the next evaluated
         node and computes its lower bound.
     *   `branch`: From a given node, create children nodes and enqueue them.
 
     For a customization of enqueueing and dequeueing strategies,
-    it is recommended subclassing `BranchAndBound` with a customized `queue`
-    attribute by subclassing `BasePriQueue` too.
+    pass a custom ``manager`` (subclass of `BaseNodeManager`) at construction
+    time, or override ``enqueue`` / ``dequeue`` in a subclass.
     """
 
     def __init__(
         self,
-        rtol: float = 1e-4,
-        atol: float = 1e-4,
+        Problem problem,
         eval_node = 'out',
-        save_tree: bool = False
+        save_tree: bool = False,
+        manager: BaseNodeManager = None,
     ) -> None:
         """Instantiate algorithm to solve problems via Branch & Bound.
 
@@ -125,22 +133,19 @@ cdef class BranchAndBound:
 
         Parameters
         ----------
-        rtol : float, optional
-            Relative tolerance for termination, by default 1e-4
-
-        atol : float, optional
-            Absolute tolerance for termination, by default 1e-4
+        problem : Problem
+            Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
             Node bound evaluation strategy, by default 'out'.
 
             *   'in': call `Problem.calc_bound` after
                 parent `branch`, before inserting child nodes
-                in the active queue. Useful when
+                in the active manager. Useful when
                 bound computation is inexpensive.
 
             *   'out': call `Problem.calc_bound` after
-                selecting a node from the active queue.
+                selecting a node from the active manager.
                 The result guides whether to explore
                 (`is_feasible`, possibly `branch`) or
                 prune. Often paired with fast enqueue
@@ -152,21 +157,50 @@ cdef class BranchAndBound:
         save_tree : bool, optional
             Whether to save node relationships, by default False.
             It can consume a lot of memory in large trees.
+
+        manager : BaseNodeManager, optional
+            Node manager that controls the search traversal strategy.
+            Defaults to ``DepthFirstSearch()`` (depth-first search) when
+            ``None`` is given.  Pass any ``BaseNodeManager`` subclass
+            to customise the traversal order, or use the
+            :meth:`build_manager` factory for common string aliases.
         """
-        self.problem = None
+        # Basic attribute initialization
+        self.problem = problem
+
+        # The root will be initialized at the first call to solve()
+        # to allow warmstart, with a `None` check
         self.root = None
-        self.rtol = rtol
-        self.atol = atol
-        self.eval_node = <string> eval_node.encode("utf-8")
         self.explored = 0
+        self.manager = manager if manager is not None else DepthFirstSearch()
+
+        # Default tolerances, might be overridden by solve() parameters
+        self.rtol = 1e-4
+        self.atol = 1e-4
+
+        # Evaluation strategy flags
+        self.eval_node = <string> eval_node.encode("utf-8")
         self.eval_in = self.eval_node in {'in', 'both'}
         self.eval_out = self.eval_node in {'out', 'both'}
         self.save_tree = save_tree
+
+        # Core search attributes
         self.incumbent = None
         self.bound_node = None
-        self.queue = DFSPriQueue()
         self.gap = INFINITY
-        self.__logger = SearchLogger(log)
+
+        # Initialize logger
+        self.logger = SearchLogger(log)
+
+    @classmethod
+    def __class_getitem__(cls, item: type[Problem]):
+        """Support generic syntax BranchAndBound[P] at runtime."""
+        if not issubclass(item, Problem):
+            raise TypeError(
+                "BranchAndBound can only be parameterized"
+                f" with a Problem subclass, got {item}"
+            )
+        return cls
 
     @property
     def ub(self):
@@ -197,20 +231,74 @@ cdef class BranchAndBound:
             return self.bound_node.get_solution()
         return Solution()
 
-    cdef void _set_problem(BranchAndBound self, Problem problem):
-        self.problem = problem
+    @staticmethod
+    def build_manager(strategy: str, **options: Any) -> BaseNodeManager:
+        """Factory method that returns a :class:`BaseNodeManager` for the
+        given traversal strategy name.
+
+        Parameters
+        ----------
+        strategy : str
+            One of ``'dfs'``, ``'bfs'``, ``'best'``, ``'lifo'``, ``'fifo'``, ``'cbfs'``.
+
+            *   ``'dfs'``  — Depth-first search (``DepthFirstSearch``).
+            *   ``'bfs'``  — Breadth-first search (``FifoManager``).
+            *   ``'best'`` — Best-first search (``BestFirstSearch``).
+            *   ``'lifo'`` — Last-in first-out stack (``LifoManager``).
+            *   ``'fifo'`` — First-in first-out queue (``FifoManager``).
+            *   ``'cbfs'`` — Cyclic best-first search (``CyclicBestSearch``).
+
+        options : Any
+            Additional keyword arguments to pass to the manager constructor.
+
+        Returns
+        -------
+        BaseNodeManager
+            The corresponding manager instance.
+
+        Raises
+        ------
+        ValueError
+            If *strategy* is not one of the recognised names.
+        """
+        _strategies = {
+            'dfs': DepthFirstSearch,
+            'bfs': FifoManager,
+            'best': BestFirstSearch,
+            'lifo': LifoManager,
+            'fifo': FifoManager,
+            'cbfs': CyclicBestSearch,
+        }
+        key = strategy.lower()
+        if key not in _strategies:
+            raise ValueError(
+                f"Unknown strategy {strategy!r}. "
+                f"Choose from: {list(_strategies)}"
+            )
+        return _strategies[key](**options)
+
+    cpdef void set_manager(self, BaseNodeManager manager):
+        """Set a new node manager for the search.
+
+        Parameters
+        ----------
+        manager : BaseNodeManager
+            The new manager to use for node storage and retrieval.
+        """
+        self.manager = manager
 
     cdef void _restart_search(BranchAndBound self):
         self.incumbent = None
         self.bound_node = None
         self.gap = INFINITY
-        self.queue.clear()
+        self.manager.clear()
 
     def solve(
         self,
-        problem: Problem,
         maxiter: Optional[int] = None,
-        timelimit: Optional[Union[int, float]] = None
+        timelimit: Optional[Union[int, float]] = None,
+        rtol: Optional[float] = None,
+        atol: Optional[float] = None,
     ) -> SearchResults:
         """Solves optimization problem using Branch & Bound.
 
@@ -218,16 +306,25 @@ cdef class BranchAndBound:
         so the `Problem` class must be a subclass of
         `bnbpy.cython.problem.Problem`.
 
+        Call ``reset()`` before ``solve()`` to restart from scratch;
+        otherwise a second call to ``solve()`` resumes from the current
+        queue state.
+
         Parameters
         ----------
-        problem : Problem
-            Problem instance as in root node
-
         maxiter : Optional[int], optional
-            Maximum number of iterations, by default None
+            Maximum number of additional iterations, by default None
 
         timelimit : Optional[Union[int, float]], optional
             Time limit in seconds, by default None
+
+        rtol : Optional[float], optional
+            Relative tolerance for termination. If provided, permanently
+            updates ``self.rtol``, by default None
+
+        atol : Optional[float], optional
+            Absolute tolerance for termination. If provided, permanently
+            updates ``self.atol``, by default None
 
         Returns
         -------
@@ -238,31 +335,41 @@ cdef class BranchAndBound:
         cdef:
             double start_time, current_time
             double _tlim = LARGE_POS
-            unsigned long long _mxiter = ULLONG_MAX
+            unsigned long long _mxiter
             Node node
             Solution sol
             Problem inc_problem
 
-        # Set limits
-        if maxiter is not None:
-            _mxiter = maxiter
+        # Permanently update tolerances if provided
+        if rtol is not None:
+            self.rtol = rtol
+        if atol is not None:
+            self.atol = atol
+
         if timelimit is not None:
             _tlim = timelimit
-        start_time = time.time()
+        start_time = time.perf_counter()
 
-        # Core initialization
-        self._restart_search()
-        log.info('Starting exploration of search tree')
-        self._log_headers()
-        self._warmstart(problem.warmstart())
-        self._enqueue_root(problem)
+        # Initialize on first call only
+        if self.root is None:
+            self._restart_search()
+            log.info('Starting exploration of search tree')
+            self._log_headers()
+            self._warmstart(self.problem.warmstart())
+            self._enqueue_root()
 
-        # In case the root node is already the LB of a optimal warmstart
+        # Additional iterations from current explored count
+        if maxiter is not None:
+            _mxiter = self.explored + <unsigned long long> maxiter
+        else:
+            _mxiter = ULLONG_MAX
+
+        # In case the root node is already the LB of an optimal warmstart
         self._check_termination(_mxiter)
-        while self.queue.not_empty():
+        while self.manager.not_empty():
             # Check for time termination
             if timelimit is not None:
-                current_time = time.time()
+                current_time = time.perf_counter()
                 if current_time - start_time >= _tlim:
                     self.log_row('Time Limit')
                     break
@@ -271,8 +378,9 @@ cdef class BranchAndBound:
             if node is not None:
                 # Perform iteration (feasibility, bound check, and branching)
                 self._do_iter(node)
-            # Update LB is node is the one
+            # Update LB if node is the one
             if node is self.bound_node:
+                # self.log_row('Bound node dequeued')
                 self._update_bound()
             # Termination by optimality
             if self._check_termination(_mxiter):
@@ -288,6 +396,16 @@ cdef class BranchAndBound:
         res = SearchResults(sol, inc_problem)
         return res
 
+    cpdef void reset(self):
+        """Reset the search state for a fresh solve.
+
+        Clears the queue, incumbent, bound node, and root so that the
+        next call to ``solve()`` starts from scratch.
+        """
+        self._restart_search()
+        self.root = None
+        self.explored = 0
+
     cdef void _do_iter(BranchAndBound self, Node node):
         # Lower bound is accepted
         if node.lb < self.get_ub():
@@ -296,27 +414,7 @@ cdef class BranchAndBound:
             # Node satisfies all constraints
             self._feasibility_check(node)
         else:
-            self.fathom(node)
-
-    cpdef void enqueue(BranchAndBound self, Node node):
-        """Include new node into queue
-
-        Parameters
-        ----------
-        node : Node
-            Node to be included
-        """
-        self.queue.enqueue(node)
-
-    cpdef Node dequeue(BranchAndBound self):
-        """Chooses the next evaluated node and computes its lower bound
-
-        Returns
-        -------
-        Node
-            Node to be evaluated
-        """
-        return self.queue.dequeue()
+            self.prune(node)
 
     cpdef void _warmstart(
         BranchAndBound self,
@@ -352,23 +450,59 @@ cdef class BranchAndBound:
                 self._enqueue_core(child)
         if not self.save_tree and node is not self.root:
             node.cleanup()
-            del node
+        elif self.save_tree:
+            node.save_children(children)
 
-    cpdef void fathom(BranchAndBound self, Node node):
-        """Fathom node (by default is not deleted)
+    cpdef void primal_heuristic(BranchAndBound self, Node node):
+        """Calls `Problem` `primal_heuristic()` via node
+        entity to generate a feasible
+        solution from the current node, if any.
 
-        If deletion is required for managing memory, remember to delete
-        node from parent `children` attribute
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
 
         Parameters
         ----------
         node : Node
-            Node to be fathomed
+            Node being evaluated
         """
-        node.fathom()
+        cdef:
+            Node child
+
+        child = node.primal_heuristic()
+        if child is None:
+            return
+        if child.lb < self.get_ub():
+            self.log_row('Primal heuristic')
+            self.set_solution(child)
+
+    cpdef void upgrade_bound(BranchAndBound self, Node node):
+        """Calls `Problem` `stronger_bound()` via node
+        entity to generate a better lower bound from the current node,
+        if any.
+
+        NOTE: By default this is never called in the search tree.
+        It is intended to be called from a custom callback.
+
+        Parameters
+        ----------
+        node : Node
+            Node being evaluated
+        """
+        node.upgrade_bound()
+
+    cpdef void prune(BranchAndBound self, Node node):
+        """Prune node (by default is `Node.cleanup()` is called).
+
+        Parameters
+        ----------
+        node : Node[P]
+            Node[P] to be pruned
+        """
         if not self.save_tree and node is not self.root:
             node.cleanup()
-            del node
+        else:
+            node.fathom()
 
     cpdef void pre_eval_callback(BranchAndBound self, Node node):
         """Abstraction for callbacks before node bound evaluation"""
@@ -379,11 +513,27 @@ cdef class BranchAndBound:
         pass
 
     cpdef void enqueue_callback(BranchAndBound self, Node node):
-        """Abstraction for callbacks after node is enqueued"""
+        """
+        Abstraction for callbacks immediately
+        before node is enqueued, already after being evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that is about to be enqueued.
+        """
         pass
 
     cpdef void dequeue_callback(BranchAndBound self, Node node):
-        """Abstraction for callbacks after node is dequeued"""
+        """
+        Abstraction for callbacks immediately
+        after node is dequeued and possibly evaluated.
+
+        Parameters
+        ----------
+        node : Node
+            Node that was dequeued and evaluated (if `eval_out` is True).
+        """
         pass
 
     cpdef void solution_callback(BranchAndBound self, Node node):
@@ -393,9 +543,8 @@ cdef class BranchAndBound:
         """
         pass
 
-    cpdef void _enqueue_root(BranchAndBound self, Problem problem):
-        self.root = init_node(problem)
-        self._set_problem(problem)
+    cpdef void _enqueue_root(BranchAndBound self):
+        self.root = init_node(self.problem)
         self._enqueue_core(self.root)
         self._update_bound()
         self.explored = 0
@@ -422,29 +571,43 @@ cdef class BranchAndBound:
             New solution node
         """
         self.incumbent = node
-        self.queue.filter_by_lb(node.lb)
+        self.manager.filter_by_lb(node.lb)
         self._update_gap()
         self.log_row('New incumbent')
         self.solution_callback(node)
+
+    cpdef void set_bound(BranchAndBound self, Node node):
+        """Public interface to set a new node as the
+        new `bound_node`, which is a readonly attribute.
+
+        Parameters
+        ----------
+        node : Node
+            New bound node
+        """
+        self.bound_node = node
 
     cdef void _enqueue_core(BranchAndBound self, Node node):
         if self.eval_in:
             self._node_eval(node)
         if node.lb < self.get_ub():
             self.enqueue_callback(node)
-            self.enqueue(node)
+            self.manager.enqueue(node)
         else:
-            self.fathom(node)
+            self.prune(node)
 
     cdef Node _dequeue_core(BranchAndBound self):
-        node = self.dequeue()
+        cdef:
+            Node node
+
+        node = self.manager.dequeue()
         if self.eval_out:
             self._node_eval(node)
         self.dequeue_callback(node)
         if node.lb >= self.get_ub():
             if node is self.bound_node:
                 self._update_bound()
-            self.fathom(node)
+            self.prune(node)
             return None
         return node
 
@@ -466,13 +629,14 @@ cdef class BranchAndBound:
         cdef:
             Node old_bound
 
-        if not self.queue.not_empty():
+        if not self.manager.not_empty():
             if self.incumbent:
                 self.bound_node = self.incumbent
             self._update_gap()
             return
+
         old_bound = self.bound_node
-        self.bound_node = self.queue.get_lower_bound()
+        self.bound_node = self.manager.get_lower_bound()
         if (
             old_bound is None
             or old_bound is self.root
@@ -482,7 +646,7 @@ cdef class BranchAndBound:
             self.log_row('LB update')
 
     cpdef void _log_headers(BranchAndBound self):
-        self.__logger.log_headers()
+        self.logger.log_headers()
 
     cpdef void log_row(BranchAndBound self, object message):
         """Log a row to the search logger.
@@ -495,49 +659,95 @@ cdef class BranchAndBound:
         gap = f'{(100 * self.gap):.2f}%'
         ub = f'{float(self.get_ub()):^6.4}'
         lb = f'{float(self.get_lb()):^6.4}'
-        self.__logger.log_row(self.explored, ub, lb, gap, message)
+        self.logger.log_row(self.explored, ub, lb, gap, message)
 
     cdef void _update_gap(BranchAndBound self):
         if self.get_ub() != LARGE_POS:
             self.gap = abs(self.get_ub() - self.get_lb()) / abs(self.get_ub())
 
     cdef bool _optimality_check(BranchAndBound self):
-        if self.incumbent is not None and not self.queue.not_empty():
+        if self.incumbent is not None and not self.manager.not_empty():
             return True
         return (
             self.get_ub() <= self.get_lb() + self.atol or self.gap <= self.rtol
         )
 
 
-cdef class BreadthFirstBnB(BranchAndBound):
+cdef class DepthFirstBnB(BranchAndBound):
+    """Depth-first Branch & Bound algorithm.
+
+    Uses :class:`~bnbpy.cython.primanager.DepthFirstSearch` as the node manager.
+    """
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        Problem problem,
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node, save_tree)
-        self.queue = BFSPriQueue()
+        super().__init__(problem, eval_node, save_tree, DepthFirstSearch())
 
 
-cdef class DepthFirstBnB(BranchAndBound):
-    # Just an alias
-    pass
+cdef class BreadthFirstBnB(BranchAndBound):
+    """Breadth-first Branch & Bound algorithm.
+
+    Uses a :class:`~bnbpy.cython.manager.FifoManager` as the node manager.
+    """
+
+    def __init__(
+        self,
+        Problem problem,
+        eval_node = 'out',
+        save_tree: bool = False,
+    ) -> None:
+        super().__init__(problem, eval_node, save_tree, FifoManager())
 
 
 cdef class BestFirstBnB(BranchAndBound):
+    """Best-first Branch & Bound algorithm.
+
+    Uses a :class:`~bnbpy.cython.primanager.BestFirstSearch` as the node manager.
+    """
 
     def __init__(
         self,
-        rtol: float = 0.0001,
-        atol: float = 0.0001,
+        Problem problem,
         eval_node = 'out',
         save_tree: bool = False,
     ) -> None:
-        super().__init__(rtol, atol, eval_node, save_tree)
-        self.queue = BestPriQueue()
+        super().__init__(problem, eval_node, save_tree, BestFirstSearch())
+
+
+cdef class LifoBnB(BranchAndBound):
+    """Branch & Bound with a last-in first-out (LIFO) node manager.
+
+    Uses :class:`~bnbpy.cython.manager.LifoManager` as the node manager.
+    Equivalent to a pure stack-based DFS without bound-based tie-breaking.
+    """
+
+    def __init__(
+        self,
+        Problem problem,
+        eval_node = 'out',
+        save_tree: bool = False,
+    ) -> None:
+        super().__init__(problem, eval_node, save_tree, LifoManager())
+
+
+cdef class FifoBnB(BranchAndBound):
+    """Branch & Bound with a first-in first-out (FIFO) node manager.
+
+    Uses :class:`~bnbpy.cython.manager.FifoManager` as the node manager.
+    Equivalent to a pure queue-based BFS without bound-based tie-breaking.
+    """
+
+    def __init__(
+        self,
+        Problem problem,
+        eval_node = 'out',
+        save_tree: bool = False,
+    ) -> None:
+        super().__init__(problem, eval_node, save_tree, FifoManager())
 
 
 def configure_logfile(

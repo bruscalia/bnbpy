@@ -196,7 +196,7 @@ def _draw_colored_graph(  # noqa: PLR0913, PLR0917
     colors: List[int],
     edges: List[Tuple[int, int]],
     ax: Optional[plt.Axes] = None,  # type: ignore
-    plot_colors: Optional[List[Tuple[float, float, float]]] = None,
+    plot_colors: Optional[List[Tuple[float, float, float] | str]] = None,
     node_size: int = 200,
     node_alpha: float = 1.0,
     font_size: int = 8,

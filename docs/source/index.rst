@@ -77,8 +77,8 @@ Branch & Bound
 
    # Apply Branch & Bound
    problem = MyProblem()
-   bnb = BranchAndBound()
-   bnb.solve(problem)
+   bnb = BranchAndBound(problem)
+   bnb.solve()
    print(bnb.solution)
 
 Branch & Price
@@ -149,14 +149,17 @@ GitHub repository: `bnbpy on GitHub <https://github.com/bruscalia/bnbpy>`_.
    :hidden:
 
    Usage/machine-deadline
+   Usage/maxclique
    Usage/cutting-stock
    Usage/milp
    Usage/pfssp
+   Usage/easy-callbacks
 
 .. toctree::
    :maxdepth: 1
    :caption: Package:
    :hidden:
 
+   class_diagram
    bnbpy
    bnbpy.colgen

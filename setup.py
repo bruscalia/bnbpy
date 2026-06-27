@@ -75,6 +75,7 @@ class CompilingFailed(Exception):
 ROOT = os.path.dirname(os.path.realpath(__file__))
 CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
 CY_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cython')
+CY_PATH_MAXCLIQUE = os.path.join(ROOT, 'src', 'bnbprob', 'maxclique')
 CPP_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cpp')
 CPP_FILES_PAFSSP = [
     os.path.join(CPP_PATH_PAFSSP, f)
@@ -93,10 +94,7 @@ if params.nopyx:
 else:
     try:
         ext_modules_base = [
-            Extension(
-                f'bnbpy.cython.{f[:-4]}',
-                [os.path.join(CY_PATH, f)]
-            )
+            Extension(f'bnbpy.cython.{f[:-4]}', [os.path.join(CY_PATH, f)])
             for f in os.listdir(CY_PATH)
             if f.endswith('.pyx')
         ]
@@ -106,21 +104,28 @@ else:
                 [os.path.join(CPP_PATH_PAFSSP, 'environ.pyx')]
                 + CPP_FILES_PAFSSP,
                 include_dirs=[CPP_PATH_PAFSSP],
-                language='c++'
+                language='c++',
             )
         ] + [
             Extension(
                 f'bnbprob.pafssp.cython.{f[:-4]}',
                 get_ext_pafssp(f),  # Mandatory to include all cpp files used
-                include_dirs=[CPP_PATH_PAFSSP]
+                include_dirs=[CPP_PATH_PAFSSP],
             )
             for f in os.listdir(CY_PATH_PAFSSP)
             if f.endswith('.pyx')
         ]
+        ext_modules_maxclique = [
+            Extension(
+                f'bnbprob.maxclique.{f[:-4]}',
+                [os.path.join(CY_PATH_MAXCLIQUE, f)],
+            )
+            for f in os.listdir(CY_PATH_MAXCLIQUE)
+            if f.endswith('.pyx')
+        ]
 
         ext_modules_ = (
-            ext_modules_base
-            + ext_modules_pafssp
+            ext_modules_base + ext_modules_pafssp + ext_modules_maxclique
         )
         if params.nocython:
             ext_modules = ext_modules_
