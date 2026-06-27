@@ -214,7 +214,7 @@ class MILP(Problem):
     def _random_violation(self) -> int:
         mask = self.residuals > self.tol
         var_indexes = np.arange(cast(int, self.residuals.shape[0]))
-        i: int = self._rng.choice(var_indexes[mask])
+        i: int = int(self._rng.choice(var_indexes[mask]))
         return i
 
     def _mixed_violation(self) -> int:
@@ -223,7 +223,7 @@ class MILP(Problem):
             self._maximum_violation,
             self._random_violation,
         ])
-        return cast(int, m())
+        return cast(int, m())  # type: ignore
 
     def copy(self, deep: bool = False) -> 'MILP':
         """
