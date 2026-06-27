@@ -16,7 +16,7 @@ class DfsFlowShop(PriorityManagerTemplate[PermFlowShop]):
 
     ...
 
-class DfsLevelQueue(LevelQueue):
+class DfsLevelQueue(LevelQueue[PermFlowShop]):
     """Per-level queue for PermFlowShop with best-first priority.
 
     Priority is ``(lb, idle_time)`` — best bound first, then least idle time.
