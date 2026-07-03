@@ -35,6 +35,8 @@ class Edges(list[Any]):
 
     def traverse(self, node: Node[Any]) -> None:
         self.nodes.append(node)
+        if node.children is None:
+            return
         for child in node.children:
             self.append((node.index, child.index))
             self.traverse(child)

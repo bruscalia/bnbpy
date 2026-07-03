@@ -1,0 +1,72 @@
+[
+    {
+        "seed": 3746317213,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-001-10-chain5"
+    },
+    {
+        "seed": 9697354961,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-002-10-chain5"
+    },
+    {
+        "seed": 2181241943,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-003-10-chain5"
+    },
+    {
+        "seed": 1958682846,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-004-10-chain5"
+    },
+    {
+        "seed": 4163119785,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-005-10-chain5"
+    },
+    {
+        "seed": 9963334018,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-006-10-chain5"
+    },
+    {
+        "seed": 2812140441,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-007-10-chain5"
+    },
+    {
+        "seed": 1127978094,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-008-10-chain5"
+    },
+    {
+        "seed": 1939042955,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-009-10-chain5"
+    },
+    {
+        "seed": 9703905715,
+        "n_jobs": 10,
+        "m_chain": 5,
+        "m_total": 12,
+        "name": "ad-small-010-10-chain5"
+    }
+]
