@@ -249,6 +249,7 @@ public:
     std::vector<int> get_r() const;
     std::vector<int> get_q() const;
     std::vector<JobTimes *> get_job_times(const int &m1, const int &m2) const;
+    void filter_active_job_times(const int& m1, const int& m2, std::vector<JobTimes*>& seq);
     MachineGraph get_mach_graph() const { return *this->mach_graph.get(); }
 
     // Modification methods
