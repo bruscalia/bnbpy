@@ -50,7 +50,7 @@ def create_chain_edges(m_chain: int) -> list[tuple[int, int]]:
       node (m_chain - 1)
     """
     if m_chain < MIN_CHAIN_LENGTH:
-        raise ValueError("m_chain must be at least 2")
+        raise ValueError('m_chain must be at least 2')
 
     edges = []
 
@@ -116,6 +116,13 @@ def write_instances_custom_chain() -> list[InstanceCustomChain]:
             instances.append(
                 InstanceCustomChain(seed, n_jobs, m_chain, m_total, name)
             )
+    # Extended instances: 20 jobs, chain length 15 (indices 41-50)
+    for _ in range(10):
+        i += 1
+        seed = rng.randint(MIN_SEED, MAX_SEED)
+        m_total = calculate_total_machines(15)
+        name = f'custom-{i:03d}-20-chain15'
+        instances.append(InstanceCustomChain(seed, 20, 15, m_total, name))
     with open('instances-custom-chain.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
     return instances
