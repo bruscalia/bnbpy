@@ -98,9 +98,7 @@ def create_ad_edges(m_chain: int) -> list[tuple[int, int]]:
       the semi-line only ever touching the graph at the final sink.
     """
     if m_chain < MIN_CHAIN_LENGTH:
-        raise ValueError(
-            f'm_chain must be at least {MIN_CHAIN_LENGTH}'
-        )
+        raise ValueError(f'm_chain must be at least {MIN_CHAIN_LENGTH}')
 
     edges = []
 
@@ -169,6 +167,13 @@ def write_instances_ad_chain() -> list[InstanceADChain]:
             instances.append(
                 InstanceADChain(seed, n_jobs, m_chain, m_total, name)
             )
+    # Extended instances: 20 jobs, chain length 15 (indices 41-50)
+    for _ in range(10):
+        i += 1
+        seed = rng.randint(MIN_SEED, MAX_SEED)
+        m_total = get_m_total(create_ad_edges(15))
+        name = f'ad-{i:03d}-20-chain15'
+        instances.append(InstanceADChain(seed, 20, 15, m_total, name))
     with open('instances-ad-chain.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
     return instances
