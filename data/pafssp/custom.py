@@ -123,6 +123,13 @@ def write_instances_custom_chain() -> list[InstanceCustomChain]:
         m_total = calculate_total_machines(15)
         name = f'custom-{i:03d}-20-chain15'
         instances.append(InstanceCustomChain(seed, 20, 15, m_total, name))
+    # Extended instances: 50 jobs, chain length 15 (indices 51-60)
+    for _ in range(10):
+        i += 1
+        seed = rng.randint(MIN_SEED, MAX_SEED)
+        m_total = calculate_total_machines(15)
+        name = f'custom-{i:03d}-50-chain15'
+        instances.append(InstanceCustomChain(seed, 50, 15, m_total, name))
     with open('instances-custom-chain.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
     return instances

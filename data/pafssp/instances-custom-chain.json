@@ -348,5 +348,75 @@
         "m_chain": 15,
         "m_total": 37,
         "name": "custom-050-20-chain15"
+    },
+    {
+        "seed": 5284391408,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-051-50-chain15"
+    },
+    {
+        "seed": 7483366056,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-052-50-chain15"
+    },
+    {
+        "seed": 1470939445,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-053-50-chain15"
+    },
+    {
+        "seed": 3694860228,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-054-50-chain15"
+    },
+    {
+        "seed": 5567816720,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-055-50-chain15"
+    },
+    {
+        "seed": 9573276057,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-056-50-chain15"
+    },
+    {
+        "seed": 7567496105,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-057-50-chain15"
+    },
+    {
+        "seed": 9639245200,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-058-50-chain15"
+    },
+    {
+        "seed": 4095476665,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-059-50-chain15"
+    },
+    {
+        "seed": 8047877267,
+        "n_jobs": 50,
+        "m_chain": 15,
+        "m_total": 37,
+        "name": "custom-060-50-chain15"
     }
 ]
