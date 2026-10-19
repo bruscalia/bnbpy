@@ -105,7 +105,7 @@ class GrbPositionalModel:
         self._model.setParam(name, value)
 
     def get_param(self, name: str) -> Any:
-        return self._model.getParam(name)
+        return self._model.getParamInfo(name)[2]
 
     def get_num_nodes(self) -> int:
         return self._model.getAttr(grb.GRB.Attr.NodeCount)  # type: ignore
