@@ -51,6 +51,7 @@ markers = [
     "levelqueue: Mark test related to LevelQueue / level-based managers",
     "colgen: Mark test related to Column Generation",
     "gcol: Mark test related to the Graph Coloring module",
+    "wtard: Mark test related to the Weighted Tardiness module",
     "searchlogger: Mark test related to the SearchLogger class",
     "core: Mark test for core functionality (solution, problem, node, search, priqueue)",
     "integration: Mark for integration tests (machdeadline, pfssp, milp, milpnaive, knapsack, gcol)"
