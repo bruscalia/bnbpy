@@ -1,15 +1,16 @@
 from dataclasses import replace
 from math import exp, inf
-from typing import Sequence
+from typing import Sequence, TypeVar
 
 from bnbpy import Problem
 
-from .lagrangian import LagrangianBound
 from .relaxation import preemptive_bound
 from .state import Job, ProblemState
 
 ATC_SCALES = (0.5, 1.0, 2.0, 3.0, 4.0, 5.0)
 """Values of the look-ahead parameter K tried by the ATC warmstart."""
+
+W = TypeVar('W', bound='WeightedTardiness')
 
 
 class WeightedTardiness(Problem):
@@ -20,8 +21,7 @@ class WeightedTardiness(Problem):
     Branching skips jobs that dominate an unscheduled job (Lemma 3.6.1)
     and nodes whose unscheduled jobs were already reached by a fixed
     sequence of no higher cost. The lower bound is the tardiness of the
-    fixed jobs plus the best between the transportation relaxation and
-    the Lagrangian relaxation of the unscheduled ones.
+    fixed jobs plus the transportation relaxation of the unscheduled ones.
     """
 
     state: ProblemState
@@ -34,19 +34,11 @@ class WeightedTardiness(Problem):
     (bitmask), shared among nodes. Nodes with the same unscheduled jobs
     share the same subproblem, so only the cheapest one is explored.
     """
-    _lagrangian: LagrangianBound
-    """
-    Lagrangian bound with multipliers adjusted to the ATC sequence of the
-    root node, shared among nodes.
-    """
 
     def __init__(self, state: ProblemState) -> None:
         super().__init__()
         self.state = state
         self._tail_costs = {}
-        self._lagrangian = LagrangianBound.from_sequence(
-            self._best_atc_sequence()
-        )
 
     @classmethod
     def from_data(
@@ -96,9 +88,8 @@ class WeightedTardiness(Problem):
 
     def calc_bound(self) -> int:
         state = self.state
-        return state.fixed_cost + max(
-            preemptive_bound(state.remaining, state.horizon),
-            self._lagrangian.evaluate(state.remaining_mask),
+        return state.fixed_cost + preemptive_bound(
+            state.remaining, state.horizon
         )
 
     def is_feasible(self) -> bool:
@@ -187,7 +178,7 @@ class WeightedTardiness(Problem):
             cost += job.w * max(t - job.d, 0)
         return cost
 
-    def child_copy(self, deep: bool = False) -> 'WeightedTardiness':
+    def child_copy(self: W, deep: bool = False) -> W:
         other = super().child_copy(deep)
         other.state = self.state.copy()
         return other
@@ -208,10 +199,3 @@ class WeightedTardiness(Problem):
             if other is not job and job.dominates(other):
                 mask |= 1 << other.index
         return mask
-
-
-class TransportOnly(WeightedTardiness):
-    def calc_bound(self) -> int:
-        return self.state.fixed_cost + preemptive_bound(
-            self.state.remaining, self.state.horizon
-        )
