@@ -80,12 +80,12 @@ def write_instances_ad_chain() -> list[InstanceADChain]:
             i += 1
             seed = rng.randint(MIN_SEED, MAX_SEED)
             m_total = get_m_total(m_chain, NUM_PARALLEL)
-            name = f'fad-{i:03d}-{n_jobs}-chain{m_chain}'
+            name = f'fad5-{i:03d}-{n_jobs}-chain{m_chain}'
             instances.append(
                 InstanceADChain(seed, n_jobs, m_chain, m_total, name)
             )
 
-    with open('instances-fad-chain.json', mode='w', encoding='utf8') as f:
+    with open('instances-fad5-chain.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
     return instances
 
@@ -123,7 +123,7 @@ def generate_and_save_ad_chain() -> None:
     instances and save them to JSON files.
     """
     instances = write_instances_ad_chain()
-    output_dir = Path('./fad-chain')
+    output_dir = Path('./fad5-chain')
     output_dir.mkdir(exist_ok=True)
     for instance in instances:
         # Generate processing times in transposed format

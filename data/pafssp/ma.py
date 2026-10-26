@@ -18,7 +18,7 @@ MIN_CHAIN_LENGTH = 2
 
 
 @dataclass
-class InstanceCustomChain:
+class InstanceMAChain:
     seed: int
     n_jobs: int
     m_chain: int
@@ -103,34 +103,34 @@ def calculate_total_machines(m_chain: int) -> int:
     return 2 * m_chain + m_chain // 2
 
 
-def write_instances_custom_chain() -> list[InstanceCustomChain]:
+def write_instances_ma_chain() -> list[InstanceMAChain]:
     rng = random.Random(RANDOM_SEED)
-    instances = list[InstanceCustomChain]()
+    instances = list[InstanceMAChain]()
     i = 0
     for n_jobs, m_chain in product(N_JOBS, N_CHAINS):
         for _ in range(10):
             i += 1
             seed = rng.randint(MIN_SEED, MAX_SEED)
             m_total = calculate_total_machines(m_chain)
-            name = f'custom-{i:03d}-{n_jobs}-chain{m_chain}'
+            name = f'ma-{i:03d}-{n_jobs}-chain{m_chain}'
             instances.append(
-                InstanceCustomChain(seed, n_jobs, m_chain, m_total, name)
+                InstanceMAChain(seed, n_jobs, m_chain, m_total, name)
             )
     # Extended instances: 20 jobs, chain length 15 (indices 41-50)
     for _ in range(10):
         i += 1
         seed = rng.randint(MIN_SEED, MAX_SEED)
         m_total = calculate_total_machines(15)
-        name = f'custom-{i:03d}-20-chain15'
-        instances.append(InstanceCustomChain(seed, 20, 15, m_total, name))
+        name = f'ma-{i:03d}-20-chain15'
+        instances.append(InstanceMAChain(seed, 20, 15, m_total, name))
     # Extended instances: 50 jobs, chain length 15 (indices 51-60)
     for _ in range(10):
         i += 1
         seed = rng.randint(MIN_SEED, MAX_SEED)
         m_total = calculate_total_machines(15)
-        name = f'custom-{i:03d}-50-chain15'
-        instances.append(InstanceCustomChain(seed, 50, 15, m_total, name))
-    with open('instances-custom-chain.json', mode='w', encoding='utf8') as f:
+        name = f'ma-{i:03d}-50-chain15'
+        instances.append(InstanceMAChain(seed, 50, 15, m_total, name))
+    with open('instances-ma-chain.json', mode='w', encoding='utf8') as f:
         json.dump([asdict(inst) for inst in instances], f, indent=4)
     return instances
 
@@ -162,13 +162,13 @@ def generate_processing_times_transposed(
     return seed, times
 
 
-def generate_and_save_custom_chain() -> None:
+def generate_and_save_ma_chain() -> None:
     """
-    Generate processing times for custom chain instances and
+    Generate processing times for MA chain instances and
     save them to JSON files.
     """
-    instances = write_instances_custom_chain()
-    output_dir = Path('./custom-chain')
+    instances = write_instances_ma_chain()
+    output_dir = Path('./ma-chain')
     output_dir.mkdir(exist_ok=True)
     for instance in instances:
         # Generate processing times in transposed format
@@ -187,4 +187,4 @@ def generate_and_save_custom_chain() -> None:
 
 
 if __name__ == '__main__':
-    generate_and_save_custom_chain()
+    generate_and_save_ma_chain()
