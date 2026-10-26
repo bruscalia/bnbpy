@@ -80,7 +80,7 @@ def write_instances_ad_chain() -> list[InstanceADChain]:
             i += 1
             seed = rng.randint(MIN_SEED, MAX_SEED)
             m_total = get_m_total(m_chain, NUM_PARALLEL)
-            name = f'fa2d-{i:03d}-{n_jobs}-chain{m_chain}'
+            name = f'fad2-{i:03d}-{n_jobs}-chain{m_chain}'
             instances.append(
                 InstanceADChain(seed, n_jobs, m_chain, m_total, name)
             )
