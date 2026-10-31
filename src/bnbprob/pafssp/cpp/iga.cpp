@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "intensify.hpp"
 #include "job.hpp"
 #include "local_search.hpp"
@@ -38,31 +39,28 @@ IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
     return result;
 }
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter)
 {
     // Initialize variables for IGA
     int d = jobs_.size() / 10;  // Destruction size
-    return iga(jobs_, mach_graph, max_iter, d, 0);
+    return iga(jobs_, inst, max_iter, d, 0);
 }
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter, const int& seed)
 {
     // Initialize variables for IGA
     int d = jobs_.size() / 10;  // Destruction size
 
-    return iga(jobs_, mach_graph, max_iter, d, seed);
+    return iga(jobs_, inst, max_iter, d, seed);
 }
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter, const int& d, const int& seed)
 {
     // Initial local search
-    Permutation perm = local_search(jobs_, mach_graph);
+    Permutation perm = local_search(jobs_, inst);
 
     // Initialize variables for IGA
     Permutation best_perm = perm;
@@ -83,10 +81,11 @@ Permutation iga(std::vector<JobPtr>& jobs_,
 
         // Intensification phase
         std::vector<JobPtr> new_sequence =
-            neh_body(destruction.sequence, destruction.free_jobs, mach_graph);
+            neh_body(destruction.sequence, destruction.free_jobs,
+                     inst.get_mach_graph());
 
         // Local search phase
-        Permutation new_perm = local_search(new_sequence, mach_graph);
+        Permutation new_perm = local_search(new_sequence, inst);
         int new_cost = new_perm.calc_lb_full();
 
         if (new_cost < best_cost)

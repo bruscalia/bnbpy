@@ -30,22 +30,6 @@ TEST_CASE("Sigma basic construction", "[sigma]")
         REQUIRE(sigma.C[2] == 0);
         REQUIRE(sigma.get_jobs().empty());
     }
-
-    SECTION("Constructor with shared_ptr to machine graph")
-    {
-        int M = 2;
-        std::vector<std::vector<int>> prec = {{}, {0}};
-        std::vector<std::vector<int>> succ = {{1}, {}};
-        std::vector<int> topo_order = {0, 1};
-        std::vector<std::vector<int>> descendants = {{1}, {}};
-
-        auto mach_graph = std::make_shared<MachineGraph>(
-            M, prec, succ, topo_order, descendants);
-        Sigma sigma(M, mach_graph);
-
-        REQUIRE(sigma.m == 2);
-        REQUIRE(sigma.C.size() == 2);
-    }
 }
 
 TEST_CASE("Sigma with jobs - sequential graph", "[sigma]")

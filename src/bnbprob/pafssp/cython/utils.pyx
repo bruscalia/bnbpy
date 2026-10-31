@@ -2,7 +2,6 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp.vector cimport vector
-from libcpp.memory cimport shared_ptr
 
 from bnbprob.pafssp.cpp.environ cimport MachineGraph
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface

@@ -2,7 +2,6 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp.vector cimport vector
-from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
@@ -14,6 +13,12 @@ INIT_ERROR = 'C++ Job not initialized'
 
 
 cdef class PyJob:
+    """Python wrapper holding a copy of a C++ ``Job``.
+
+    Start times ``s`` are not part of the C++ job: they are only filled
+    for jobs exported by ``PermFlowShop.sequence`` and are empty
+    otherwise.
+    """
 
     def __repr__(self) -> str:
         return self._signature
@@ -43,6 +48,8 @@ cdef class PyJob:
 
     @property
     def s(self):
+        """Start times on each machine (empty unless exported by
+        ``PermFlowShop.sequence``)."""
         return self.get_s()
 
     @property
@@ -126,8 +133,8 @@ cdef class PyJob:
             int si
             list[int] out
         out = []
-        for i in range(self.job.s.size()):
-            si = self.job.s[i]
+        for i in range(self.s.size()):
+            si = self.s[i]
             out.append(si)
         return out
 

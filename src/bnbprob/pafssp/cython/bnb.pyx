@@ -143,6 +143,8 @@ cdef class CutoffBnB(LazyBnB):
         solution = Solution()
         solution.set_lb(self.ub_value)
         solution.set_feasible()
+        # Sentinel incumbent: data is None and perm has no instance;
+        # only its solution is read
         problem = PermFlowShop.__new__(PermFlowShop)
         problem.set_solution(solution)
         node = Node(problem)
@@ -164,6 +166,8 @@ cdef class BenchCutoffBnB(CutoffBnB):
         solution = Solution()
         solution.set_lb(self.ub_value)
         solution.set_feasible()
+        # Sentinel incumbent: data is None and perm has no instance;
+        # only its solution is read
         problem = BenchPermFlowShop.__new__(BenchPermFlowShop)
         problem.solution = solution
         node = Node(problem)

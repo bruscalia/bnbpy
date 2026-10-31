@@ -5,17 +5,8 @@ from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from bnbprob.pafssp.cpp.environ cimport (
-    MachineGraph,
-    Permutation,
-    iga,
-    intensify,
-    local_search,
-    neh_initialization,
-    quick_constructive
-)
-from bnbprob.pafssp.cpp.environ cimport Permutation
-from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
+from bnbprob.pafssp.cpp.environ cimport InstanceData, Permutation
+from bnbprob.pafssp.cython.instance cimport FlowShopInstanceData
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
@@ -28,11 +19,24 @@ cdef class PermFlowShop(Problem):
         # Cannot override attribute `solution` in cdef class
         # due to Cython limitation
 
+    cdef readonly:
+        # Keeps the instance (jobs, graph) alive while this node exists
+        FlowShopInstanceData data
+
     cdef:
         Permutation perm
 
-    cdef inline void set_perm(PermFlowShop self, vector[vector[int]] p_, MachineGraph mach_graph_):
-        self.perm = Permutation(p_, mach_graph_)
+    cdef inline void set_data(PermFlowShop self, FlowShopInstanceData data):
+        self.data = data
+        self.perm = Permutation(data.ptr())
+
+    cdef inline const InstanceData* _inst(PermFlowShop self) except NULL:
+        if self.data is None or self.data.ptr() == NULL:
+            raise ValueError(
+                'PermFlowShop has no instance data;'
+                ' build it with PermFlowShop.from_p or PermFlowShop(data)'
+            )
+        return self.data.ptr()
 
     cdef inline Permutation get_perm(PermFlowShop self):
         return self.perm
@@ -89,8 +93,6 @@ cdef class PermFlowShop(Problem):
 
     cdef void _push_job(PermFlowShop self, int& j)
 
-    cpdef void compute_starts(PermFlowShop self)
-
     cpdef int calc_idle_time(PermFlowShop self)
 
     cpdef int calc_tot_time(PermFlowShop self)
@@ -98,8 +100,6 @@ cdef class PermFlowShop(Problem):
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
-
-    cpdef void perm_copy(PermFlowShop self)
 
 
 cdef class BenchPermFlowShop(PermFlowShop):

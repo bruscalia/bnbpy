@@ -4,13 +4,14 @@
 #include <limits>
 #include <random>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "local_search.hpp"
 #include "neh.hpp"
 
 Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
                             unsigned int seed,
-                            const std::shared_ptr<MachineGraph> &mach_graph)
+                            const InstanceData &inst)
 {
     Permutation best_perm;
     int best_cost = std::numeric_limits<int>::max();
@@ -26,7 +27,7 @@ Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
     }
 
     // In the first iteration, the order is the original from NEH
-    best_perm = neh_core(jobs_, mach_graph);
+    best_perm = neh_core(jobs_, inst);
 
     for (int iter = 0; iter < n_iter; ++iter)
     {
@@ -41,10 +42,10 @@ Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
             std::sort(jobs.begin(), jobs.end(), desc_T);
         }
         // Best insertion from presorted jobs in O(m n2)
-        Permutation perm = neh_core(jobs, mach_graph);
+        Permutation perm = neh_core(jobs, inst);
         // Local search until no improvement (sequence will be copied inside)
         std::vector<JobPtr> sequence_copy = perm.get_sequence();
-        Permutation new_perm = local_search(sequence_copy, mach_graph);
+        Permutation new_perm = local_search(sequence_copy, inst);
         int new_cost = new_perm.calc_lb_full();
         if (new_cost < best_cost)
         {

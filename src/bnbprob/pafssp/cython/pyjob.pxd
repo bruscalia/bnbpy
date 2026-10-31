@@ -9,6 +9,8 @@ cdef class PyJob:
 
     cdef:
         Job job
+        # Start times; only set on export by PermFlowShop.sequence
+        vector[int] s
 
     cdef JobPtr get_job(self)
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "permutation.hpp"
 #include "sigma.hpp"
@@ -11,6 +12,6 @@
 
 inline bool desc_slope(const JobPtr& a, const JobPtr& b);
 
-Permutation quick_constructive(std::vector<JobPtr>& jobs, const std::shared_ptr<MachineGraph>& mach_graph);
+Permutation quick_constructive(std::vector<JobPtr>& jobs, const InstanceData& inst);
 
 #endif  // QUICK_CONSTRUCTIVE_HPP

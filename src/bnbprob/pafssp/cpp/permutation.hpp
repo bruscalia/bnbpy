@@ -6,12 +6,19 @@
 #include <unordered_map>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "job.hpp"
+#include "job_times.hpp"
 #include "mach_graph.hpp"
 #include "sigma.hpp"
 #include "single_mach.hpp"
 #include "two_mach.hpp"
 
+// Search node: partial sequences sigma1 (front) and sigma2 (back), plus the
+// free jobs in between.
+//
+// `instance` (jobs, machine graph and two-machine cache) is borrowed and
+// must outlive the Permutation. Copies are cheap and share the instance.
 class Permutation
 {
 public:
@@ -22,254 +29,82 @@ public:
     Sigma sigma1;
     std::vector<JobPtr> free_jobs;
     Sigma sigma2;
-    std::shared_ptr<MachineGraph> mach_graph;
+    const InstanceData *instance;
 
 private:
-    // Cache for two-machine sequences
-    std::shared_ptr<TwoMach> two_mach_cache;
     std::vector<bool> scheduled_jobs;
     // Cache for single-machine sequences
     SingleMach single_mach_cache;
-    // Check for ownership of jobs in free_jobs
-    bool owns_jobs = false;
 
 public:
-    // Default constructor
+    // Default constructor (no instance; placeholder only)
     Permutation()
         : m(0),
           n(0),
           level(0),
+          instance(nullptr),
           scheduled_jobs(),
-          single_mach_cache(),
-          owns_jobs(false)
+          single_mach_cache()
     {
     }
 
-    // Destructor - clean up jobs if we own them
-    ~Permutation()
-    {
-        if (owns_jobs)
-        {
-            for (JobPtr job : free_jobs)
-            {
-                delete job;
-            }
-        }
-    }
-
-    // Copy constructor - shallow copy by default for performance
-    Permutation(const Permutation &other)
-        : m(other.m),
-          n(other.n),
-          level(other.level),
-          sigma1(other.sigma1),
-          free_jobs(other.free_jobs),
-          sigma2(other.sigma2),
-          mach_graph(other.mach_graph),
-          two_mach_cache(other.two_mach_cache),
-          scheduled_jobs(other.scheduled_jobs),
-          single_mach_cache(other.single_mach_cache),
-          owns_jobs(false)  // Copy never owns jobs - shared ownership
+    // Root node: all jobs of the instance are free
+    explicit Permutation(const InstanceData *instance_)
+        : Permutation(instance_, instance_->get_jobs())
     {
     }
 
-    // Assignment operator - clean up and copy
-    Permutation &operator=(const Permutation &other)
+    // Given jobs are free and nothing is scheduled
+    Permutation(const InstanceData *instance_,
+                const std::vector<JobPtr> &free_jobs_)
+        : Permutation(instance_, 0,
+                      Sigma(instance_->get_m(), &instance_->get_mach_graph()),
+                      free_jobs_,
+                      Sigma(instance_->get_m(), &instance_->get_mach_graph()))
     {
-        if (this != &other)
-        {
-            // Clean up existing jobs if we own them
-            if (owns_jobs)
-            {
-                for (JobPtr job : free_jobs)
-                {
-                    delete job;
-                }
-            }
-
-            // Copy basic attributes
-            m = other.m;
-            n = other.n;
-            level = other.level;
-            sigma1 = other.sigma1;
-            free_jobs = other.free_jobs;  // Shallow copy
-            sigma2 = other.sigma2;
-            mach_graph = other.mach_graph;
-            two_mach_cache = other.two_mach_cache;
-            scheduled_jobs = other.scheduled_jobs;
-            single_mach_cache = other.single_mach_cache;
-            owns_jobs = false;  // Assignment never transfers ownership
-        }
-        return *this;
-    }
-
-    // Move assignment operator - transfer ownership
-    Permutation &operator=(Permutation &&other) noexcept
-    {
-        if (this != &other)
-        {
-            // Clean up existing jobs if we own them
-            if (owns_jobs)
-            {
-                for (JobPtr job : free_jobs)
-                {
-                    delete job;
-                }
-            }
-
-            // Move all attributes
-            m = other.m;
-            n = other.n;
-            level = other.level;
-            sigma1 = std::move(other.sigma1);
-            free_jobs = std::move(other.free_jobs);
-            sigma2 = std::move(other.sigma2);
-            mach_graph = std::move(other.mach_graph);
-            two_mach_cache = std::move(other.two_mach_cache);
-            scheduled_jobs = std::move(other.scheduled_jobs);
-            single_mach_cache = std::move(other.single_mach_cache);
-            owns_jobs = other.owns_jobs;
-
-            // Reset the moved-from object
-            other.owns_jobs = false;  // Transfer ownership
-            other.free_jobs.clear();
-        }
-        return *this;
-    }
-
-    // Constructor from processing times
-    Permutation(const std::vector<std::vector<int>> &p_,
-                const std::shared_ptr<MachineGraph> &mach_graph_);
-
-    // Constructor from free jobs (assumes jobs are managed externally)
-    Permutation(const std::vector<JobPtr> &jobs_,
-                const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(mach_graph_->get_M()),
-          n(jobs_.size()),
-          level(0),
-          sigma1(mach_graph_->get_M(), mach_graph_),
-          free_jobs(jobs_),
-          sigma2(mach_graph_->get_M(), mach_graph_),
-          mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(*mach_graph_, free_jobs)),
-          scheduled_jobs(n, false),
-          single_mach_cache(mach_graph_->get_M(), jobs_),
-          owns_jobs(false)  // External job management
-    {
-        // Constructor implementation here
-        update_params();
-        complete_prescheduled();
     }
 
     // Constructor given all desired attributes
-    Permutation(const int &n_, const int &level_,
+    Permutation(const InstanceData *instance_, int level_,
                 const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
-                const Sigma &sigma2_,
-                const std::shared_ptr<MachineGraph> &mach_graph_,
-                const std::shared_ptr<TwoMach> &two_mach_cache_)
-        : m(mach_graph_->get_M()),
-          n(n_),
+                const Sigma &sigma2_)
+        : m(instance_->get_m()),
+          n(instance_->get_n()),
           level(level_),
           sigma1(sigma1_),
           free_jobs(free_jobs_),
           sigma2(sigma2_),
-          mach_graph(mach_graph_),
-          two_mach_cache(two_mach_cache_),
-          scheduled_jobs(n_, false),
-          single_mach_cache(mach_graph_->get_M(), free_jobs_),
-          owns_jobs(false)  // External job management
+          instance(instance_),
+          scheduled_jobs(instance_->get_n(), false),
+          single_mach_cache(instance_->get_m(), free_jobs_)
     {
-        // Constructor implementation here
         update_params();
         complete_prescheduled();
-    }
-
-    // Constructor given all desired attributes but two_mach
-    Permutation(const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
-                const Sigma &sigma2_,
-                const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(mach_graph_->get_M()),
-          n(n_),
-          level(level_),
-          sigma1(sigma1_),
-          free_jobs(free_jobs_),
-          sigma2(sigma2_),
-          mach_graph(mach_graph_),
-          two_mach_cache(std::make_shared<TwoMach>(*mach_graph_, free_jobs_)),
-          scheduled_jobs(n_, false),
-          single_mach_cache(mach_graph_->get_M(), free_jobs_),
-          owns_jobs(false)  // External job management
-    {
-        // Constructor implementation here
-        update_params();
-        complete_prescheduled();
-    }
-
-    // Constructor from processing times with MachineGraph object
-    Permutation(const std::vector<std::vector<int>> &p_,
-                const MachineGraph &mach_graph_)
-        : Permutation(p_, std::make_shared<MachineGraph>(mach_graph_))
-    {
-    }
-
-    // Constructor from free jobs with MachineGraph object
-    Permutation(const std::vector<JobPtr> &jobs_,
-                const MachineGraph &mach_graph_)
-        : Permutation(jobs_, std::make_shared<MachineGraph>(mach_graph_))
-    {
-    }
-
-    // Constructor given all desired attributes with MachineGraph object
-    Permutation(const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
-                const Sigma &sigma2_, const MachineGraph &mach_graph_,
-                const std::shared_ptr<TwoMach> &two_mach_cache_)
-        : Permutation(n_, level_, sigma1_, free_jobs_, sigma2_,
-                      std::make_shared<MachineGraph>(mach_graph_),
-                      two_mach_cache_)
-    {
-    }
-
-    // Constructor given all desired attributes but two_mach with MachineGraph
-    // object
-    Permutation(const int &n_, const int &level_,
-                const Sigma &sigma1_, const std::vector<JobPtr> &free_jobs_,
-                const Sigma &sigma2_, const MachineGraph &mach_graph_)
-        : Permutation(n_, level_, sigma1_, free_jobs_, sigma2_,
-                      std::make_shared<MachineGraph>(mach_graph_))
-    {
     }
 
     // Accessor methods
-    std::vector<JobPtr> get_free_jobs();
-    Sigma get_sigma1();
-    Sigma get_sigma2();
-    std::vector<JobPtr> get_sequence();
+    std::vector<JobPtr> get_free_jobs() const;
+    Sigma get_sigma1() const;
+    Sigma get_sigma2() const;
+    std::vector<JobPtr> get_sequence() const;
     std::vector<int> get_r() const;
     std::vector<int> get_q() const;
-    std::vector<JobTimes *> get_job_times(const int &m1, const int &m2) const;
-    MachineGraph get_mach_graph() const { return *this->mach_graph.get(); }
+    const MachineGraph &get_mach_graph() const
+    {
+        return this->instance->get_mach_graph();
+    }
+    const InstanceData *get_instance() const { return this->instance; }
 
     // Modification methods
     void push_job(const unsigned int &j);
     void update_params();
-    // TODO: revise to see if it currently doesn't break the logic
-    // when called.
-    // Create later a separate attribute for job starts if needed.
-    void compute_starts();
+
+    // Start times aligned with get_sequence() order (sigma1, free jobs in
+    // their current order, sigma2); does not mutate jobs
+    std::vector<std::vector<int>> compute_starts() const;
 
     // Feasibility check
-    bool is_feasible()
-    {
-        // Implementation here
-        bool valid = (this->free_jobs.size() == 0);
-        if (valid)
-        {
-            this->compute_starts();
-        }
-        return valid;
-    }
+    bool is_feasible() const { return this->free_jobs.empty(); }
 
     // // Lower bound calculations
     int calc_lb_1m()
@@ -293,6 +128,10 @@ public:
     int calc_lb_full();
     int lower_bound_1m();
     int lower_bound_2m();
+
+    // Two-machine makespan (Johnson order from the instance cache) of the
+    // free jobs on machines m1 -> m2, with heads rho1 and tails rho2
+    int two_mach_bound(int m1, int m2, int rho1, int rho2) const;
     int calc_idle_time()
     {
         // Implementation here
@@ -358,9 +197,5 @@ public:
                   { return job_pos[a->j] > job_pos[b->j]; });
     }
 };
-
-// Makespan given ordered operations
-int two_mach_makespan(const std::vector<JobTimes *> &job_times, int rho1,
-                      int rho2);
 
 #endif  // PERMUTATION_HPP

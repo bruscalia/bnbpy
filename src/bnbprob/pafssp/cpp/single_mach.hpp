@@ -6,8 +6,6 @@
 
 #include "job.hpp"
 
-using namespace std;
-
 struct SingleMach
 {
     std::vector<int> r;  // Release times for each machine
@@ -35,9 +33,9 @@ struct SingleMach
         const size_t jobs_size = jobs.size();
         if (jobs_size == 0)
         {
-            r = vector<int>(m, 0);
-            q = vector<int>(m, 0);
-            p = vector<int>(m, 0);
+            r = std::vector<int>(m, 0);
+            q = std::vector<int>(m, 0);
+            p = std::vector<int>(m, 0);
             return;
         }
 

@@ -24,6 +24,7 @@ test: $(TARGET)
 	@$(BUILD_DIR)/test_two_mach
 	@$(BUILD_DIR)/test_single_mach
 	@$(BUILD_DIR)/test_permutation
+	@$(BUILD_DIR)/test_instance_data
 
 # Run tests with verbose output
 test-verbose: $(TARGET)
@@ -34,6 +35,7 @@ test-verbose: $(TARGET)
 	@$(BUILD_DIR)/test_two_mach -s
 	@$(BUILD_DIR)/test_single_mach -s
 	@$(BUILD_DIR)/test_permutation -s
+	@$(BUILD_DIR)/test_instance_data -s
 
 # Run specific test case (usage: make test-case CASE="[job]")
 test-case: $(TARGET)
@@ -44,6 +46,7 @@ test-case: $(TARGET)
 	@$(BUILD_DIR)/test_two_mach $(CASE)
 	@$(BUILD_DIR)/test_single_mach $(CASE)
 	@$(BUILD_DIR)/test_permutation $(CASE)
+	@$(BUILD_DIR)/test_instance_data $(CASE)
 
 # Run tests using CTest
 ctest: $(TARGET)

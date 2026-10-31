@@ -3,7 +3,6 @@
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
-from libcpp.memory cimport make_shared, shared_ptr
 
 from cython.operator cimport dereference as deref
 
@@ -16,6 +15,21 @@ INIT_ERROR = 'C++ Sigma not initialized'
 
 
 cdef class PySigma:
+    """
+    Python wrapper for the C++ Sigma class representing a partial job sequence.
+
+    A Sigma represents a partial permutation of jobs in a scheduling problem,
+    typically used in branch-and-bound algorithms for permutation flow shop
+    scheduling. It maintains the current sequence of scheduled jobs and
+    provides methods to extend the sequence.
+
+    Debug/testing helper. A ``PySigma`` returned by
+    ``PermFlowShop.sigma1``/``sigma2`` holds a **copy** of the C++ ``Sigma``,
+    whose job pointers (and machine-graph pointer) are borrowed from the
+    problem's ``FlowShopInstanceData``. It does not keep that instance alive:
+    using a ``PySigma`` after its instance has been garbage-collected is
+    undefined behaviour. Not intended as part of the public API.
+    """
 
     def __cinit__(self):
         self._initialized = False
@@ -181,6 +195,8 @@ cdef class PySigma:
 
 
 cdef PySigma sigma_to_py(Sigma sigma):
+    # The copied Sigma borrows job and graph pointers from the problem's
+    # FlowShopInstanceData, which this PySigma does not keep alive
     cdef:
         PySigma py_sigma
 

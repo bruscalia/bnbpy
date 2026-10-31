@@ -7,8 +7,11 @@
 #include "job.hpp"
 #include "mach_graph.hpp"
 
-using namespace std;
-
+// Partial sequence of jobs with completion times on each machine.
+//
+// `mach_graph` and the pointers in `jobs` are borrowed: they point into an
+// `InstanceData` (or into a standalone graph, for `PySigma.empty`), which
+// must outlive this Sigma.
 class Sigma
 {
 public:
@@ -28,12 +31,6 @@ public:
     // Constructor with empty instance and machine graph
     Sigma(const int &m_, const MachineGraph *mach_graph_)
         : m(m_), C(m_, 0), mach_graph(mach_graph_), jobs(), p(m_, 0)
-    {
-    }
-
-    // Constructor with empty instance and machine graph
-    Sigma(const int &m_, const std::shared_ptr<MachineGraph> &mach_graph_)
-        : m(m_), C(m_, 0), mach_graph(mach_graph_.get()), jobs(), p(m_, 0)
     {
     }
 
@@ -73,26 +70,11 @@ public:
         }
     }
 
-    // Destructor
-    ~Sigma() {}
-
     // Push job to bottom sequence
     void job_to_bottom(JobPtr job);
 
     // Push job to top sequence
     void job_to_top(JobPtr job);
-
-    // Push job to bottom sequence
-    void job_to_bottom(Job job)
-    {
-        job_to_bottom(&job);
-    }
-
-    // Push job to top sequence
-    void job_to_top(Job job)
-    {
-        job_to_top(&job);
-    }
 
     // Get jobs as JobPtr vector
     inline std::vector<JobPtr> get_jobs() const { return jobs; }

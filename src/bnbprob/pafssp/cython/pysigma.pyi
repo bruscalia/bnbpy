@@ -11,6 +11,13 @@ class PySigma:
     typically used in branch-and-bound algorithms for permutation flow shop
     scheduling. It maintains the current sequence of scheduled jobs and
     provides methods to extend the sequence.
+
+    Debug/testing helper. A ``PySigma`` returned by
+    ``PermFlowShop.sigma1``/``sigma2`` holds a **copy** of the C++ ``Sigma``,
+    whose job pointers (and machine-graph pointer) are borrowed from the
+    problem's ``FlowShopInstanceData``. It does not keep that instance alive:
+    using a ``PySigma`` after its instance has been garbage-collected is
+    undefined behaviour. Not intended as part of the public API.
     """
 
     m: int

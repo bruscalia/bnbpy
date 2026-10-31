@@ -7,6 +7,7 @@ __all__ = [
     'BenchPermFlowShop',
     'BenchCutoffBnB',
     'CycleBestFlowShop',
+    'FlowShopInstanceData',
     'plot_gantt',
 ]
 
@@ -16,6 +17,7 @@ from bnbprob.pafssp.environ import (
     CallbackBnB,
     CutoffBnB,
     CycleBestFlowShop,
+    FlowShopInstanceData,
     LazyBnB,
     PermFlowShop,
     PermFlowShop1M,

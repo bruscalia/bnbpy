@@ -7,6 +7,7 @@ __all__ = [
     'BenchPermFlowShop',
     'BenchCutoffBnB',
     'CycleBestFlowShop',
+    'FlowShopInstanceData',
 ]
 
 from bnbprob.pafssp.cython.bnb import (
@@ -16,6 +17,7 @@ from bnbprob.pafssp.cython.bnb import (
     CycleBestFlowShop,
     LazyBnB,
 )
+from bnbprob.pafssp.cython.instance import FlowShopInstanceData
 from bnbprob.pafssp.cython.problem import (
     BenchPermFlowShop,
     PermFlowShop,

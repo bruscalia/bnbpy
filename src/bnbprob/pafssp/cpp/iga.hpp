@@ -6,6 +6,7 @@
 #include <random>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "intensify.hpp"
 #include "job.hpp"
 #include "local_search.hpp"
@@ -23,16 +24,13 @@ struct IGADestruction
 IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
                                std::mt19937 generator);
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter);
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter, const int& seed);
 
-Permutation iga(std::vector<JobPtr>& jobs_,
-                const std::shared_ptr<MachineGraph>& mach_graph,
+Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter, const int& d, const int& seed);
 
 #endif  // IGA_HPP

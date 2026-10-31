@@ -1,8 +1,29 @@
+#include <type_traits>
+
 #include "catch2/catch_test_macros.hpp"
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "permutation.hpp"
 #include "sigma.hpp"
+
+// Rule of zero: copies share the instance, moves are cheap
+static_assert(std::is_copy_constructible_v<Permutation>);
+static_assert(std::is_nothrow_move_constructible_v<Permutation>);
+static_assert(std::is_nothrow_move_assignable_v<Permutation>);
+
+namespace
+{
+// Sequential machine graph 0 -> 1 -> 2
+MachineGraph chain3()
+{
+    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
+    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
+    std::vector<int> topo_order = {0, 1, 2};
+    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    return MachineGraph(3, prec, succ, topo_order, descendants);
+}
+}  // namespace
 
 TEST_CASE("Permutation - constructors", "[permutation]")
 {
@@ -14,22 +35,14 @@ TEST_CASE("Permutation - constructors", "[permutation]")
         REQUIRE(perm.n == 0);
         REQUIRE(perm.level == 0);
         REQUIRE(perm.free_jobs.empty());
+        REQUIRE(perm.instance == nullptr);
     }
 
-    SECTION("Constructor from processing times")
+    SECTION("Root constructor")
     {
-        int M = 3;
-        std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-        std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-        std::vector<int> topo_order = {0, 1, 2};
-        std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-        auto mach_graph = std::make_shared<MachineGraph>(
-            M, prec, succ, topo_order, descendants);
-
-        std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}};
-
-        Permutation perm(p, mach_graph);
+        Permutation perm(&inst);
 
         REQUIRE(perm.m == 3);
         REQUIRE(perm.n == 2);
@@ -37,46 +50,65 @@ TEST_CASE("Permutation - constructors", "[permutation]")
         REQUIRE(perm.free_jobs.size() == 2);
         REQUIRE(perm.sigma1.get_jobs().empty());
         REQUIRE(perm.sigma2.get_jobs().empty());
+        REQUIRE(perm.get_instance() == &inst);
+        REQUIRE(&perm.get_mach_graph() == &inst.get_mach_graph());
+        REQUIRE(perm.sigma1.mach_graph == &inst.get_mach_graph());
+        REQUIRE(perm.sigma2.mach_graph == &inst.get_mach_graph());
     }
 
     SECTION("Constructor from free jobs")
     {
-        int M = 3;
-        std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-        std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-        std::vector<int> topo_order = {0, 1, 2};
-        std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-        MachineGraph mach_graph(M, prec, succ, topo_order, descendants);
-
-        Job job0(0, {3, 5, 2}, mach_graph);
-        Job job1(1, {2, 4, 3}, mach_graph);
-
-        std::vector<JobPtr> jobs = {&job0, &job1};
-
-        Permutation perm(jobs, mach_graph);
+        Permutation perm(&inst, inst.get_jobs());
 
         REQUIRE(perm.m == 3);
         REQUIRE(perm.n == 2);
         REQUIRE(perm.level == 0);
         REQUIRE(perm.free_jobs.size() == 2);
     }
+
+    SECTION("Constructor from a subset of free jobs keeps n of instance")
+    {
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
+
+        // Job 2 only: indexes scheduled_jobs by j = 2, which must be in bounds
+        Permutation perm(&inst, {inst.get_jobs()[2]});
+
+        REQUIRE(perm.n == 3);
+        REQUIRE(perm.free_jobs.size() == 1);
+        perm.push_job(0);
+        REQUIRE(perm.is_feasible());
+        REQUIRE(perm.calc_lb_full() == 4);
+    }
+
+    SECTION("Full-state constructor marks prescheduled jobs")
+    {
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
+        const std::vector<JobPtr> &jobs = inst.get_jobs();
+        const MachineGraph *mg = &inst.get_mach_graph();
+
+        Sigma s1(3, mg);
+        s1.job_to_bottom(jobs[0]);
+        Sigma s2(3, mg);
+        s2.job_to_top(jobs[2]);
+
+        Permutation perm(&inst, 2, s1, {jobs[1]}, s2);
+
+        REQUIRE(perm.level == 2);
+        REQUIRE(perm.n == 3);
+        REQUIRE(perm.free_jobs.size() == 1);
+        // Two-machine bounds only consider the unscheduled job 1 (2, 4, 3)
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 0) == 6);
+        REQUIRE(perm.two_mach_bound(0, 2, 0, 0) == 9);
+    }
 }
 
 TEST_CASE("Permutation - push_job", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}, {1, 2, 1}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Push first job to sigma1 (even level)")
     {
@@ -130,18 +162,9 @@ TEST_CASE("Permutation - push_job", "[permutation]")
 
 TEST_CASE("Permutation - get_sequence", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}, {1, 2, 1}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Sequence with all free jobs")
     {
@@ -188,18 +211,9 @@ TEST_CASE("Permutation - get_sequence", "[permutation]")
 
 TEST_CASE("Permutation - is_feasible", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Not feasible with free jobs")
     {
@@ -211,24 +225,17 @@ TEST_CASE("Permutation - is_feasible", "[permutation]")
         perm.push_job(0);
         perm.push_job(0);
 
-        REQUIRE(perm.is_feasible());
+        const Permutation &cperm = perm;  // is_feasible is const
+        REQUIRE(cperm.is_feasible());
+        REQUIRE(cperm.is_feasible());
     }
 }
 
 TEST_CASE("Permutation - lower bounds", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Single-machine lower bound with all free jobs")
     {
@@ -272,18 +279,9 @@ TEST_CASE("Permutation - lower bounds", "[permutation]")
 
 TEST_CASE("Permutation - get_r and get_q", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Get release and tail times")
     {
@@ -318,18 +316,9 @@ TEST_CASE("Permutation - get_r and get_q", "[permutation]")
 
 TEST_CASE("Permutation - idle and total time", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}};
-
-    Permutation perm(p, mach_graph);
+    Permutation perm(&inst);
 
     SECTION("Idle time with no scheduled jobs")
     {
@@ -361,98 +350,76 @@ TEST_CASE("Permutation - idle and total time", "[permutation]")
     }
 }
 
-TEST_CASE("Permutation - two_mach_makespan function", "[permutation]")
+TEST_CASE("Permutation - two_mach_bound", "[permutation]")
 {
-    int M = 2;
+    // Sequential machine graph 0 -> 1
     std::vector<std::vector<int>> prec = {{}, {0}};
     std::vector<std::vector<int>> succ = {{1}, {}};
     std::vector<int> topo_order = {0, 1};
     std::vector<std::vector<int>> descendants = {{1}, {}};
+    MachineGraph chain2(2, prec, succ, topo_order, descendants);
 
-    MachineGraph mach_graph(M, prec, succ, topo_order, descendants);
-
-    SECTION("Empty sequence")
+    SECTION("No free jobs: only heads and tails")
     {
-        std::vector<JobTimes*> empty_seq = {};
-        int makespan = two_mach_makespan(empty_seq, 0, 0);
+        InstanceData inst({{5, 3}}, chain2);
+        Permutation perm(&inst);
+        perm.push_job(0);
 
-        REQUIRE(makespan == 0);
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 0) == 0);
+        REQUIRE(perm.two_mach_bound(0, 1, 4, 6) == 6);
     }
 
     SECTION("Single job without latency")
     {
-        Job job0(0, {5, 3}, mach_graph);
-        JobTimes jt1(5 + 0, 3 + 0, 5, 3, 0, job0);
-        std::vector<JobTimes*> seq = {&jt1};
-
-        int makespan = two_mach_makespan(seq, 0, 0);
+        InstanceData inst({{5, 3}}, chain2);
+        Permutation perm(&inst);
 
         // M1: 5, M2: max(5, 0) + 3 = 8
-        REQUIRE(makespan == 8);
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 0) == 8);
     }
 
     SECTION("Single job with latency")
     {
-        Job job0(0, {5, 3}, mach_graph);
-        job0.lat = {{0, 2}, {0, 0}};
-        JobTimes jt1(5 + 2, 3 + 2, 5, 3, 2, job0);
-        std::vector<JobTimes*> seq = {&jt1};
+        InstanceData inst({{3, 4, 2}}, chain3());
+        Permutation perm(&inst);
 
-        int makespan = two_mach_makespan(seq, 0, 0);
-
-        // M1: 5, M2: max(5+2, 0) + 3 = 10
-        REQUIRE(makespan == 10);
+        // Pair (0, 2): lat = p[1] = 4
+        // M1: 3, M2: max(3 + 4, 0) + 2 = 9
+        REQUIRE(perm.two_mach_bound(0, 2, 0, 0) == 9);
     }
 
-    SECTION("Multiple jobs without latency")
+    SECTION("Multiple jobs in Johnson order with rho values")
     {
-        Job job0(0, {3, 2}, mach_graph);
-        Job job1(1, {4, 5}, mach_graph);
-        JobTimes jt1(3, 2, 3, 2, 0, job0);
-        JobTimes jt2(4, 5, 4, 5, 0, job1);
-        std::vector<JobTimes*> seq = {&jt1, &jt2};
+        // Job 0 (3, 2): t1 > t2 -> second set
+        // Job 1 (4, 5): t1 <= t2 -> first set
+        // Johnson order: [job 1, job 0]
+        InstanceData inst({{3, 2}, {4, 5}}, chain2);
+        Permutation perm(&inst);
 
-        int makespan = two_mach_makespan(seq, 0, 0);
-
-        // M1: 3+4=7, M2: max(3,0)+2=5, then max(7,5)+5=12
-        REQUIRE(makespan == 12);
+        // M1: 4, M2: 9; M1: 7, M2: max(7, 9) + 2 = 11
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 0) == 11);
+        // rho1 = 10: M2: max(4, 10) + 5 = 15; max(7, 15) + 2 = 17
+        REQUIRE(perm.two_mach_bound(0, 1, 10, 0) == 17);
+        // rho2 = 12: M1: 7 + 12 = 19 > M2: 11
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 12) == 19);
     }
 
-    SECTION("Multiple jobs with latency and rho values")
+    SECTION("Scheduled jobs are skipped")
     {
-        Job job0(0, {3, 2}, mach_graph);
-        Job job1(1, {4, 5}, mach_graph);
-        job0.lat = {{0, 1}, {0, 0}};
-        job1.lat = {{0, 2}, {0, 0}};
-        JobTimes jt1(3 + 1, 2 + 1, 3, 2, 1, job0);
-        JobTimes jt2(4 + 2, 5 + 2, 4, 5, 2, job1);
-        std::vector<JobTimes*> seq = {&jt1, &jt2};
+        InstanceData inst({{3, 2}, {4, 5}}, chain2);
+        Permutation perm(&inst);
+        perm.push_job(0);  // job 0 -> sigma1
 
-        int makespan = two_mach_makespan(seq, 2, 1);
-
-        // M1: 3+4=7, rho1=2 -> M2 starts at 2
-        // M2: max(3+1, 2) + 2 = max(4,2)+2 = 6
-        //     max(7+2, 6) + 5 = max(9,6)+5 = 14
-        // M1: 7+1=8
-        // max(8, 14) = 14
-        REQUIRE(makespan == 14);
+        // Only job 1: M1: 4, M2: max(4, 0) + 5 = 9
+        REQUIRE(perm.two_mach_bound(0, 1, 0, 0) == 9);
     }
 }
 
 TEST_CASE("Permutation - copy constructor", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}, {2, 4, 3}};
-
-    Permutation perm1(p, mach_graph);
+    Permutation perm1(&inst);
     perm1.push_job(0);
 
     SECTION("Copy preserves state")
@@ -465,6 +432,7 @@ TEST_CASE("Permutation - copy constructor", "[permutation]")
         REQUIRE(perm2.free_jobs.size() == perm1.free_jobs.size());
         REQUIRE(perm2.sigma1.get_jobs().size() ==
                 perm1.sigma1.get_jobs().size());
+        REQUIRE(perm2.instance == perm1.instance);
     }
 
     SECTION("Copy is independent for modifications")
@@ -481,20 +449,11 @@ TEST_CASE("Permutation - copy constructor", "[permutation]")
 
 TEST_CASE("Permutation - assignment operator", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
+    InstanceData inst1({{3, 5, 2}, {2, 4, 3}}, chain3());
+    InstanceData inst2({{1, 2, 1}}, chain3());
 
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p1 = {{3, 5, 2}, {2, 4, 3}};
-    std::vector<std::vector<int>> p2 = {{1, 2, 1}};
-
-    Permutation perm1(p1, mach_graph);
-    Permutation perm2(p2, mach_graph);
+    Permutation perm1(&inst1);
+    Permutation perm2(&inst2);
 
     perm1.push_job(0);
 
@@ -506,37 +465,67 @@ TEST_CASE("Permutation - assignment operator", "[permutation]")
         REQUIRE(perm2.n == perm1.n);
         REQUIRE(perm2.level == perm1.level);
         REQUIRE(perm2.free_jobs.size() == perm1.free_jobs.size());
+        REQUIRE(perm2.instance == &inst1);
     }
 }
 
 TEST_CASE("Permutation - compute_starts", "[permutation]")
 {
-    int M = 3;
-    std::vector<std::vector<int>> prec = {{}, {0}, {1}};
-    std::vector<std::vector<int>> succ = {{1}, {2}, {}};
-    std::vector<int> topo_order = {0, 1, 2};
-    std::vector<std::vector<int>> descendants = {{1, 2}, {2}, {}};
-
-    auto mach_graph =
-        std::make_shared<MachineGraph>(M, prec, succ, topo_order, descendants);
-
-    std::vector<std::vector<int>> p = {{3, 5, 2}};
-
-    Permutation perm(p, mach_graph);
-    perm.push_job(0);
-
-    SECTION("Compute starts for complete schedule")
+    SECTION("Single job respects machine precedence")
     {
-        perm.compute_starts();
+        InstanceData inst({{3, 5, 2}}, chain3());
+        Permutation perm(&inst);
+        perm.push_job(0);
 
-        std::vector<JobPtr> seq = perm.get_sequence();
+        std::vector<std::vector<int>> starts = perm.compute_starts();
 
-        REQUIRE(seq.size() == 1);
-        REQUIRE(seq[0]->s.size() == 3);
+        REQUIRE(starts.size() == 1);
+        REQUIRE(starts[0] == std::vector<int>{0, 3, 8});
+    }
 
-        // Start times should respect precedence
-        REQUIRE(seq[0]->s[0] >= 0);
-        REQUIRE(seq[0]->s[1] >= seq[0]->s[0] + seq[0]->p[0]);
-        REQUIRE(seq[0]->s[2] >= seq[0]->s[1] + seq[0]->p[1]);
+    SECTION("Complete schedule: exact starts aligned with get_sequence")
+    {
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
+        Permutation perm(&inst);
+        perm.push_job(2);  // job 2 -> sigma1
+        perm.push_job(1);  // job 1 -> sigma2
+        perm.push_job(0);  // job 0 -> sigma1
+
+        const Permutation &cperm = perm;  // compute_starts is const
+        std::vector<JobPtr> seq = cperm.get_sequence();
+        std::vector<std::vector<int>> starts = cperm.compute_starts();
+
+        // Sequence [2, 0, 1]
+        // job 2 (1, 2, 1): starts (0, 1, 3)
+        // job 0 (3, 5, 2): starts (1, 4, 9)
+        // job 1 (2, 4, 3): starts (4, 9, 13) -> makespan 16
+        REQUIRE(seq[0]->j == 2);
+        REQUIRE(seq[1]->j == 0);
+        REQUIRE(seq[2]->j == 1);
+        REQUIRE(starts ==
+                std::vector<std::vector<int>>{{0, 1, 3}, {1, 4, 9}, {4, 9, 13}});
+        REQUIRE(starts[2][2] + seq[2]->p[2] == perm.calc_lb_full());
+
+        // Pure function: same result when called again
+        REQUIRE(cperm.compute_starts() == starts);
+    }
+
+    SECTION("Partial schedule follows sigma1 + free jobs + sigma2")
+    {
+        InstanceData inst({{3, 5, 2}, {2, 4, 3}, {1, 2, 1}}, chain3());
+        Permutation perm(&inst);
+
+        // Sequence [0, 1, 2], all free
+        std::vector<std::vector<int>> starts = perm.compute_starts();
+
+        REQUIRE(starts ==
+                std::vector<std::vector<int>>{{0, 3, 8}, {3, 8, 12}, {5, 12, 15}});
+    }
+
+    SECTION("Default permutation has no starts")
+    {
+        Permutation perm;
+
+        REQUIRE(perm.compute_starts().empty());
     }
 }

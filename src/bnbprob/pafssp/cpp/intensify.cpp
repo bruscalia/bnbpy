@@ -20,6 +20,6 @@ Permutation intensify(const Permutation &perm, const Permutation &ref_perm_)
     std::vector<JobPtr> jobs = ref_perm.get_sequence();
     best_sol.emplace_from_ref_solution(jobs);
     std::vector<JobPtr> seq = best_sol.get_sequence();
-    best_sol = local_search(seq, perm.mach_graph);
+    best_sol = local_search(seq, *perm.instance);
     return best_sol;
 }

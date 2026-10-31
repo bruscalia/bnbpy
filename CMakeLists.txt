@@ -28,7 +28,8 @@ add_executable(test_sigma ${TEST_DIR}/test_sigma.cpp ${SRC_DIR}/sigma.cpp ${SRC_
 add_executable(test_job_times ${TEST_DIR}/test_job_times.cpp ${SRC_DIR}/job_times.cpp ${SRC_DIR}/job.cpp)
 add_executable(test_two_mach ${TEST_DIR}/test_two_mach.cpp ${SRC_DIR}/two_mach.cpp ${SRC_DIR}/job.cpp ${SRC_DIR}/job_times.cpp)
 add_executable(test_single_mach ${TEST_DIR}/test_single_mach.cpp ${SRC_DIR}/job.cpp)
-add_executable(test_permutation ${TEST_DIR}/test_permutation.cpp ${SRC_DIR}/permutation.cpp ${SRC_DIR}/sigma.cpp ${SRC_DIR}/job.cpp ${SRC_DIR}/two_mach.cpp ${SRC_DIR}/job_times.cpp)
+add_executable(test_permutation ${TEST_DIR}/test_permutation.cpp ${SRC_DIR}/permutation.cpp ${SRC_DIR}/instance_data.cpp ${SRC_DIR}/sigma.cpp ${SRC_DIR}/job.cpp ${SRC_DIR}/two_mach.cpp ${SRC_DIR}/job_times.cpp)
+add_executable(test_instance_data ${TEST_DIR}/test_instance_data.cpp ${SRC_DIR}/instance_data.cpp ${SRC_DIR}/job.cpp ${SRC_DIR}/two_mach.cpp ${SRC_DIR}/job_times.cpp)
 
 # Link against Catch2
 target_link_libraries(test_job PRIVATE Catch2::Catch2WithMain)
@@ -38,6 +39,7 @@ target_link_libraries(test_job_times PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(test_two_mach PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(test_single_mach PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(test_permutation PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(test_instance_data PRIVATE Catch2::Catch2WithMain)
 
 # Include directories
 target_include_directories(test_job PRIVATE ${SRC_DIR})
@@ -47,6 +49,7 @@ target_include_directories(test_job_times PRIVATE ${SRC_DIR})
 target_include_directories(test_two_mach PRIVATE ${SRC_DIR})
 target_include_directories(test_single_mach PRIVATE ${SRC_DIR})
 target_include_directories(test_permutation PRIVATE ${SRC_DIR})
+target_include_directories(test_instance_data PRIVATE ${SRC_DIR})
 
 # Enable testing
 enable_testing()
@@ -57,6 +60,7 @@ add_test(NAME JobTimesTests COMMAND test_job_times)
 add_test(NAME TwoMachTests COMMAND test_two_mach)
 add_test(NAME SingleMachTests COMMAND test_single_mach)
 add_test(NAME PermutationTests COMMAND test_permutation)
+add_test(NAME InstanceDataTests COMMAND test_instance_data)
 
 # Optional: Add more verbose test output
 list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
