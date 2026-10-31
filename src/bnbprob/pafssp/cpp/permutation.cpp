@@ -87,23 +87,24 @@ void Permutation::update_params()
 {
     // Implementation here
     const size_t free_jobs_size = this->free_jobs.size();
-    // Reinitialize single machine cache r and q vectors
-    this->single_mach_cache.r = std::vector<int>(this->m, SHRT_MAX);
-    this->single_mach_cache.q = std::vector<int>(this->m, SHRT_MAX);
+    // Reinitialize single machine cache r and q (reusing their storage)
+    this->single_mach_cache.r.assign(this->m, SHRT_MAX);
+    this->single_mach_cache.q.assign(this->m, SHRT_MAX);
     if (free_jobs_size == 0)
     {
         return;
     }
     const MachineGraph &mach_graph = this->get_mach_graph();
+    // Release and tail times of the current job, reused across jobs: every
+    // entry is written (in topological order) before it is read
+    std::vector<int> jr(this->m);
+    std::vector<int> jq(this->m);
     // Recompute r and q for all free jobs saving information
     // only to single machine cache
     for (size_t j = 0; j < free_jobs_size; ++j)
     {
         const JobPtr job = this->free_jobs[j];
         const std::vector<int> &jp = (*job).p;
-        // Local copies: jobs are shared and never mutated
-        std::vector<int> jr = (*job).r;
-        std::vector<int> jq = (*job).q;
         // For r it should go in topological order
         for (const int &k : mach_graph.get_topo_order())
         {

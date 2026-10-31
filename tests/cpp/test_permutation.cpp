@@ -314,6 +314,58 @@ TEST_CASE("Permutation - get_r and get_q", "[permutation]")
     }
 }
 
+TEST_CASE("Permutation - update_params", "[permutation]")
+{
+    // Jobs: J0 = {3, 5, 2}, J1 = {2, 4, 3}, J2 = {4, 1, 2}
+    InstanceData inst({{3, 5, 2}, {2, 4, 3}, {4, 1, 2}}, chain3());
+
+    SECTION("Root: minimum over jobs, taken from different jobs")
+    {
+        Permutation perm(&inst);
+        // r per job: J0 [0, 3, 8], J1 [0, 2, 6], J2 [0, 4, 5]
+        REQUIRE(perm.get_r() == std::vector<int>{0, 2, 5});
+        // q per job: J0 [7, 2, 0], J1 [7, 3, 0], J2 [3, 2, 0]
+        REQUIRE(perm.get_q() == std::vector<int>{3, 2, 0});
+    }
+
+    SECTION("Partial schedule: heads from sigma1, tails from sigma2")
+    {
+        Permutation perm(&inst);
+        perm.push_job(0);  // J0 to sigma1: C1 = [3, 8, 10]
+        perm.push_job(0);  // J2 to sigma2: C2 = [7, 3, 2]
+        REQUIRE(perm.free_jobs.size() == 1);
+        REQUIRE(perm.free_jobs[0]->j == 1);
+
+        perm.update_params();
+        // J1: r = [3, max(8, 3 + 2), max(10, 8 + 4)]
+        REQUIRE(perm.get_r() == std::vector<int>{3, 8, 12});
+        // J1: q = [max(7, 5 + 4), max(3, 2 + 3), 2]
+        REQUIRE(perm.get_q() == std::vector<int>{9, 5, 2});
+
+        // Recomputing gives the same values
+        perm.update_params();
+        REQUIRE(perm.get_r() == std::vector<int>{3, 8, 12});
+        REQUIRE(perm.get_q() == std::vector<int>{9, 5, 2});
+    }
+
+    SECTION("Assembly graph: maximum over several predecessors")
+    {
+        // Machines 0 and 1 both feed machine 2
+        std::vector<std::vector<int>> prec = {{}, {}, {0, 1}};
+        std::vector<std::vector<int>> succ = {{2}, {2}, {}};
+        std::vector<int> topo_order = {0, 1, 2};
+        std::vector<std::vector<int>> descendants = {{2}, {2}, {}};
+        MachineGraph assembly(3, prec, succ, topo_order, descendants);
+        InstanceData asm_inst({{3, 5, 2}, {6, 1, 4}}, assembly);
+
+        Permutation perm(&asm_inst);
+        // r per job: [0, 0, max(3, 5)] and [0, 0, max(6, 1)]
+        REQUIRE(perm.get_r() == std::vector<int>{0, 0, 5});
+        // q per job: [2, 2, 0] and [4, 4, 0]
+        REQUIRE(perm.get_q() == std::vector<int>{2, 2, 0});
+    }
+}
+
 TEST_CASE("Permutation - idle and total time", "[permutation]")
 {
     InstanceData inst({{3, 5, 2}, {2, 4, 3}}, chain3());

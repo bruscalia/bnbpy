@@ -32,7 +32,9 @@ public:
     const InstanceData *instance;
 
 private:
-    std::vector<bool> scheduled_jobs;
+    // One byte per job (not std::vector<bool>): plain loads in the
+    // two-machine bound scan instead of bit extraction
+    std::vector<char> scheduled_jobs;
     // Cache for single-machine sequences
     SingleMach single_mach_cache;
 
@@ -75,7 +77,7 @@ public:
           free_jobs(free_jobs_),
           sigma2(sigma2_),
           instance(instance_),
-          scheduled_jobs(instance_->get_n(), false),
+          scheduled_jobs(instance_->get_n(), 0),
           single_mach_cache(instance_->get_m(), free_jobs_)
     {
         update_params();
