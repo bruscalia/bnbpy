@@ -8,7 +8,7 @@ from libcpp cimport bool
 import copy
 
 from bnbpy.cython.counter cimport Counter
-from bnbpy.cython.problem cimport Problem, P
+from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
@@ -202,7 +202,7 @@ cdef class Node:
         """
         self.c_upgrade_bound()
 
-    cdef Node child_problem(self, P problem):
+    cdef Node child_problem(self, Problem problem):
         cdef:
             Node other
         other = Node.__new__(Node)
@@ -229,7 +229,7 @@ cdef class Node:
         return other
 
 
-cdef Node init_node(P problem, Node parent=None):
+cdef Node init_node(Problem problem, Node parent=None):
     cdef:
         Node node
     node = Node.__new__(Node)

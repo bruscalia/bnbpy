@@ -5,10 +5,6 @@ import copy
 from bnbpy.cython.solution cimport Solution
 
 
-ctypedef fused P:
-    Problem
-
-
 cdef class Problem:
 
     cdef public:

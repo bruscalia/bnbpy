@@ -36,8 +36,10 @@ cdef class MaxClique(Problem):
 
     cpdef bool is_feasible(self)
 
-    cpdef list[MaxClique] branch(self)
+    cpdef list[Problem] branch(self)
 
     cpdef MaxClique child_copy(self, bool deep=*)
+
+    cpdef Problem warmstart(self)
 
     cdef void _inner_warmstart(self)

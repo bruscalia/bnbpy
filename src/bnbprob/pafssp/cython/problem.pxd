@@ -46,7 +46,7 @@ cdef class PermFlowShop(Problem):
 
     cpdef object get_mach_graph(PermFlowShop self)
 
-    cpdef PermFlowShop warmstart(PermFlowShop self)
+    cpdef Problem warmstart(PermFlowShop self)
 
     cpdef PermFlowShop quick_constructive(PermFlowShop self)
 
@@ -71,13 +71,13 @@ cdef class PermFlowShop(Problem):
 
     cpdef bool is_feasible(PermFlowShop self)
 
-    cpdef list[PermFlowShop] branch(PermFlowShop self)
+    cpdef list[Problem] branch(PermFlowShop self)
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
     cpdef double stronger_bound(PermFlowShop self)
 
-    cpdef PermFlowShop primal_heuristic(PermFlowShop self)
+    cpdef Problem primal_heuristic(PermFlowShop self)
 
     cpdef int calc_lb_1m(PermFlowShop self)
 

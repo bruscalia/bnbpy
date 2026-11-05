@@ -38,7 +38,7 @@ cdef class MaxClique(Problem):
     cpdef bool is_feasible(self):
         return self.G.num_nodes == 0
 
-    cpdef list[MaxClique] branch(self):
+    cpdef list[Problem] branch(self):
         cdef:
             Node* selected_node
             Graph child_graph1, child_graph2
@@ -74,7 +74,7 @@ cdef class MaxClique(Problem):
         new_problem.dsatur = self.dsatur
         return new_problem
 
-    cpdef MaxClique warmstart(self):
+    cpdef Problem warmstart(self):
         cdef:
             MaxClique child_problem
 

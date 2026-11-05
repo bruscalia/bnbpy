@@ -282,7 +282,7 @@ cdef class PermFlowShop(Problem):
         self._inst()
         return self.data.mach_graph
 
-    cpdef PermFlowShop warmstart(PermFlowShop self):
+    cpdef Problem warmstart(PermFlowShop self):
         if self.constructive == 'neh':
             return self.neh_initialization()
         elif self.constructive == 'multistart':
@@ -442,11 +442,11 @@ cdef class PermFlowShop(Problem):
     cpdef bool is_feasible(PermFlowShop self):
         return self.perm.is_feasible()
 
-    cpdef list[PermFlowShop] branch(PermFlowShop self):
+    cpdef list[Problem] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
         cdef:
             int j, J
-            list[PermFlowShop] out
+            list[Problem] out
 
         J = self.perm.free_jobs.size()
         out = [None] * J
@@ -465,7 +465,7 @@ cdef class PermFlowShop(Problem):
         self.perm.update_params()
         return <double>self.perm.lower_bound_1m()
 
-    cpdef PermFlowShop primal_heuristic(PermFlowShop self):
+    cpdef Problem primal_heuristic(PermFlowShop self):
         return self.local_search()
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j):
