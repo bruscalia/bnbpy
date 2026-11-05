@@ -1,4 +1,8 @@
 include README.md
+include LICENSE
 include pyproject.toml
 include setup.cfg
-recursive-include src *
+include setup.py
+# Sources only: generated Cython files, builds and notes are excluded
+recursive-include src *.py *.pyx *.pxd *.pyi *.hpp py.typed
+recursive-include src/bnbprob/pafssp/cpp *.cpp
