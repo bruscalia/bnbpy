@@ -105,4 +105,11 @@ TEST_CASE("IGA - destruction", "[iga]")
         REQUIRE(result.free_jobs.size() == 2);
         REQUIRE(result.sequence.size() == jobs.size() - 2);
     }
+
+    SECTION("The generator is advanced by each destruction")
+    {
+        std::mt19937 before = generator;
+        iga_destruction(jobs, 2, generator);
+        REQUIRE_FALSE(generator == before);
+    }
 }

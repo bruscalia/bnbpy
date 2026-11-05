@@ -16,7 +16,7 @@
 #include "sigma.hpp"
 
 IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
-                               std::mt19937 generator)
+                               std::mt19937& generator)
 {
     IGADestruction result;
     std::vector<JobPtr> alloc_jobs = jobs_;

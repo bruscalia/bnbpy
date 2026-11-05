@@ -1,5 +1,5 @@
 {
-  "_source": "Captured from the pre-refactor implementation (PermFlowShop.from_p + compute_starts, commit 04d0003). Do not regenerate: these values are the regression reference. Updated 2026-11-05 for release 0.2.0: PermFlowShop1M no longer computes the two-machine bound (LB5), which changed only its explored-node counts (*|bnb|PermFlowShop1M|* keys).",
+  "_source": "Captured from the pre-refactor implementation (PermFlowShop.from_p + compute_starts, commit 04d0003). Do not regenerate: these values are the regression reference. Updated 2026-11-05 for release 0.2.0: PermFlowShop1M no longer computes the two-machine bound (LB5), which changed only its explored-node counts (*|bnb|PermFlowShop1M|* keys). Updated for release 0.2.1: the IGA destruction step advances the random generator between iterations, which changed SEQ|iga_heur.",
   "instances": {
     "SEQ": {"p":[[8,12,11,47,22],[95,86,40,33,78],[28,78,5,75,88],[21,56,82,51,93],[66,48,70,57,65],[35,5,4,47,60],[41,49,55,68,22],[72,23,31,30,4],[23,42,23,18,66],[66,47,66,87,72],[24,58,54,95,68],[98,47,76,46,47]],"edges":[[0,1],[1,2],[2,3],[3,4]]},
     "ASM": {"p":[[31,76,70,17,48,78],[61,81,75,9,78,2],[61,34,71,30,25,92],[61,70,71,61,51,82],[20,30,82,20,67,50],[95,2,86,100,9,21],[98,76,6,39,100,4],[35,61,77,93,50,92],[55,51,94,74,57,18],[47,13,5,18,64,28],[34,87,56,100,81,39],[54,65,50,74,45,69]],"edges":[[0,1],[2,3],[3,4],[4,5],[1,5]]},
@@ -108,7 +108,7 @@
     "SEQ|bounds|root": [763,789,763,789],
     "SEQ|cutoff|+0": {"cost":807.0,"explored":282,"len_seq":0},
     "SEQ|cutoff|+1": {"cost":807.0,"explored":284,"len_seq":12},
-    "SEQ|iga_heur": {"cost":813,"order":[0,8,5,3,2,10,4,9,1,6,11,7]},
+    "SEQ|iga_heur": {"cost":807,"order":[0,8,5,2,4,3,1,10,11,9,6,7]},
     "SEQ|intensify": {"cost":813,"order":[0,8,5,3,2,10,4,9,1,6,11,7]},
     "SEQ|local_search": {"cost":813,"order":[0,8,5,3,2,9,4,6,1,10,11,7]},
     "SEQ|partial_starts": [[1,[0,95,181,221,254]],[10,[95,181,239,293,388]],[11,[119,239,293,388,456]],[2,[217,286,369,434,509]],[3,[245,364,420,509,597]],[4,[266,420,502,572,690]],[5,[332,468,572,629,755]],[6,[367,473,576,676,815]],[7,[408,522,631,744,837]],[8,[480,545,662,774,841]],[9,[503,587,685,792,907]],[0,[569,634,751,879,979]]],
