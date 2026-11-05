@@ -9,7 +9,7 @@
 project = 'bnbpy'
 copyright = '2026, Bruno Scalia C. F. Leite'
 author = 'Bruno Scalia C. F. Leite'
-release = '0.2.0'
+release = '0.2.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
