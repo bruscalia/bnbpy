@@ -294,8 +294,8 @@ class TestBranchAndBoundSolve:
         """Test that gap is calculated correctly."""
         problem = _WarmstartProblem(lb_value=SIMPLE_LB, feasible=False)
         bnb = BranchAndBound(problem)
-        _ = bnb.solve(maxiter=0)
-        # Optimal solution should have gap = 0
+        # One iteration: the root bound is computed and it is branched
+        _ = bnb.solve(maxiter=ONE)
         assert bnb.gap == (WARMSTART_LB - SIMPLE_LB) / WARMSTART_LB
 
 
@@ -324,7 +324,9 @@ class TestBranchAndBoundCallbacks:
         problem = UnboundedProblem()
         bnb = _PrePostEvalBnB(problem, eval_node=eval_node)
         result = bnb.solve(maxiter=BRANCH_UNBOUNDED)
-        assert result.solution.status == OptStatus.INFEASIBLE
+        # Stopped by maxiter without a feasible solution:
+        # infeasibility is not proven, only a relaxation is known
+        assert result.solution.status == OptStatus.RELAXATION
         assert bnb.pre_eval_count == expected
         assert bnb.post_eval_count == expected
 
@@ -459,6 +461,8 @@ class TestBranchAndBoundPrimalAndBound:
         assert bnb_upgrade.explored <= bnb_base.explored
 
 
+@pytest.mark.core
+@pytest.mark.search
 class TestGenericBehavior:
     @staticmethod
     def test_raises_type_error_on_wrong_generic() -> None:

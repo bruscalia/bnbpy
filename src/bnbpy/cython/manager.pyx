@@ -23,9 +23,12 @@ cdef class BaseNodeManager:
 
     All other public methods (``enqueue``, ``dequeue``, ``size``,
     ``not_empty``, ``filter_by_lb``, ``clear``, ``get_lower_bound``,
-    ``memorize``, ``forget``, ``filter_memory_lb``, ``clear_memory``,
-    ``enqueue_all``) implement the template logic and should not be
-    overridden.
+    ``enqueue_all``) implement the template logic, together with the
+    internal (C-level) bound memory, and should not be overridden.
+
+    Nodes removed by ``_filter_by_lb`` should be marked as fathomed
+    (``node.fathom()``), not cleaned up, so that saved search trees
+    (``save_tree=True``) remain consistent.
     """
 
     def __cinit__(self, *args, **kwargs):
@@ -68,7 +71,8 @@ cdef class BaseNodeManager:
             vector[double] keys_to_remove
             double lb_key
             double min_key
-            int i, n
+            size_t i
+            int n
             set[Node] s
 
         min_key = INFINITY
@@ -138,9 +142,10 @@ cdef class BaseNodeManager:
     cpdef void _filter_by_lb(self, double max_lb):
         """Internal hook — physically remove nodes with lb >= *max_lb*.
 
-        Default is a no-op.  Override in subclasses for correct pruning.
+        Must be implemented by subclasses, as the node count is
+        recomputed from the bound memory after filtering.
         """
-        pass
+        raise NotImplementedError("Must implement _filter_by_lb()")
 
     cpdef void _clear(self):
         """Internal hook — empty the underlying data structure.
@@ -226,10 +231,6 @@ cdef class BaseNodeManager:
         max_lb : float
             The maximum lower bound value (exclusive upper bound).
         """
-        cdef:
-            int n
-            set[Node] s
-
         self._filter_by_lb(max_lb)
         self.filter_memory_lb(max_lb)
 
@@ -268,7 +269,7 @@ cdef class LifoManager(BaseNodeManager):
                 self.stack[j] = node
                 j += 1
             else:
-                node.cleanup()
+                node.fathom()
         self.stack = self.stack[:j]
 
 

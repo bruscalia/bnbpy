@@ -13,7 +13,6 @@ from bnbpy.cython.solution cimport Solution
 
 
 cdef:
-    double LARGE_POS = INFINITY
     double LOW_NEG = -INFINITY
 
 
@@ -25,7 +24,8 @@ cdef class Node:
         self, Problem problem, Node parent=None
     ) -> None:
         """Instantiates a new `Node` object based on a (sub)problem.
-        The node is evaluated in terms of lower bound as it is initialized.
+        The node inherits the lower bound of its parent (or of the problem
+        solution, if root); it is only evaluated by `compute_bound`.
 
         Parameters
         ----------
@@ -50,6 +50,8 @@ cdef class Node:
         self._sort_index = self._counter.next()
 
     cpdef void cleanup(self):
+        """Releases the problem and the links to the parent and children
+        (called when the node is no longer needed in the search)."""
         cdef:
             Node child
 
@@ -88,8 +90,9 @@ cdef class Node:
         return self._sort_index
 
     cpdef void compute_bound(self):
-        """Computes the lower bound of the problem and sets it to
-        problem attribute `lb`, which is referenced as a `Node` property.
+        """Computes the lower bound of the problem and updates the node
+        attribute `lb` as the maximum between its current value and the
+        problem lower bound.
         """
         self.problem.compute_bound()
         self.lb = max(self.lb, self.problem.get_lb())
@@ -117,15 +120,17 @@ cdef class Node:
         self.lb = self.problem.get_lb()
 
     cpdef Node copy(self, bool deep=True):
+        """Copies the node. A shallow copy shares the problem, parent
+        and level with this node (with a new index); a deep copy
+        copies the whole node."""
         if deep:
             return self.deep_copy()
         return self.shallow_copy()
 
     cpdef list[Node] branch(self):
         """Calls `problem` `branch()` method to create derived sub-problems.
-        Each subproblem is used to instantiate a child node.
-        Child nodes are evaluated in terms of lower bound as they are
-        initialized.
+        Each subproblem is used to instantiate a child node, which inherits
+        the lower bound of this node (it is not evaluated here).
 
         Returns
         -------
@@ -197,8 +202,9 @@ cdef class Node:
             self.lb = new_lb
 
     cpdef void upgrade_bound(self):
-        """Calls `problem` `upgrade_bound()` method to compute a stronger
-        lower bound, if possible, and updates node's lower bound accordingly.
+        """Calls `problem` `stronger_bound()` and, if the result is greater
+        than the current node lower bound, sets it via
+        `problem.upgrade_bound()` and updates the node lower bound.
         """
         self.c_upgrade_bound()
 
@@ -218,13 +224,14 @@ cdef class Node:
     cdef Node shallow_copy(self):
         cdef:
             Node other
+        # Same problem, parent and level; only the sort index is new
         other = Node.__new__(Node)
         other.problem = self.problem
-        other.parent = self
+        other.parent = self.parent
         other.children = None
         other._counter = self._counter
         other.lb = self.lb
-        other.level = self.level + 1
+        other.level = self.level
         other._sort_index = other._counter.next()
         return other
 

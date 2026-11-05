@@ -110,10 +110,10 @@ class TestKnapsack:
         [
             (OptStatus.OPTIMAL, 'in', 250, 125),
             (OptStatus.FEASIBLE, 'in', 11, 11),
-            (OptStatus.RELAXATION, 'in', 0, 1),
+            (OptStatus.RELAXATION, 'in', 0, 0),
             (OptStatus.OPTIMAL, 'out', 250, 71),
             (OptStatus.FEASIBLE, 'out', 11, 11),
-            (OptStatus.RELAXATION, 'out', 0, 1),
+            (OptStatus.RELAXATION, 'out', 0, 0),
         ],
     )
     def test_status_ks(  # noqa: PLR6301
@@ -144,3 +144,86 @@ class TestKnapsack:
         assert np.allclose(x, self.x_sol, atol=1e-4), (
             f'Wrong x for ks test {x}, expected {self.x_sol}'
         )
+
+
+@pytest.mark.milp
+@pytest.mark.milpnaive
+class TestMILPEdgeCases:
+    c = np.array([-5.0, -4.0])
+    A_ub = np.array([[2.0, 3.0], [2.0, 1.0]])
+    b_ub = np.array([12.0, 6.0])
+    cost = -18.0
+
+    @pytest.mark.parametrize('eval_node', ['in', 'out', 'both'])
+    @pytest.mark.parametrize(
+        'bnb_class', [BestFirstBnB, BreadthFirstBnB, DepthFirstBnB]
+    )
+    def test_bound_matches_cost(
+        self,
+        bnb_class: type[BranchAndBound[MILP]],
+        eval_node: Literal['in', 'out', 'both'],
+    ) -> None:
+        """At optimality the reported lower bound equals the cost."""
+        milp = MILP(self.c, A_ub=self.A_ub, b_ub=self.b_ub)
+        res = bnb_class(milp, eval_node=eval_node).solve()
+        assert res.status == OptStatus.OPTIMAL
+        assert res.cost == self.cost
+        assert res.lb == self.cost
+
+    @pytest.mark.parametrize('branching', ['min', 'max', 'random', 'mixed'])
+    def test_branching_rules(self, branching: str) -> None:
+        milp = MILP(
+            self.c,
+            A_ub=self.A_ub,
+            b_ub=self.b_ub,
+            branching=branching,
+            seed=3,
+        )
+        res = BranchAndBound(milp).solve()
+        assert res.cost == self.cost
+
+    @staticmethod
+    def test_invalid_branching() -> None:
+        with pytest.raises(ValueError, match='branching'):
+            MILP(np.array([1.0]), branching='other')
+
+    @staticmethod
+    @pytest.mark.parametrize('eval_node', ['in', 'out', 'both'])
+    def test_infeasible(eval_node: Literal['in', 'out', 'both']) -> None:
+        # x1 + x2 <= 1 and x1 + x2 >= 2
+        milp = MILP(
+            np.array([1.0, 1.0]),
+            A_ub=np.array([[1.0, 1.0], [-1.0, -1.0]]),
+            b_ub=np.array([1.0, -2.0]),
+        )
+        res = BranchAndBound(milp, eval_node=eval_node).solve()
+        assert res.status == OptStatus.INFEASIBLE
+        assert res.cost == float('inf')
+
+    @staticmethod
+    def test_integer_infeasible() -> None:
+        """The LP relaxation is feasible, but no integer point is."""
+        # 2 x1 = 1
+        milp = MILP(
+            np.array([1.0]),
+            A_eq=np.array([[2.0]]),
+            b_eq=np.array([1.0]),
+        )
+        res = BranchAndBound(milp).solve()
+        assert res.status == OptStatus.INFEASIBLE
+
+    @staticmethod
+    def test_equality_constraints() -> None:
+        # min x1 + 2 x2  s.t.  x1 + x2 = 3.5 (x1 continuous), x2 >= 1.2
+        milp = MILP(
+            np.array([1.0, 2.0]),
+            A_eq=np.array([[1.0, 1.0]]),
+            b_eq=np.array([3.5]),
+            bounds=[(0, None), (1.2, None)],
+            integrality=np.array([0.0, 1.0]),
+        )
+        res = BranchAndBound(milp).solve()
+        x = res.problem.results.x
+        assert x is not None
+        assert np.allclose(x, [1.5, 2.0])
+        assert res.cost == pytest.approx(5.5)

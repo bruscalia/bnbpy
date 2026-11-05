@@ -1,7 +1,6 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from libcpp cimport bool
 from libcpp.vector cimport vector
 
 from bnbpy.cython.manager cimport BaseNodeManager
@@ -18,7 +17,7 @@ cdef class PriorityManagerTemplate(BaseNodeManager):
     Subclasses must override :meth:`make_priority`.
     """
 
-    def __cinit__(self):
+    def __cinit__(self, *args, **kwargs):
         self.pq = NodePriQueueWrapper()
 
     cpdef void _enqueue(self, Node node):
@@ -34,6 +33,8 @@ cdef class PriorityManagerTemplate(BaseNodeManager):
         self.pq.clear()
 
     cpdef vector[double] make_priority(self, Node node):
+        """Return the priority vector of *node* (smaller values are
+        dequeued first). Must be implemented by subclasses."""
         raise NotImplementedError(
             "Subclasses must implement make_priority()"
         )
@@ -42,6 +43,7 @@ cdef class PriorityManagerTemplate(BaseNodeManager):
 cdef class BestFirstSearch(PriorityManagerTemplate):
     """Best-first variant: priority ``(lb, -level, -index)``."""
     cpdef vector[double] make_priority(self, Node node):
+        """Best-first priority ``(lb, -level, -index)``."""
         cdef:
             vector[double] pri = vector[double](3)
         pri[0] = node.lb
@@ -53,6 +55,7 @@ cdef class BestFirstSearch(PriorityManagerTemplate):
 cdef class DepthFirstSearch(PriorityManagerTemplate):
     """Depth-first variant: priority ``(-level, lb, -index)``."""
     cpdef vector[double] make_priority(self, Node node):
+        """Depth-first priority ``(-level, lb, -index)``."""
         cdef:
             vector[double] pri = vector[double](3)
         pri[0] = -node.level

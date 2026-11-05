@@ -1,21 +1,12 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from libc.math cimport INFINITY
 from libcpp cimport bool
-from libcpp.string cimport string
-
-from typing import Optional
 
 from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
-
-
-cdef:
-    double LARGE_POS = INFINITY
-    double LOW_NEG = -INFINITY
 
 
 cdef class SearchResults:
@@ -36,7 +27,7 @@ cdef class BranchAndBound:
         double gap
         BaseNodeManager manager
         unsigned long long explored
-        string eval_node
+        str eval_node
         bool eval_in
         bool eval_out
         bool save_tree
@@ -45,6 +36,14 @@ cdef class BranchAndBound:
 
     cdef:
         object logger
+        # Last lower bound reported in the log ('LB update' rows).
+        # Logging only: it never affects the gap or termination. It is
+        # stored as a value because the previous bound node cannot be
+        # used for the comparison: its lb is raised in place when it is
+        # evaluated after being dequeued (eval_node='out')
+        double _last_lb
+        # Search tree exhausted without any feasible solution
+        bool _infeasible
 
     cdef double get_ub(BranchAndBound self)
 

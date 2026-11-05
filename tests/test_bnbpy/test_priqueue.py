@@ -60,6 +60,20 @@ class TestPriorityManagerTemplate:
         assert empty_queue.not_empty() is False
 
     @staticmethod
+    def test_subclass_with_constructor_arguments() -> None:
+        """Subclasses may define constructors with arguments."""
+
+        class WeightedSearch(BestFirstSearch[MyProblem]):
+            def __init__(self, weight: float, *, tie: int = 0) -> None:
+                self.weight = weight
+                self.tie = tie
+
+        queue = WeightedSearch(2.0, tie=1)
+        assert queue.weight == 2.0  # noqa: PLR2004
+        assert queue.tie == 1
+        assert queue.not_empty() is False
+
+    @staticmethod
     def test_not_empty_after_enqueue(
         empty_queue: DepthFirstSearch[MyProblem], node_low: Node[MyProblem]
     ) -> None:

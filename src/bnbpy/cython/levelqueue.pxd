@@ -86,3 +86,5 @@ cdef class DfsPriority(LevelManagerInterface):
     """
 
     cpdef LevelQueue new_level(self, int level)
+
+    cpdef void _clear(self)

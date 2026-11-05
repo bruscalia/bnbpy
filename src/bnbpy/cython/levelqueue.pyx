@@ -45,22 +45,20 @@ cdef class LevelQueue:
             self.pq.clear()
 
     cpdef int size(self):
+        """Return the number of nodes at this level."""
         return <int>self.pq.size()
 
     cpdef void push(self, Node node):
+        """Enqueue *node* at this level."""
         self.pq.push(node, self.make_priority(node))
-        # Possibly reactivating this level in forward checks
-        # if self.pq.size() == 1:
-        #     self.prev.next = self
 
     cpdef Node pop(self):
-        # Bypass in forward direction
-        # to avoid O(n) pointer updates when popping the last node
-        # if self.pq.size() == 1:
-        #     self.prev.next = self.next
+        """Dequeue the node with the smallest priority key at this level,
+        or ``None`` if the level is empty."""
         return self.pq.pop()
 
     cpdef void filter(self, double max_lb):
+        """Discard nodes whose ``lb >= max_lb`` (marked as fathomed)."""
         self.pq.filter(max_lb)
 
     cpdef vector[double] make_priority(self, Node node):
@@ -111,6 +109,10 @@ cdef class LevelManagerInterface(BaseNodeManager):
         self.add_level()
 
     cpdef LevelQueue new_level(self, int level):
+        """Create a new :class:`LevelQueue` for the given tree depth.
+
+        Must be overridden by subclasses.
+        """
         raise NotImplementedError("Subclasses must implement new_level()")
 
     cdef void add_level(self):
@@ -262,3 +264,8 @@ cdef class DfsPriority(LevelManagerInterface):
 
     cpdef LevelQueue new_level(self, int level):
         return LevelQueue(level)
+
+    cpdef void _clear(self):
+        LevelManagerInterface._clear(self)
+        # Fallback (deepest level first) is permanent
+        self.use_fallback = True

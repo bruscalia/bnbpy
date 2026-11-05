@@ -2,6 +2,7 @@ from typing import Generic, TypeVar
 
 from bnbpy.cython.manager import BaseNodeManager
 from bnbpy.cython.node import Node
+from bnbpy.cython.nodequeue import NodePriQueueWrapper
 from bnbpy.cython.problem import Problem
 
 P = TypeVar('P', bound=Problem)
@@ -9,14 +10,23 @@ P = TypeVar('P', bound=Problem)
 class LevelQueue(Generic[P]):
     """A single level in a level-based node manager.
 
-    Internally holds a raw C++ min-heap (``NodePriQueue``) and maintains
-    doubly-linked pointers to neighbouring levels.  Nodes are ordered by the
-    key produced by :meth:`make_priority`.
+    Internally holds a :class:`NodePriQueueWrapper` (C++ min-heap) and
+    maintains doubly-linked pointers to neighbouring levels.  Nodes are
+    ordered by the key produced by :meth:`make_priority`.
     """
 
-    level: int
     next: 'LevelQueue[P]'
     prev: 'LevelQueue[P]'
+
+    @property
+    def level(self) -> int:
+        """Tree depth of this level (read-only)"""
+        ...
+
+    @property
+    def pq(self) -> NodePriQueueWrapper:
+        """Underlying priority queue (read-only)"""
+        ...
 
     def __init__(self, level: int) -> None: ...
     def size(self) -> int:
@@ -63,7 +73,7 @@ class LevelQueue(Generic[P]):
         ...
 
     def filter(self, max_lb: float) -> None:
-        """Discard nodes whose ``lb >= max_lb``."""
+        """Discard nodes whose ``lb >= max_lb`` (marked as fathomed)."""
         ...
 
 class LevelManagerInterface(BaseNodeManager[P]):

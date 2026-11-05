@@ -5,7 +5,6 @@ from bnbpy.cython.node import Node
 from bnbpy.cython.problem import Problem
 from bnbpy.cython.solution import Solution
 from bnbpy.cython.status import OptStatus
-from bnbpy.logger import SearchLogger
 
 P = TypeVar('P', bound=Problem)
 
@@ -66,25 +65,30 @@ class BranchAndBound(Generic[P]):
 
     *   `pre_eval_callback`: Before node bound evaluation.
     *   `post_eval_callback`: After node bound evaluation.
-    *   `enqueue_callback`: After node is enqueued.
-    *   `dequeue_callback`: After node is dequeued.
+    *   `enqueue_callback`: Before a node is enqueued
+        (after its evaluation, if `eval_node` includes 'in').
+    *   `dequeue_callback`: After a node is dequeued
+        (and evaluated, if `eval_node` includes 'out').
     *   `solution_callback`: When a new feasible
         solution is obtained (after being set).
 
     **Core methods:**
 
-    *   `enqueue`: Include new node into manager.
-    *   `dequeue`: Chooses the next evaluated
-        node and computes its lower bound.
     *   `branch`: From a given node, create children nodes and enqueue them.
+    *   `prune`: Discard a node that cannot improve the incumbent.
+    *   `set_solution`: Set a node as the new incumbent.
+    *   `primal_heuristic`: Try a heuristic solution from a node
+        (only if called from a callback).
+    *   `upgrade_bound`: Try a stronger bound for a node
+        (only if called from a callback).
 
     For a customization of enqueueing and dequeueing strategies,
     pass a custom ``manager`` (subclass of `BaseNodeManager`) at construction
-    time, or override ``enqueue`` / ``dequeue`` in a subclass.
+    time, or replace it with :meth:`set_manager`.
     """
 
     problem: P
-    root: Node[P]
+    root: Node[P] | None
     gap: float
     manager: BaseNodeManager[P]
     rtol: float
@@ -96,7 +100,6 @@ class BranchAndBound(Generic[P]):
     save_tree: bool
     incumbent: Node[P] | None
     bound_node: Node[P] | None
-    __logger: SearchLogger
 
     def __init__(
         self,
@@ -117,7 +120,7 @@ class BranchAndBound(Generic[P]):
             Problem instance to solve
 
         eval_node : Literal['in', 'out', 'both'], optional
-            Node[P] bound evaluation strategy, by default 'out'.
+            Node bound evaluation strategy, by default 'out'.
 
             *   'in': call `Problem.calc_bound` after
                 parent `branch`, before inserting child nodes
@@ -144,11 +147,16 @@ class BranchAndBound(Generic[P]):
             ``None`` is given.  Pass any ``BaseNodeManager`` subclass
             to customise the traversal order, or use the
             :meth:`build_manager` factory for common string aliases.
+
+        Raises
+        ------
+        ValueError
+            If ``eval_node`` is not one of 'in', 'out' or 'both'
         """
         ...
 
     @staticmethod
-    def build_manager(strategy: str) -> BaseNodeManager[Any]:
+    def build_manager(strategy: str, **options: Any) -> BaseNodeManager[Any]:
         """Factory method that returns a :class:`BaseNodeManager` for the
         given traversal strategy name.
 
@@ -216,7 +224,8 @@ class BranchAndBound(Generic[P]):
         Parameters
         ----------
         maxiter : Optional[int], optional
-            Maximum number of additional iterations, by default None
+            Maximum number of additional iterations (explored nodes),
+            by default None. With ``maxiter=0`` no node is explored.
 
         timelimit : Optional[Union[int, float]], optional
             Time limit in seconds, by default None
@@ -232,7 +241,16 @@ class BranchAndBound(Generic[P]):
         Returns
         -------
         SearchResults
-            Search results containing best solution and problem instance
+            Search results containing best solution and problem instance.
+            If the search tree is exhausted without any feasible solution,
+            the status is ``INFEASIBLE`` (cost and lower bound are infinite).
+            If it stops (limits) without any feasible solution, the status
+            is ``RELAXATION`` with the current lower bound.
+
+        Raises
+        ------
+        ValueError
+            If ``maxiter`` is negative
         """
         ...
 
@@ -249,8 +267,8 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node[P]
-            Node[P] being evaluated
+        node : Node
+            Node being evaluated
         """
         ...
 
@@ -264,8 +282,8 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node[P]
-            Node[P] being evaluated
+        node : Node
+            Node being evaluated
         """
         ...
 
@@ -279,18 +297,20 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node[P]
-            Node[P] being evaluated
+        node : Node
+            Node being evaluated
         """
         ...
 
     def prune(self, node: Node[P]) -> None:
-        """Prune node (by default is `Node.cleanup()` is called).
+        """Prune node. By default `Node.cleanup()` is called, unless
+        `save_tree` is set or the node is the root, in which case
+        the node is only marked as fathomed (status ``FATHOM``).
 
         Parameters
         ----------
-        node : Node[P]
-            Node[P] to be pruned
+        node : Node
+            Node to be pruned
         """
         ...
 
@@ -327,8 +347,13 @@ class BranchAndBound(Generic[P]):
         ...
 
     def solution_callback(self, node: Node[P]) -> None:
-        """Abstraction for callback when a candidate
-        feasible solution is verified (before being set)
+        """Abstraction for callback when a new feasible solution
+        is found (after being set as incumbent).
+
+        Parameters
+        ----------
+        node : Node
+            New incumbent node.
         """
         ...
 
@@ -338,7 +363,7 @@ class BranchAndBound(Generic[P]):
 
         Parameters
         ----------
-        node : Node[P]
+        node : Node
             New solution node
         """
         ...
@@ -371,7 +396,12 @@ class DepthFirstBnB(BranchAndBound[P]):
     manager.
     """
 
-    ...
+    def __init__(
+        self,
+        problem: P,
+        eval_node: Literal['in', 'out', 'both'] = 'out',
+        save_tree: bool = False,
+    ) -> None: ...
 
 class BreadthFirstBnB(BranchAndBound[P]):
     """Breadth-first Branch & Bound algorithm.
@@ -437,7 +467,14 @@ def configure_logfile(
     filename : str
         Name of target file
 
+    only_messages : bool, optional
+        Whether to log only time stamp and message (no logger name
+        or level), by default True
+
     mode : str, optional
         FileHandler writing mode, by default 'a' (append)
+
+    **kwargs
+        Additional keyword arguments for `logging.FileHandler`
     """
     ...

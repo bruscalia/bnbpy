@@ -40,8 +40,8 @@ cdef class Node:
     cpdef void set_solution(self, Solution solution)
 
     cdef inline void fathom(self):
-        """Sets solution status of node as 'FATHOMED'"""
-        self.solution.fathom()
+        """Sets solution status of node as 'FATHOM'"""
+        self.problem.solution.fathom()
 
     cpdef Node copy(self, bool deep=*)
 
