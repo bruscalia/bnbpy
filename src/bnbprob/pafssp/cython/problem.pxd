@@ -3,7 +3,6 @@
 
 from libcpp cimport bool
 from libcpp.string cimport string
-from libcpp.vector cimport vector
 
 from bnbprob.pafssp.cpp.environ cimport InstanceData, Permutation
 from bnbprob.pafssp.cython.instance cimport FlowShopInstanceData
@@ -37,9 +36,6 @@ cdef class PermFlowShop(Problem):
                 ' build it with PermFlowShop.from_p or PermFlowShop(data)'
             )
         return self.data.ptr()
-
-    cdef inline Permutation get_perm(PermFlowShop self):
-        return self.perm
 
     cdef inline int get_n(PermFlowShop self):
         return self.perm.n

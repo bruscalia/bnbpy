@@ -9,7 +9,7 @@ from bnbprob.pafssp.cython.problem cimport BenchPermFlowShop, PermFlowShop
 from bnbpy.cython.levelqueue cimport CyclicBestSearch, LevelQueue
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.primanager cimport PriorityManagerTemplate
-from bnbpy.cython.search cimport BranchAndBound, SearchResults
+from bnbpy.cython.search cimport BranchAndBound
 from bnbpy.cython.solution cimport Solution
 
 cdef:
@@ -28,7 +28,6 @@ cdef class DfsFlowShop(PriorityManagerTemplate):
 
     cpdef vector[double] make_priority(self, Node node):
         cdef:
-            int idle_time
             PermFlowShop problem
             vector[double] pri = vector[double](3)
 
@@ -47,7 +46,6 @@ cdef class DfsLevelQueue(LevelQueue):
 
     cpdef vector[double] make_priority(self, Node node):
         cdef:
-            int idle_time
             PermFlowShop problem
             vector[double] pri = vector[double](2)
 
@@ -59,7 +57,7 @@ cdef class DfsLevelQueue(LevelQueue):
 
 cdef class CycleBestFlowShop(CyclicBestSearch):
     """Cyclic best-first search node manager specialised for PermFlowShop,
-    using :class:`DfsFlowShop` as the per-level priority queue.
+    using :class:`DfsLevelQueue` as the per-level priority queue.
     """
 
     def __init__(
@@ -85,9 +83,8 @@ cdef class LazyBnB(BranchAndBound):
             problem,
             EVAL_NODE,
             save_tree,
-            None,
+            DfsFlowShop(),
         )
-        self.manager = DfsFlowShop()
         self.delay_lb5 = delay_lb5
         if delay_lb5:
             self.min_lb5_level = (problem.get_n() // 3) + 1
@@ -202,7 +199,6 @@ cdef class CallbackBnB(LazyBnB):
             save_tree,
             delay_lb5,
         )
-        self.manager = DfsFlowShop()
         self.base_heur_factor = heur_factor
         self.heur_factor = heur_factor
         self.heur_calls = 0

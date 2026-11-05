@@ -1,3 +1,4 @@
+import dataclasses
 import gc
 import json
 import os
@@ -8,6 +9,7 @@ from typing import Any, Callable, Optional, Type
 
 import pytest
 
+from bnbprob.pafssp import PyJob, PySigma
 from bnbprob.pafssp.cython.bnb import CallbackBnB, CutoffBnB, LazyBnB
 from bnbprob.pafssp.cython.instance import FlowShopInstanceData
 from bnbprob.pafssp.cython.problem import (
@@ -154,7 +156,6 @@ class TestPFSSP:
         constructive: str,
     ) -> None:
         problem = self.start_problem(prob_cls, constructive=constructive)
-        print(problem)
         bnb = bnb_cls(problem, eval_node=eval_node)
         bnb.solve()
         cost_sol = bnb.solution.cost
@@ -680,3 +681,61 @@ class TestPFSSPRegression:
             'len_seq': len(res.problem.sequence),
         }
         assert result == EXPECTED[f'{name}|cutoff|+{delta}']
+
+
+@pytest.mark.pafssp
+class TestPyJob:
+    @staticmethod
+    def test_exported_fields() -> None:
+        name = 'ASM'
+        p = INSTANCES[name]['p']
+        m = len(p[0])
+        sol = make_root(name).warmstart()
+        for job in sol.sequence:
+            assert isinstance(job, PyJob)
+            assert job.p == p[job.j]
+            assert len(job.r) == m
+            assert len(job.q) == m
+            assert len(job.lat) == m
+            assert all(len(row) == m for row in job.lat)
+            assert len(job.s) == m
+            assert job.T == sum(job.p)
+            assert repr(job) == f'Job {job.j}'
+
+    @staticmethod
+    def test_t_and_slope() -> None:
+        # Palmer slope with m = 3 machines: sum((k - 2) * p_k), k = 1..3
+        job = PyJob(j=0, p=[1, 2, 3], r=[0, 1, 3], q=[5, 3, 0], lat=[])
+        assert job.T == 6  # noqa: PLR2004
+        assert job.slope == (1 - 2) * 1 + (2 - 2) * 2 + (3 - 2) * 3
+        even = PyJob(j=1, p=[4, 1, 1, 2], r=[], q=[], lat=[])
+        # Same integer formula as the C++ Job::get_slope:
+        # weights k - (m + 2) // 2 = k - 3, for k = 1..4
+        assert even.slope == (-2) * 4 + (-1) * 1 + 0 * 1 + 1 * 2
+        assert even.s == []
+
+    @staticmethod
+    def test_frozen() -> None:
+        job = make_root('SEQ').sequence[0]
+        with pytest.raises(dataclasses.FrozenInstanceError):
+            job.j = 3  # type: ignore[misc]
+
+    @staticmethod
+    def test_snapshots_outlive_problem() -> None:
+        root = make_root('DPM')
+        data_ref = weakref.ref(root.data)  # type: ignore[arg-type]
+        child = root.branch()[0].branch()[1]
+        seq = child.sequence
+        free = child.free_jobs
+        sigma1, sigma2 = child.sigma1, child.sigma2
+        expected = [(job.j, list(job.s)) for job in seq]
+        del root, child
+        gc.collect()
+        assert data_ref() is None
+        assert [(job.j, job.s) for job in seq] == expected
+        assert all(isinstance(job, PyJob) for job in free)
+        assert isinstance(sigma1, PySigma)
+        assert len(sigma1.jobs) == 1
+        assert len(sigma2.jobs) == 1
+        assert len(sigma1.C) == sigma1.m
+        assert repr(sigma1) == f'Sigma(m={sigma1.m}, jobs=1)'

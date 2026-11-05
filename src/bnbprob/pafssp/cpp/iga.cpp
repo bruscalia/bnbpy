@@ -1,6 +1,7 @@
 #include "iga.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <memory>
 #include <random>
 #include <vector>
@@ -37,23 +38,6 @@ IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
     result.free_jobs = std::move(free_jobs);
 
     return result;
-}
-
-Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
-                const int& max_iter)
-{
-    // Initialize variables for IGA
-    int d = jobs_.size() / 10;  // Destruction size
-    return iga(jobs_, inst, max_iter, d, 0);
-}
-
-Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
-                const int& max_iter, const int& seed)
-{
-    // Initialize variables for IGA
-    int d = jobs_.size() / 10;  // Destruction size
-
-    return iga(jobs_, inst, max_iter, d, seed);
 }
 
 Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,

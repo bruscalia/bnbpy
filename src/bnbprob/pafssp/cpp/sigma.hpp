@@ -10,8 +10,7 @@
 // Partial sequence of jobs with completion times on each machine.
 //
 // `mach_graph` and the pointers in `jobs` are borrowed: they point into an
-// `InstanceData` (or into a standalone graph, for `PySigma.empty`), which
-// must outlive this Sigma.
+// `InstanceData`, which must outlive this Sigma.
 class Sigma
 {
 public:

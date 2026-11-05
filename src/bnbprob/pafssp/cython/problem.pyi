@@ -1,13 +1,9 @@
-import logging
 from typing import List, Literal, Optional, Tuple, TypeVar
 
 from bnbprob.pafssp.cython.instance import FlowShopInstanceData
-from bnbprob.pafssp.cython.pyjob import PyJob
-from bnbprob.pafssp.cython.pysigma import PySigma
+from bnbprob.pafssp.jobs import PyJob, PySigma
 from bnbprob.pafssp.machinegraph import MachineGraph
 from bnbpy.cython.problem import Problem
-
-log = logging.getLogger(__name__)
 
 Constructive = Literal['neh', 'quick', 'multistart', 'iga']
 
@@ -94,6 +90,12 @@ class PermFlowShop(Problem):
         """
         ...
 
+    constructive: bytes
+    """Constructive heuristic used by `warmstart` (encoded string)"""
+    simple_upgraded: bool
+    """Whether `stronger_bound` already applied the single-machine
+    upgrade to this node"""
+
     @property
     def lb(self) -> float: ...
     @property
@@ -108,6 +110,8 @@ class PermFlowShop(Problem):
 
         Start times are computed on export. For partial permutations
         they follow ``sigma1 + free_jobs (current order) + sigma2``.
+        Jobs are plain-Python snapshots that remain valid after this
+        problem and its instance data are garbage-collected.
         """
         ...
 
@@ -118,12 +122,12 @@ class PermFlowShop(Problem):
 
     @property
     def sigma1(self) -> PySigma:
-        """Get the current sigma1 (partial permutation of jobs)"""
+        """Snapshot of sigma1 (partial sequence fixed at the beginning)"""
         ...
 
     @property
     def sigma2(self) -> PySigma:
-        """Get the current sigma2 (partial permutation of jobs)"""
+        """Snapshot of sigma2 (partial sequence fixed at the end)"""
         ...
 
     def get_mach_graph(self) -> MachineGraph:
@@ -452,7 +456,18 @@ class PermFlowShop(Problem):
         ...
 
     def branch(self) -> List['PermFlowShop']:
-        """Generate child problems by branching."""
+        """Generate child problems by branching (one per free job)."""
+        ...
+
+    def stronger_bound(self) -> float:
+        """Stronger lower bound, applied in two stages: the first call
+        updates heads and tails (``update_params``) and returns the
+        single-machine bound; later calls return the two-machine bound
+        (LB5). For complete sequences, the makespan."""
+        ...
+
+    def primal_heuristic(self) -> Optional['PermFlowShop']:
+        """Local search from the current sequence (see `local_search`)."""
         ...
 
     def calc_lb_1m(self) -> int:

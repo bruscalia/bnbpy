@@ -6,9 +6,6 @@ from libcpp cimport bool
 from bnbpy.cython.node cimport Node
 from bnbpy.cython.search cimport BranchAndBound
 
-cdef:
-    int RESTART = 10_000
-
 
 cdef class LazyBnB(BranchAndBound):
 

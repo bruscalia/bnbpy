@@ -6,13 +6,13 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 
-import logging
 from typing import Literal
 
 from bnbprob.pafssp.cpp.environ cimport (
     InstanceData,
     JobPtr,
     Permutation,
+    Sigma,
     iga,
     intensify,
     local_search,
@@ -21,14 +21,27 @@ from bnbprob.pafssp.cpp.environ cimport (
     randomized_heur
 )
 from bnbprob.pafssp.cython.instance cimport FlowShopInstanceData
-from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
-from bnbprob.pafssp.cython.pysigma cimport PySigma, sigma_to_py
+from bnbprob.pafssp.jobs import PyJob, PySigma
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
 cdef:
     int DEFAULT_SEED = 42
+
+
+cdef object _job_to_py(JobPtr job, list s):
+    # Copies the C++ job data into a plain Python snapshot
+    return PyJob(job.j, job.p, job.r, job.q, job.lat, s)
+
+
+cdef object _sigma_to_py(const Sigma& sigma):
+    cdef:
+        size_t i
+        vector[JobPtr] jobs = sigma.get_jobs()
+    return PySigma(
+        sigma.m, [_job_to_py(jobs[i], []) for i in range(jobs.size())], sigma.C
+    )
 
 
 cdef class PermFlowShop(Problem):
@@ -235,48 +248,34 @@ cdef class PermFlowShop(Problem):
 
         Start times are computed on export. For partial permutations
         they follow ``sigma1 + free_jobs (current order) + sigma2``.
+        Jobs are plain-Python snapshots (:class:`PyJob`).
         """
         cdef:
             size_t i
             vector[JobPtr] seq
             vector[vector[int]] starts
-            PyJob job
-        out = []
         seq = self.perm.get_sequence()
         starts = self.perm.compute_starts()
-        for i in range(seq.size()):
-            job = job_to_py(seq[i])
-            job.s = starts[i]
-            out.append(job)
-        return out
+        return [_job_to_py(seq[i], starts[i]) for i in range(seq.size())]
 
     @property
     def free_jobs(self):
         """Get the list of free (unscheduled) jobs, without start times"""
         cdef:
-            int i
+            size_t i
             vector[JobPtr] seq
-            PyJob job
-        out = []
         seq = self.perm.get_free_jobs()
-        for i in range(seq.size()):
-            job = job_to_py(seq[i])
-            out.append(job)
-        return out
+        return [_job_to_py(seq[i], []) for i in range(seq.size())]
 
     @property
     def sigma1(self):
-        cdef:
-            PySigma py_sigma
-        py_sigma = sigma_to_py(self.perm.sigma1)
-        return py_sigma
+        """Snapshot of the partial sequence fixed at the beginning"""
+        return _sigma_to_py(self.perm.sigma1)
 
     @property
     def sigma2(self):
-        cdef:
-            PySigma py_sigma
-        py_sigma = sigma_to_py(self.perm.sigma2)
-        return py_sigma
+        """Snapshot of the partial sequence fixed at the end"""
+        return _sigma_to_py(self.perm.sigma2)
 
     cpdef object get_mach_graph(PermFlowShop self):
         self._inst()
