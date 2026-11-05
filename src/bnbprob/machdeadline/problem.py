@@ -36,6 +36,9 @@ class MachDeadlineProb(Problem):
     """
     _lb_refs: dict[int, int]
     """References to lower bounds for dominance rules, indexed by the mask."""
+    _owns_lb_ref: bool
+    """Whether this node set the reference of its mask in `_lb_refs`,
+    so that evaluating it again does not mark it as dominated by itself."""
 
     def __init__(self, jobs: Collection[Job]) -> None:
         super().__init__()
@@ -49,6 +52,7 @@ class MachDeadlineProb(Problem):
         self._mask = 0
         self._is_dominated = False
         self._lb_refs = defaultdict(lambda: LARGE_INT)
+        self._owns_lb_ref = False
         MachDeadlineProb.find_wspt(self._unscheduled)
         self._compute_completion_times()
 
@@ -76,11 +80,14 @@ class MachDeadlineProb(Problem):
             self._compute_completion_times()
         cost = self._unscheduled_term + self._fixed_term
         # This will cause the early pruning
-        # of dominated nodes
-        if cost >= self._lb_refs[self._mask]:
+        # of dominated nodes (ties are dominated unless this node
+        # is the one that set the reference)
+        ref = self._lb_refs[self._mask]
+        if cost > ref or (cost == ref and not self._owns_lb_ref):
             self._is_dominated = True
             return cost
         self._lb_refs[self._mask] = cost
+        self._owns_lb_ref = True
         return cost
 
     def is_feasible(self) -> bool:
@@ -145,6 +152,7 @@ class MachDeadlineProb(Problem):
         other._is_dominated = False
         # Shared reference
         other._lb_refs = self._lb_refs
+        other._owns_lb_ref = False
         return other
 
     @staticmethod

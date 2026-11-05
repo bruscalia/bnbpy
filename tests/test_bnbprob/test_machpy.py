@@ -1,7 +1,17 @@
+import itertools
+import random
+from typing import Any, Type
+
 import pytest
 
-from bnbprob.machdeadline import Job, MachDeadlineProb
+from bnbprob.machdeadline import (
+    DeadlineLagrangianSearch,
+    Job,
+    LagrangianDeadline,
+    MachDeadlineProb,
+)
 from bnbpy import BestFirstBnB, BreadthFirstBnB, DepthFirstBnB
+from bnbpy.cython.status import OptStatus
 
 
 class NoWarmstart(MachDeadlineProb):
@@ -63,3 +73,60 @@ class TestMachDeadLine:
             f'Wrong number of explored nodes for lb priority'
             f' {bnb.explored}, expected {self.bb_nodes}'
         )
+
+
+def brute_force(jobs: list[Job]) -> float:
+    """Minimum weighted completion time meeting all deadlines."""
+    best = float('inf')
+    for perm in itertools.permutations(jobs):
+        t = 0
+        cost = 0
+        for job in perm:
+            t += job.p
+            cost += job.w * t
+            if t > job.d:
+                break
+        else:
+            best = min(best, cost)
+    return best
+
+
+def random_jobs(seed: int, n: int = 6) -> list[Job]:
+    rng = random.Random(seed)
+    p = [rng.randint(1, 9) for _ in range(n)]
+    total = sum(p)
+    # Tight deadlines: some instances are infeasible
+    return [
+        Job(
+            id=j, p=p[j], w=rng.randint(1, 5), d=rng.randint(total // 2, total)
+        )
+        for j in range(n)
+    ]
+
+
+@pytest.mark.machdeadline
+@pytest.mark.integration
+class TestMachDeadlineBruteForce:
+    @staticmethod
+    @pytest.mark.parametrize('eval_node', ['in', 'out', 'both'])
+    @pytest.mark.parametrize(
+        ('prob_cls', 'bnb_cls'),
+        [
+            (prob_cls, bnb_cls)
+            for prob_cls in [NoWarmstart, MachDeadlineProb, LagrangianDeadline]
+            for bnb_cls in [DepthFirstBnB, BreadthFirstBnB, BestFirstBnB]
+        ]
+        + [(LagrangianDeadline, DeadlineLagrangianSearch)],
+    )
+    def test_random_instances(
+        prob_cls: Type[Any], bnb_cls: Type[Any], eval_node: str
+    ) -> None:
+        for seed in range(25):
+            jobs = random_jobs(seed)
+            opt = brute_force(jobs)
+            res = bnb_cls(prob_cls(jobs), eval_node=eval_node).solve()
+            assert res.cost == opt, f'seed {seed}: {res} (optimum {opt})'
+            if opt == float('inf'):
+                assert res.status == OptStatus.INFEASIBLE
+            else:
+                assert res.status == OptStatus.OPTIMAL
