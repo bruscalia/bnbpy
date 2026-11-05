@@ -2,19 +2,24 @@ Level Queue
 ===========
 
 The ``levelqueue`` module provides level-based node managers.  Nodes are
-grouped by search depth (level) and each level maintains its own
-:class:`~bnbpy.cython.nodequeue.PriorityManagerInterface` queue.
+grouped by search depth (level) and each level is a
+:class:`~bnbpy.cython.levelqueue.LevelQueue`, which wraps a
+:class:`~bnbpy.cython.nodequeue.NodePriQueueWrapper` (C++ min-heap)
+ordered by :meth:`~bnbpy.cython.levelqueue.LevelQueue.make_priority`.
 
 :class:`~bnbpy.cython.levelqueue.LevelManagerInterface` is the abstract
 base class.  Two concrete strategies are provided:
 
 * :class:`~bnbpy.cython.levelqueue.CyclicBestSearch` — cyclic best-first
-  search, cycling through levels before falling back to the global best.
+  search: cycles through levels, dequeuing the best node of each level.
+  When the number of nodes exceeds ``max_size`` it falls back to the
+  deepest non-empty level (depth-first), returning to cycling once the
+  count drops to ``max_size // 2`` (unless ``permanent_fallback`` is set).
 * :class:`~bnbpy.cython.levelqueue.DfsPriority` — depth-first with
-  priority ordering within each level.
+  best-first ordering within each level (permanent fallback).
 
 For simpler priority-queue managers without level cycling see
-:doc:`bnbpy.cython.nodequeue`.
+:doc:`bnbpy.cython.primanager`.
 
 
 LevelQueue
@@ -34,8 +39,9 @@ LevelManagerInterface
 .. autoclass:: bnbpy.cython.levelqueue::LevelManagerInterface
    :class-doc-from: both
    :members: not_empty, size, enqueue, enqueue_all, dequeue,
-             get_lower_bound, pop_lower_bound, clear, filter_by_lb, pop_all,
-             new_level, add_level
+             get_lower_bound, clear, filter_by_lb, new_level, reset_level,
+             levels, current_level, start_level, last_level, max_size,
+             use_fallback, permanent_fallback
    :undoc-members:
    :show-inheritance:
    :member-order: bysource

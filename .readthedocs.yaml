@@ -7,6 +7,9 @@ version: 2
 # Set the OS, Python version and other tools you might need
 build:
   os: ubuntu-22.04
+  # nbsphinx needs the pandoc executable to convert notebooks
+  apt_packages:
+    - pandoc
   tools:
     python: "3.13"
     # You can also specify other tool versions:
