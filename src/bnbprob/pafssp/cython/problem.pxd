@@ -85,7 +85,7 @@ cdef class PermFlowShop(Problem):
 
     cpdef void update_params(PermFlowShop self)
 
-    cpdef void push_job(PermFlowShop self, int& j)
+    cpdef void push_job(PermFlowShop self, int j)
 
     cdef void _push_job(PermFlowShop self, int& j)
 
@@ -94,6 +94,8 @@ cdef class PermFlowShop(Problem):
     cpdef int calc_tot_time(PermFlowShop self)
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
+
+    cpdef PermFlowShop child_copy(PermFlowShop self, bool deep=*)
 
     cdef PermFlowShop _copy(PermFlowShop self)
 
@@ -105,4 +107,4 @@ cdef class BenchPermFlowShop(PermFlowShop):
 
 cdef class PermFlowShop1M(PermFlowShop):
 
-    cpdef double calc_bound(PermFlowShop1M self)
+    cpdef double stronger_bound(PermFlowShop1M self)

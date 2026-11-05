@@ -21,6 +21,7 @@ IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
     IGADestruction result;
     std::vector<JobPtr> alloc_jobs = jobs_;
     std::vector<JobPtr> free_jobs{};
+    d = std::min(std::max(d, 0), static_cast<int>(alloc_jobs.size()));
     free_jobs.reserve(d);
 
     // Destruction phase

@@ -21,9 +21,12 @@ struct IGADestruction
     std::vector<JobPtr> free_jobs;
 };
 
+// Removes `d` random jobs (at most all of them) from `jobs_`.
 IGADestruction iga_destruction(std::vector<JobPtr>& jobs_, int d,
                                std::mt19937 generator);
 
+// Iterated Greedy Algorithm (Ruiz & Stutzle, 2007) with destruction size
+// `d`, which is clamped to the number of jobs.
 Permutation iga(std::vector<JobPtr>& jobs_, const InstanceData& inst,
                 const int& max_iter, const int& d, const int& seed);
 

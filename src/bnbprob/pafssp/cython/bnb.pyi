@@ -130,10 +130,12 @@ class CutoffBnB(LazyBnB):
         ...
 
 class BenchCutoffBnB(CutoffBnB):
-    """Benchmarking variant of :class:`CutoffBnB`.
+    """Benchmarking variant of :class:`CutoffBnB`, intended for
+    :class:`BenchPermFlowShop` problems.
 
-    The ``post_eval_callback`` skips the ``update_params`` step so that
-    timings for the two-machine bound alone can be measured in isolation.
+    The ``post_eval_callback`` skips the ``update_params`` step (already
+    done by ``BenchPermFlowShop.calc_bound``) and applies only the
+    two-machine bound upgrade, so that its timing can be measured.
     """
 
     def post_eval_callback(self, node: Node[BenchPermFlowShop]) -> None:  # type: ignore[override]

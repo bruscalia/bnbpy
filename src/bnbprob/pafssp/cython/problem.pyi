@@ -493,7 +493,15 @@ class PermFlowShop(Problem):
         ...
 
     def push_job(self, j: int) -> None:
-        """Push job to the sequence."""
+        """Schedule the free job at position ``j`` of ``free_jobs``
+        (at the end of sigma1 or at the beginning of sigma2, alternating
+        with the tree level).
+
+        Raises
+        ------
+        IndexError
+            If ``j`` is not a valid position in ``free_jobs``
+        """
         ...
 
     def calc_idle_time(self) -> int:
@@ -504,8 +512,19 @@ class PermFlowShop(Problem):
         """Calculate total completion time with time complexity of O(m)."""
         ...
 
-    def copy(self, deep: bool = False) -> 'PermFlowShop':
-        """Create a copy of the problem instance"""
+    def copy(self, deep: bool = True) -> 'PermFlowShop':
+        """Create a copy of the problem instance.
+
+        The permutation is always copied and the (immutable) instance data
+        is shared. A deep copy copies the solution; a shallow copy shares
+        it, as in :meth:`Problem.copy`. Use :meth:`child_copy` for a copy
+        with a new solution.
+        """
+        ...
+
+    def child_copy(self, deep: bool = False) -> 'PermFlowShop':
+        """Copy of the problem with a new solution (the permutation is
+        always copied, so ``deep`` has no effect)."""
         ...
 
 class BenchPermFlowShop(PermFlowShop):
@@ -532,6 +551,7 @@ class PermFlowShop1M(PermFlowShop):
     reduces per-node cost at the expense of a looser bound.
     """
 
-    def calc_bound(self) -> float:
-        """Calculate single-machine lower bound."""
+    def stronger_bound(self) -> float:
+        """Single-machine bound with updated heads and tails (LB5 is never
+        computed). For complete sequences, the makespan."""
         ...

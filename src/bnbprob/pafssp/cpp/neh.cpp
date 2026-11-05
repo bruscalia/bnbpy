@@ -30,6 +30,19 @@ Permutation neh_core(std::vector<JobPtr>& jobs_, const InstanceData& inst)
     M = inst.get_m();
     const MachineGraph* mach_graph = &inst.get_mach_graph();
 
+    // With fewer than two jobs there is nothing to insert:
+    // the sequence is the input itself
+    if (jobs.size() < 2)
+    {
+        Sigma single(M, mach_graph);
+        for (JobPtr& job : jobs)
+        {
+            single.job_to_bottom(job);
+        }
+        return Permutation(&inst, static_cast<int>(jobs.size()), single,
+                           std::vector<JobPtr>{}, Sigma(M, mach_graph));
+    }
+
     // Initial setup for two jobs
     vec.resize(2);
     vec[0] = jobs[0];

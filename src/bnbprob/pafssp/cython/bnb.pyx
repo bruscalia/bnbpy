@@ -114,12 +114,12 @@ cdef class LazyBnB(BranchAndBound):
 cdef class CutoffBnB(LazyBnB):
 
     cdef public:
-        float ub_value
+        double ub_value
 
     def __init__(
         self,
         PermFlowShop problem,
-        float ub_value,
+        double ub_value,
         save_tree=False,
         delay_lb5=False,
     ):
@@ -128,14 +128,14 @@ cdef class CutoffBnB(LazyBnB):
             save_tree,
             delay_lb5,
         )
-        self.manager = DfsFlowShop()
         self.ub_value = ub_value
 
     cdef void _restart_search(CutoffBnB self):
         cdef:
-            Node node
             Solution solution
             PermFlowShop problem
+
+        BranchAndBound._restart_search(self)
 
         solution = Solution()
         solution.set_lb(self.ub_value)
@@ -144,45 +144,26 @@ cdef class CutoffBnB(LazyBnB):
         # only its solution is read
         problem = PermFlowShop.__new__(PermFlowShop)
         problem.set_solution(solution)
-        node = Node(problem)
 
-        self.incumbent = node
-        self.bound_node = None
+        self.incumbent = Node(problem)
         self.gap = 1.0
-        self.manager.clear()
 
 
 cdef class BenchCutoffBnB(CutoffBnB):
 
-    cdef void _restart_search(BenchCutoffBnB self):
-        cdef:
-            Node node
-            Solution solution
-            BenchPermFlowShop problem
-
-        solution = Solution()
-        solution.set_lb(self.ub_value)
-        solution.set_feasible()
-        # Sentinel incumbent: data is None and perm has no instance;
-        # only its solution is read
-        problem = BenchPermFlowShop.__new__(BenchPermFlowShop)
-        problem.solution = solution
-        node = Node(problem)
-
-        self.incumbent = node
-        self.bound_node = None
-        self.gap = 1.0
-        self.manager.clear()
-
     cpdef void post_eval_callback(self, Node node):
         cdef:
+            double lb5
             BenchPermFlowShop problem
-        # Here the r and q values are assumed to be already updated
+        # Here the r and q values are already updated
+        # by BenchPermFlowShop.calc_bound
         if node.lb < self.get_ub():
-            # Two machine bound upgrade
+            # Two machine bound upgrade (makespan if complete)
             problem = node.problem
-            problem.double_bound_upgrade()
-            node.lb = problem.get_lb()
+            lb5 = problem.calc_lb_2m()
+            if lb5 > node.lb:
+                problem.upgrade_bound(lb5)
+                node.lb = lb5
 
 
 cdef class CallbackBnB(LazyBnB):
@@ -207,7 +188,7 @@ cdef class CallbackBnB(LazyBnB):
         self.primal_heuristic(node)
 
     cpdef void dequeue_callback(self, Node node):
-        if self.explored >= self.heur_factor:
+        if self.explored >= <unsigned long long>self.heur_factor:
             self.intensify(node)
 
     cpdef void intensify(self, Node node):

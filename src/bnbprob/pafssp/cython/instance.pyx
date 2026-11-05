@@ -7,6 +7,7 @@ from cython.operator cimport dereference as deref
 
 from bnbprob.pafssp.cpp.environ cimport InstanceData, MachineGraph
 from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
+from bnbprob.pafssp.machinegraph import CyclicGraphError
 from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
 
 INIT_ERROR = 'C++ InstanceData not initialized'
@@ -58,9 +59,9 @@ cdef class FlowShopInstanceData:
         Raises
         ------
         ValueError
-            If ``p`` is empty, has rows of different lengths, or its
-            number of columns differs from the number of machines in the
-            graph. ``CyclicGraphError`` (a ``ValueError``) if the edges
+            If ``p`` is empty, has rows of different lengths, or an edge
+            refers to a machine index outside the columns of ``p``.
+            ``CyclicGraphError`` (a ``ValueError``) if the edges
             contain a cycle.
         """
         cdef:
@@ -82,12 +83,16 @@ cdef class FlowShopInstanceData:
         # Create sequential MachineGraph by default
         if edges is None:
             edges = [(i, i + 1) for i in range(m - 1)]
-        mi = MachGraphInterface.from_edges(edges)
-        if mi.M != m:
+        # Machines without edges are kept (e.g. a single machine)
+        try:
+            mi = MachGraphInterface.from_edges(edges, m)
+        except CyclicGraphError:
+            raise
+        except ValueError as e:
             raise ValueError(
                 f'p has {m} machines (columns) but the machine graph'
-                f' has {mi.M}'
-            )
+                f' refers to more: {e}'
+            ) from e
 
         out = cls.__new__(cls)
         out.p = [list(row) for row in p]

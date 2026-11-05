@@ -1,5 +1,6 @@
 import dataclasses
 import gc
+import itertools
 import json
 import os
 import pickle
@@ -10,7 +11,12 @@ from typing import Any, Callable, Optional, Type
 import pytest
 
 from bnbprob.pafssp import PyJob, PySigma
-from bnbprob.pafssp.cython.bnb import CallbackBnB, CutoffBnB, LazyBnB
+from bnbprob.pafssp.cython.bnb import (
+    BenchCutoffBnB,
+    CallbackBnB,
+    CutoffBnB,
+    LazyBnB,
+)
 from bnbprob.pafssp.cython.instance import FlowShopInstanceData
 from bnbprob.pafssp.cython.problem import (
     BenchPermFlowShop,
@@ -22,7 +28,13 @@ from bnbprob.pafssp.instances import (
     random_parallel_semilines,
 )
 from bnbprob.pafssp.machinegraph import MachineGraph
-from bnbpy.cython.search import BestFirstBnB, BranchAndBound, DepthFirstBnB
+from bnbpy.cython.search import (
+    BestFirstBnB,
+    BranchAndBound,
+    BreadthFirstBnB,
+    DepthFirstBnB,
+)
+from bnbpy.cython.status import OptStatus
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REGRESSION_PATH = os.path.join(
@@ -336,10 +348,10 @@ class TestFlowShopInstanceData:
         [
             ([], None),
             ([[1, 2], [3]], None),
-            ([[1, 2, 3], [4, 5, 6]], [(0, 1)]),
+            ([[1, 2], [4, 5]], [(0, 2)]),
             ([[1, 2], [3, 4]], [(0, 1), (1, 0)]),
         ],
-        ids=['empty', 'ragged', 'width-vs-graph', 'cyclic'],
+        ids=['empty', 'ragged', 'edge-beyond-width', 'cyclic'],
     )
     def test_validation(
         p: list[list[int]], edges: Optional[list[tuple[int, int]]]
@@ -681,6 +693,212 @@ class TestPFSSPRegression:
             'len_seq': len(res.problem.sequence),
         }
         assert result == EXPECTED[f'{name}|cutoff|+{delta}']
+
+
+def makespan(sol: PermFlowShop) -> int:
+    return max(s + p for job in sol.sequence for s, p in zip(job.s, job.p))
+
+
+def assert_valid_schedule(
+    sol: PermFlowShop, p: list[list[int]], edges: list[tuple[int, int]]
+) -> None:
+    """Start times respect machine precedences within each job and the
+    permutation on every machine (including machines without edges)."""
+    m = len(p[0])
+    seq = sol.sequence
+    assert sorted(job.j for job in seq) == list(range(len(p)))
+    for job in seq:
+        assert job.p == p[job.j]
+        assert len(job.s) == m
+        for k1, k2 in edges:
+            assert job.s[k2] >= job.s[k1] + job.p[k1]
+    for prev, nxt in zip(seq, seq[1:]):
+        for k in range(m):
+            assert nxt.s[k] >= prev.s[k] + prev.p[k]
+
+
+def brute_force(data: FlowShopInstanceData) -> int:
+    """Optimal makespan by enumerating every permutation."""
+    best = None
+    for order in itertools.permutations(range(data.n)):
+        sol = PermFlowShop(data)
+        for j in order:
+            sol.push_job([job.j for job in sol.free_jobs].index(j))
+        value = makespan(sol)
+        best = value if best is None else min(best, value)
+    assert best is not None
+    return best
+
+
+ALL_SOLVERS: dict[str, Callable[[PermFlowShop], Any]] = {
+    **SOLVERS,
+    'DFS-out': lambda pr: DepthFirstBnB(pr, eval_node='out'),
+    'BrFS-out': lambda pr: BreadthFirstBnB(pr, eval_node='out'),
+    'BFS-both': lambda pr: BestFirstBnB(pr, eval_node='both'),
+}
+
+
+@pytest.mark.pafssp
+class TestPFSSPEdgeCases:
+    @staticmethod
+    @pytest.mark.parametrize('constructive', CONSTRUCTIVES)
+    @pytest.mark.parametrize('solver', list(ALL_SOLVERS))
+    def test_single_job(solver: str, constructive: Any) -> None:
+        p = [[3, 4, 2]]
+        problem = PermFlowShop.from_p(p, constructive=constructive)
+        res = ALL_SOLVERS[solver](problem).solve()
+        assert res.status == OptStatus.OPTIMAL
+        assert res.cost == sum(p[0])
+        assert [job.j for job in res.problem.sequence] == [0]
+
+    @staticmethod
+    @pytest.mark.parametrize('n', [1, 2, 3, 4])
+    def test_iga_few_jobs(n: int) -> None:
+        """Destruction size larger than the number of jobs."""
+        rng = random.Random(n)
+        p = [[rng.randint(1, 9) for _ in range(3)] for _ in range(n)]
+        data = FlowShopInstanceData.from_p(p)
+        sol = PermFlowShop(data).iga_initialization()
+        assert sorted(job.j for job in sol.sequence) == list(range(n))
+        assert sol.solution.cost == makespan(sol)
+        res = LazyBnB(PermFlowShop(data, constructive='iga')).solve()
+        assert res.cost == brute_force(data)
+        heur = PermFlowShop(data).iga_heur(5, 10, 1)
+        assert sorted(job.j for job in heur.sequence) == list(range(n))
+
+    @staticmethod
+    @pytest.mark.parametrize('solver', list(ALL_SOLVERS))
+    def test_single_machine(solver: str) -> None:
+        p = [[3], [5], [2], [7]]
+        data = FlowShopInstanceData.from_p(p)
+        assert data.m == 1
+        assert data.edges == []
+        res = ALL_SOLVERS[solver](PermFlowShop(data)).solve()
+        assert res.cost == sum(row[0] for row in p)
+        assert_valid_schedule(res.problem, p, [])
+
+    @staticmethod
+    @pytest.mark.parametrize('solver', list(ALL_SOLVERS))
+    def test_isolated_machine(solver: str) -> None:
+        """Machine 1 has no precedences but still processes every job."""
+        p = [[1, 50, 1], [1, 60, 1], [2, 10, 3]]
+        edges = [(0, 2)]
+        data = FlowShopInstanceData.from_p(p, edges)
+        assert data.mach_graph.M == len(p[0])
+        assert sorted(data.mach_graph.topo_order) == [0, 1, 2]
+        res = ALL_SOLVERS[solver](PermFlowShop(data)).solve()
+        assert res.cost == sum(row[1] for row in p)
+        assert res.cost == brute_force(data)
+        assert_valid_schedule(res.problem, p, edges)
+
+    @staticmethod
+    @pytest.mark.parametrize('seed', range(10))
+    def test_brute_force(seed: int) -> None:
+        rng = random.Random(seed)
+        n, m = 5, 3
+        p = [[rng.randint(1, 20) for _ in range(m)] for _ in range(n)]
+        # Chain or assembly graph
+        edges = [(0, 1), (1, 2)] if seed % 2 else [(0, 2), (1, 2)]
+        data = FlowShopInstanceData.from_p(p, edges)
+        opt = brute_force(data)
+        for name, solver in ALL_SOLVERS.items():
+            for cls in [PermFlowShop, PermFlowShop1M, BenchPermFlowShop]:
+                res = solver(cls(data)).solve()
+                assert res.cost == opt, (name, cls.__name__)
+                assert_valid_schedule(res.problem, p, edges)
+        bench = BenchCutoffBnB(BenchPermFlowShop(data), opt + 1).solve()
+        assert bench.cost == opt
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        'heuristic',
+        [
+            lambda root: root.iga_initialization(),
+            lambda root: root.iga_heur(5, 2, 3),
+            lambda root: root.randomized_heur(5, 3),
+            lambda root: root.neh_initialization().intensify(
+                root.quick_constructive()
+            ),
+        ],
+        ids=['iga_initialization', 'iga_heur', 'randomized_heur', 'intensify'],
+    )
+    def test_heuristic_solution_cost(
+        heuristic: Callable[[PermFlowShop], PermFlowShop],
+    ) -> None:
+        sol = heuristic(make_root('ASM'))
+        assert sol.solution.status == OptStatus.FEASIBLE
+        assert sol.solution.cost == makespan(sol)
+        assert sol.solution.lb == sol.solution.cost
+
+    @staticmethod
+    def test_local_search_solution_cost() -> None:
+        quick = make_root('ASM').quick_constructive()
+        quick.compute_bound()
+        sol = quick.local_search()
+        assert sol is not None
+        assert sol.solution.cost == makespan(sol)
+        assert sol.solution.cost < quick.solution.lb
+
+    @staticmethod
+    @pytest.mark.parametrize('j', [-1, 12, 100])
+    def test_push_job_out_of_range(j: int) -> None:
+        root = make_root('SEQ')
+        with pytest.raises(IndexError):
+            root.push_job(j)
+        # Unchanged
+        assert len(root.free_jobs) == len(INSTANCES['SEQ']['p'])
+
+    @staticmethod
+    def test_permflowshop1m_never_computes_lb5() -> None:
+        for cls, uses_lb5 in [(PermFlowShop, True), (PermFlowShop1M, False)]:
+            node = make_root('SEQ', cls).branch()[0]
+            node.compute_bound()
+            first = node.stronger_bound()
+            assert first == node.lower_bound_1m()
+            node.upgrade_bound(first)
+            second = node.stronger_bound()
+            if uses_lb5:
+                assert second == node.lower_bound_2m()
+            else:
+                assert second == first
+        explored = {}
+        for cls in [PermFlowShop, PermFlowShop1M]:
+            bnb = LazyBnB(make_root('SEQ', cls))
+            bnb.solve()
+            explored[cls] = bnb.explored
+        assert explored[PermFlowShop1M] >= explored[PermFlowShop]
+
+    @staticmethod
+    def test_delay_lb5() -> None:
+        opt = EXPECTED['SEQ|bnb|PermFlowShop|LazyBnB|neh']['cost']
+        root = make_root('SEQ')
+        assert isinstance(LazyBnB.delay_by_root(root), bool)
+        bnb = LazyBnB(root, delay_lb5=True)
+        assert bnb.min_lb5_level == len(INSTANCES['SEQ']['p']) // 3 + 1
+        assert bnb.solve().cost == opt
+
+    @staticmethod
+    def test_copy() -> None:
+        node = make_root('SEQ').branch()[2]
+        node.compute_bound()
+        node.upgrade_bound(node.stronger_bound())
+        assert node.simple_upgraded
+        deep = node.copy()
+        shallow = node.copy(deep=False)
+        child = node.child_copy()
+        for other in [deep, shallow, child]:
+            assert other.data is node.data
+            assert [j.j for j in other.sequence] == [
+                j.j for j in node.sequence
+            ]
+        assert deep.solution is not node.solution
+        assert deep.solution.lb == node.solution.lb
+        assert shallow.solution is node.solution
+        assert deep.simple_upgraded
+        assert child.solution.status == OptStatus.NO_SOLUTION
+        # The permutation is a copy
+        deep.push_job(0)
+        assert len(deep.free_jobs) == len(node.free_jobs) - 1
 
 
 @pytest.mark.pafssp

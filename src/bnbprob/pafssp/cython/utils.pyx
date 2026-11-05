@@ -67,7 +67,7 @@ cdef object get_mach_graph(MachineGraph& mg_cpp):
     topo_order = mg_cpp.get_topo_order()
     rev_topo_order = mg_cpp.get_rev_topo_order()
     descendants = mg_cpp.get_descendants()
-    m = topo_order.size()
+    m = mg_cpp.get_M()
 
     mg = MachGraphInterface(
         m,

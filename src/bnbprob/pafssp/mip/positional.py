@@ -32,7 +32,7 @@ def positional_model(
     model.K = pyo.Set(initialize=range(len(p)))
 
     # Parameters
-    model.p = pyo.Param(model.J, model.M, initialize=lambda _, m, j: p[m][j])
+    model.p = pyo.Param(model.J, model.M, initialize=lambda _, j, m: p[j][m])
     model.V = pyo.Param(initialize=sum(pim for pi in p for pim in pi))
 
     # Variables

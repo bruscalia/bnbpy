@@ -356,8 +356,8 @@ cdef class PermFlowShop(Problem):
         perm = iga(jobs, deref(inst), n_iter, d, DEFAULT_SEED)
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop local_search(PermFlowShop self):
@@ -375,8 +375,8 @@ cdef class PermFlowShop(Problem):
         if new_cost < lb:
             sol_alt = self._copy()
             sol_alt.perm = perm
-            sol_alt.solution.set_feasible()
             sol_alt.solution.set_lb(new_cost)
+            sol_alt.solution.set_feasible()
             return sol_alt
         return None
 
@@ -391,8 +391,8 @@ cdef class PermFlowShop(Problem):
         perm = randomized_heur(jobs, n_iter, seed, deref(inst))
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop iga_heur(PermFlowShop self, int n_iter, int d, unsigned int seed=0):
@@ -406,8 +406,8 @@ cdef class PermFlowShop(Problem):
         perm = iga(jobs, deref(inst), n_iter, d, seed)
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop intensify(
@@ -489,7 +489,13 @@ cdef class PermFlowShop(Problem):
     cpdef void update_params(PermFlowShop self):
         self.perm.update_params()
 
-    cpdef void push_job(PermFlowShop self, int& j):
+    cpdef void push_job(PermFlowShop self, int j):
+        """Schedule the free job at position ``j`` of ``free_jobs``"""
+        if j < 0 or <size_t>j >= self.perm.free_jobs.size():
+            raise IndexError(
+                f'free job position {j} out of range'
+                f' (number of free jobs: {self.perm.free_jobs.size()})'
+            )
         self.perm.push_job(j)
 
     cdef void _push_job(PermFlowShop self, int& j):
@@ -501,7 +507,22 @@ cdef class PermFlowShop(Problem):
     cpdef int calc_tot_time(PermFlowShop self):
         return self.perm.calc_tot_time()
 
-    cpdef PermFlowShop copy(PermFlowShop self, bool deep=False):
+    cpdef PermFlowShop copy(PermFlowShop self, bool deep=True):
+        cdef:
+            PermFlowShop other
+        # The permutation is always copied (C++ value);
+        # instance data is immutable and shared
+        other = self._copy()
+        other.simple_upgraded = self.simple_upgraded
+        if deep:
+            other.solution = self.solution.copy(deep=False)
+        else:
+            other.solution = self.solution
+        return other
+
+    cpdef PermFlowShop child_copy(PermFlowShop self, bool deep=False):
+        """Copy of the problem with a new solution (the permutation is
+        always copied, so ``deep`` has no effect)."""
         return self._copy()
 
     cdef PermFlowShop _copy(PermFlowShop self):
@@ -546,8 +567,18 @@ cdef class PermFlowShop1M(PermFlowShop):
     reduces per-node cost at the expense of a looser bound.
     """
 
-    cpdef double calc_bound(PermFlowShop1M self):
-        return self.perm.calc_lb_1m()
+    cpdef double stronger_bound(PermFlowShop1M self):
+        if self.perm.free_jobs.size() == 0:
+            return <double>self.perm.calc_lb_full()
+
+        # The single-machine bound with updated heads and tails
+        # is the strongest bound of this variant
+        if self.simple_upgraded:
+            return self.solution.lb
+
+        self.simple_upgraded = True
+        self.perm.update_params()
+        return <double>self.perm.lower_bound_1m()
 
     cdef PermFlowShop1M _copy(PermFlowShop1M self):
         cdef:
