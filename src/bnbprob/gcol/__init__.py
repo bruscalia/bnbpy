@@ -21,7 +21,6 @@ __all__ = [
     'CoverNodeSet',
     'SetCover',
     'SetCoverHeur',
-    'IndepSetHeur',
 ]
 
 from bnbprob.gcol.colgen import (

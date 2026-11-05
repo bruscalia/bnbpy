@@ -1,4 +1,3 @@
-import logging
 from typing import List, Optional, Tuple, cast
 
 import numpy as np
@@ -9,8 +8,6 @@ from bnbprob.gcol.indset import IndepGraph, IndepSetHeur
 from bnbprob.milpy.colgen import ColGenMILP, MILPColumn, MILPDuals
 from bnbprob.milpy.problem import ScipyResults
 from bnbpy.colgen import PriceSol, Pricing
-
-log = logging.getLogger(__name__)
 
 
 def _find_max_node(edges: list[tuple[int, int]]) -> int:

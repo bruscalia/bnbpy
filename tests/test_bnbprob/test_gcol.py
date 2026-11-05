@@ -1,9 +1,11 @@
 import os
+import random
 from typing import cast
 
 import pytest
 
 from bnbprob import gcol
+from bnbprob.gcol import SetCover, SetCoverHeur
 from bnbpy.colgen import Pricing
 from bnbpy.cython.search import BranchAndBound
 from bnbpy.cython.status import OptStatus
@@ -56,3 +58,18 @@ class TestGcol:
                 price_tol=price_tol,
             )
         return gcol.ColorMIPPricing(edges, price_tol=price_tol)
+
+
+@pytest.mark.gcol
+@pytest.mark.parametrize('seed', range(50))
+def test_set_cover_heuristic_covers_all(seed: int) -> None:
+    rng = random.Random(seed)
+    n = 8
+    sets = [set(rng.sample(range(n), rng.randint(1, 4))) for _ in range(7)]
+    sets.append(set(range(n)) - set().union(*sets) or {0})
+    set_cover = SetCover()
+    for s in sets:
+        set_cover.add_set(s, rng.randint(1, 3))
+    sol = SetCoverHeur().solve(set_cover)
+    covered = set().union(*({node.index for node in s.nodes} for s in sol))
+    assert covered == set(set_cover.nodes)
