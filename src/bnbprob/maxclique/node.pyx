@@ -1,8 +1,6 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from cpython.object cimport Py_EQ, Py_NE, Py_LT, Py_GT, Py_LE, Py_GE
-from libcpp cimport bool
 from libcpp.vector cimport vector
 
 
@@ -28,15 +26,6 @@ cdef void c_add_neighbor(Node& node, Node& neighbor):
     # but it would add overhead
     node.neighbors.push_back(&neighbor)
     node.degree += 1
-
-
-cdef bool c_can_color(Node& node, int color):
-    if <size_t>color >= node.neighbor_colors.size():
-        node.neighbor_colors.resize(
-            max(node.neighbor_colors.size(), <size_t>color) + BASE_SIZE,
-            False
-        )
-    return not node.neighbor_colors[color]
 
 
 cdef void c_set_color(Node& node, int color):
@@ -72,21 +61,9 @@ cdef void c_notify_colored_neighbor(Node* node, int color):
                     break
 
 
-cdef void c_color_clean(Node& node):
-    cdef vector[bool] empty_colors
-    empty_colors.resize(BASE_SIZE, False)
-
-    node.color = 0
-    node.has_color = False
-    node.colored_degree = 0
-    node.neighbor_colors = empty_colors
-
-
 cdef Node* c_clean_copy(const Node& node):
     cdef:
         Node* other
-        vector[bool] empty_colors
-        vector[Node*] empty_neighbors
 
     other = c_alloc_node(node.index)
     other.neighbors.reserve(node.neighbors.size())
@@ -133,53 +110,19 @@ cdef Node* c_pop_max_node(vector[Node*]& nodes):
     return max_node
 
 
-cdef Node* c_find_max_sat_node(vector[Node*]& nodes):
-    cdef:
-        Node* max_node
-        Node* node
-        int max_color_degree
-        int max_degree
-        size_t j
-
-    if nodes.size() == 0:
-        return NULL
-
-    # Initialize with first node
-    max_node = nodes[0]
-    max_color_degree = max_node.colored_degree
-    max_degree = max_node.degree
-
-    # Check remaining nodes
-    for j in range(1, nodes.size()):
-        node = nodes[j]
-        if node.colored_degree > max_color_degree:
-            max_color_degree = node.colored_degree
-            max_degree = node.degree
-            max_node = node
-        elif node.colored_degree == max_color_degree:
-            if node.degree > max_degree:
-                max_color_degree = node.colored_degree
-                max_degree = node.degree
-                max_node = node
-
-    return max_node
-
-
 cdef Node* c_find_max_node_degree(vector[Node*]& nodes):
     cdef:
-        Node* max_node
+        Node* max_node = NULL
         Node* node
         int max_degree
-        size_t max_index
         size_t j
 
+    # NULL if there are no nodes
     max_degree = -1
-    max_index = 0
     for j in range(nodes.size()):
         node = nodes[j]
         if node.degree > max_degree:
             max_degree = node.degree
             max_node = node
-            max_index = j
 
     return max_node

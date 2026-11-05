@@ -1,23 +1,16 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from dataclasses import dataclass
-from heapq import heapify, heappop
-
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
 from bnbprob.maxclique.node cimport (
     Node,
     c_add_neighbor,
-    c_can_color,
     c_set_color,
     c_notify_colored_neighbor,
-    c_color_clean,
     c_clean_copy,
     c_pop_max_node,
-    c_find_max_sat_node,
-    c_find_max_node_degree,
     c_alloc_node,
     c_free_node
 )
@@ -40,7 +33,7 @@ cdef NodeWrapper wrap_node(Node* node):
         list[int] neighbor_indices
         NodeWrapper wrapper
 
-    neighbor_indices = [None] * node.neighbors.size()
+    neighbor_indices = [None] * <Py_ssize_t>node.neighbors.size()
     for j in range(node.neighbors.size()):
         neighbor_indices[j] = node.neighbors[j].index
 
@@ -57,7 +50,7 @@ cdef class Graph:
         self._size = size
         self._active_size = 0
 
-    def __del__(self) -> None:
+    def __dealloc__(self):
         cdef:
             size_t i
         for i in range(self._nodes.size()):
@@ -65,15 +58,13 @@ cdef class Graph:
         self._nodes.clear()
 
     @classmethod
-    def from_edges(cls, edges: list[tuple[int, int]]) -> 'Graph':
+    def from_edges(cls, edges: list[tuple[int, int]]) -> Graph:
         cdef:
             Graph graph
             int i, j, max_index, idx
-            tuple[int, int] e
 
         max_index = -1
-        for e in edges:
-            i, j = e
+        for i, j in edges:
             max_index = max(max_index, i, j)
 
         graph = Graph.__new__(Graph)
@@ -88,8 +79,7 @@ cdef class Graph:
             graph._active_nodes.push_back(graph._nodes[idx])
 
         # Add edges
-        for e in edges:
-            i, j = e
+        for i, j in edges:
             c_add_neighbor(graph._nodes[i][0], graph._nodes[j][0])
             c_add_neighbor(graph._nodes[j][0], graph._nodes[i][0])
 
@@ -104,7 +94,7 @@ cdef class Graph:
             size_t i
             list[NodeWrapper] node_wrappers
 
-        node_wrappers = [None] * self._active_nodes.size()
+        node_wrappers = [None] * <Py_ssize_t>self._active_nodes.size()
         for i in range(self._active_nodes.size()):
             if self._active_nodes[i] != NULL:
                 node_wrappers[i] = wrap_node(self._active_nodes[i])
@@ -176,7 +166,7 @@ cdef class Graph:
         other._active_nodes.reserve(self._active_size - 1)
 
         # Create clean copies of all nodes except the removed one
-        for i in range(self._active_size):
+        for i in range(<size_t>self._active_size):
             old_node = self._active_nodes[i]
             if old_node.index == node_idx:
                 continue
@@ -187,7 +177,7 @@ cdef class Graph:
         other._active_size = other._active_nodes.size()
 
         # Rebuild edges (excluding connections to removed node)
-        for i in range(other._active_size):
+        for i in range(<size_t>other._active_size):
             new_node = other._active_nodes[i]
             old_node = self._nodes[new_node.index]
 
@@ -272,7 +262,8 @@ cdef class DSatur:
     cpdef void solve(self):
         cdef:
             Node* node
-            int next_color, i
+            int next_color
+            size_t i
             vector[Node*] Q, nodes
 
         # Copy all active nodes to the queue
@@ -293,7 +284,8 @@ cdef class DSatur:
     cpdef void resolve(self):
         cdef:
             Node* node
-            int next_color, i
+            int next_color
+            size_t i
             vector[Node*] Q, nodes
 
         # Copy all active nodes to the queue
@@ -302,9 +294,7 @@ cdef class DSatur:
             node = nodes[i]
             c_notify_colored_neighbor(node, node.color)
 
-        c_notify_colored_neighbor
         Q = nodes
-        restart = True
         while Q.size() > 0:
             node = c_pop_max_node(Q)
             next_color = self._find_next_color(node)
