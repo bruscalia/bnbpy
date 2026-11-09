@@ -32,7 +32,8 @@ PAFSSP_CASES = {
 
 def highs() -> Any:
     solver = pyo.SolverFactory('appsi_highs')
-    if not solver.available():
+    # The legacy interface raises instead of returning False by default
+    if not solver.available(exception_flag=False):
         pytest.skip('HiGHS is not available')
     return solver
 
