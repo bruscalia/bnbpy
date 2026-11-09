@@ -12,12 +12,12 @@ struct JobTimes
     int p1;
     int p2;
     int lat;
-    Job job;
+    int j;  // job index; job data lives in InstanceData
 
     // Constructor
     JobTimes(const int &t1_, const int &t2_, const int &p1_, const int &p2_,
-             const int &lat_, const Job &job_)
-        : t1(t1_), t2(t2_), p1(p1_), p2(p2_), lat(lat_), job(job_)
+             const int &lat_, const int &j_)
+        : t1(t1_), t2(t2_), p1(p1_), p2(p2_), lat(lat_), j(j_)
     {
     }
 

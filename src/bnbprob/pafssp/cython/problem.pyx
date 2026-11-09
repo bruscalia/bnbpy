@@ -6,13 +6,13 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 
-import logging
-from typing import List, Literal, Optional, Tuple
+from typing import Literal
 
 from bnbprob.pafssp.cpp.environ cimport (
+    InstanceData,
     JobPtr,
-    MachineGraph,
     Permutation,
+    Sigma,
     iga,
     intensify,
     local_search,
@@ -20,16 +20,28 @@ from bnbprob.pafssp.cpp.environ cimport (
     quick_constructive,
     randomized_heur
 )
-from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
-from bnbprob.pafssp.cython.pysigma cimport PySigma, sigma_to_py
-from bnbprob.pafssp.cython.utils cimport create_machine_graph, get_mach_graph
-from bnbprob.pafssp.machinegraph import MachineGraph as MachGraphInterface
+from bnbprob.pafssp.cython.instance cimport FlowShopInstanceData
+from bnbprob.pafssp.jobs import PyJob, PySigma
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
 cdef:
     int DEFAULT_SEED = 42
+
+
+cdef object _job_to_py(JobPtr job, list s):
+    # Copies the C++ job data into a plain Python snapshot
+    return PyJob(job.j, job.p, job.r, job.q, job.lat, s)
+
+
+cdef object _sigma_to_py(const Sigma& sigma):
+    cdef:
+        size_t i
+        vector[JobPtr] jobs = sigma.get_jobs()
+    return PySigma(
+        sigma.m, [_job_to_py(jobs[i], []) for i in range(jobs.size())], sigma.C
+    )
 
 
 cdef class PermFlowShop(Problem):
@@ -47,6 +59,23 @@ cdef class PermFlowShop(Problem):
     heuristic by Palmer (1965), 'multistart' applies randomized
     multi-iteration NEH, and 'iga' uses the Iterated Greedy Algorithm
     by Ruiz & Stützle (2007).
+
+    Attributes
+    ----------
+    data : FlowShopInstanceData
+        Instance data shared by all nodes of the same problem
+        (read-only).
+
+    Notes
+    -----
+    Lifetime: the root is created with :meth:`from_p`, or as
+    ``PermFlowShop(data)`` with ``data`` from :meth:`create_data`.
+    Every node (root, children, and heuristic solutions) keeps a reference
+    to the same :class:`FlowShopInstanceData` in its ``data`` attribute,
+    which owns
+    the jobs and the machine graph, so any node stays valid after the
+    root is garbage-collected. A bare ``PermFlowShop()`` has
+    ``data = None`` and is only a placeholder.
 
     References
     ----------
@@ -73,95 +102,186 @@ cdef class PermFlowShop(Problem):
 
     def __init__(
         self,
+        FlowShopInstanceData data=None,
         constructive: Literal['neh', 'quick', 'multistart', 'iga'] = 'neh',
     ) -> None:
+        """Instantiate the root problem.
+
+        Parameters
+        ----------
+        data : Optional[FlowShopInstanceData], optional
+            Instance data, built with :meth:`create_data`,
+            ``FlowShopInstanceData.from_p`` or
+            ``FlowShopInstanceData.from_instance``. By default None,
+            which gives a placeholder that cannot be solved.
+
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
+            Constructive heuristic, by default 'neh'
+
+        Raises
+        ------
+        ValueError
+            If ``data`` is an uninitialized ``FlowShopInstanceData``
+        """
         self.solution = Solution()
         self.constructive = <string> constructive.encode("utf-8")
         self.simple_upgraded = False
+        if data is not None:
+            if data.ptr() == NULL:
+                raise ValueError(
+                    'data must be an initialized FlowShopInstanceData'
+                )
+            self.set_data(data)
+
+    @staticmethod
+    def create_data(p, edges=None):
+        """Build instance data from processing times and machine-graph
+        edges, to be passed to the constructor.
+
+        Shortcut for ``FlowShopInstanceData.from_p(p, edges)``.
+
+        Parameters
+        ----------
+        p : list[list[int]]
+            Processing times for each job (row) on each machine (column)
+
+        edges : Optional[list[tuple[int, int]]], optional
+            Machine-precedence edges, by default None (sequential)
+
+        Returns
+        -------
+        FlowShopInstanceData
+            Instance data
+
+        Raises
+        ------
+        ValueError
+            If ``p`` is empty, has rows of different lengths, or its
+            number of columns differs from the number of machines in the
+            graph. ``CyclicGraphError`` (a ``ValueError``) if the edges
+            contain a cycle.
+        """
+        return FlowShopInstanceData.from_p(p, edges)
 
     @classmethod
     def from_p(
         cls,
-        p: List[List[int]],
-        edges: Optional[List[Tuple[int, int]]] = None,
-        constructive: Literal['neh', 'quick', 'multistart', 'iga'] = 'neh'
-    ) -> 'PermFlowShop':
-        cdef:
-            PermFlowShop problem
-            MachineGraph mach_graph
-            vector[vector[int]] pp
-            int m
+        p,
+        edges=None,
+        constructive: Literal['neh', 'quick', 'multistart', 'iga'] = 'neh',
+    ):
+        """Instantiate the root problem from processing times and
+        machine-graph edges.
 
-        # Get number of machines from processing times
-        m = len(p[0]) if p and p[0] else 0
+        Builds new instance data for this root, shared by all nodes
+        derived from it. To build several roots on the same data, use
+        ``cls(data)`` with ``data`` from :meth:`create_data`.
 
-        # Create sequential MachineGraph
-        if edges is None:
-            edges = [
-                (i, i + 1) for i in range(m - 1)
-            ]
-        mi = MachGraphInterface.from_edges(edges)
-        mach_graph = create_machine_graph(mi)
+        Parameters
+        ----------
+        p : list[list[int]]
+            Processing times for each job (row) on each machine (column)
 
-        # Create Permutation with processing times and MachineGraph
-        pp = p
+        edges : Optional[list[tuple[int, int]]], optional
+            Machine-precedence edges, by default None (sequential)
 
-        problem = cls(
-            constructive=constructive,
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
+            Constructive heuristic, by default 'neh'
+
+        Returns
+        -------
+        PermFlowShop
+            Root node of the problem (instance of ``cls``)
+
+        Raises
+        ------
+        ValueError
+            If ``p`` is empty, has rows of different lengths, or its
+            number of columns differs from the number of machines in the
+            graph. ``CyclicGraphError`` (a ``ValueError``) if the edges
+            contain a cycle.
+        """
+        return cls(
+            FlowShopInstanceData.from_p(p, edges), constructive=constructive
         )
-        problem.set_perm(pp, mach_graph)
-        return problem
+
+    @classmethod
+    def from_data(
+        cls,
+        FlowShopInstanceData data,
+        constructive: Literal['neh', 'quick', 'multistart', 'iga'] = 'neh',
+    ):
+        """Instantiate the root problem from instance data.
+
+        Equivalent to ``cls(data, constructive)``, except that ``data``
+        is required.
+
+        Parameters
+        ----------
+        data : FlowShopInstanceData
+            Instance data, built with :meth:`create_data`,
+            ``FlowShopInstanceData.from_p`` or
+            ``FlowShopInstanceData.from_instance``
+
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
+            Constructive heuristic, by default 'neh'
+
+        Returns
+        -------
+        PermFlowShop
+            Root node of the problem (instance of ``cls``)
+
+        Raises
+        ------
+        ValueError
+            If ``data`` is None or uninitialized
+        """
+        if data is None:
+            raise ValueError(
+                'data must be an initialized FlowShopInstanceData'
+            )
+        return cls(data, constructive=constructive)
 
     @property
     def sequence(self):
-        """Get the current job sequence"""
+        """Get the current job sequence with start times.
+
+        Start times are computed on export. For partial permutations
+        they follow ``sigma1 + free_jobs (current order) + sigma2``.
+        Jobs are plain-Python snapshots (:class:`PyJob`).
+        """
         cdef:
-            int i
+            size_t i
             vector[JobPtr] seq
-            PyJob job
-        out = []
+            vector[vector[int]] starts
         seq = self.perm.get_sequence()
-        for i in range(seq.size()):
-            job = job_to_py(seq[i])
-            out.append(job)
-        return out
+        starts = self.perm.compute_starts()
+        return [_job_to_py(seq[i], starts[i]) for i in range(seq.size())]
 
     @property
     def free_jobs(self):
+        """Get the list of free (unscheduled) jobs, without start times"""
         cdef:
-            int i
+            size_t i
             vector[JobPtr] seq
-            PyJob job
-        out = []
         seq = self.perm.get_free_jobs()
-        for i in range(seq.size()):
-            job = job_to_py(seq[i])
-            out.append(job)
-        return out
+        return [_job_to_py(seq[i], []) for i in range(seq.size())]
 
     @property
     def sigma1(self):
-        cdef:
-            PySigma py_sigma
-        py_sigma = sigma_to_py(self.perm.sigma1)
-        return py_sigma
+        """Snapshot of the partial sequence fixed at the beginning"""
+        return _sigma_to_py(self.perm.sigma1)
 
     @property
     def sigma2(self):
-        cdef:
-            PySigma py_sigma
-        py_sigma = sigma_to_py(self.perm.sigma2)
-        return py_sigma
+        """Snapshot of the partial sequence fixed at the end"""
+        return _sigma_to_py(self.perm.sigma2)
 
     cpdef object get_mach_graph(PermFlowShop self):
-        cdef:
-            MachineGraph mg_cpp
-            object mg
-        mg_cpp = self.perm.get_mach_graph()
-        mg = get_mach_graph(mg_cpp)
-        return mg
+        self._inst()
+        return self.data.mach_graph
 
-    cpdef PermFlowShop warmstart(PermFlowShop self):
+    cpdef Problem warmstart(PermFlowShop self):
         if self.constructive == 'neh':
             return self.neh_initialization()
         elif self.constructive == 'multistart':
@@ -175,9 +295,10 @@ cdef class PermFlowShop(Problem):
             PermFlowShop child
             Permutation perm
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         jobs = self.perm.get_sequence()
-        perm = quick_constructive(jobs, self.perm.mach_graph)
+        perm = quick_constructive(jobs, deref(inst))
         child = self._copy()
         child.perm = perm
         return child
@@ -187,9 +308,10 @@ cdef class PermFlowShop(Problem):
             PermFlowShop child
             Permutation perm
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         jobs = self.perm.get_sequence()
-        perm = neh_initialization(jobs, self.perm.mach_graph)
+        perm = neh_initialization(jobs, deref(inst))
         child = self._copy()
         child.perm = perm
         return child
@@ -200,40 +322,42 @@ cdef class PermFlowShop(Problem):
             PermFlowShop child
             Permutation perm
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         jobs = self.perm.get_sequence()
         n_jobs = jobs.size()
         if n_jobs > 0:
-            n_machines = deref(jobs[0]).p.size()
+            n_machines = deref(inst).get_m()
             n_iter = n_jobs * n_machines
         else:
             n_iter = 0
-        perm = randomized_heur(jobs, n_iter, DEFAULT_SEED, self.perm.mach_graph)
+        perm = randomized_heur(jobs, n_iter, DEFAULT_SEED, deref(inst))
         child = self._copy()
         child.perm = perm
         return child
 
     cpdef PermFlowShop iga_initialization(PermFlowShop self):
         cdef:
-            int n_jobs, n_iter, d
+            int n_jobs, n_iter, n_machines, d
             Permutation perm
             PermFlowShop sol_alt, neh_sol
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         neh_sol = self.neh_initialization()
         jobs = neh_sol.perm.get_sequence()
         n_jobs = jobs.size()
         if n_jobs > 0:
-            n_machines = deref(jobs[0]).p.size()
+            n_machines = deref(inst).get_m()
             n_iter = n_jobs * n_machines
         else:
             n_iter = 0
         d = max(5, n_jobs // 10)
-        perm = iga(jobs, self.perm.mach_graph, n_iter, d, DEFAULT_SEED)
+        perm = iga(jobs, deref(inst), n_iter, d, DEFAULT_SEED)
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop local_search(PermFlowShop self):
@@ -242,16 +366,17 @@ cdef class PermFlowShop(Problem):
             Permutation perm
             PermFlowShop sol_alt
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         lb = self.solution.lb
         jobs = self.perm.get_sequence()
-        perm = local_search(jobs, self.perm.mach_graph)
+        perm = local_search(jobs, deref(inst))
         new_cost = perm.calc_lb_full()
         if new_cost < lb:
             sol_alt = self._copy()
             sol_alt.perm = perm
-            sol_alt.solution.set_feasible()
             sol_alt.solution.set_lb(new_cost)
+            sol_alt.solution.set_feasible()
             return sol_alt
         return None
 
@@ -260,13 +385,14 @@ cdef class PermFlowShop(Problem):
             Permutation perm
             PermFlowShop sol_alt
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         jobs = self.perm.get_sequence()
-        perm = randomized_heur(jobs, n_iter, seed, self.perm.mach_graph)
+        perm = randomized_heur(jobs, n_iter, seed, deref(inst))
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop iga_heur(PermFlowShop self, int n_iter, int d, unsigned int seed=0):
@@ -274,13 +400,14 @@ cdef class PermFlowShop(Problem):
             Permutation perm
             PermFlowShop sol_alt
             vector[JobPtr] jobs
+            const InstanceData* inst = self._inst()
 
         jobs = self.neh_initialization().perm.get_sequence()
-        perm = iga(jobs, self.perm.mach_graph, n_iter, d, seed)
+        perm = iga(jobs, deref(inst), n_iter, d, seed)
         sol_alt = self._copy()
         sol_alt.perm = perm
-        sol_alt.solution.set_feasible()
         sol_alt.solution.set_lb(perm.calc_lb_full())
+        sol_alt.solution.set_feasible()
         return sol_alt
 
     cpdef PermFlowShop intensify(
@@ -291,6 +418,12 @@ cdef class PermFlowShop(Problem):
             double new_cost, lb
             PermFlowShop sol_alt
 
+        # Both permutations must point into the same InstanceData
+        self._inst()
+        if reference.data is not self.data:
+            raise ValueError(
+                'reference must share the same FlowShopInstanceData'
+            )
         sol_alt = self._copy()
         sol_alt.perm = intensify(
             self.perm,
@@ -308,11 +441,11 @@ cdef class PermFlowShop(Problem):
     cpdef bool is_feasible(PermFlowShop self):
         return self.perm.is_feasible()
 
-    cpdef list[PermFlowShop] branch(PermFlowShop self):
+    cpdef list[Problem] branch(PermFlowShop self):
         # Get fixed and unfixed job lists to create new solution
         cdef:
             int j, J
-            list[PermFlowShop] out
+            list[Problem] out
 
         J = self.perm.free_jobs.size()
         out = [None] * J
@@ -331,7 +464,7 @@ cdef class PermFlowShop(Problem):
         self.perm.update_params()
         return <double>self.perm.lower_bound_1m()
 
-    cpdef PermFlowShop primal_heuristic(PermFlowShop self):
+    cpdef Problem primal_heuristic(PermFlowShop self):
         return self.local_search()
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j):
@@ -356,22 +489,40 @@ cdef class PermFlowShop(Problem):
     cpdef void update_params(PermFlowShop self):
         self.perm.update_params()
 
-    cpdef void push_job(PermFlowShop self, int& j):
+    cpdef void push_job(PermFlowShop self, int j):
+        """Schedule the free job at position ``j`` of ``free_jobs``"""
+        if j < 0 or <size_t>j >= self.perm.free_jobs.size():
+            raise IndexError(
+                f'free job position {j} out of range'
+                f' (number of free jobs: {self.perm.free_jobs.size()})'
+            )
         self.perm.push_job(j)
 
     cdef void _push_job(PermFlowShop self, int& j):
         self.perm.push_job(j)
 
-    cpdef void compute_starts(PermFlowShop self):
-        self.perm.compute_starts()
-
     cpdef int calc_idle_time(PermFlowShop self):
         return self.perm.calc_idle_time()
 
     cpdef int calc_tot_time(PermFlowShop self):
-        return self.calc_tot_time()
+        return self.perm.calc_tot_time()
 
-    cpdef PermFlowShop copy(PermFlowShop self, bool deep=False):
+    cpdef PermFlowShop copy(PermFlowShop self, bool deep=True):
+        cdef:
+            PermFlowShop other
+        # The permutation is always copied (C++ value);
+        # instance data is immutable and shared
+        other = self._copy()
+        other.simple_upgraded = self.simple_upgraded
+        if deep:
+            other.solution = self.solution.copy(deep=False)
+        else:
+            other.solution = self.solution
+        return other
+
+    cpdef PermFlowShop child_copy(PermFlowShop self, bool deep=False):
+        """Copy of the problem with a new solution (the permutation is
+        always copied, so ``deep`` has no effect)."""
         return self._copy()
 
     cdef PermFlowShop _copy(PermFlowShop self):
@@ -380,14 +531,10 @@ cdef class PermFlowShop(Problem):
         child = PermFlowShop.__new__(PermFlowShop)
         child.solution = Solution()
         child.constructive = self.constructive
+        child.data = self.data
         child.perm = self.perm
         child.simple_upgraded = False
         return child
-
-    cpdef void perm_copy(PermFlowShop self):
-        cdef:
-            Permutation perm
-        perm = self.perm
 
 
 cdef class BenchPermFlowShop(PermFlowShop):
@@ -408,6 +555,7 @@ cdef class BenchPermFlowShop(PermFlowShop):
         child = BenchPermFlowShop.__new__(BenchPermFlowShop)
         child.solution = Solution()
         child.constructive = self.constructive
+        child.data = self.data
         child.perm = self.perm
         child.simple_upgraded = False
         return child
@@ -419,8 +567,18 @@ cdef class PermFlowShop1M(PermFlowShop):
     reduces per-node cost at the expense of a looser bound.
     """
 
-    cpdef double calc_bound(PermFlowShop1M self):
-        return self.perm.calc_lb_1m()
+    cpdef double stronger_bound(PermFlowShop1M self):
+        if self.perm.free_jobs.size() == 0:
+            return <double>self.perm.calc_lb_full()
+
+        # The single-machine bound with updated heads and tails
+        # is the strongest bound of this variant
+        if self.simple_upgraded:
+            return self.solution.lb
+
+        self.simple_upgraded = True
+        self.perm.update_params()
+        return <double>self.perm.lower_bound_1m()
 
     cdef PermFlowShop1M _copy(PermFlowShop1M self):
         cdef:
@@ -428,6 +586,7 @@ cdef class PermFlowShop1M(PermFlowShop):
         child = PermFlowShop1M.__new__(PermFlowShop1M)
         child.solution = Solution()
         child.constructive = self.constructive
+        child.data = self.data
         child.perm = self.perm
         child.simple_upgraded = False
         return child

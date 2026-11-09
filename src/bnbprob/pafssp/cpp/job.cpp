@@ -7,8 +7,6 @@
 
 #include "mach_graph.hpp"
 
-using namespace std;
-
 // Private helper function to initialize with MachineGraph precedence
 // relationships
 void Job::initialize(const std::vector<int> &p_,

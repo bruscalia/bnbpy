@@ -2,17 +2,9 @@
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
 from libcpp cimport bool
-from libcpp.vector cimport vector
 
-from bnbprob.maxclique.graph cimport (
-    DSatur,
-    Graph,
-    NodeWrapper,
-    wrap_node
-)
-from bnbprob.maxclique.node cimport Node, c_find_max_node_degree
+from bnbprob.maxclique.graph cimport DSatur, Graph, NodeWrapper
 from bnbpy.cython.problem cimport Problem
-from bnbpy.cython.solution cimport Solution
 
 
 cdef class MaxClique(Problem):
@@ -36,8 +28,12 @@ cdef class MaxClique(Problem):
 
     cpdef bool is_feasible(self)
 
-    cpdef list[MaxClique] branch(self)
+    cpdef list[Problem] branch(self)
+
+    cpdef MaxClique copy(self, bool deep=*)
 
     cpdef MaxClique child_copy(self, bool deep=*)
+
+    cpdef Problem warmstart(self)
 
     cdef void _inner_warmstart(self)

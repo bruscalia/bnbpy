@@ -44,6 +44,9 @@ class LagrangianDeadline(Problem):
     """
     _lb_refs: dict[int, int]
     """References to lower bounds for dominance rules, indexed by the mask."""
+    _owns_lb_ref: bool
+    """Whether this node set the reference of its mask in `_lb_refs`,
+    so that evaluating it again does not mark it as dominated by itself."""
 
     def __init__(self, jobs: Collection[Job]) -> None:
         super().__init__()
@@ -61,6 +64,7 @@ class LagrangianDeadline(Problem):
         self._mask = 0
         self._is_dominated = False
         self._lb_refs = defaultdict(lambda: LARGE_INT)
+        self._owns_lb_ref = False
         self._compute_completion_times()
 
     @property
@@ -94,11 +98,16 @@ class LagrangianDeadline(Problem):
             return LARGE_INT
         cost = self._unscheduled_term.lagrangian + self._fixed_term
         # This will cause the early pruning
-        # of dominated nodes
-        if self._fixed_term >= self._lb_refs[self._mask]:
+        # of dominated nodes (ties are dominated unless this node
+        # is the one that set the reference)
+        ref = self._lb_refs[self._mask]
+        if self._fixed_term > ref or (
+            self._fixed_term == ref and not self._owns_lb_ref
+        ):
             self._is_dominated = True
             return cost
         self._lb_refs[self._mask] = self._fixed_term
+        self._owns_lb_ref = True
         return cost
 
     def clean_cache(self) -> None:
@@ -177,6 +186,7 @@ class LagrangianDeadline(Problem):
         other._mask = self._mask
         other._is_dominated = False
         other._lb_refs = self._lb_refs
+        other._owns_lb_ref = False
         return other
 
 

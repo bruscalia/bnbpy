@@ -121,7 +121,9 @@ class TestColGen:
             'res',
         ),
         [
-            (20, -2, 100, 5, (OptStatus.INFEASIBLE, None, 19.89)),
+            # Stopped by maxiter without a feasible solution:
+            # only the relaxation bound is known
+            (20, -2, 100, 5, (OptStatus.RELAXATION, None, 19.89)),
             (5, -6, 100, 10, (OptStatus.FEASIBLE, 16.29, 8.59)),
             (5, -6, 100, 100, (OptStatus.OPTIMAL, 16.29, 16.29)),
         ],
@@ -160,12 +162,48 @@ class TestColGen:
             initial_red_cost=-2,
             max_iter_price=100,
         )
+        # Populate the pricing solutions before copying
+        problem.calc_bound()
+        assert problem.pricing.solutions
         other = problem.copy()
         assert problem.pricing is not other.pricing, 'Pricing is the same'
         assert problem.pricing.solutions is not other.pricing.solutions, (
             'Pricing solutions are the same'
         )
-        for _ in range(len(problem.pricing.solutions)):
-            a = problem.pricing.solutions.pop()
-            b = problem.pricing.solutions.pop()
-            assert a is b, "Solutions don't share mem loc in Pricing"
+        # Same elements (shared), independent sets
+        assert all(
+            any(a is b for b in other.pricing.solutions)
+            for a in problem.pricing.solutions
+        )
+        other.pricing.solutions.add(PriceSol(red_cost=-1.0, new_col='new'))
+        assert len(other.pricing.solutions) == (
+            len(problem.pricing.solutions) + 1
+        )
+
+    @staticmethod
+    def test_max_iter_price_validation() -> None:
+        with pytest.raises(ValueError, match='max_iter_price'):
+            DummyColumnGenProblem(initial_cost=20, max_iter_price=0)
+
+    @staticmethod
+    def test_price_sol_equality() -> None:
+        a = PriceSol(red_cost=-1.0, new_col=[1, 0, 1])
+        b = PriceSol(red_cost=-1.0, new_col=[1, 0, 1])
+        c = PriceSol(red_cost=-2.0, new_col=[1, 0, 1])
+        assert a == b
+        assert hash(a) == hash(b)
+        # Same column with another reduced cost is a different solution,
+        # but equal objects always share the same hash
+        assert a != c
+        assert hash(a) == hash(c)
+        assert len({a, b, c}) == 2  # noqa: PLR2004
+
+    @staticmethod
+    def test_pricing_skips_repeated_solutions() -> None:
+        class RepeatedPricing(DummyPricing):
+            def solve(self) -> PriceSol:  # noqa: PLR6301
+                return PriceSol(red_cost=-1.0, new_col='col')
+
+        pricing = RepeatedPricing()
+        assert pricing.evaluate() is not None
+        assert pricing.evaluate() is None

@@ -16,29 +16,32 @@ class BaseNodeManager(Generic[P]):
     *   ``_filter_by_lb`` — physically discard nodes with lb >= max_lb.
     *   ``_clear`` — empty the underlying data structure.
 
-    All other public methods implement the template logic and should not be
-    overridden.
+    All other public methods implement the template logic, together with
+    the internal (C-level) bound memory, and should not be overridden.
+
+    Nodes removed by ``_filter_by_lb`` should be marked as fathomed
+    (not cleaned up), so that saved search trees remain consistent.
     """
 
-    bound_memory: dict[float, set[Node[P]]]
-    lb: float
-    bound_nodes: set[Node[P]]
-    nodecount: int
-
-    def memorize(self, node: Node[P]) -> None:
-        """Record *node* in ``bound_memory``; update ``lb``/``bound_nodes``."""
+    @property
+    def bound_memory(self) -> dict[float, set[Node[P]]]:
+        """Nodes in the manager grouped by lower bound (read-only)"""
         ...
 
-    def forget(self, node: Node[P]) -> None:
-        """Remove *node* from ``bound_memory``; recompute ``lb`` if needed."""
+    @property
+    def lb(self) -> float:
+        """Lower bound recorded when nodes were enqueued; it may be stale
+        until :meth:`get_lower_bound` is called (read-only)"""
         ...
 
-    def filter_memory_lb(self, max_lb: float) -> None:
-        """Remove all ``bound_memory`` entries with key >= *max_lb*."""
+    @property
+    def bound_nodes(self) -> set[Node[P]]:
+        """Nodes with the minimum lower bound (read-only)"""
         ...
 
-    def clear_memory(self) -> None:
-        """Reset ``bound_memory``, ``lb``, and ``bound_nodes``."""
+    @property
+    def nodecount(self) -> int:
+        """Number of nodes in the manager (read-only)"""
         ...
 
     def size(self) -> int:
@@ -58,7 +61,8 @@ class BaseNodeManager(Generic[P]):
         ...
 
     def _filter_by_lb(self, max_lb: float) -> None:
-        """Internal hook — physically remove nodes with lb >= *max_lb*."""
+        """Internal hook — physically remove nodes with lb >= *max_lb*
+        (and mark them with ``node.fathom()``)."""
         ...
 
     def _clear(self) -> None:

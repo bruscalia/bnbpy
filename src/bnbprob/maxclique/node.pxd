@@ -42,19 +42,13 @@ cdef extern from *:
 
 cdef void c_add_neighbor(Node& node, Node& neighbor)
 
-cdef bool c_can_color(Node& node, int color)
-
 cdef void c_set_color(Node& node, int color)
 
 cdef void c_notify_colored_neighbor(Node* node, int color)
 
-cdef void c_color_clean(Node& node)
-
 cdef Node* c_clean_copy(const Node& node)
 
 cdef Node* c_pop_max_node(vector[Node*]& nodes)
-
-cdef Node* c_find_max_sat_node(vector[Node*]& nodes)
 
 cdef Node* c_find_max_node_degree(vector[Node*]& nodes)
 

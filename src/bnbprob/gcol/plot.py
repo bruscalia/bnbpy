@@ -1,6 +1,6 @@
 # mypy: ignore-errors
 
-from typing import Any, Dict, Generic, List, Optional, Tuple, TypeVar
+from typing import Any, Dict, List, Optional, Tuple
 
 import gif
 import matplotlib.pyplot as plt
@@ -15,27 +15,6 @@ from bnbprob.milpy import ScipyResults
 
 INT_TOL = 0.5
 SMALL = 1e-6
-
-
-class A:
-    pass
-
-
-T = TypeVar('T', bound=A)
-
-
-class MyClass(Generic[T]):
-    def foo(self, arg: list[T]) -> None:
-        pass
-
-
-class SubA(A):
-    pass
-
-
-class SubMyClass(MyClass[SubA]):
-    def foo(self, arg: list[SubA]) -> None:
-        pass
 
 
 def draw_gc_from_nodes(nodes: Dict[int, ColorNode], **kwargs: Any) -> None:

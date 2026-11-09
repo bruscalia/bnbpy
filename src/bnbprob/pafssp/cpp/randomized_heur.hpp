@@ -4,6 +4,7 @@
 
 #include <vector>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "permutation.hpp"
@@ -12,6 +13,6 @@
 // optional seed
 Permutation randomized_heur(std::vector<JobPtr> jobs_, int n_iter,
                             unsigned int seed,
-                            const std::shared_ptr<MachineGraph> &mach_graph);
+                            const InstanceData &inst);
 
 #endif  // RANDOMIZED_HEUR_HPP

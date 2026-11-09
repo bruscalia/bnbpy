@@ -48,12 +48,12 @@ class TestBaseNodeManagerInterface:
     def test_enqueue_raises(self) -> None:
         mgr = self._bare_manager()
         node = _make_node(LB_LOW)
-        with pytest.raises((NotImplementedError, Exception)):
+        with pytest.raises(NotImplementedError):
             mgr.enqueue(node)
 
     def test_dequeue_raises(self) -> None:
         mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
+        with pytest.raises(NotImplementedError):
             mgr.dequeue()
 
     def test_get_lower_bound_empty(self) -> None:
@@ -63,13 +63,15 @@ class TestBaseNodeManagerInterface:
 
     def test_clear_raises(self) -> None:
         mgr = self._bare_manager()
-        with pytest.raises((NotImplementedError, Exception)):
+        with pytest.raises(NotImplementedError):
             mgr.clear()
 
-    def test_filter_by_lb_is_noop(self) -> None:
-        """filter_by_lb on the base class is a no-op (does not raise)."""
+    def test_filter_by_lb_raises(self) -> None:
+        """_filter_by_lb is abstract: a silent no-op would leave filtered
+        nodes in the structure while the node count drops."""
         mgr = self._bare_manager()
-        mgr.filter_by_lb(MAX_LB_FILTER)  # should not raise
+        with pytest.raises(NotImplementedError):
+            mgr.filter_by_lb(MAX_LB_FILTER)
 
     @staticmethod
     def test_enqueue_all_uses_enqueue() -> None:
@@ -396,7 +398,8 @@ class TestBoundMemory:
         mgr.enqueue(medium)
         mgr.dequeue()  # pops medium (LIFO)
         assert mgr.lb == LB_LOW
-        mgr.dequeue()  # pops low (LIFO) — sole min-lb node; lb stays stale (lazy)
+        # Pops low (LIFO), the sole min-lb node: lb stays stale (lazy)
+        mgr.dequeue()
         assert len(mgr.bound_memory) == 0
 
     @staticmethod

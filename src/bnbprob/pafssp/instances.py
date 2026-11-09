@@ -32,9 +32,9 @@ def random_parallel_semilines(
     AssemblyFlowShopInstance
         The generated AssemblyFlowShopInstance.
     """
-    random.seed(seed)
+    rng = random.Random(seed)
     M = n_machines[0] + n_machines[1] - 1
-    p = [[random.randint(1, 100) for _ in range(M)] for _ in range(n_jobs)]
+    p = [[rng.randint(1, 100) for _ in range(M)] for _ in range(n_jobs)]
     edges = parallel_semilines_edges(n_machines)
     return AssemblyFlowShopInstance(p, edges)
 
@@ -86,9 +86,9 @@ def random_dpm(
     AssemblyFlowShopInstance
         The generated AssemblyFlowShopInstance.
     """
-    random.seed(seed)
+    rng = random.Random(seed)
     M = n_machines[0] + n_machines[1]
-    p = [[random.randint(1, 100) for _ in range(M)] for _ in range(n_jobs)]
+    p = [[rng.randint(1, 100) for _ in range(M)] for _ in range(n_jobs)]
     edges = dpm_layout_edges(n_machines[0], n_machines[1])
     return AssemblyFlowShopInstance(p, edges)
 

@@ -3,6 +3,7 @@
 #include <climits>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "permutation.hpp"
 #include "sigma.hpp"
@@ -10,9 +11,9 @@
 
 // Find the best move for the current jobs, return SearchState
 SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
-                         const std::shared_ptr<MachineGraph>& mach_graph)
+                         const MachineGraph& mach_graph)
 {
-    int M = jobs_[0]->p.size();
+    int M = mach_graph.get_M();
     // Safeguard
     std::vector<JobPtr> jobs = jobs_;
     // Initialize search state
@@ -30,8 +31,8 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
         int seq_size = free_jobs.size();
         std::vector<Sigma> sigma_fwd(seq_size + 1);
         std::vector<Sigma> sigma_bwd(seq_size + 1);
-        sigma_fwd[0] = Sigma(M, mach_graph);
-        sigma_bwd[seq_size] = Sigma(M, mach_graph);
+        sigma_fwd[0] = Sigma(M, &mach_graph);
+        sigma_bwd[seq_size] = Sigma(M, &mach_graph);
         // Gradually complete the sigmas
         // Each sigma is a shallow copy of the previous one with one job more
         for (int j = 0; j < seq_size; ++j)
@@ -66,18 +67,18 @@ SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
     return best;
 }
 
-Permutation local_search(std::vector<JobPtr>& jobs_,
-                         const std::shared_ptr<MachineGraph>& mach_graph)
+Permutation local_search(std::vector<JobPtr>& jobs_, const InstanceData& inst)
 {
     std::vector<JobPtr> jobs = jobs_;
-    int M = jobs[0]->p.size();
+    int M = inst.get_m();
+    const MachineGraph* mach_graph = &inst.get_mach_graph();
     // Empty initialization
     SearchState state(jobs, INT_MAX);
 
     // Local search loop
     for (int k = 0; k < 1000; ++k)
     {
-        SearchState next = ls_best_move(state.jobs, mach_graph);
+        SearchState next = ls_best_move(state.jobs, *mach_graph);
         if (next.cost < state.cost)
         {
             state = std::move(next);
@@ -93,7 +94,7 @@ Permutation local_search(std::vector<JobPtr>& jobs_,
         sigma1.job_to_bottom(jp);
     }
     Permutation perm =
-        Permutation(jobs.size(), jobs.size(), sigma1, std::vector<JobPtr>{},
-                    Sigma(sigma1.m, mach_graph), mach_graph);
+        Permutation(&inst, static_cast<int>(jobs.size()), sigma1,
+                    std::vector<JobPtr>{}, Sigma(sigma1.m, mach_graph));
     return perm;
 }

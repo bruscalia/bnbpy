@@ -1,14 +1,13 @@
-import logging
-from typing import List, Literal, Optional, Tuple
+from typing import List, Literal, Optional, Tuple, TypeVar
 
-from bnbprob.pafssp.cython.pyjob import PyJob
-from bnbprob.pafssp.cython.pysigma import PySigma
+from bnbprob.pafssp.cython.instance import FlowShopInstanceData
+from bnbprob.pafssp.jobs import PyJob, PySigma
 from bnbprob.pafssp.machinegraph import MachineGraph
 from bnbpy.cython.problem import Problem
 
-log = logging.getLogger(__name__)
-
 Constructive = Literal['neh', 'quick', 'multistart', 'iga']
+
+P = TypeVar('P', bound='PermFlowShop')
 
 class PermFlowShop(Problem):
     """
@@ -25,6 +24,23 @@ class PermFlowShop(Problem):
     heuristic by Palmer (1965), 'multistart' applies randomized
     multi-iteration NEH, and 'iga' uses the Iterated Greedy Algorithm
     by Ruiz & Stützle (2007).
+
+    Attributes
+    ----------
+    data : FlowShopInstanceData
+        Instance data shared by all nodes of the same problem
+        (read-only).
+
+    Notes
+    -----
+    Lifetime: the root is created with :meth:`from_p`, or as
+    ``PermFlowShop(data)`` with ``data`` from :meth:`create_data`.
+    Every node (root, children, and heuristic solutions) keeps a reference
+    to the same :class:`FlowShopInstanceData` in its ``data`` attribute,
+    which owns
+    the jobs and the machine graph, so any node stays valid after the
+    root is garbage-collected. A bare ``PermFlowShop()`` has
+    ``data = None`` and is only a placeholder.
 
     References
     ----------
@@ -51,69 +67,176 @@ class PermFlowShop(Problem):
 
     def __init__(
         self,
+        data: Optional[FlowShopInstanceData] = None,
         constructive: Constructive = 'neh',
-    ) -> None: ...
-    def __del__(self) -> None: ...
+    ) -> None:
+        """Instantiate the root problem.
+
+        Parameters
+        ----------
+        data : Optional[FlowShopInstanceData], optional
+            Instance data, built with :meth:`create_data`,
+            ``FlowShopInstanceData.from_p`` or
+            ``FlowShopInstanceData.from_instance``. By default None,
+            which gives a placeholder that cannot be solved.
+
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
+            Constructive heuristic, by default 'neh'
+
+        Raises
+        ------
+        ValueError
+            If ``data`` is an uninitialized ``FlowShopInstanceData``
+        """
+        ...
+
+    constructive: bytes
+    """Constructive heuristic used by `warmstart` (encoded string)"""
+    simple_upgraded: bool
+    """Whether `stronger_bound` already applied the single-machine
+    upgrade to this node"""
+
     @property
     def lb(self) -> float: ...
     @property
+    def data(self) -> Optional[FlowShopInstanceData]:
+        """Instance data shared by all nodes of the same problem
+        (None for a bare ``PermFlowShop()``)."""
+        ...
+
+    @property
     def sequence(self) -> List[PyJob]:
-        """Get the current job sequence"""
+        """Get the current job sequence with start times.
+
+        Start times are computed on export. For partial permutations
+        they follow ``sigma1 + free_jobs (current order) + sigma2``.
+        Jobs are plain-Python snapshots that remain valid after this
+        problem and its instance data are garbage-collected.
+        """
         ...
 
     @property
     def free_jobs(self) -> List[PyJob]:
-        """Get the list of free (unscheduled) jobs"""
+        """Get the list of free (unscheduled) jobs, without start times"""
         ...
 
     @property
     def sigma1(self) -> PySigma:
-        """Get the current sigma1 (partial permutation of jobs)"""
+        """Snapshot of sigma1 (partial sequence fixed at the beginning)"""
         ...
 
     @property
     def sigma2(self) -> PySigma:
-        """Get the current sigma2 (partial permutation of jobs)"""
+        """Snapshot of sigma2 (partial sequence fixed at the end)"""
         ...
 
     def get_mach_graph(self) -> MachineGraph:
         """Get the machine graph for the problem"""
         ...
 
-    def get_sigma1_mach_graph(self) -> MachineGraph:
-        """Get the sigma1 machine graph"""
-        ...
-
-    def get_sigma2_mach_graph(self) -> MachineGraph:
-        """Get the sigma2 machine graph"""
-        ...
-
-    def compute_bound(self) -> None: ...
-    def check_feasible(self) -> bool: ...
-    @classmethod
-    def from_p(
-        cls,
+    @staticmethod
+    def create_data(
         p: List[List[int]],
         edges: Optional[List[Tuple[int, int]]] = None,
-        constructive: Constructive = 'neh',
-    ) -> 'PermFlowShop':
-        """Instantiate problem based on processing times and machine graph
+    ) -> FlowShopInstanceData:
+        """Build instance data from processing times and machine-graph
+        edges, to be passed to the constructor.
+
+        Shortcut for ``FlowShopInstanceData.from_p(p, edges)``.
 
         Parameters
         ----------
-        p : List[List[int]]
-            Processing times for each job
+        p : list[list[int]]
+            Processing times for each job (row) on each machine (column)
 
-        edges : Optional[List[Tuple[int, int]]], optional
-            Machine graph edges, by default None (sequential)
+        edges : Optional[list[tuple[int, int]]], optional
+            Machine-precedence edges, by default None (sequential)
 
-        constructive: Constructive
+        Returns
+        -------
+        FlowShopInstanceData
+            Instance data
+
+        Raises
+        ------
+        ValueError
+            If ``p`` is empty, has rows of different lengths, or its
+            number of columns differs from the number of machines in the
+            graph. ``CyclicGraphError`` (a ``ValueError``) if the edges
+            contain a cycle.
+        """
+        ...
+
+    @classmethod
+    def from_p(
+        cls: type[P],
+        p: List[List[int]],
+        edges: Optional[List[Tuple[int, int]]] = None,
+        constructive: Constructive = 'neh',
+    ) -> P:
+        """Instantiate the root problem from processing times and
+        machine-graph edges.
+
+        Builds new instance data for this root, shared by all nodes
+        derived from it. To build several roots on the same data, use
+        ``cls(data)`` with ``data`` from :meth:`create_data`.
+
+        Parameters
+        ----------
+        p : list[list[int]]
+            Processing times for each job (row) on each machine (column)
+
+        edges : Optional[list[tuple[int, int]]], optional
+            Machine-precedence edges, by default None (sequential)
+
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
             Constructive heuristic, by default 'neh'
 
         Returns
         -------
         PermFlowShop
-            Instance of the problem
+            Root node of the problem (instance of ``cls``)
+
+        Raises
+        ------
+        ValueError
+            If ``p`` is empty, has rows of different lengths, or its
+            number of columns differs from the number of machines in the
+            graph. ``CyclicGraphError`` (a ``ValueError``) if the edges
+            contain a cycle.
+        """
+        ...
+
+    @classmethod
+    def from_data(
+        cls: type[P],
+        data: FlowShopInstanceData,
+        constructive: Constructive = 'neh',
+    ) -> P:
+        """Instantiate the root problem from instance data.
+
+        Equivalent to ``cls(data, constructive)``, except that ``data``
+        is required.
+
+        Parameters
+        ----------
+        data : FlowShopInstanceData
+            Instance data, built with :meth:`create_data`,
+            ``FlowShopInstanceData.from_p`` or
+            ``FlowShopInstanceData.from_instance``
+
+        constructive : Literal['neh', 'quick', 'multistart', 'iga']
+            Constructive heuristic, by default 'neh'
+
+        Returns
+        -------
+        PermFlowShop
+            Root node of the problem (instance of ``cls``)
+
+        Raises
+        ------
+        ValueError
+            If ``data`` is None or uninitialized
         """
         ...
 
@@ -306,6 +429,12 @@ class PermFlowShop(Problem):
         -------
         PermFlowShop
             Improved solution
+
+        Raises
+        ------
+        ValueError
+            If ``reference`` does not share this problem's
+            ``FlowShopInstanceData``
         """
         ...
 
@@ -327,24 +456,18 @@ class PermFlowShop(Problem):
         ...
 
     def branch(self) -> List['PermFlowShop']:
-        """Generate child problems by branching."""
+        """Generate child problems by branching (one per free job)."""
         ...
 
-    def simple_bound_upgrade(self) -> None:
-        """Upgrade the lower bound using tighter release dates and wait times.
-
-        Calls ``update_params()`` to refresh head (r) and tail (q) values
-        for the free jobs, then recomputes the single-machine bound (LB1).
-        Time complexity: O(m n)."""
+    def stronger_bound(self) -> float:
+        """Stronger lower bound, applied in two stages: the first call
+        updates heads and tails (``update_params``) and returns the
+        single-machine bound; later calls return the two-machine bound
+        (LB5). For complete sequences, the makespan."""
         ...
 
-    def double_bound_upgrade(self) -> None:
-        """Upgrade the lower bound using two-machine relaxations (LB5).
-
-        Assumes ``update_params()`` has already been called (i.e.
-        ``simple_bound_upgrade`` was applied first). Recomputes the
-        two-machine bound using all machine pairs.
-        Time complexity: O(m² n)."""
+    def primal_heuristic(self) -> Optional['PermFlowShop']:
+        """Local search from the current sequence (see `local_search`)."""
         ...
 
     def calc_lb_1m(self) -> int:
@@ -370,11 +493,15 @@ class PermFlowShop(Problem):
         ...
 
     def push_job(self, j: int) -> None:
-        """Push job to the sequence."""
-        ...
+        """Schedule the free job at position ``j`` of ``free_jobs``
+        (at the end of sigma1 or at the beginning of sigma2, alternating
+        with the tree level).
 
-    def compute_starts(self) -> None:
-        """Compute start times for all jobs."""
+        Raises
+        ------
+        IndexError
+            If ``j`` is not a valid position in ``free_jobs``
+        """
         ...
 
     def calc_idle_time(self) -> int:
@@ -385,8 +512,19 @@ class PermFlowShop(Problem):
         """Calculate total completion time with time complexity of O(m)."""
         ...
 
-    def copy(self, deep: bool = False) -> 'PermFlowShop':
-        """Create a copy of the problem instance"""
+    def copy(self, deep: bool = True) -> 'PermFlowShop':
+        """Create a copy of the problem instance.
+
+        The permutation is always copied and the (immutable) instance data
+        is shared. A deep copy copies the solution; a shallow copy shares
+        it, as in :meth:`Problem.copy`. Use :meth:`child_copy` for a copy
+        with a new solution.
+        """
+        ...
+
+    def child_copy(self, deep: bool = False) -> 'PermFlowShop':
+        """Copy of the problem with a new solution (the permutation is
+        always copied, so ``deep`` has no effect)."""
         ...
 
 class BenchPermFlowShop(PermFlowShop):
@@ -408,19 +546,12 @@ class BenchPermFlowShop(PermFlowShop):
         ...
 
 class PermFlowShop1M(PermFlowShop):
-    """Variant of :class:`PermFlowShop` that applies only the
-    single-machine bound upgrade.
-
-    ``double_bound_upgrade`` is overridden as a no-op, so the two-machine
-    relaxation (LB5) is never applied. This reduces per-node cost at the
-    expense of a weaker bound.
+    """Variant of PermFlowShop that only ever applies the single-machine
+    bound upgrade. The two-machine bound (LB5) is never computed, which
+    reduces per-node cost at the expense of a looser bound.
     """
 
-    def calc_bound(self) -> float:
-        """Calculate single-machine lower bound."""
-        ...
-
-    def double_bound_upgrade(self) -> None:
-        """No-op override. Two-machine relaxation is disabled for this
-        variant."""
+    def stronger_bound(self) -> float:
+        """Single-machine bound with updated heads and tails (LB5 is never
+        computed). For complete sequences, the makespan."""
         ...

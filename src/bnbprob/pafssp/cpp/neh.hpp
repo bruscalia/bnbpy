@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "permutation.hpp"
@@ -17,12 +18,12 @@ inline bool desc_T(const JobPtr &a, const JobPtr &b)
 }
 
 Permutation neh_initialization(std::vector<JobPtr> &jobs,
-                             const std::shared_ptr<MachineGraph> &mach_graph);
+                               const InstanceData &inst);
 
-Permutation neh_core(std::vector<JobPtr> &jobs_,
-                     const std::shared_ptr<MachineGraph> &mach_graph);
+Permutation neh_core(std::vector<JobPtr> &jobs_, const InstanceData &inst);
 
-std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs, std::vector<JobPtr> &jobs,
-                            const std::shared_ptr<MachineGraph> &mach_graph);
+std::vector<JobPtr> neh_body(std::vector<JobPtr> sol_jobs,
+                             std::vector<JobPtr> &jobs,
+                             const MachineGraph &mach_graph);
 
 #endif  // NEH_HPP

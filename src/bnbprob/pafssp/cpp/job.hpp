@@ -6,8 +6,6 @@
 
 #include "mach_graph.hpp"
 
-using namespace std;
-
 class Job
 {
 public:
@@ -17,35 +15,25 @@ public:
     std::vector<int> r;
     std::vector<int> q;
     std::vector<std::vector<int>> lat;
-    std::vector<int> s;
 
     // Default constructor
-    Job() : j(0), p(), r(), q(), lat(), s() {}
+    Job() : j(0), p(), r(), q(), lat() {}
 
     // Constructor with job ID, processing times, and
     // MachineGraph
     Job(const int &j_, const std::vector<int> &p_,
         const MachineGraph &mach_graph)
-        : j(j_),
-          p(p_),
-          r(p_.size(), 0),
-          q(p_.size(), 0),
-          lat(p_.size()),
-          s(p_.size(), 0)
+        : j(j_), p(p_), r(p_.size(), 0), q(p_.size(), 0), lat(p_.size())
     {
         initialize(p_, mach_graph);
     }
 
-    // Parameterized constructor -> shared pointers
+    // Parameterized constructor
     Job(const int &j_, const std::vector<int> &p_, const std::vector<int> &r_,
-        const std::vector<int> &q_, const std::vector<std::vector<int>> &lat_,
-        const std::vector<int> &s_)
-        : j(j_), p(p_), r(r_), q(q_), lat(lat_), s(s_)
+        const std::vector<int> &q_, const std::vector<std::vector<int>> &lat_)
+        : j(j_), p(p_), r(r_), q(q_), lat(lat_)
     {
     }
-
-    // Destructor
-    ~Job() {}
 
     // Get total time
     int get_T() const;
@@ -60,7 +48,7 @@ private:
     void initialize(const std::vector<int> &p_, const MachineGraph &mach_graph);
 };
 
-// Type definition for raw pointer
-typedef Job *JobPtr;
+// Type definition for raw pointer (jobs are never mutated once built)
+typedef const Job *JobPtr;
 
 #endif  // JOB_HPP

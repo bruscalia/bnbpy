@@ -80,7 +80,7 @@ def disjunction_rule(m: PrecedenceModel, i: int, j: int) -> Any:
 
 
 def completion_rule(m: PrecedenceModel, i: int, j: int) -> Any:
-    return m.C[j] + m.p[i] <= m.C[i] + m.M * (1 - m.x[i, j])
+    return m.C[i] + m.p[j] <= m.C[j] + m.M * (1 - m.x[i, j])
 
 
 def deadline_rule(m: PrecedenceModel, j: int) -> Any:

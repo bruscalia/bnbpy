@@ -6,7 +6,7 @@
 
 #include "job.hpp"
 
-int SMALL = -1000000;
+static const int SMALL = -1000000;
 
 int get_max_value(const int *&ptr, int &m)
 {

@@ -17,7 +17,8 @@ class Node(Generic[P]):
 
     def __init__(self, problem: P, parent: 'Optional[Node[P]]' = None) -> None:
         """Instantiates a new `Node` object based on a (sub)problem.
-        The node is evaluated in terms of lower bound as it is initialized.
+        The node inherits the lower bound of its parent (or of the problem
+        solution, if root); it is only evaluated by `compute_bound`.
 
         Parameters
         ----------
@@ -29,15 +30,20 @@ class Node(Generic[P]):
         """
         ...
 
-    def __del__(self) -> None: ...
     def __lt__(self, other: 'Node[P]') -> bool: ...
     @property
     def solution(self) -> Solution: ...
     @property
     def index(self) -> int: ...
+    def cleanup(self) -> None:
+        """Releases the problem and the links to the parent and children
+        (called when the node is no longer needed in the search)."""
+        ...
+
     def compute_bound(self) -> None:
-        """Computes the lower bound of the problem and sets it to
-        problem attribute `lb`, which is referenced as a `Node` property.
+        """Computes the lower bound of the problem and updates the node
+        attribute `lb` as the maximum between its current value and the
+        problem lower bound.
         """
         ...
 
@@ -62,16 +68,16 @@ class Node(Generic[P]):
         """
         ...
 
-    def fathom(self) -> None:
-        """Sets solution status of node as 'FATHOMED'"""
+    def copy(self, deep: bool = True) -> 'Node[P]':
+        """Copies the node. A shallow copy shares the problem, parent
+        and level with this node (with a new index); a deep copy
+        copies the whole node."""
         ...
 
-    def copy(self, deep: bool = True) -> 'Node[P]': ...
     def branch(self) -> list['Node[P]']:
         """Calls `problem` `branch()` method to create derived sub-problems.
-        Each subproblem is used to instantiate a child node.
-        Child nodes are evaluated in terms of lower bound as they are
-        initialized.
+        Each subproblem is used to instantiate a child node, which inherits
+        the lower bound of this node (it is not evaluated here).
 
         Returns
         -------
@@ -104,7 +110,8 @@ class Node(Generic[P]):
         ...
 
     def upgrade_bound(self) -> None:
-        """Calls `problem` `upgrade_bound()` method to compute a stronger
-        lower bound, if possible, and updates node's lower bound accordingly.
+        """Calls `problem` `stronger_bound()` and, if the result is greater
+        than the current node lower bound, sets it via
+        `problem.upgrade_bound()` and updates the node lower bound.
         """
         ...

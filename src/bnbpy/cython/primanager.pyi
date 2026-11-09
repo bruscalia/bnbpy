@@ -46,7 +46,7 @@ class BestFirstSearch(PriorityManagerTemplate[P]):
     """Best-first search node manager.
 
     Dequeues the node with the smallest lower bound first.  Ties are broken
-    by tree depth (deeper nodes first) and then by insertion index (earlier
+    by tree depth (deeper nodes first) and then by insertion index (later
     insertions first).
 
     Priority key: ``(lb, -level, -index)``

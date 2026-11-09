@@ -69,12 +69,6 @@ def small_queue() -> CyclicBestSearch[MyProblem]:
 
 
 @pytest.fixture
-def sticky_small_queue() -> CyclicBestSearch[MyProblem]:
-    """A sticky-fallback CyclicBestSearch with low max_size."""
-    return CyclicBestSearch(max_size=FIVE, permanent_fallback=True)
-
-
-@pytest.fixture
 def permanent_small_queue() -> CyclicBestSearch[MyProblem]:
     """Alias for sticky_small_queue — permanent-fallback queue."""
     return CyclicBestSearch(max_size=FIVE, permanent_fallback=True)
@@ -515,27 +509,27 @@ class TestCyclicBestSearchFallback:
             small_queue.enqueue(_make_node(float(i), level=0))
         assert small_queue.use_fallback is True
 
-    # @staticmethod
-    # def test_dequeue_in_fallback(
-    #     small_queue: CyclicBestSearch[MyProblem],
-    # ) -> None:
-    #     nodes = [_make_node(float(i), level=0) for i in range(FIVE + TWO)]
-    #     for n in nodes:
-    #         small_queue.enqueue(n)
-    #     assert small_queue.use_fallback is True
-    #     assert small_queue.dequeue() is not None
+    @staticmethod
+    def test_dequeue_in_fallback(
+        small_queue: CyclicBestSearch[MyProblem],
+    ) -> None:
+        nodes = [_make_node(float(i), level=0) for i in range(FIVE + TWO)]
+        for n in nodes:
+            small_queue.enqueue(n)
+        assert small_queue.use_fallback is True
+        assert small_queue.dequeue() is not None
 
-    # @staticmethod
-    # def test_exits_fallback_after_drain(
-    #     small_queue: CyclicBestSearch[MyProblem],
-    # ) -> None:
-    #     for i in range(FIVE + TWO):
-    #         small_queue.enqueue(_make_node(float(i), level=0))
-    #     assert small_queue.use_fallback is True
-    #     while small_queue.size() > small_queue.max_size // 2:
-    #         small_queue.dequeue()
-    #     small_queue.dequeue()
-    #     assert small_queue.use_fallback is False
+    @staticmethod
+    def test_exits_fallback_after_drain(
+        small_queue: CyclicBestSearch[MyProblem],
+    ) -> None:
+        for i in range(FIVE + TWO):
+            small_queue.enqueue(_make_node(float(i), level=0))
+        assert small_queue.use_fallback is True
+        while small_queue.size() > small_queue.max_size // 2:
+            small_queue.dequeue()
+        small_queue.dequeue()
+        assert small_queue.use_fallback is False
 
     @staticmethod
     def test_fallback_filter_updates_count(
@@ -626,6 +620,16 @@ class TestDfsPriority:
         dfs_priority: DfsPriority[MyProblem],
     ) -> None:
         assert dfs_priority.dequeue() is None
+
+    @staticmethod
+    def test_clear_keeps_fallback(
+        dfs_priority: DfsPriority[MyProblem],
+    ) -> None:
+        """Fallback is permanent, also after clear() (e.g. on reset)."""
+        dfs_priority.enqueue(_make_node(LB_LOW))
+        dfs_priority.clear()
+        assert dfs_priority.use_fallback is True
+        assert dfs_priority.size() == 0
 
     @staticmethod
     def test_single_node_round_trip(

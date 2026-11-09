@@ -7,7 +7,7 @@ K = 0.5
 
 class CoverNode:
     index: int
-    sets: set['CoverNodeSet']
+    cover_sets: set['CoverNodeSet']
     covered: bool
 
     def __init__(
@@ -27,6 +27,7 @@ class CoverNode:
 
     def cover(self) -> None:
         if not self.covered:
+            self.covered = True
             for cover_set in self.cover_sets:
                 cover_set.cost -= 1
 

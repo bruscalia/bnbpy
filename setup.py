@@ -5,17 +5,6 @@ import sys
 from setuptools import Extension, setup
 
 # -----------------------------------------------------------------------------
-# BASE CONFIGURATION
-# -----------------------------------------------------------------------------
-
-with open('README.md', 'r', encoding='utf-8') as fh:
-    long_description = fh.read()
-
-BASE_PACKAGE = 'bnbpy'
-
-base_kwargs: dict[str, str | list[str]] = {}
-
-# -----------------------------------------------------------------------------
 # ARGPARSER
 # -----------------------------------------------------------------------------
 
@@ -32,12 +21,6 @@ parser.add_argument(
     dest='nocython',
     action='store_true',
     help='Whether pyx files shall be cythonized.',
-)
-parser.add_argument(
-    '--nolibs',
-    dest='nolibs',
-    action='store_true',
-    help='Whether the libraries should be compiled.',
 )
 parser.add_argument(
     '--markcython',
@@ -59,28 +42,29 @@ if params.markcython:
     Cython.Compiler.Options.annotate = True
 
 # -----------------------------------------------------------------------------
-# CLASS TO BUILD EXTENSIONS
-# -----------------------------------------------------------------------------
-
-
-# exception that is thrown when the build fails
-class CompilingFailed(Exception):
-    pass
-
-
-# -----------------------------------------------------------------------------
 # HANDLING CYTHON FILES
 # -----------------------------------------------------------------------------
 
+# Paths must be relative to the directory of setup.py (setuptools rejects
+# absolute paths in extension sources when building from an sdist)
 ROOT = os.path.dirname(os.path.realpath(__file__))
-CY_PATH = os.path.join(ROOT, 'src', 'bnbpy', 'cython')
-CY_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cython')
-CY_PATH_MAXCLIQUE = os.path.join(ROOT, 'src', 'bnbprob', 'maxclique')
-CPP_PATH_PAFSSP = os.path.join(ROOT, 'src', 'bnbprob', 'pafssp', 'cpp')
+CY_PATH = os.path.join('src', 'bnbpy', 'cython')
+CY_PATH_PAFSSP = os.path.join('src', 'bnbprob', 'pafssp', 'cython')
+CY_PATH_MAXCLIQUE = os.path.join('src', 'bnbprob', 'maxclique')
+CPP_PATH_PAFSSP = os.path.join('src', 'bnbprob', 'pafssp', 'cpp')
+
+
+def list_files(path: str, extension: str) -> list[str]:
+    return sorted(
+        f
+        for f in os.listdir(os.path.join(ROOT, path))
+        if f.endswith(extension)
+    )
+
+
 CPP_FILES_PAFSSP = [
     os.path.join(CPP_PATH_PAFSSP, f)
-    for f in os.listdir(CPP_PATH_PAFSSP)
-    if f.endswith('.cpp') and 'environ' not in f
+    for f in list_files(CPP_PATH_PAFSSP, '.cpp')
 ]
 
 
@@ -88,99 +72,43 @@ def get_ext_pafssp(f: str) -> list[str]:
     return [os.path.join(CY_PATH_PAFSSP, f)] + CPP_FILES_PAFSSP
 
 
-if params.nopyx:
-    ext_modules = []
+def pyx_files(path: str) -> list[str]:
+    return list_files(path, '.pyx')
 
-else:
-    try:
-        ext_modules_base = [
+
+ext_modules: list[Extension] = []
+
+if not params.nopyx:
+    ext_modules = (
+        [
             Extension(f'bnbpy.cython.{f[:-4]}', [os.path.join(CY_PATH, f)])
-            for f in os.listdir(CY_PATH)
-            if f.endswith('.pyx')
+            for f in pyx_files(CY_PATH)
         ]
-        ext_modules_pafssp = [
-            Extension(
-                'bnbprob.pafssp.cpp.environ',
-                [os.path.join(CPP_PATH_PAFSSP, 'environ.pyx')]
-                + CPP_FILES_PAFSSP,
-                include_dirs=[CPP_PATH_PAFSSP],
-                language='c++',
-            )
-        ] + [
+        + [
             Extension(
                 f'bnbprob.pafssp.cython.{f[:-4]}',
                 get_ext_pafssp(f),  # Mandatory to include all cpp files used
                 include_dirs=[CPP_PATH_PAFSSP],
             )
-            for f in os.listdir(CY_PATH_PAFSSP)
-            if f.endswith('.pyx')
+            for f in pyx_files(CY_PATH_PAFSSP)
         ]
-        ext_modules_maxclique = [
+        + [
             Extension(
                 f'bnbprob.maxclique.{f[:-4]}',
                 [os.path.join(CY_PATH_MAXCLIQUE, f)],
             )
-            for f in os.listdir(CY_PATH_MAXCLIQUE)
-            if f.endswith('.pyx')
+            for f in pyx_files(CY_PATH_MAXCLIQUE)
         ]
+    )
+    if not params.nocython:
+        # Compilation errors must not be hidden:
+        # there is no pure Python fallback for the Cython modules
+        from Cython.Build import cythonize
 
-        ext_modules_ = (
-            ext_modules_base + ext_modules_pafssp + ext_modules_maxclique
-        )
-        if params.nocython:
-            ext_modules = ext_modules_
-        else:
-            try:
-                from Cython.Build import cythonize
-
-                ext_modules = cythonize(  # type: ignore
-                    ext_modules_
-                )
-            except ImportError:
-                print('*' * 75)
-                print('No Cython package found to convert .pyx files.')
-                print(
-                    'If no compilation occurs, .py files will be used instead,'
-                    ' which provide the same results but with'
-                    ' worse computational time.'
-                )
-                print('*' * 75)
-                ext_modules = []
-
-    except Exception as e:
-        print('*' * 75)
-        print('Problems compiling .pyx files.')
-        print(f'Exception: {type(e)} - {e}')
-        print(
-            'If no compilation occurs, .py files will be used instead,'
-            ' which provide the same results but '
-            'with worse computational time.'
-        )
-        print('*' * 75)
-        ext_modules = []
+        ext_modules = cythonize(ext_modules)  # type: ignore
 
 # -----------------------------------------------------------------------------
 # RUN SETUP
 # -----------------------------------------------------------------------------
 
-compiled_kwargs = base_kwargs.copy()
-compiled_kwargs['ext_modules'] = ext_modules
-
-try:
-    setup(**compiled_kwargs)
-    print('*' * 75)
-    print('Installation successful at the first attempt.')
-    print('To verify compilation success run:')
-    print('from bnbpy import is_compiled')
-    print('*' * 75)
-except Exception as e:
-    print('*' * 75)
-    print(f'Exception: {type(e)} - {e}')
-    print('Running setup with cython compilation failed.')
-    print('Attempt to a pure Python setup.')
-    print(
-        'If no compilation occurs, .py files will be used instead,'
-        ' which provide the same results but with worse computational time.'
-    )
-    print('*' * 75)
-    setup(**base_kwargs)
+setup(ext_modules=ext_modules)

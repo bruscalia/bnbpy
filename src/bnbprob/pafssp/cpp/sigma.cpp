@@ -6,8 +6,6 @@
 
 #include "job.hpp"
 
-using namespace std;
-
 // Push job to bottom sequence
 void Sigma::job_to_bottom(JobPtr job)
 {
@@ -34,7 +32,7 @@ void Sigma::job_to_bottom(JobPtr job)
         this->C[k] = std::max(this->C[k], max_prev) + jp[k];
         this->p[k] += jp[k];
     }
-    // Create shared_ptr and add to jobs vector
+    // Add (borrowed) job pointer to jobs vector
     this->jobs.push_back(job);
 }
 

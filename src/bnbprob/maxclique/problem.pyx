@@ -38,7 +38,7 @@ cdef class MaxClique(Problem):
     cpdef bool is_feasible(self):
         return self.G.num_nodes == 0
 
-    cpdef list[MaxClique] branch(self):
+    cpdef list[Problem] branch(self):
         cdef:
             Node* selected_node
             Graph child_graph1, child_graph2
@@ -63,7 +63,20 @@ cdef class MaxClique(Problem):
 
         return [child_problem2, child_problem1]
 
-    cpdef MaxClique child_copy(self, bool deep=True):
+    cpdef MaxClique copy(self, bool deep=True):
+        """Copy of the problem (the graph is shared). A deep copy copies
+        the solution; a shallow copy shares it."""
+        cdef:
+            MaxClique other
+
+        other = self.child_copy(deep)
+        if deep:
+            other.solution = self.solution.copy(deep=False)
+        else:
+            other.solution = self.solution
+        return other
+
+    cpdef MaxClique child_copy(self, bool deep=False):
         cdef:
             MaxClique new_problem
 
@@ -74,7 +87,7 @@ cdef class MaxClique(Problem):
         new_problem.dsatur = self.dsatur
         return new_problem
 
-    cpdef MaxClique warmstart(self):
+    cpdef Problem warmstart(self):
         cdef:
             MaxClique child_problem
 

@@ -25,9 +25,6 @@ cdef class Solution:
         self.lb = -HUGE_VAL
         self.status = OptStatus.NO_SOLUTION
 
-    def __del__(self):
-        pass
-
     def __repr__(self) -> str:
         return self._signature
 
@@ -42,26 +39,35 @@ cdef class Solution:
         )
 
     cpdef void set_optimal(Solution self):
+        """Sets the status as ``OPTIMAL``."""
         self.status = OptStatus.OPTIMAL
 
     cpdef void set_lb(Solution self, double lb):
+        """Sets the lower bound; the status ``NO_SOLUTION`` becomes
+        ``RELAXATION``."""
         self.lb = lb
         if self.status == OptStatus.NO_SOLUTION:
             self.status = OptStatus.RELAXATION
 
     cpdef void set_feasible(Solution self):
+        """Sets the status as ``FEASIBLE`` and the cost as the current
+        lower bound (call `set_lb` first)."""
         self.status = OptStatus.FEASIBLE
         self.cost = self.lb
 
     cpdef void set_infeasible(Solution self):
+        """Sets the status as ``INFEASIBLE`` and the cost as infinity."""
         self.status = OptStatus.INFEASIBLE
         self.cost = HUGE_VAL
 
     cpdef void fathom(Solution self):
+        """Sets the status as ``FATHOM`` (pruned) and the cost as
+        infinity."""
         self.status = OptStatus.FATHOM
         self.cost = HUGE_VAL
 
     cpdef Solution copy(Solution self, bool deep=True):
+        """Returns a copy of the solution (cost, lb and status)."""
         if deep:
             return copy.deepcopy(self)
         return self._copy()

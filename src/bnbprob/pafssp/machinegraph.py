@@ -19,7 +19,9 @@ class MachineGraph:
     descendants: list[list[int]]
 
     @classmethod
-    def from_edges(self, edges: list[tuple[int, int]]) -> 'MachineGraph':
+    def from_edges(
+        cls, edges: list[tuple[int, int]], M: int | None = None
+    ) -> 'MachineGraph':
         """Creates a MachineGraph from a list of directed edges.
 
         Parameters
@@ -28,6 +30,11 @@ class MachineGraph:
             Edges of a directed acyclic graph (DAG)
             representing machine precedences.
 
+        M : int | None, optional
+            Number of machines. Machines without any edge (isolated)
+            are only part of the graph if ``M`` is given. By default None,
+            which infers it as the largest machine index plus one.
+
         Returns
         -------
         MachineGraph
@@ -35,14 +42,17 @@ class MachineGraph:
 
         Raises
         ------
-        ValueError
-            If the edge list is empty or contains a cycle.
+        CyclicGraphError
+            If the edges contain a cycle (subclass of ``ValueError``).
 
         ValueError
-            If the graph is not a DAG.
+            If ``M`` is given and an edge refers to a machine index
+            outside ``range(M)``.
         """
         # Create directed graph from edges
         G = nx.DiGraph()
+        if M is not None:
+            G.add_nodes_from(range(M))
         G.add_edges_from(edges)
 
         # Check for cycles
@@ -51,7 +61,14 @@ class MachineGraph:
 
         # Get number of machines
         N = list[int](G.nodes)
-        M = max(N, default=-1) + 1
+        n_inferred = max(N, default=-1) + 1
+        if M is None:
+            M = n_inferred
+        elif n_inferred > M:
+            raise ValueError(
+                f'Edges refer to machine {n_inferred - 1},'
+                f' but the graph has {M} machines'
+            )
 
         # Get precedence and successor lists
         prec: list[list[int]] = [[] for _ in range(M)]
@@ -73,6 +90,4 @@ class MachineGraph:
             desc_nodes = list(nx.descendants(G, i))
             descendants[i] = desc_nodes
 
-        return MachineGraph(
-            M, prec, succ, topo_order, rev_topo_order, descendants
-        )
+        return cls(M, prec, succ, topo_order, rev_topo_order, descendants)

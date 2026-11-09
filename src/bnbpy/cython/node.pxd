@@ -7,7 +7,7 @@ from libcpp cimport bool
 import copy
 
 from bnbpy.cython.counter cimport Counter
-from bnbpy.cython.problem cimport Problem, P
+from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
 
@@ -40,8 +40,8 @@ cdef class Node:
     cpdef void set_solution(self, Solution solution)
 
     cdef inline void fathom(self):
-        """Sets solution status of node as 'FATHOMED'"""
-        self.solution.fathom()
+        """Sets solution status of node as 'FATHOM'"""
+        self.problem.solution.fathom()
 
     cpdef Node copy(self, bool deep=*)
 
@@ -58,9 +58,9 @@ cdef class Node:
 
     cpdef void upgrade_bound(self)
 
-    cdef Node child_problem(self, P problem)
+    cdef Node child_problem(self, Problem problem)
 
     cdef Node shallow_copy(self)
 
 
-cdef Node init_node(P problem, Node parent=*)
+cdef Node init_node(Problem problem, Node parent=*)

@@ -3,10 +3,8 @@
 
 cimport cython
 from cpython.ref cimport PyObject
-from libcpp cimport bool
 from libcpp.vector cimport vector
 
-from bnbpy.cython.manager cimport BaseNodeManager
 from bnbpy.cython.node cimport Node
 
 
@@ -17,9 +15,10 @@ cdef extern from *:
 
     // POD entry stored in the C++ heap for NodePriQueue.
     // Lifetime: C++ heap owns one reference to obj.
-    //   - push()              : Py_INCREF obj
-    //   - pop() / pop_min_bound(): transfers ownership to caller (no DECREF)
-    //   - clear() / filter()  : Py_DECREF obj for discarded entries
+    //   - push()             : Py_INCREF obj
+    //   - pop()              : transfers ownership to caller (no DECREF)
+    //   - clear()            : Py_DECREF obj for discarded entries
+    //   - filter()           : returns discarded entries; caller DECREFs
     struct NodePriEntry {
         PyObject* obj;
         double lb;
@@ -61,27 +60,6 @@ cdef extern from *:
             std::pop_heap(heap.begin(), heap.end(), cmp);
             NodePriEntry entry = heap.back();
             heap.pop_back();
-            size_t sz = heap.size();
-            if (heap.capacity() > 2 * sz + RESERVE_BLOCK) {
-                heap.shrink_to_fit();
-                heap.reserve(sz + RESERVE_BLOCK);
-            }
-            return entry;
-        }
-
-        // pop_min_bound: transfers ownership to caller.
-        // Same capacity-shrink policy as pop().
-        NodePriEntry pop_min_bound() {
-            size_t best = 0;
-            for (size_t i = 1; i < heap.size(); ++i) {
-                if (heap[i].lb < heap[best].lb) best = i;
-            }
-            NodePriEntry entry = heap[best];
-            heap[best] = heap.back();
-            heap.pop_back();
-            if (!heap.empty()) {
-                std::make_heap(heap.begin(), heap.end(), cmp);
-            }
             size_t sz = heap.size();
             if (heap.capacity() > 2 * sz + RESERVE_BLOCK) {
                 heap.shrink_to_fit();
@@ -133,7 +111,6 @@ cdef extern from *:
         NodePriQueue()
         void push(PyObject* obj, double lb, const vector[double]& priority)
         NodePriEntry pop()
-        NodePriEntry pop_min_bound()
         vector[NodePriEntry] filter(double max_lb)
         void clear()
         size_t size()

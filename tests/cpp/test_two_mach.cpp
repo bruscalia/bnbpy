@@ -41,9 +41,9 @@ TEST_CASE("TwoMach - Johnson's algorithm basic", "[two_mach]")
         // j2 sorted by descending t2: [job2(t2=3), job0(t2=2)]
         // Final: [job1, job2, job0]
 
-        REQUIRE(seq[0].job.j == 1);
-        REQUIRE(seq[1].job.j == 2);
-        REQUIRE(seq[2].job.j == 0);
+        REQUIRE(seq[0].j == 1);
+        REQUIRE(seq[1].j == 2);
+        REQUIRE(seq[2].j == 0);
     }
 
     SECTION("All jobs prefer early processing (t1 <= t2)")
@@ -68,9 +68,9 @@ TEST_CASE("TwoMach - Johnson's algorithm basic", "[two_mach]")
 
         // All go to j1, sorted by ascending t1
         REQUIRE(seq.size() == 3);
-        REQUIRE(seq[0].job.j == 0);  // t1 = 1
-        REQUIRE(seq[1].job.j == 1);  // t1 = 2
-        REQUIRE(seq[2].job.j == 2);  // t1 = 3
+        REQUIRE(seq[0].j == 0);  // t1 = 1
+        REQUIRE(seq[1].j == 1);  // t1 = 2
+        REQUIRE(seq[2].j == 2);  // t1 = 3
     }
 
     SECTION("All jobs prefer late processing (t1 > t2)")
@@ -95,9 +95,9 @@ TEST_CASE("TwoMach - Johnson's algorithm basic", "[two_mach]")
 
         // All go to j2, sorted by descending t2
         REQUIRE(seq.size() == 3);
-        REQUIRE(seq[0].job.j == 2);  // t2 = 3 (highest)
-        REQUIRE(seq[1].job.j == 1);  // t2 = 2
-        REQUIRE(seq[2].job.j == 0);  // t2 = 1 (lowest)
+        REQUIRE(seq[0].j == 2);  // t2 = 3 (highest)
+        REQUIRE(seq[1].j == 1);  // t2 = 2
+        REQUIRE(seq[2].j == 0);  // t2 = 1 (lowest)
     }
 }
 
@@ -135,8 +135,8 @@ TEST_CASE("TwoMach - with latency", "[two_mach]")
             // j2: [job0(t2=7)]
             // Final: [job1, job0]
 
-            REQUIRE(seq[0].job.j == 1);
-            REQUIRE(seq[1].job.j == 0);
+            REQUIRE(seq[0].j == 1);
+            REQUIRE(seq[1].j == 0);
         }
 
         SECTION("Machines 1 and 2 without significant latency")
@@ -152,8 +152,8 @@ TEST_CASE("TwoMach - with latency", "[two_mach]")
             // Both go to j2, sorted descending by t2
             // Final: [job1(t2=3), job0(t2=2)]
 
-            REQUIRE(seq[0].job.j == 1);
-            REQUIRE(seq[1].job.j == 0);
+            REQUIRE(seq[0].j == 1);
+            REQUIRE(seq[1].j == 0);
         }
     }
 }
@@ -207,7 +207,7 @@ TEST_CASE("TwoMach - edge cases", "[two_mach]")
         const JobTimes1D& seq = two_mach.get_seq(0, 1);
 
         REQUIRE(seq.size() == 1);
-        REQUIRE(seq[0].job.j == 0);
+        REQUIRE(seq[0].j == 0);
     }
 
     SECTION("Jobs with equal t1 and t2")
@@ -232,8 +232,8 @@ TEST_CASE("TwoMach - edge cases", "[two_mach]")
         // Both have t1 == t2, so t1 <= t2 is true, go to j1
         // Sorted by ascending t1: job0(3), job1(5)
         REQUIRE(seq.size() == 2);
-        REQUIRE(seq[0].job.j == 0);
-        REQUIRE(seq[1].job.j == 1);
+        REQUIRE(seq[0].j == 0);
+        REQUIRE(seq[1].j == 1);
     }
 }
 
@@ -258,7 +258,7 @@ TEST_CASE("TwoMach - verify JobTimes properties", "[two_mach]")
         REQUIRE(seq.size() == 1);
 
         const JobTimes& jt = seq[0];
-        REQUIRE(jt.job.j == 0);
+        REQUIRE(jt.j == 0);
         REQUIRE(jt.p1 == 3);
         REQUIRE(jt.p2 == 5);
         REQUIRE(jt.t1 == 3);  // p1 + lat (lat = 0)

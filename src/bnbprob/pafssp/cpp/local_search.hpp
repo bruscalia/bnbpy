@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "instance_data.hpp"
 #include "job.hpp"
 #include "mach_graph.hpp"
 #include "permutation.hpp"
@@ -27,9 +28,8 @@ struct SearchState
 };
 
 SearchState ls_best_move(const std::vector<JobPtr>& jobs_,
-                         const std::shared_ptr<MachineGraph>& mach_graph);
+                         const MachineGraph& mach_graph);
 
-Permutation local_search(std::vector<JobPtr>& jobs_,
-                         const std::shared_ptr<MachineGraph>& mach_graph);
+Permutation local_search(std::vector<JobPtr>& jobs_, const InstanceData& inst);
 
 #endif  // LOCAL_SEARCH_HPP

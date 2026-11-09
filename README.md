@@ -64,7 +64,7 @@ For editable (development) mode, which allows you to track changes in the source
 python -m pip install -e .[dev]
 ```
 
-All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements and extension settings are in [pyproject.toml](./pyproject.toml).
+All package dependencies and metadata are specified in [setup.cfg](./setup.cfg). Build requirements are in [pyproject.toml](./pyproject.toml) and the Cython extensions are defined in [setup.py](./setup.py).
 
 
 ### Building
@@ -102,7 +102,7 @@ class MyProblem(Problem):
         pass
 
     def branch(self):
-        # Return a list of subproblems if not fathomed
+        # Return a list of subproblems (an empty list if none)
         pass
 
 # Apply Branch & Bound
@@ -168,9 +168,14 @@ class MyCG(bbp.ColumnGenProblem):
 ## Base Problems
 
 The `bnbprob` package incorporates elements of `bnbpy` to solve classical examples.
-It is installed alongside `bnbpy`.
+It is installed alongside `bnbpy`, but some of its modules depend on development packages
+(such as `pydantic` and `pyomo`), so install it with the `dev` extra to use them:
 
-See examples for [MILP](#milp), [Permutation Flow Shop](#flow-shop), and [Graph Coloring](#graph-coloring) problems below.
+```shell
+pip install bnbpy[dev]
+```
+
+See examples for [MILP](#milp), [Permutation Flow Shop](#permutation-flow-shop), and [Graph Coloring](#graph-coloring) problems below.
 
 ### MILP
 
@@ -192,9 +197,9 @@ A_ub = np.array([
 b_ub = np.array([12.0, 6.0])
 
 milp = MILP(c, A_ub=A_ub, b_ub=b_ub)
-bfs = BranchAndBound(milp)
-sol = bfs.solve()
-print(f"Sol: {sol} | x: {sol.x}")
+bnb = BranchAndBound(milp)
+sol = bnb.solve()
+print(f"Sol: {sol} | x: {sol.problem.results.x}")
 # >>> Sol: Status: OPTIMAL | Cost: -18.0 | LB: -18.0 | x: [2. 2.]
 ```
 
@@ -219,9 +224,11 @@ sol = bnb.solve(
     maxiter=1000000, timelimit=600
 )
 print(sol)
-# >>> Status: OPTIMAL | Cost: 1431 | LB: 1431
+# >>> Status: OPTIMAL | Cost: 1431.0 | LB: 1431.0
 
-plot_gantt(sol.sequence, figsize=[8, 3])
+# The sequence holds plain-Python job snapshots (PyJob)
+# with processing times `p` and start times `s` on each machine
+plot_gantt(sol.problem.sequence, figsize=[8, 3])
 ```
 
 ![pfssp](./data/images/gantt.png)
@@ -238,7 +245,7 @@ from bnbpy import BranchAndBound
 # Instances are available in the 'data' folder
 instance = gcol.load_instance("./data/gcol/gcol_70_7.txt")
 
-# Solve a 70-node instance to optimality in 24s
+# Solve a 70-node instance to optimality in about 11-24s
 # With only heuristics to generate columns, it took only 14s
 # The commercial solver Gurobi took 81s to find the optimal solution
 # but could only prove optimality within 51 min
@@ -258,7 +265,7 @@ problem = gcol.ColGenColor(
 bnb = BranchAndBound(problem)
 sol = bnb.solve(maxiter=1000)
 print(sol)
-# >>> Status: OPTIMAL | Cost: 17 | LB: 17
+# >>> Status: OPTIMAL | Cost: 17.0 | LB: 17.0
 ```
 
 ## Development

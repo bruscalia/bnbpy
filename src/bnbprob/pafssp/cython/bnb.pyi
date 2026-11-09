@@ -4,7 +4,6 @@ from bnbpy.cython.node import Node
 from bnbpy.cython.primanager import PriorityManagerTemplate
 from bnbpy.cython.search import BranchAndBound
 
-HEUR_BASE: int = 100
 EVAL_NODE: str
 
 class DfsFlowShop(PriorityManagerTemplate[PermFlowShop]):
@@ -26,7 +25,12 @@ class DfsLevelQueue(LevelQueue[PermFlowShop]):
 
 class CycleBestFlowShop(CyclicBestSearch[PermFlowShop]):
     """Cyclic best-first search node manager specialised for PermFlowShop,
-    using :class:`DfsFlowShop` as the per-level priority queue.
+    using :class:`DfsLevelQueue` as the per-level priority queue.
+
+    With ``max_size`` negative (e.g. ``-1``) the manager starts in
+    fallback mode (deepest level first); with ``permanent_fallback=True``
+    it never leaves it, which gives a depth-first search with best-first
+    order within each level.
     """
 
     def __init__(
@@ -37,8 +41,10 @@ class CycleBestFlowShop(CyclicBestSearch[PermFlowShop]):
 
 class LazyBnB(BranchAndBound[PermFlowShop]):
     """Subclass of :class:`~bnbpy.cython.search.BranchAndBound` with a
-    ``post_eval_callback`` that upgrades lower bounds via a 2-machine
-    relaxation (``problem.double_bound_upgrade``).
+    ``post_eval_callback`` that upgrades lower bounds in two stages via
+    ``Node.upgrade_bound`` (``PermFlowShop.stronger_bound``): first the
+    single-machine bound with updated heads and tails, then the
+    two-machine relaxation (LB5), unless the node can already be pruned.
 
     The search always uses ``eval_node='in'`` and a :class:`DfsFlowShop`
     priority queue.
@@ -80,8 +86,9 @@ class LazyBnB(BranchAndBound[PermFlowShop]):
     def post_eval_callback(self, node: Node[PermFlowShop]) -> None:
         """Upgrade lower bounds after node evaluation.
 
-        Calls ``node.c_upgrade_bound()`` (one-machine) and, if the node is
-        deep enough, the two-machine upgrade as well.
+        Upgrades the bound with the single-machine relaxation (updated
+        heads and tails) and, if the node is still not pruned and deep
+        enough (see ``delay_lb5``), with the two-machine relaxation.
 
         Parameters
         ----------
@@ -123,10 +130,12 @@ class CutoffBnB(LazyBnB):
         ...
 
 class BenchCutoffBnB(CutoffBnB):
-    """Benchmarking variant of :class:`CutoffBnB`.
+    """Benchmarking variant of :class:`CutoffBnB`, intended for
+    :class:`BenchPermFlowShop` problems.
 
-    The ``post_eval_callback`` skips the ``update_params`` step so that
-    timings for the two-machine bound alone can be measured in isolation.
+    The ``post_eval_callback`` skips the ``update_params`` step (already
+    done by ``BenchPermFlowShop.calc_bound``) and applies only the
+    two-machine bound upgrade, so that its timing can be measured.
     """
 
     def post_eval_callback(self, node: Node[BenchPermFlowShop]) -> None:  # type: ignore[override]
@@ -145,20 +154,16 @@ class CallbackBnB(LazyBnB):
 
     *   ``solution_callback`` runs a local search (remove-reinsertion)
         whenever a new incumbent is found.
-    *   ``dequeue`` triggers an intensification move every
+    *   ``dequeue_callback`` triggers an intensification move every
         ``heur_factor`` explored nodes.
     """
-
-    base_heur_factor: int
-    heur_factor: int
-    heur_calls: int
 
     def __init__(
         self,
         problem: PermFlowShop,
         save_tree: bool = False,
         delay_lb5: bool = False,
-        heur_factor: int = HEUR_BASE,
+        heur_factor: int = 100,
     ) -> None:
         """Initialise CallbackBnB.
 
@@ -175,7 +180,7 @@ class CallbackBnB(LazyBnB):
 
         heur_factor : int, optional
             Number of nodes explored between intensification calls,
-            by default :data:`HEUR_BASE`.
+            by default 100.
         """
         ...
 
@@ -189,13 +194,14 @@ class CallbackBnB(LazyBnB):
         """
         ...
 
-    def dequeue(self) -> Node[PermFlowShop]:
-        """Dequeue the next node and trigger intensification if due.
+    def dequeue_callback(self, node: Node[PermFlowShop]) -> None:
+        """Trigger intensification if due (every ``heur_factor``
+        explored nodes).
 
-        Returns
-        -------
-        Node[PermFlowShop]
-            Next node to process.
+        Parameters
+        ----------
+        node : Node[PermFlowShop]
+            Node that was just dequeued.
         """
         ...
 

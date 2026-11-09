@@ -23,8 +23,6 @@ __all__ = [
     'Node',
 ]
 
-from logging import getLogger
-
 from bnbpy.colgen import (
     ColumnGenProblem,
     Master,
@@ -32,6 +30,7 @@ from bnbpy.colgen import (
     PriceSol,
     Pricing,
 )
+from bnbpy.cython import is_compiled
 from bnbpy.cython.levelqueue import CyclicBestSearch
 from bnbpy.cython.manager import BaseNodeManager, FifoManager, LifoManager
 from bnbpy.cython.node import Node
@@ -48,17 +47,3 @@ from bnbpy.cython.search import (
 )
 from bnbpy.cython.solution import Solution
 from bnbpy.plot import plot_tree
-
-log = getLogger(__name__)
-
-try:
-    from bnbpy.cython import is_compiled
-except (ModuleNotFoundError, ImportError) as e:
-    from logging import getLogger
-
-    log = getLogger(__name__)
-    log.error('Cython modules not found')
-    log.error(e)
-
-    def is_compiled() -> bool:
-        return False

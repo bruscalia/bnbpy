@@ -46,6 +46,10 @@ Or with the ``dev`` extra for tests and linters:
 
    python -m pip install .[dev]
 
+The example problems in ``bnbprob`` (used in the Usage section) depend on
+some of these development packages (such as ``pydantic`` and ``pyomo``),
+so install the ``dev`` extra to run them (``pip install bnbpy[dev]``).
+
 .. _basic_usage:
 
 Basic Usage
@@ -72,7 +76,7 @@ Branch & Bound
            pass
 
        def branch(self):
-           # Return a list of subproblems if not fathomed
+           # Return a list of subproblems (an empty list if none)
            pass
 
    # Apply Branch & Bound

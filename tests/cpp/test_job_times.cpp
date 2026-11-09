@@ -3,6 +3,9 @@
 #include "job_times.hpp"
 #include "mach_graph.hpp"
 
+// Two-machine cache entries hold the job index only, not a Job copy
+static_assert(sizeof(JobTimes) == 6 * sizeof(int));
+
 TEST_CASE("JobTimes construction", "[job_times]")
 {
     SECTION("Manual constructor with all parameters")
@@ -17,14 +20,14 @@ TEST_CASE("JobTimes construction", "[job_times]")
         MachineGraph mach_graph(M, prec, succ, topo_order, descendants);
         Job job(0, {3, 5, 2}, mach_graph);
 
-        JobTimes jt(10, 15, 3, 5, 2, job);
+        JobTimes jt(10, 15, 3, 5, 2, job.j);
 
         REQUIRE(jt.t1 == 10);
         REQUIRE(jt.t2 == 15);
         REQUIRE(jt.p1 == 3);
         REQUIRE(jt.p2 == 5);
         REQUIRE(jt.lat == 2);
-        REQUIRE(jt.job.j == 0);
+        REQUIRE(jt.j == 0);
     }
 
     SECTION("Constructor from job and machine indices")
@@ -57,7 +60,7 @@ TEST_CASE("JobTimes construction", "[job_times]")
             REQUIRE(jt.p1 == 3);
             REQUIRE(jt.p2 == 5);
             REQUIRE(jt.lat == job.lat[0][1]);
-            REQUIRE(jt.job.j == 0);
+            REQUIRE(jt.j == 0);
         }
 
         SECTION("JobTimes for machines 0 and 2")
@@ -104,7 +107,7 @@ TEST_CASE("JobTimes with different job configurations", "[job_times]")
 
         JobTimes jt(0, 1, job);
 
-        REQUIRE(jt.job.j == 5);
+        REQUIRE(jt.j == 5);
         REQUIRE(jt.p1 == 4);
         REQUIRE(jt.p2 == 3);
         // t1 = p[0] + lat[0][1] = 4 + 0 = 4
@@ -126,7 +129,7 @@ TEST_CASE("JobTimes with different job configurations", "[job_times]")
 
         JobTimes jt(0, 1, job);
 
-        REQUIRE(jt.job.j == 42);
+        REQUIRE(jt.j == 42);
         REQUIRE(jt.p1 == 10);
         REQUIRE(jt.p2 == 20);
     }

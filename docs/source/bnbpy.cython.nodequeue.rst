@@ -1,34 +1,24 @@
 Node Priority Queue
 ===================
 
-The ``nodequeue`` module provides a C++-backed priority queue for node
-management.  :class:`~bnbpy.cython.nodequeue.PriorityManagerInterface`
-is the abstract base class and extends
-:class:`~bnbpy.cython.manager.BaseNodeManager`.
-:class:`~bnbpy.cython.nodequeue.BestFirstSearch` is the built-in
-concrete implementation that selects nodes by lowest lower bound.
+The ``nodequeue`` module provides
+:class:`~bnbpy.cython.nodequeue.NodePriQueueWrapper`, a min-heap of nodes
+with ``vector[double]`` priorities (compared lexicographically) backed by a
+native C++ binary heap.
 
-For level-based managers built on top of this module see
-:doc:`bnbpy.cython.levelqueue`.
+It is the low-level building block of the priority managers
+(:class:`~bnbpy.cython.primanager.PriorityManagerTemplate` and its
+subclasses, see :doc:`bnbpy.cython.primanager`) and of each
+:class:`~bnbpy.cython.levelqueue.LevelQueue` of the level-based managers
+(see :doc:`bnbpy.cython.levelqueue`). It does not track lower bounds by
+itself: that is done by :class:`~bnbpy.cython.manager.BaseNodeManager`.
 
 
-PriorityManagerInterface
-------------------------
+NodePriQueueWrapper
+-------------------
 
-.. autoclass:: bnbpy.cython.nodequeue::PriorityManagerInterface
+.. autoclass:: bnbpy.cython.nodequeue::NodePriQueueWrapper
    :class-doc-from: both
-   :members: not_empty, size, enqueue, enqueue_all, dequeue,
-             get_lower_bound, pop_lower_bound, clear, filter_by_lb, pop_all
+   :members: push, pop, filter, size, clear
    :undoc-members:
-   :show-inheritance:
-   :member-order: bysource
-
-
-BestFirstSearch
----------------
-
-.. autoclass:: bnbpy.cython.nodequeue::BestFirstSearch
-   :class-doc-from: both
-   :members:
-   :show-inheritance:
    :member-order: bysource

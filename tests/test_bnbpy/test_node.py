@@ -141,6 +141,18 @@ class TestNode:
         assert shallow_copy.solution is node.solution
         assert deep_copy.solution is not node.solution
 
+    @staticmethod
+    def test_shallow_copy_is_a_sibling(parent_problem: MyProblem) -> None:
+        """A shallow copy shares parent and level (it is not a child)."""
+        root = Node(problem=parent_problem)
+        child = root.branch()[0]
+        copy = child.copy(deep=False)
+        assert copy.parent is root
+        assert copy.level == child.level
+        assert copy.lb == child.lb
+        assert copy.problem is child.problem
+        assert copy.index != child.index
+
     # ------------------------------------------------------------------
     # primal_heuristic
     # ------------------------------------------------------------------

@@ -1,24 +1,15 @@
 # distutils: language = c++
 # cython: language_level=3str, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False, nonecheck=False
 
-from dataclasses import dataclass
-from heapq import heapify, heappop
-
-from libcpp cimport bool
 from libcpp.vector cimport vector
-from libcpp.queue cimport priority_queue
 
 from bnbprob.maxclique.node cimport (
     Node,
     c_add_neighbor,
-    c_can_color,
     c_set_color,
     c_notify_colored_neighbor,
-    c_color_clean,
     c_clean_copy,
     c_pop_max_node,
-    c_find_max_sat_node,
-    c_find_max_node_degree,
     c_alloc_node,
     c_free_node
 )
@@ -67,9 +58,6 @@ cdef class Graph:
         return self._active_size
 
     cdef inline Node* c_next_node(self):
-        cdef:
-            Node* node
-
         return self._active_nodes.back()
 
     cpdef NodeWrapper next_node(self)

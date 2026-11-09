@@ -8,8 +8,6 @@ cdef class Counter:
 
     cdef inline int next(Counter self):
         self.value += 1
-        return self.get_value()
-
-    cpdef int pynext(Counter self)
+        return self.value
 
     cpdef int get_value(Counter self)

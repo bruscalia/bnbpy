@@ -1,12 +1,9 @@
 import copy
-import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Optional, Set
 
 from bnbpy.cython.problem import Problem
-
-log = logging.getLogger(__name__)
 
 LARGE_INT = 100000000
 
@@ -16,6 +13,9 @@ class PriceSol:
     """Returns the solutions of the pricing problem
     (which includes a new column). Is is NOT recommended to modify
     these instance after creation due to safe hashing.
+
+    Two solutions are equal if both the column and the reduced cost are
+    equal (compared by their string representation).
     """
 
     red_cost: float
@@ -161,12 +161,21 @@ class ColumnGenProblem(Problem):
             Pricing problem (see `bnbpy.colgen.Pricing`)
 
         max_iter_price : Optional[int], optional
-            Maximum number of pricing iterations at node relaxation,
-            by default None
+            Maximum number of pricing iterations at node relaxation
+            (at least 1), by default None (unlimited)
+
+        Raises
+        ------
+        ValueError
+            If ``max_iter_price`` is smaller than 1
         """
         super().__init__()
         if max_iter_price is None:
             max_iter_price = LARGE_INT
+        if max_iter_price < 1:
+            raise ValueError(
+                f'max_iter_price must be at least 1, got {max_iter_price}'
+            )
         self.max_iter_price = max_iter_price
         self.master = master
         self.pricing = pricing

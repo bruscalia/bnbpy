@@ -3,19 +3,9 @@
 
 from libcpp cimport bool
 from libcpp.string cimport string
-from libcpp.vector cimport vector
 
-from bnbprob.pafssp.cpp.environ cimport (
-    MachineGraph,
-    Permutation,
-    iga,
-    intensify,
-    local_search,
-    neh_initialization,
-    quick_constructive
-)
-from bnbprob.pafssp.cpp.environ cimport Permutation
-from bnbprob.pafssp.cython.pyjob cimport PyJob, job_to_py
+from bnbprob.pafssp.cpp.environ cimport InstanceData, Permutation
+from bnbprob.pafssp.cython.instance cimport FlowShopInstanceData
 from bnbpy.cython.problem cimport Problem
 from bnbpy.cython.solution cimport Solution
 
@@ -28,21 +18,31 @@ cdef class PermFlowShop(Problem):
         # Cannot override attribute `solution` in cdef class
         # due to Cython limitation
 
+    cdef readonly:
+        # Keeps the instance (jobs, graph) alive while this node exists
+        FlowShopInstanceData data
+
     cdef:
         Permutation perm
 
-    cdef inline void set_perm(PermFlowShop self, vector[vector[int]] p_, MachineGraph mach_graph_):
-        self.perm = Permutation(p_, mach_graph_)
+    cdef inline void set_data(PermFlowShop self, FlowShopInstanceData data):
+        self.data = data
+        self.perm = Permutation(data.ptr())
 
-    cdef inline Permutation get_perm(PermFlowShop self):
-        return self.perm
+    cdef inline const InstanceData* _inst(PermFlowShop self) except NULL:
+        if self.data is None or self.data.ptr() == NULL:
+            raise ValueError(
+                'PermFlowShop has no instance data;'
+                ' build it with PermFlowShop.from_p or PermFlowShop(data)'
+            )
+        return self.data.ptr()
 
     cdef inline int get_n(PermFlowShop self):
         return self.perm.n
 
     cpdef object get_mach_graph(PermFlowShop self)
 
-    cpdef PermFlowShop warmstart(PermFlowShop self)
+    cpdef Problem warmstart(PermFlowShop self)
 
     cpdef PermFlowShop quick_constructive(PermFlowShop self)
 
@@ -67,13 +67,13 @@ cdef class PermFlowShop(Problem):
 
     cpdef bool is_feasible(PermFlowShop self)
 
-    cpdef list[PermFlowShop] branch(PermFlowShop self)
+    cpdef list[Problem] branch(PermFlowShop self)
 
     cdef PermFlowShop _child_push(PermFlowShop self, int& j)
 
     cpdef double stronger_bound(PermFlowShop self)
 
-    cpdef PermFlowShop primal_heuristic(PermFlowShop self)
+    cpdef Problem primal_heuristic(PermFlowShop self)
 
     cpdef int calc_lb_1m(PermFlowShop self)
 
@@ -85,11 +85,9 @@ cdef class PermFlowShop(Problem):
 
     cpdef void update_params(PermFlowShop self)
 
-    cpdef void push_job(PermFlowShop self, int& j)
+    cpdef void push_job(PermFlowShop self, int j)
 
     cdef void _push_job(PermFlowShop self, int& j)
-
-    cpdef void compute_starts(PermFlowShop self)
 
     cpdef int calc_idle_time(PermFlowShop self)
 
@@ -97,9 +95,9 @@ cdef class PermFlowShop(Problem):
 
     cpdef PermFlowShop copy(PermFlowShop self, bool deep=*)
 
-    cdef PermFlowShop _copy(PermFlowShop self)
+    cpdef PermFlowShop child_copy(PermFlowShop self, bool deep=*)
 
-    cpdef void perm_copy(PermFlowShop self)
+    cdef PermFlowShop _copy(PermFlowShop self)
 
 
 cdef class BenchPermFlowShop(PermFlowShop):
@@ -109,4 +107,4 @@ cdef class BenchPermFlowShop(PermFlowShop):
 
 cdef class PermFlowShop1M(PermFlowShop):
 
-    cpdef double calc_bound(PermFlowShop1M self)
+    cpdef double stronger_bound(PermFlowShop1M self)

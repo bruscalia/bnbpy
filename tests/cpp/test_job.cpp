@@ -275,16 +275,14 @@ TEST_CASE("Job with parameterized constructor", "[job][constructor]")
         std::vector<int> r = {0, 2, 5};
         std::vector<int> q = {7, 4, 0};
         std::vector<std::vector<int>> lat = {{0, 0, 3}, {0, 0, 0}, {0, 0, 0}};
-        std::vector<int> s = {0, 0, 0};
 
-        Job job(5, p, r, q, lat, s);
+        Job job(5, p, r, q, lat);
 
         REQUIRE(job.j == 5);
         REQUIRE(job.p == p);
         REQUIRE(job.r == r);
         REQUIRE(job.q == q);
         REQUIRE(job.lat == lat);
-        REQUIRE(job.s == s);
         REQUIRE(job.get_T() == 9);
     }
 }
