@@ -175,78 +175,18 @@ def write_model_fs(
     )
 
 
-# def main(instance_file, output_file, time_limit):
-#     nb_jobs, nb_machines, processing_time_data = read_instance(instance_file)
+def solve_hexaly_fs(
+    instance: AssemblyFlowShopInstance, time_limit: int = 60
+) -> HexalyResults:
+    with hexaly.optimizer.HexalyOptimizer() as optimizer:
+        model = optimizer.model
+        hx_model = write_model_fs(model, instance)
+        optimizer.param.time_limit = time_limit
+        optimizer.solve()
+        makespan = int(hx_model.makespan.value)  # type: ignore
+        permutation = [int(j) for j in hx_model.jobs.value]  # type: ignore
 
-#     with hexaly.optimizer.HexalyOptimizer() as optimizer:
-#         #
-#         # Declare the optimization model
-#         #
-#         model = optimizer.model
-
-#         # Permutation of jobs
-#         jobs = model.list(nb_jobs)
-
-#         # All jobs have to be assigned
-#         model.constraint(model.eq(model.count(jobs), nb_jobs))
-
-#         # For each machine create proccessingTime[m] as an array to be able
-#         # to access it with an 'at' operator
-#         processing_time = [
-#             model.array(processing_time_data[m]) for m in range(nb_machines)
-#         ]
-
-#         # On machine 0, the jth job ends on the time it took to be processed
-#         # after the end of the previous job
-#         job_end = [None] * nb_machines
-
-#         first_end_lambda = model.lambda_function(
-#             lambda i, prev: prev + processing_time[0][jobs[i]]
-#         )
-
-#         job_end[0] = model.array(model.range(0, nb_jobs), first_end_lambda, 0)
-
-#         # The jth job on machine m starts when it has been processed by machine n-1
-#         # AND when job j-1 has been processed on machine m.
-#         # It ends after it has been processed.
-#         for m in range(1, nb_machines):
-#             mL = m
-#             end_lambda = model.lambda_function(
-#                 lambda i, prev: model.max(prev, job_end[mL - 1][i])
-#                 + processing_time[mL][jobs[i]]
-#             )
-#             job_end[m] = model.array(model.range(0, nb_jobs), end_lambda, 0)
-
-#         # Minimize the makespan: end of the last job on the last machine
-#         makespan = job_end[nb_machines - 1][nb_jobs - 1]
-#         model.minimize(makespan)
-
-#         model.close()
-
-#         # Parameterize the optimizer
-#         optimizer.param.time_limit = time_limit
-
-#         optimizer.solve()
-
-#         #
-#         # Write the solution in a file
-#         #
-#         if output_file is not None:
-#             with open(output_file, 'w') as f:
-#                 f.write('%d\n' % makespan.value)
-#                 for j in jobs.value:
-#                     f.write('%d ' % j)
-#                 f.write('\n')
-
-
-# if __name__ == '__main__':
-#     if len(sys.argv) < 2:
-#         print(
-#             'Usage: python flowshop.py instance_file [output_file] [time_limit]'
-#         )
-#         sys.exit(1)
-
-#     instance_file = sys.argv[1]
-#     output_file = sys.argv[2] if len(sys.argv) >= 3 else None
-#     time_limit = int(sys.argv[3]) if len(sys.argv) >= 4 else 5
-#     main(instance_file, output_file, time_limit)
+    return HexalyResults(
+        permutation=permutation,
+        makespan=makespan,
+    )
